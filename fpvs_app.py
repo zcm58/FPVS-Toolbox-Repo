@@ -79,66 +79,84 @@ class FPVSApp(ctk.CTk):
 
     def __init__(self):
         super().__init__()
-        # Initialize window
-        from datetime import datetime
-        today_str = datetime.now().strftime('%Y-%m-%d')
-        self.title(f"FPVS Toolbox v{FPVS_TOOLBOX_VERSION} — {today_str}")
-        self.geometry("1000x950")  # initial geometry
 
-        # Busy flag for toggling controls
+        # 1) DPI scaling (Keep this if you have it)
+        try:
+            from FPVSImageResizer import apply_per_monitor_scaling
+            apply_per_monitor_scaling(self)
+        except ImportError:
+            pass
+
+        # 2) State variables
+        self.save_preprocessed = tk.BooleanVar(value=False)
         self.busy = False
-
-        # Data structures
         self.preprocessed_data = {}
-        self.event_map_entries = []
-        self.current_event_map = {}
+        self.event_map_entries = []  # Initialize list for event map rows
         self.data_paths = []
         self.processing_thread = None
         self.detection_thread = None
         self.gui_queue = queue.Queue()
         self._max_progress = 1
         self.validated_params = {}
-        self.save_preprocessed = tk.BooleanVar(value=False)
 
-        # Build UI
+        # 3) Window Setup
+        from datetime import datetime
+        self.title(f"FPVS Toolbox v{FPVS_TOOLBOX_VERSION} — {datetime.now():%Y-%m-%d}")
+        self.minsize(700, 900)  # <<< SET MINIMUM SIZE HERE
+
+        # 4) Build UI
         self.create_menu()
-        self.create_widgets()
+        self.create_widgets()  # <-- all widgets are created here
+
+        # 5) Add initial event map row
+        self.add_event_map_entry()  # <<< ADD FIRST EVENT MAP ROW
+
+        # 6) Welcome messages
         self.log("Welcome to the FPVS Toolbox!")
         self.log(f"Appearance Mode: {ctk.get_appearance_mode()}")
 
-        # Resize to fit content
-        self.update_idletasks()
-        req_w, req_h = self.winfo_reqwidth(), self.winfo_reqheight()
-        self.geometry(f"{req_w}x{req_h}")
+        # 7) Set initial focus
+        if self.event_map_entries:  # <<< SET INITIAL FOCUS
+            try:
+                # Ensure frame and label exist before focusing
+                if self.event_map_entries[0]['frame'].winfo_exists() and \
+                        self.event_map_entries[0]['label'].winfo_exists():
+                    self.event_map_entries[0]['label'].focus_set()
+            except Exception as e:
+                self.log(f"Warning: Could not set initial focus: {e}")
 
-        # Focus first event-map label
-        if self.event_map_entries:
-            self.event_map_entries[0]['label'].focus_set()
-
-        # Collect all interactive widgets for enable/disable
+        # 8) Define toggle widgets list *after* create_widgets runs
+        #    Make sure self.detect_button and self.add_map_button exist now
         self._toggle_widgets = [
-            # File controls
+            # Top‐bar buttons
             self.select_button,
+            self.select_output_button,
+            self.start_button,
+
+            # Mode & file‐type controls
             self.radio_single, self.radio_batch,
+            self.radio_bdf, self.radio_set,
 
             # Preprocessing entries
             self.low_pass_entry, self.high_pass_entry,
             self.downsample_entry, self.epoch_start_entry,
             self.epoch_end_entry, self.reject_thresh_entry,
-            self.ref_channel1_entry, self.ref_channel2_entry,
-            self.max_idx_keep_entry, self.stim_channel_entry,
+            self.ref_channel1_entry,
+            self.ref_channel2_entry,
+            self.max_idx_keep_entry,
+            self.stim_channel_entry,
             self.save_preprocessed_checkbox,
 
-            # Event-map buttons
-            self.detect_button, self.add_map_button,
-
-            # Save folder button
-            # (the first CTkButton under save_frame)
-            next(w for w in self.save_frame.winfo_children() if isinstance(w, ctk.CTkButton)),
-
-            # Processing controls
-            self.start_button,
+            # Event‐map buttons (Now should exist)
+            self.detect_button,
+            self.add_map_button,
+            # Add individual event map row widgets if desired (more complex)
         ]
+        # Add logic to disable event map entries/buttons themselves in _set_controls_enabled
+        # for w_dict in self.event_map_entries:
+        #     w_dict['label'].configure(state=state)
+        #     w_dict['id'].configure(state=state)
+        #     w_dict['button'].configure(state=state) # The 'X' button
 
     def _set_controls_enabled(self, enabled: bool):
         """
@@ -290,198 +308,347 @@ class FPVSApp(ctk.CTk):
 
 
     # --- GUI Creation ---
+        # --- GUI Creation ---
     def create_widgets(self):
-        validate_num_cmd = (self.register(self._validate_numeric_input), '%P')
-        validate_int_cmd = (self.register(self._validate_integer_input), '%P')
+            """Creates all the widgets for the main application window."""
+            validate_num_cmd = (self.register(self._validate_numeric_input), '%P')
+            validate_int_cmd = (self.register(self._validate_integer_input), '%P')
+            # Use constants for widths if defined in config, otherwise use defaults
+            try:
+                from config import LABEL_ID_ENTRY_WIDTH, ENTRY_WIDTH, PAD_X, PAD_Y, CORNER_RADIUS
+            except ImportError:
+                LABEL_ID_ENTRY_WIDTH = 100;
+                ENTRY_WIDTH = 80;
+                PAD_X = 5;
+                PAD_Y = 5;
+                CORNER_RADIUS = 6  # Fallbacks
 
-        main_frame = ctk.CTkFrame(self, corner_radius=0)
-        main_frame.pack(fill="both", expand=True, padx=PAD_X*2, pady=PAD_Y*2)
-        main_frame.grid_rowconfigure(3, weight=1)
-        main_frame.grid_columnconfigure(0, weight=1)
+            # Main container - Configure rows/columns for grid layout
+            main_frame = ctk.CTkFrame(self, corner_radius=0)
+            main_frame.pack(fill="both", expand=True, padx=PAD_X * 2, pady=PAD_Y * 2)
+            main_frame.grid_columnconfigure(0, weight=1)  # Allow content to expand horizontally
+            main_frame.grid_rowconfigure(0, weight=0)  # Top Bar - no vertical expand
+            main_frame.grid_rowconfigure(1, weight=0)  # Options - no vertical expand
+            main_frame.grid_rowconfigure(2, weight=0)  # Params - no vertical expand
+            main_frame.grid_rowconfigure(3, weight=1)  # Event Map - *should* expand vertically
+            main_frame.grid_rowconfigure(4, weight=0)  # Bottom (Log/Progress) - no vertical expand
 
-        # Options Frame
-        self.options_frame = ctk.CTkFrame(main_frame)
-        self.options_frame.pack(fill="x", padx=PAD_X, pady=PAD_Y)
-        ctk.CTkLabel(self.options_frame, text="Processing Options",
-                     font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, columnspan=4, sticky="w", padx=PAD_X, pady=(PAD_Y, PAD_Y*2))
-        ctk.CTkLabel(self.options_frame, text="Mode:").grid(row=1, column=0, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.file_mode = tk.StringVar(value="Single")
-        self.radio_single = ctk.CTkRadioButton(
-            self.options_frame, text="Single File", variable=self.file_mode,
-            value="Single", command=self.update_select_button_text, corner_radius=CORNER_RADIUS
-        )
-        self.radio_single.grid(row=1, column=1, padx=PAD_X, pady=PAD_Y, sticky="w")
-        self.radio_batch = ctk.CTkRadioButton(
-            self.options_frame, text="Batch Folder", variable=self.file_mode,
-            value="Batch", command=self.update_select_button_text, corner_radius=CORNER_RADIUS
-        )
-        self.radio_batch.grid(row=1, column=2, padx=PAD_X, pady=PAD_Y, sticky="w")
-        ctk.CTkLabel(self.options_frame, text="File Type:").grid(row=2, column=0, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.file_type = tk.StringVar(value=".BDF")
-        rb_bdf = ctk.CTkRadioButton(self.options_frame, text=".BDF", variable=self.file_type, value=".BDF", corner_radius=CORNER_RADIUS)
-        rb_bdf.grid(row=2, column=1, padx=PAD_X, pady=PAD_Y, sticky="w")
-        rb_set = ctk.CTkRadioButton(self.options_frame, text=".set", variable=self.file_type, value=".set", corner_radius=CORNER_RADIUS)
-        rb_set.grid(row=2, column=2, padx=PAD_X, pady=PAD_Y, sticky="w")
-        self.select_button_text = tk.StringVar()
-        self.select_button = ctk.CTkButton(
-            self.options_frame, textvariable=self.select_button_text,
-            command=self.select_data_source, corner_radius=CORNER_RADIUS
-        )
-        self.select_button.grid(row=1, column=3, rowspan=2, padx=PAD_X*2, pady=PAD_Y, sticky="ew")
-        self.options_frame.grid_columnconfigure(3, weight=1)
+            # --- Top Control Bar (Row 0) --- <<< MODIFIED SECTION FOR BUTTON LAYOUT
+            top_bar = ctk.CTkFrame(main_frame, corner_radius=0)
+            top_bar.grid(row=0, column=0, sticky="ew", padx=PAD_X, pady=PAD_Y)  # top_bar still fills horizontally
 
-        # Params Frame
-        self.params_frame = ctk.CTkFrame(main_frame)
-        self.params_frame.pack(fill="x", padx=PAD_X, pady=PAD_Y)
-        ctk.CTkLabel(self.params_frame, text="Preprocessing Parameters",
-                     font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, columnspan=6, sticky="w", padx=PAD_X, pady=(PAD_Y, PAD_Y*2))
+            # Configure columns inside top_bar for button alignment
+            top_bar.grid_columnconfigure(0, weight=0)  # Left column - no extra space
+            top_bar.grid_columnconfigure(1, weight=1)  # Center column - takes all extra space
+            top_bar.grid_columnconfigure(2, weight=0)  # Right column - no extra space
 
-        # Row 1
-        ctk.CTkLabel(self.params_frame, text="Low Pass (Hz):").grid(row=1, column=0, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.low_pass_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key', validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
-        self.low_pass_entry.insert(0, "0.1"); self.low_pass_entry.grid(row=1, column=1, padx=PAD_X, pady=PAD_Y)
-        ctk.CTkLabel(self.params_frame, text="High Pass (Hz):").grid(row=1, column=2, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.high_pass_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key', validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
-        self.high_pass_entry.insert(0, "50"); self.high_pass_entry.grid(row=1, column=3, padx=PAD_X, pady=PAD_Y)
+            # Place Buttons using grid within top_bar
 
-        # Row 2
-        ctk.CTkLabel(self.params_frame, text="Downsample (Hz):").grid(row=2, column=0, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.downsample_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key', validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
-        self.downsample_entry.insert(0, "256"); self.downsample_entry.grid(row=2, column=1, padx=PAD_X, pady=PAD_Y)
-        ctk.CTkLabel(self.params_frame, text="Epoch Start (s):").grid(row=2, column=2, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.epoch_start_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key', validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
-        self.epoch_start_entry.insert(0, "-1"); self.epoch_start_entry.grid(row=2, column=3, padx=PAD_X, pady=PAD_Y)
-        ctk.CTkLabel(self.params_frame, text="Epoch End (s):").grid(row=2, column=4, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.epoch_end_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key', validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
-        self.epoch_end_entry.insert(0, "125"); self.epoch_end_entry.grid(row=2, column=5, padx=PAD_X, pady=PAD_Y)
+            # "Select EEG File..." Button - Column 0 (Left)
+            self.select_button = ctk.CTkButton(
+                top_bar, text="Select EEG File…",  # Text might be updated later
+                command=self.select_data_source,
+                corner_radius=CORNER_RADIUS, width=180  # Keep desired width
+            )
+            # Place in grid, stick to the West (left) edge
+            self.select_button.grid(row=0, column=0, sticky="w", padx=(0, PAD_X))
 
-        # Row 3
-        ctk.CTkLabel(self.params_frame, text="Rejection Z-Thresh:").grid(row=3, column=0, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.reject_thresh_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key', validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
-        self.reject_thresh_entry.insert(0, "5"); self.reject_thresh_entry.grid(row=3, column=1, padx=PAD_X, pady=PAD_Y)
-        self.save_preprocessed_checkbox = ctk.CTkCheckBox(self.params_frame, text="Save Preprocessed (.fif)", variable=self.save_preprocessed, onvalue=True, offvalue=False, corner_radius=CORNER_RADIUS)
-        self.save_preprocessed_checkbox.grid(row=3, column=2, columnspan=2, padx=PAD_X, pady=PAD_Y, sticky="w")
+            # "Select Output Folder..." Button - Column 1 (Center)
+            self.save_folder_path = tk.StringVar()  # Needs to exist before button
+            self.select_output_button = ctk.CTkButton(
+                top_bar, text="Select Output Folder…",
+                command=self.select_save_folder,
+                corner_radius=CORNER_RADIUS, width=180  # Keep desired width
+            )
+            # Place in grid, default sticky is center within the expanding column
+            self.select_output_button.grid(row=0, column=1, sticky="", padx=PAD_X)  # sticky="" centers it
 
-        # Row 4
-        ctk.CTkLabel(self.params_frame, text="Reference Channel 1:").grid(row=4, column=0, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.ref_channel1_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS)
-        self.ref_channel1_entry.insert(0, "EXG1"); self.ref_channel1_entry.grid(row=4, column=1, padx=PAD_X, pady=PAD_Y)
-        ctk.CTkLabel(self.params_frame, text="Reference Channel 2:").grid(row=4, column=2, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.ref_channel2_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS)
-        self.ref_channel2_entry.insert(0, "EXG2"); self.ref_channel2_entry.grid(row=4, column=3, padx=PAD_X, pady=PAD_Y)
+            # "Start Processing" Button - Column 2 (Right)
+            self.start_button = ctk.CTkButton(
+                top_bar, text="Start Processing",
+                command=self.start_processing,
+                corner_radius=CORNER_RADIUS, width=180,  # Keep desired width
+                font=ctk.CTkFont(weight="bold")
+            )
+            # Place in grid, stick to the East (right) edge
+            self.start_button.grid(row=0, column=2, sticky="e", padx=(PAD_X, 0))
+            # --- END OF MODIFIED TOP BAR SECTION ---
 
-        # Row 5
-        ctk.CTkLabel(self.params_frame, text="Max EEG Channels Keep:").grid(row=5, column=0, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.max_idx_keep_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key', validatecommand=validate_int_cmd, corner_radius=CORNER_RADIUS)
-        self.max_idx_keep_entry.insert(0, "64"); self.max_idx_keep_entry.grid(row=5, column=1, padx=PAD_X, pady=PAD_Y)
-        ctk.CTkLabel(self.params_frame, text="Stimulus Channel Name:").grid(row=5, column=2, sticky="w", padx=PAD_X, pady=PAD_Y)
-        self.stim_channel_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS)
-        self.stim_channel_entry.insert(0, DEFAULT_STIM_CHANNEL); self.stim_channel_entry.grid(row=5, column=3, padx=PAD_X, pady=PAD_Y)
+            # --- Processing Options Frame (Row 1) ---
+            self.options_frame = ctk.CTkFrame(main_frame)
+            self.options_frame.grid(row=1, column=0, sticky="ew", padx=PAD_X, pady=PAD_Y)
+            ctk.CTkLabel(self.options_frame, text="Processing Options",
+                         font=ctk.CTkFont(weight="bold")).grid(
+                row=0, column=0, columnspan=4, sticky="w", padx=PAD_X, pady=(PAD_Y, PAD_Y * 2)
+            )
+            # Mode radios
+            ctk.CTkLabel(self.options_frame, text="Mode:").grid(row=1, column=0, sticky="w", padx=PAD_X, pady=PAD_Y)
+            self.file_mode = tk.StringVar(value="Single")
+            self.radio_single = ctk.CTkRadioButton(self.options_frame, text="Single File", variable=self.file_mode,
+                                                   value="Single", command=self.update_select_button_text,
+                                                   corner_radius=CORNER_RADIUS)
+            self.radio_single.grid(row=1, column=1, padx=PAD_X, pady=PAD_Y, sticky="w")
+            self.radio_batch = ctk.CTkRadioButton(self.options_frame, text="Batch Folder", variable=self.file_mode,
+                                                  value="Batch", command=self.update_select_button_text,
+                                                  corner_radius=CORNER_RADIUS)
+            self.radio_batch.grid(row=1, column=2, padx=PAD_X, pady=PAD_Y, sticky="w")
+            # File-type radios
+            ctk.CTkLabel(self.options_frame, text="File Type:").grid(row=2, column=0, sticky="w", padx=PAD_X,
+                                                                     pady=PAD_Y)
+            self.file_type = tk.StringVar(value=".BDF")
+            self.radio_bdf = ctk.CTkRadioButton(self.options_frame, text=".BDF", variable=self.file_type, value=".BDF",
+                                                corner_radius=CORNER_RADIUS)
+            self.radio_bdf.grid(row=2, column=1, padx=PAD_X, pady=PAD_Y, sticky="w")
+            self.radio_set = ctk.CTkRadioButton(self.options_frame, text=".set", variable=self.file_type, value=".set",
+                                                corner_radius=CORNER_RADIUS)
+            self.radio_set.grid(row=2, column=2, padx=PAD_X, pady=PAD_Y, sticky="w")
 
-        # --- Event ID Mapping Frame ---
-        event_map_frame_outer = ctk.CTkFrame(main_frame)
-        event_map_frame_outer.pack(fill="both", expand=True, padx=PAD_X, pady=PAD_Y)
-        ctk.CTkLabel(event_map_frame_outer, text="Event Label to Numerical ID Mapping", font=ctk.CTkFont(weight="bold")).pack(anchor="w", padx=PAD_X, pady=(PAD_Y,0))
+            # --- Preprocessing Parameters Frame (Row 2) ---
+            self.params_frame = ctk.CTkFrame(main_frame)
+            self.params_frame.grid(row=2, column=0, sticky="ew", padx=PAD_X, pady=PAD_Y)
+            ctk.CTkLabel(self.params_frame, text="Preprocessing Parameters",
+                         font=ctk.CTkFont(weight="bold")).grid(
+                row=0, column=0, columnspan=6, sticky="w", padx=PAD_X, pady=(PAD_Y, PAD_Y * 2)
+            )
+            # Row 1: Low/High pass
+            ctk.CTkLabel(self.params_frame, text="Low Pass (Hz):").grid(row=1, column=0, sticky="w", padx=PAD_X,
+                                                                        pady=PAD_Y)
+            self.low_pass_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key',
+                                               validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
+            self.low_pass_entry.insert(0, "0.1");
+            self.low_pass_entry.grid(row=1, column=1, padx=PAD_X, pady=PAD_Y)
+            ctk.CTkLabel(self.params_frame, text="High Pass (Hz):").grid(row=1, column=2, sticky="w", padx=PAD_X,
+                                                                         pady=PAD_Y)
+            self.high_pass_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key',
+                                                validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
+            self.high_pass_entry.insert(0, "50");
+            self.high_pass_entry.grid(row=1, column=3, padx=PAD_X, pady=PAD_Y)
+            # Row 2: Downsample / Epoch
+            ctk.CTkLabel(self.params_frame, text="Downsample (Hz):").grid(row=2, column=0, sticky="w", padx=PAD_X,
+                                                                          pady=PAD_Y)
+            self.downsample_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key',
+                                                 validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
+            self.downsample_entry.insert(0, "256");
+            self.downsample_entry.grid(row=2, column=1, padx=PAD_X, pady=PAD_Y)
+            ctk.CTkLabel(self.params_frame, text="Epoch Start (s):").grid(row=2, column=2, sticky="w", padx=PAD_X,
+                                                                          pady=PAD_Y)
+            self.epoch_start_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key',
+                                                  validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
+            self.epoch_start_entry.insert(0, "-1");
+            self.epoch_start_entry.grid(row=2, column=3, padx=PAD_X, pady=PAD_Y)
+            ctk.CTkLabel(self.params_frame, text="Epoch End (s):").grid(row=2, column=4, sticky="w", padx=PAD_X,
+                                                                        pady=PAD_Y)
+            self.epoch_end_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key',
+                                                validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
+            self.epoch_end_entry.insert(0, "125");
+            self.epoch_end_entry.grid(row=2, column=5, padx=PAD_X, pady=PAD_Y)
+            # Row 3: Reject / Save
+            ctk.CTkLabel(self.params_frame, text="Rejection Z-Thresh:").grid(row=3, column=0, sticky="w", padx=PAD_X,
+                                                                             pady=PAD_Y)
+            self.reject_thresh_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key',
+                                                    validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
+            self.reject_thresh_entry.insert(0, "5");
+            self.reject_thresh_entry.grid(row=3, column=1, padx=PAD_X, pady=PAD_Y)
+            self.save_preprocessed_checkbox = ctk.CTkCheckBox(self.params_frame, text="Save Preprocessed (.fif)",
+                                                              variable=self.save_preprocessed, onvalue=True,
+                                                              offvalue=False, corner_radius=CORNER_RADIUS)
+            self.save_preprocessed_checkbox.grid(row=3, column=2, columnspan=2, padx=PAD_X, pady=PAD_Y, sticky="w")
+            # Row 4: Initial Reference Channels
+            ctk.CTkLabel(self.params_frame, text="Ref Chan 1:").grid(row=4, column=0, sticky="w", padx=PAD_X,
+                                                                     pady=PAD_Y)
+            self.ref_channel1_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS)
+            # self.ref_channel1_entry.insert(0, "EXG1") # Optional default
+            self.ref_channel1_entry.grid(row=4, column=1, padx=PAD_X, pady=PAD_Y)
+            ctk.CTkLabel(self.params_frame, text="Ref Chan 2:").grid(row=4, column=2, sticky="w", padx=PAD_X,
+                                                                     pady=PAD_Y)
+            self.ref_channel2_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS)
+            # self.ref_channel2_entry.insert(0, "EXG2") # Optional default
+            self.ref_channel2_entry.grid(row=4, column=3, padx=PAD_X, pady=PAD_Y)
+            # Row 5: Max Index Keep / Stim Channel
+            ctk.CTkLabel(self.params_frame, text="Max Chan Idx Keep:").grid(row=5, column=0, sticky="w", padx=PAD_X,
+                                                                            pady=PAD_Y)
+            self.max_idx_keep_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS,
+                                                   validate='key', validatecommand=validate_int_cmd)
+            # self.max_idx_keep_entry.insert(0, "64") # Optional default
+            self.max_idx_keep_entry.grid(row=5, column=1, padx=PAD_X, pady=PAD_Y)
+            ctk.CTkLabel(self.params_frame, text="Stim Channel:").grid(row=5, column=2, sticky="w", padx=PAD_X,
+                                                                       pady=PAD_Y)
+            self.stim_channel_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS)
+            try:
+                from config import DEFAULT_STIM_CHANNEL
+            except ImportError:
+                DEFAULT_STIM_CHANNEL = 'Status'  # Fallback
+            self.stim_channel_entry.insert(0, DEFAULT_STIM_CHANNEL)
+            self.stim_channel_entry.grid(row=5, column=3, padx=PAD_X, pady=PAD_Y)
 
-        header_frame = ctk.CTkFrame(event_map_frame_outer, fg_color="transparent")
-        header_frame.pack(fill="x", padx=PAD_X, pady=(2,0))
-        ctk.CTkLabel(header_frame, text="Condition Label (For Excel Filename Output)", width=LABEL_ID_ENTRY_WIDTH*2, anchor="w").pack(side="left", padx=(0,PAD_X))
-        ctk.CTkLabel(header_frame, text="Numerical ID (PsychoPy Trigger Code)", width=LABEL_ID_ENTRY_WIDTH, anchor="w").pack(side="left", padx=(PAD_X,PAD_X))
-        ctk.CTkLabel(header_frame, text="", width=28).pack(side="right", padx=(PAD_X,0))
+            # --- Event ID Mapping Frame (Row 3 - EXPANDS) ---
+            event_map_outer = ctk.CTkFrame(main_frame)
+            event_map_outer.grid(row=3, column=0, sticky="nsew", padx=PAD_X, pady=PAD_Y)  # Use grid, allow expand
+            # Configure event_map_outer's internal layout (using pack is fine here)
+            event_map_outer.columnconfigure(0, weight=1)
+            event_map_outer.rowconfigure(2, weight=1)  # Scroll frame should expand vertically
 
-        self.event_map_scroll_frame = ctk.CTkScrollableFrame(event_map_frame_outer, label_text="")
-        self.event_map_scroll_frame.pack(fill="both", expand=True, padx=PAD_X, pady=(0,PAD_Y))
-        self.event_map_scroll_frame.grid_columnconfigure(0, weight=1)
-        self.event_map_scroll_frame.grid_columnconfigure(1, weight=0)
-        self.event_map_scroll_frame.grid_columnconfigure(2, weight=0)
+            # Header Label for Event Map
+            ctk.CTkLabel(event_map_outer, text="Event Map (Condition Label → Numerical ID)",
+                         font=ctk.CTkFont(weight="bold")).pack(anchor="w", padx=PAD_X, pady=(PAD_Y, 0))
 
-        self.event_map_entries = []
-        self.add_event_map_entry()
+            # Header Frame for Column Titles
+            header_frame = ctk.CTkFrame(event_map_outer, fg_color="transparent")
+            header_frame.pack(fill="x", padx=PAD_X, pady=(2, 0))
+            # Adjust label widths if needed
+            ctk.CTkLabel(header_frame, text="Condition Label",
+                         width=LABEL_ID_ENTRY_WIDTH * 2 + PAD_X,  # Approximate width needed
+                         anchor="w").pack(side="left", padx=(0, 0))  # Align left
+            ctk.CTkLabel(header_frame, text="Numerical ID",
+                         width=LABEL_ID_ENTRY_WIDTH + PAD_X,  # Approximate width
+                         anchor="w").pack(side="left", padx=(0, 0))
+            # Spacer for the 'X' button column
+            ctk.CTkLabel(header_frame, text="", width=28 + PAD_X).pack(side="right", padx=(0, 0))
 
-        event_map_button_frame = ctk.CTkFrame(event_map_frame_outer, fg_color="transparent")
-        event_map_button_frame.pack(fill="x", pady=(0,PAD_Y), padx=PAD_X)
-        self.detect_button = ctk.CTkButton(event_map_button_frame, text="Detect PsychoPy Trigger IDs", command=self.detect_and_show_event_ids, corner_radius=CORNER_RADIUS)
-        self.detect_button.pack(side="left", padx=(0,PAD_X))
-        self.add_map_button = ctk.CTkButton(event_map_button_frame, text="Add Condition", command=self.add_event_map_entry, corner_radius=CORNER_RADIUS)
-        self.add_map_button.pack(side="left")
+            # Scrollable Frame for the dynamic rows
+            self.event_map_scroll_frame = ctk.CTkScrollableFrame(event_map_outer, label_text="")
+            self.event_map_scroll_frame.pack(fill="both", expand=True, padx=PAD_X, pady=(0, PAD_Y))
+            # No need to configure grid inside scroll frame if using pack for rows
 
-        # --- Save Location Frame ---
-        self.save_frame = ctk.CTkFrame(main_frame)
-        self.save_frame.pack(fill="x", padx=PAD_X, pady=PAD_Y)
-        ctk.CTkLabel(self.save_frame, text="Excel Output Save Location", font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, columnspan=2, sticky="w", padx=PAD_X, pady=(PAD_Y,PAD_Y*2))
-        self.save_folder_path = tk.StringVar()
-        btn_select_save = ctk.CTkButton(self.save_frame, text="Select Output Folder", command=self.select_save_folder, corner_radius=CORNER_RADIUS)
-        btn_select_save.grid(row=1, column=0, padx=PAD_X, pady=PAD_Y)
-        self.save_folder_display = ctk.CTkEntry(self.save_frame, textvariable=self.save_folder_path, state="readonly", corner_radius=CORNER_RADIUS)
-        self.save_folder_display.grid(row=1, column=1, sticky="ew", padx=PAD_X, pady=PAD_Y)
-        self.save_frame.grid_columnconfigure(1, weight=1)
+            # Button Frame below scroll frame
+            event_map_button_frame = ctk.CTkFrame(event_map_outer, fg_color="transparent")
+            event_map_button_frame.pack(fill="x", pady=(0, PAD_Y), padx=PAD_X)
+            self.detect_button = ctk.CTkButton(event_map_button_frame, text="Detect Trigger IDs",
+                                               command=self.detect_and_show_event_ids, corner_radius=CORNER_RADIUS)
+            self.detect_button.pack(side="left", padx=(0, PAD_X))
+            self.add_map_button = ctk.CTkButton(event_map_button_frame, text="+ Add Condition",
+                                                command=self.add_event_map_entry, corner_radius=CORNER_RADIUS)
+            self.add_map_button.pack(side="left")
 
-        # --- Bottom Controls Frame ---
-        bottom_controls_frame = ctk.CTkFrame(main_frame)
-        bottom_controls_frame.pack(fill="both", expand=True, side="bottom", padx=PAD_X, pady=(PAD_Y,0))
-        log_frame_outer = ctk.CTkFrame(bottom_controls_frame)
-        log_frame_outer.pack(fill="both", expand=True, padx=0, pady=(0,PAD_Y))
-        ctk.CTkLabel(log_frame_outer, text="Log", font=ctk.CTkFont(weight="bold")).pack(anchor="w", padx=PAD_X, pady=(PAD_Y,0))
-        self.log_text = ctk.CTkTextbox(log_frame_outer, height=150, wrap="word", state="disabled", corner_radius=CORNER_RADIUS)
-        self.log_text.pack(fill="both", expand=True, padx=PAD_X, pady=PAD_Y)
+            # --- Bottom Frame: Log & Progress (Row 4 - NO VERTICAL EXPAND) ---
+            bottom_frame = ctk.CTkFrame(main_frame)
+            # Use grid, fill horizontally, but DO NOT expand vertically
+            bottom_frame.grid(row=4, column=0, sticky="ew", padx=PAD_X, pady=(PAD_Y, 0))
+            bottom_frame.grid_columnconfigure(0, weight=1)  # Column containing log/progress expands horizontally
 
-        progress_start_frame = ctk.CTkFrame(bottom_controls_frame, fg_color="transparent")
-        progress_start_frame.pack(fill="x", side="bottom", padx=0, pady=PAD_Y)
-        progress_start_frame.grid_columnconfigure(0, weight=1)
-        self.progress_bar = ctk.CTkProgressBar(progress_start_frame, orientation="horizontal", height=20)
-        self.progress_bar.grid(row=0, column=0, padx=(0,PAD_X), pady=PAD_Y, sticky="ew")
-        self.progress_bar.set(0)
-        self.start_button = ctk.CTkButton(progress_start_frame, text="Start Processing", command=self.start_processing, corner_radius=CORNER_RADIUS, height=30, font=ctk.CTkFont(weight="bold"))
-        self.start_button.grid(row=0, column=1, padx=(PAD_X,0), pady=PAD_Y)
+            # Log box Frame
+            log_outer = ctk.CTkFrame(bottom_frame)
+            log_outer.grid(row=0, column=0, sticky="ew", padx=0, pady=(0, PAD_Y))  # Log takes full width
+            log_outer.grid_columnconfigure(0, weight=1)  # Textbox expands horizontally
+            log_outer.grid_rowconfigure(1, weight=0)  # Textbox does NOT expand vertically
+            ctk.CTkLabel(log_outer, text="Log", font=ctk.CTkFont(weight="bold")).grid(
+                row=0, column=0, sticky="w", padx=PAD_X, pady=(PAD_Y, 0)
+            )
+            self.log_text = ctk.CTkTextbox(
+                log_outer,
+                height=75,  # Reduced log height
+                wrap="word", state="disabled", corner_radius=CORNER_RADIUS
+            )
+            self.log_text.grid(row=1, column=0, sticky="ew", padx=PAD_X, pady=(0, PAD_Y))
 
-        self.update_select_button_text()
+            # Progress bar Frame (below log box)
+            prog_frame = ctk.CTkFrame(bottom_frame, fg_color="transparent")
+            prog_frame.grid(row=1, column=0, sticky="ew", padx=0, pady=PAD_Y)
+            prog_frame.grid_columnconfigure(0, weight=1)  # Progress bar stretches horizontally
+            self.progress_bar = ctk.CTkProgressBar(
+                prog_frame, orientation="horizontal", height=20
+            )
+            self.progress_bar.grid(row=0, column=0, sticky="ew", padx=0, pady=0)
+            self.progress_bar.set(0)
 
-
-    # --- Row add/remove methods ---
+            # Sync select button label to current mode initially (if method exists)
+            if hasattr(self, 'update_select_button_text'):
+                self.update_select_button_text()
+            # Note: _toggle_widgets list is now defined in __init__ after this function runs
     def add_event_map_entry(self, event=None):
+        """Adds a new row (Label Entry, ID Entry, Remove Button) to the event map scroll frame."""
+        # Ensure scroll frame exists before adding to it
+        if not hasattr(self, 'event_map_scroll_frame') or not self.event_map_scroll_frame.winfo_exists():
+            self.log("Error: Cannot add event map row, scroll frame not ready.")
+            return
+
         validate_int_cmd = (self.register(self._validate_integer_input), '%P')
+        # Use constants for widths if defined in config, otherwise use defaults
+        try:
+            from config import LABEL_ID_ENTRY_WIDTH
+        except ImportError:
+            LABEL_ID_ENTRY_WIDTH = 100  # Fallback width
+
         entry_frame = ctk.CTkFrame(self.event_map_scroll_frame, fg_color="transparent")
+        # Use pack for layout within the scroll frame's canvas
         entry_frame.pack(fill="x", pady=1, padx=1)
 
-        label_entry = ctk.CTkEntry(entry_frame, placeholder_text="Condition Label", width=LABEL_ID_ENTRY_WIDTH*2, corner_radius=CORNER_RADIUS)
-        label_entry.pack(side="left", fill="x", expand=True, padx=(0,PAD_X))
+        # Create Label Entry
+        label_entry = ctk.CTkEntry(entry_frame, placeholder_text="Condition Label",
+                                   width=LABEL_ID_ENTRY_WIDTH * 2,  # Wider for labels
+                                   corner_radius=CORNER_RADIUS)
+        label_entry.pack(side="left", fill="x", expand=True, padx=(0, PAD_X))
+        # Bind Enter key press inside the underlying Tkinter entry
         label_entry._entry.bind("<Return>", self._add_row_and_focus_label)
-        label_entry._entry.bind("<KP_Enter>", self._add_row_and_focus_label)
+        label_entry._entry.bind("<KP_Enter>", self._add_row_and_focus_label)  # Numpad Enter
 
-        id_entry = ctk.CTkEntry(entry_frame, placeholder_text="Numerical ID", width=LABEL_ID_ENTRY_WIDTH, validate='key', validatecommand=validate_int_cmd, corner_radius=CORNER_RADIUS)
-        id_entry.pack(side="left", padx=(0,PAD_X))
+        # Create ID Entry
+        id_entry = ctk.CTkEntry(entry_frame, placeholder_text="Numerical ID",
+                                width=LABEL_ID_ENTRY_WIDTH,
+                                validate='key', validatecommand=validate_int_cmd,
+                                corner_radius=CORNER_RADIUS)
+        id_entry.pack(side="left", padx=(0, PAD_X))
+        # Bind Enter key press
         id_entry._entry.bind("<Return>", self._add_row_and_focus_label)
         id_entry._entry.bind("<KP_Enter>", self._add_row_and_focus_label)
 
-        remove_btn = ctk.CTkButton(entry_frame, text="X", width=28, height=28, corner_radius=CORNER_RADIUS,
+        # Create Remove Button
+        remove_btn = ctk.CTkButton(entry_frame, text="✕",  # Use a clear 'X' symbol
+                                   width=28, height=28,
+                                   corner_radius=CORNER_RADIUS,
+                                   # Pass the specific frame to remove
                                    command=lambda ef=entry_frame: self.remove_event_map_entry(ef))
         remove_btn.pack(side="right")
 
+        # Store references to the widgets for this row
         self.event_map_entries.append({
             'frame': entry_frame,
             'label': label_entry,
-            'id':    id_entry,
+            'id': id_entry,
             'button': remove_btn
         })
 
-        if event is None and label_entry.winfo_exists():
-            label_entry.focus_set()
+        # Focus the label entry of the new row if it wasn't triggered by an event (i.e., initial call)
+        # This focusing is now handled in __init__ and _add_row_and_focus_label
+        # if event is None:
+        #    try:
+        #        if label_entry.winfo_exists():
+        #           label_entry.focus_set()
+        #    except Exception as e:
+        #        self.log(f"Warning: Error focusing initial label entry: {e}")
 
     def remove_event_map_entry(self, entry_frame_to_remove):
+        """Removes the specified row frame and its widgets from the event map."""
         try:
-            entry_to_remove = next((e for e in self.event_map_entries if e['frame'] == entry_frame_to_remove), None)
+            entry_to_remove = None
+            # Find the dictionary corresponding to the frame
+            for i, entry in enumerate(self.event_map_entries):
+                if entry['frame'] == entry_frame_to_remove:
+                    entry_to_remove = entry
+                    del self.event_map_entries[i]
+                    break
+
             if entry_to_remove:
-                if entry_to_remove['frame'].winfo_exists():
-                    entry_to_remove['frame'].destroy()
-                self.event_map_entries.remove(entry_to_remove)
+                # Destroy the frame (which destroys widgets inside it)
+                if entry_frame_to_remove.winfo_exists():
+                    entry_frame_to_remove.destroy()
+
+                # If no rows left, add a new default one
                 if not self.event_map_entries:
                     self.add_event_map_entry()
-                elif self.event_map_entries[-1]['label'].winfo_exists():
-                    self.event_map_entries[-1]['label'].focus_set()
+                # Otherwise, focus the label of the last remaining row
+                elif self.event_map_entries:
+                     try:
+                         # Check if the last entry's widgets still exist
+                         last_entry = self.event_map_entries[-1]
+                         if last_entry['frame'].winfo_exists() and last_entry['label'].winfo_exists():
+                              last_entry['label'].focus_set()
+                     except Exception as e:
+                           self.log(f"Warning: Could not focus after removing row: {e}")
             else:
                 self.log("Warning: Could not find the specified event map row to remove.")
         except Exception as e:
-            self.log(f"Error removing Event Map row: {e}")
+            self.log(f"Error removing Event Map row: {e}\n{traceback.format_exc()}")
 
 
     def select_save_folder(self):
@@ -492,13 +659,14 @@ class FPVSApp(ctk.CTk):
         else:
             self.log("Save folder selection cancelled.")
 
-
     def update_select_button_text(self):
-        mode = self.file_mode.get()
-        text = "Select EEG File..." if mode == "Single" else "Select Folder..."
-        if hasattr(self, 'select_button'):
-            self.select_button_text.set(text)
-
+        """
+        Update the label on the Select EEG File… button to match the current mode.
+        """
+        if self.file_mode.get() == "Single":
+            self.select_button.configure(text="Select EEG File…")
+        else:
+            self.select_button.configure(text="Select Folder…")
 
     def select_data_source(self):
         self.data_paths = []
@@ -1421,9 +1589,18 @@ class FPVSApp(ctk.CTk):
         pass
 
     def _add_row_and_focus_label(self, event):
+        """Callback for Return/Enter key in event map entries to add a new row."""
         self.add_event_map_entry()
-        self.event_map_entries[-1]['label'].focus_set()
-        return "break"
+        # Focus the label of the newly added row
+        if self.event_map_entries:
+             try:
+                 # Ensure frame and label exist before focusing
+                 if self.event_map_entries[-1]['frame'].winfo_exists() and \
+                    self.event_map_entries[-1]['label'].winfo_exists():
+                     self.event_map_entries[-1]['label'].focus_set()
+             except Exception as e:
+                 self.log(f"Warning: Could not focus new event map row: {e}")
+        return "break" # Prevents default Enter behavior
 
 
     # Override to use external function

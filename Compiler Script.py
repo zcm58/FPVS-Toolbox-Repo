@@ -1,0 +1,13 @@
+pyinstaller `
+  --clean `
+  --noconfirm `
+  --windowed `
+  -n FPVS_Toolbox_0.7.1 `
+  -i "C:\Users\zcm58\OneDrive - Mississippi State University\Office Desktop\App Icon.ico" `
+  --collect-all mne `
+  --hidden-import=mne.io.bdf `
+  --hidden-import=mne.io.eeglab `
+  --hidden-import=scipy `
+  --hidden-import=pandas `
+  --hidden-import=numpy `
+  -F main.py
