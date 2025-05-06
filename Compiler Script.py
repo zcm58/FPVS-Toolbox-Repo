@@ -2,7 +2,7 @@ pyinstaller `
   --clean `
   --noconfirm `
   --windowed `
-  -n FPVS_Toolbox_0.7.1 `
+  -n FPVS_Toolbox_0.8.0 `
   -i "C:\Users\zcm58\OneDrive - Mississippi State University\Office Desktop\App Icon.ico" `
   --collect-all mne `
   --hidden-import=mne.io.bdf `
