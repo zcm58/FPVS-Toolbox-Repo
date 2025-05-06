@@ -45,13 +45,14 @@ from packaging.version import parse as version_parse
 import numpy as np
 import pandas as pd
 from scipy.stats import kurtosis
-
+from advanced_analysis import AdvancedAnalysisWindow
 import customtkinter as ctk
 import mne
 import xlsxwriter
 from FPVSImageResizer import FPVSImageResizerCTK
 import requests
 from packaging.version import parse as version_parse
+from typing import Optional, Dict, Any, List # Add any other type hints you use, like List
 
 from config import (
     FPVS_TOOLBOX_VERSION,
@@ -229,6 +230,14 @@ class FPVSApp(ctk.CTk):
         help_menu = tk.Menu(self.menubar, tearoff=0)
         self.menubar.add_cascade(label="Help", menu=help_menu)
         help_menu.add_command(label="About...", command=self.show_about_dialog)
+
+        # === Advanced Analysis menu ===
+        adv_menu = tk.Menu(self.menubar, tearoff=0)
+        self.menubar.add_cascade(label="Advanced Analysis", menu=adv_menu)
+        adv_menu.add_command(
+        label = "Preprocessing Epoch Averaging",
+        command = lambda: AdvancedAnalysisWindow(self)
+                                            )
 
     def check_for_updates(self):
         """
@@ -881,6 +890,17 @@ class FPVSApp(ctk.CTk):
             self.log("V-Error: No data.")
             messagebox.showerror("Input Error", "No data selected.")
             return False
+
+        def get_fpvs_params(self) -> Optional[Dict[str, Any]]:
+            """
+            Validate all inputs and return a fresh copy of the params dict,
+            or return None if validation fails.
+            """
+            if not self._validate_inputs():
+                # _validate_inputs already shows an error dialog & logs
+                return None
+            # Return a shallow copy so callers can’t accidentally mutate your UI state
+            return self.validated_params.copy()
 
         # Validate output folder
         save_folder = self.save_folder_path.get()

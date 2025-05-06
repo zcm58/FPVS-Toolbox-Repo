@@ -1,302 +1,258 @@
 # post_process.py
-
 import os
 import pandas as pd
 import numpy as np
 import traceback
 import gc
 import mne
-from config import TARGET_FREQUENCIES, DEFAULT_ELECTRODE_NAMES_64
-# Removed unused imports if any
+import re
+from config import TARGET_FREQUENCIES, DEFAULT_ELECTRODE_NAMES_64  # Ensure these are correct
+from typing import List, Dict, Any, Union
 
-def post_process(app, condition_labels_present):
+
+def post_process(app: Any, condition_labels_present: List[str]) -> None:
     """
-    Calculates metrics (FFT, SNR, Z-score, BCA) using time-domain epoch averaging
-    after scaling data to microvolts, and saves results to Excel.
+    Calculates metrics (FFT, SNR, Z-score, BCA) and saves results to Excel.
+    Handles single-file processing (FPVSApp) and per-participant averaged results (AdvancedAnalysis).
     """
     app.log("--- Post-processing: Calculating Metrics & Saving Excel ---")
     parent_folder = app.save_folder_path.get()
     if not parent_folder or not os.path.isdir(parent_folder):
         app.log(f"Error: Invalid save folder: '{parent_folder}'")
-        # Avoid showing messagebox from background thread if possible, rely on log
-        # from tkinter import messagebox
-        # messagebox.showerror("Save Error", f"Invalid output folder:\n{parent_folder}")
         return
 
-    # Extract participant ID from first filename (ensure paths exist)
-    pid = "UnknownPID" # Default PID
-    if app.data_paths:
+    # --- PID Determination ---
+    pid = "UnknownPID"
+    # For Advanced Analysis, 'pid_for_group' on the context now holds the participant_pid
+    if hasattr(app, 'pid_for_group') and app.pid_for_group:
+        pid = app.pid_for_group  # This should be "P1", "P2", etc.
+        app.log(f"Using PID from context: {pid}")
+    elif app.data_paths:  # Fallback for original FPVSApp single-file processing
         try:
-            first_file = os.path.basename(app.data_paths[0])
-            pid_base = os.path.splitext(first_file)[0]
-            # Adapt this logic if your PID extraction needs differ
-            # Example: find first occurrence of P followed by digits
-            import re
-            match = re.search(r'(P\d+)', pid_base, re.IGNORECASE)
+            first_file_path = app.data_paths[0]
+            first_file_basename = os.path.basename(first_file_path)
+            pid_base = os.path.splitext(first_file_basename)[0]
+            pid_regex = r'\b(P\d+|Sub\d+|S\d+)\b'
+            match = re.search(pid_regex, pid_base, re.IGNORECASE)
             if match:
-                pid = match.group(1).upper() # Use uppercase P for consistency maybe
+                pid = match.group(1).upper()
             else:
-                # Fallback if pattern not found (e.g., use base name)
-                pid = pid_base
+                pid_cleaned = re.sub(r'(_unamb|_ambig|_mid|_run\d*|_sess\d*|_task\w*|_eeg|_fpvs|_raw|_preproc|_ica).*$',
+                                     '', pid_base, flags=re.IGNORECASE)
+                pid_cleaned = re.sub(r'[^a-zA-Z0-9]', '', pid_cleaned)
+                pid = pid_cleaned if pid_cleaned else pid_base
+            app.log(f"Extracted PID for single file processing: {pid}")
         except Exception as e:
-             app.log(f"Warn: Could not extract PID from {app.data_paths[0]}: {e}")
+            app.log(f"Warn: Could not extract PID from app.data_paths[0]: {e}")
+    else:
+        app.log("Warning: Could not determine PID. Using default 'UnknownPID'.")
 
-    any_results_saved = False # Track if any file was successfully saved
+    any_results_saved = False
+    current_epochs_data_source = app.preprocessed_data
 
-    # Get the actual dictionary of epochs for the current file from app state
-    # This assumes _finalize_processing has narrowed down app.preprocessed_data correctly
-    # If not, adjust data access logic here.
-    current_file_epochs = app.preprocessed_data # Passed from _finalize_processing
-
-    # Iterate through the conditions *actually present* for this file
-    for cond_label in condition_labels_present:
-        # Retrieve the list of Epochs objects for this condition (should usually be 1 after finalize)
-        epochs_list = current_file_epochs.get(cond_label, [])
-
-        if not epochs_list:
-            app.log(f"\nSkipping post-processing for '{cond_label}': No epoch data found for this file.")
+    for cond_label_from_keys in condition_labels_present:
+        data_list = current_epochs_data_source.get(cond_label_from_keys, [])
+        if not data_list:
+            app.log(f"\nSkipping post-processing for '{cond_label_from_keys}': No data found.")
             continue
 
-        # Although finalize narrows it down, the original structure expects a list.
-        # We'll average across this list if it contains multiple Epochs objects.
-        app.log(f"\nPost-processing '{cond_label}' ({len(epochs_list)} Epochs object(s) from this file)...")
+        app.log(f"\nPost-processing '{cond_label_from_keys}' (PID: {pid}, {len(data_list)} data object(s))...")
 
+        # --- Output Naming Logic ---
+        folder_name_base = ""
+        filename_condition_part = ""
+        excel_final_suffix = ".xlsx"  # Desired suffix for advanced outputs
+
+        # Check if this is an output from the advanced analysis per-participant flow
+        is_advanced_output = (hasattr(app, 'group_name_for_output') and
+                              app.group_name_for_output and
+                              app.group_name_for_output == cond_label_from_keys)
+
+        if is_advanced_output:
+            # Use the recipe name (e.g., "Average A") from the context
+            condition_recipe_name = app.group_name_for_output
+            # Sanitize for folder and file: replace spaces with underscores, etc.
+            sanitized_recipe_name = condition_recipe_name.replace(' ', '_').replace('/', '-').replace('\\', '-').strip()
+            sanitized_recipe_name = re.sub(r'^\d+\s*-\s*', '', sanitized_recipe_name)  # Remove "1 - " prefixes etc.
+
+            folder_name_base = sanitized_recipe_name  # Subfolder e.g., "Average_A"
+            filename_condition_part = sanitized_recipe_name  # File part e.g., "Average_A"
+            # pid is already the participant_pid, e.g., "P1"
+            excel_filename = f"{pid}_{filename_condition_part}{excel_final_suffix}"  # e.g., "P1_Average_A.xlsx"
+        else:
+            # Original FPVSApp single-file processing path
+            raw_condition_label = cond_label_from_keys
+            sanitized_condition_label = re.sub(r'^\d+\s*-\s*', '',
+                                               raw_condition_label.replace('/', '-').replace('\\', '-').strip())
+
+            folder_name_base = sanitized_condition_label
+            filename_condition_part = sanitized_condition_label
+            # Original naming for FPVSApp might be different, adjust if needed
+            excel_filename = f"{pid}_{filename_condition_part}_Results.xlsx"
+
+            # Create subfolder
+        output_subfolder_path = os.path.join(parent_folder, folder_name_base)
+        try:
+            os.makedirs(output_subfolder_path, exist_ok=True)
+        except OSError as e:
+            app.log(f"Error creating subfolder {output_subfolder_path}: {e}. Saving to parent folder: {parent_folder}")
+            output_subfolder_path = parent_folder
+
+        full_excel_path = os.path.join(output_subfolder_path, excel_filename)
+        app.log(f"Target Excel path for '{cond_label_from_keys}': {full_excel_path}")
+
+        # --- Metrics Calculation (largely unchanged) ---
         accum = {'fft': None, 'snr': None, 'z': None, 'bca': None}
-        valid_count = 0
-        n_ch_final = 0 # Store number of channels
-        final_electrode_names = [] # Store electrode names
+        valid_data_count = 0
+        final_num_channels = 0
+        final_electrode_names_ordered = []
 
-        for file_idx, epochs in enumerate(epochs_list):
-            # Ensure 'epochs' is a valid MNE Epochs object
-            if not hasattr(epochs, 'info') or not hasattr(epochs, 'get_data'):
-                 app.log(f"    Item {file_idx+1} is not a valid Epochs object. Skipping.")
-                 continue
-
-            app.log(f"  Processing Epochs object {file_idx + 1}/{len(epochs_list)} for '{cond_label}'...")
+        for data_idx, data_object in enumerate(data_list):  # Should be one Evoked for advanced
+            is_evoked = isinstance(data_object, mne.Evoked)
+            if not (hasattr(data_object, 'info') and (is_evoked or hasattr(data_object, 'get_data'))):
+                app.log(f"    Item {data_idx + 1} is not a valid MNE data object. Skipping.");
+                continue
+            app.log(f"  Processing data object {data_idx + 1}/{len(data_list)} for '{cond_label_from_keys}'...")
             gc.collect()
-
             try:
-                # Ensure data is loaded
-                if not epochs.preload:
-                    try:
-                        epochs.load_data()
-                    except Exception as load_err:
-                        app.log(f"    Error loading data for Epochs object {file_idx+1}: {load_err}. Skipping.")
-                        continue
+                if not is_evoked:  # Epochs
+                    if not data_object.preload: data_object.load_data()
+                    if len(data_object.events) == 0: app.log("    Epochs object 0 events. Skip."); continue
 
-                # Skip if empty after loading
-                if len(epochs.events) == 0:
-                    app.log("    Epochs object contains 0 events after loading. Skipping.")
-                    continue
+                    # ...
+                data_eeg = data_object.copy().pick('eeg', exclude='bads' if not is_evoked else [])
+                if not data_eeg.ch_names: app.log("    No good EEG channels. Skip."); continue
 
-                # Pick good EEG channels
-                # Use inst.pick('eeg', exclude='bads') for modern MNE
-                epochs_eeg = epochs.copy().pick('eeg', exclude='bads')
-                picks = mne.pick_types(epochs_eeg.info, eeg=True) # Get indices relative to the picked object
+                if is_evoked:
+                        avg_data = data_eeg.data
+                else:  # Epochs
+                    ep_data = data_eeg.get_data()
+                    avg_data = np.mean(ep_data.astype(np.float64), axis=0)
+                num_channels, num_times = avg_data.shape
+                    # ...
+                current_ch_names_from_obj = data_eeg.info['ch_names']
+                ordered_electrode_names_for_df = []
 
-                if picks.size == 0:
-                    app.log("    No good EEG channels found in this Epochs object. Skipping.")
-                    continue
-
-                # Time‑domain averaging
-                # Use the picked object to get data only for good EEG channels
-                ep_data = epochs_eeg.get_data() # Should be (n_epochs, n_channels, n_times)
-                avg_data = np.mean(ep_data.astype(np.float64), axis=0) # Average over epochs -> (n_channels, n_times)
-                n_ch, n_t = avg_data.shape
-
-                # Determine electrode names from the picked object
-                ch_names = epochs_eeg.info['ch_names']
-                current_electrode_names = []
-                if n_ch == len(DEFAULT_ELECTRODE_NAMES_64) and set(ch_names) == set(DEFAULT_ELECTRODE_NAMES_64):
-                    # If names match exactly (ignoring order), use standard order
-                    current_electrode_names = [name for name in DEFAULT_ELECTRODE_NAMES_64 if name in ch_names]
-                    # Reorder avg_data to match DEFAULT_ELECTRODE_NAMES_64 if necessary
-                    name_to_idx = {name: i for i, name in enumerate(ch_names)}
-                    indices = [name_to_idx[name] for name in current_electrode_names]
-                    avg_data = avg_data[indices, :]
-                elif n_ch == len(DEFAULT_ELECTRODE_NAMES_64):
-                     app.log(f"    Warn: Found {n_ch} channels, but names don't match default list. Using default names/order.")
-                     current_electrode_names = DEFAULT_ELECTRODE_NAMES_64 # Assume order is okay
+                if num_channels == len(DEFAULT_ELECTRODE_NAMES_64) and \
+                        set(current_ch_names_from_obj) == set(DEFAULT_ELECTRODE_NAMES_64):
+                    ordered_electrode_names_for_df = [name for name in DEFAULT_ELECTRODE_NAMES_64 if
+                                                      name in current_ch_names_from_obj]
+                    name_to_idx_map = {name: i for i, name in enumerate(current_ch_names_from_obj)}
+                    reorder_indices = [name_to_idx_map[name] for name in ordered_electrode_names_for_df]
+                    avg_data = avg_data[reorder_indices, :]
+                    app.log(f"    Standardized channel order to {len(ordered_electrode_names_for_df)} channels.")
+                elif num_channels == len(DEFAULT_ELECTRODE_NAMES_64):
+                    app.log(
+                        f"    Warn: Found {num_channels} channels, names don't match default. Using default order/names.");
+                    ordered_electrode_names_for_df = DEFAULT_ELECTRODE_NAMES_64
                 else:
-                    app.log(f"    Warn: Found {n_ch} channels, not 64. Using actual channel names.")
-                    current_electrode_names = ch_names # Use the names directly
+                    app.log(f"    Warn: Found {num_channels} channels. Using actual names/order.");
+                    ordered_electrode_names_for_df = current_ch_names_from_obj
 
-                # Store names/channel count from first valid object
-                if valid_count == 0:
-                    n_ch_final = n_ch
-                    final_electrode_names = current_electrode_names
+                if valid_data_count == 0:
+                    final_num_channels = num_channels
+                    final_electrode_names_ordered = ordered_electrode_names_for_df
+                if num_channels != final_num_channels or ordered_electrode_names_for_df != final_electrode_names_ordered:
+                    app.log(f"    Error: Channel mismatch. Skipping object.");
+                    continue
 
-                # Check consistency
-                if n_ch != n_ch_final or current_electrode_names != final_electrode_names:
-                     app.log(f"    Error: Channel mismatch between Epochs objects for condition '{cond_label}'. Skipping this object.")
-                     app.log(f"      Expected {n_ch_final} channels with names {final_electrode_names}")
-                     app.log(f"      Got {n_ch} channels with names {current_electrode_names}")
-                     continue # Skip this Epochs object
-
-                # <<< APPLY SCALING V -> µV >>>
-                # Scale averaged data from Volts (MNE default) to Microvolts
                 avg_data_uv = avg_data * 1e6
-                # Only log scaling once per condition if averaging multiple files
-                if file_idx == 0:
-                     app.log(f"    Scaling avg_data to microvolts (multiplied by 1e6)")
-                # <<< END SCALING >>>
+                if data_idx == 0: app.log(f"    Scaling to uV. Max: {np.max(np.abs(avg_data_uv)):.2f} uV")
 
-                # FFT setup - USE THE SCALED DATA (avg_data_uv)
-                sfreq = epochs_eeg.info['sfreq']
-                num_bins = n_t // 2 + 1
-                freqs = np.linspace(0, sfreq / 2.0, num=num_bins, endpoint=True)
-                # Perform FFT on the microvolt-scaled data
-                fft_full = np.fft.fft(avg_data_uv, axis=1)
-                # Normalization remains the same, but fft_vals are now in µV scale
-                fft_vals = np.abs(fft_full[:, :num_bins]) / n_t * 2
+                sfreq = data_eeg.info['sfreq']
+                num_fft_bins = num_times // 2 + 1
+                fft_frequencies = np.linspace(0, sfreq / 2.0, num=num_fft_bins, endpoint=True)
+                fft_full_spectrum = np.fft.fft(avg_data_uv, axis=1)
+                fft_amplitudes = np.abs(fft_full_spectrum[:, :num_fft_bins]) / num_times * 2
 
-                # Allocate metric arrays for this Epochs object
-                n_tf = len(TARGET_FREQUENCIES)
-                f_fft = np.zeros((n_ch_final, n_tf))
-                f_snr = np.zeros((n_ch_final, n_tf))
-                f_z = np.zeros((n_ch_final, n_tf))
-                f_bca = np.zeros((n_ch_final, n_tf))
+                num_target_freqs = len(TARGET_FREQUENCIES)
+                metrics_fft = np.zeros((final_num_channels, num_target_freqs))
+                metrics_snr = np.zeros((final_num_channels, num_target_freqs))
+                metrics_z = np.zeros((final_num_channels, num_target_freqs))
+                metrics_bca = np.zeros((final_num_channels, num_target_freqs))
 
-                # Compute FFT, SNR, Z, BCA
-                for c_idx in range(n_ch_final):
-                    for f_idx, t_freq in enumerate(TARGET_FREQUENCIES):
-                        if not (freqs[0] <= t_freq <= freqs[-1]):
-                            continue # Skip if target frequency is outside FFT range
+                for chan_idx in range(final_num_channels):
+                    for freq_idx, target_freq in enumerate(TARGET_FREQUENCIES):
+                        if not (fft_frequencies[0] <= target_freq <= fft_frequencies[-1]):
+                            if chan_idx == 0 and data_idx == 0: app.log(f"    Skipping target freq {target_freq} Hz.");
+                            continue
+                        target_bin_index = np.argmin(np.abs(fft_frequencies - target_freq))
+                        noise_bin_low = target_bin_index - 12
+                        noise_bin_high = target_bin_index + 12
+                        bins_to_exclude_from_noise = {target_bin_index - 2, target_bin_index - 1, target_bin_index,
+                                                      target_bin_index + 1, target_bin_index + 2}
+                        valid_noise_indices = [i for i in range(noise_bin_low, noise_bin_high + 1) if
+                                               0 <= i < len(fft_frequencies) and i not in bins_to_exclude_from_noise]
+                        noise_mean_val, noise_std_val = 0.0, 0.0
+                        if len(valid_noise_indices) >= 4:
+                            noise_amplitudes = fft_amplitudes[chan_idx, valid_noise_indices]
+                            noise_mean_val = np.mean(noise_amplitudes)
+                            noise_std_val = np.std(noise_amplitudes)
+                        elif data_idx == 0 and chan_idx == 0:
+                            app.log(f"    Warn: Not enough noise bins near {target_freq:.1f} Hz.")
+                        signal_amplitude = fft_amplitudes[chan_idx, target_bin_index]
+                        peak_val_slice = slice(max(0, target_bin_index - 1),
+                                               min(len(fft_frequencies), target_bin_index + 2))
+                        peak_signal_amplitude = np.max(fft_amplitudes[chan_idx, peak_val_slice])
+                        snr_val = signal_amplitude / noise_mean_val if noise_mean_val > 1e-12 else 0
+                        z_score_val = (
+                                                  peak_signal_amplitude - noise_mean_val) / noise_std_val if noise_std_val > 1e-12 else 0
+                        bca_val = signal_amplitude - noise_mean_val
+                        metrics_fft[chan_idx, freq_idx] = signal_amplitude
+                        metrics_snr[chan_idx, freq_idx] = snr_val
+                        metrics_z[chan_idx, freq_idx] = z_score_val
+                        metrics_bca[chan_idx, freq_idx] = bca_val
 
-                        t_bin = np.argmin(np.abs(freqs - t_freq))
-
-                        # Define noise bins relative to t_bin
-                        # Exclude t_bin-2, t_bin-1, t_bin (matching interpretation of MATLAB code)
-                        low_noise_idx = t_bin - 12
-                        high_noise_idx = t_bin + 12 # Index up to (but not including) high_noise_idx+1
-                        exclude_bins = {t_bin - 2, t_bin - 1, t_bin}
-
-                        noise_idx = [i for i in range(low_noise_idx, high_noise_idx + 1) # Include high index
-                                     if 0 <= i < len(freqs) and i not in exclude_bins]
-
-                        # Calculate noise stats
-                        noise_mean = 0.0
-                        noise_std = 0.0
-                        if len(noise_idx) >= 4: # Need sufficient bins for stable estimate
-                            noise_vals = fft_vals[c_idx, noise_idx]
-                            noise_mean = np.mean(noise_vals)
-                            noise_std = np.std(noise_vals)
-                        else:
-                             # Log if not enough noise bins found near a target frequency
-                             if valid_count == 0 and c_idx == 0: # Log only once per run
-                                 app.log(f"    Warn: Not enough noise bins found near {t_freq:.1f} Hz (Bin {t_bin}). Check epoch length/FFT resolution.")
-
-                        # Calculate metrics
-                        amp_val = fft_vals[c_idx, t_bin]
-                        # Use max amplitude in t_bin +/- 1 bin for Z-score calculation
-                        peak_bins = slice(max(0, t_bin - 1), min(len(freqs), t_bin + 2)) # Slice up to t_bin+1
-                        peak_val = np.max(fft_vals[c_idx, peak_bins])
-
-                        # Avoid division by zero or near-zero
-                        snr_val = amp_val / noise_mean if noise_mean > 1e-12 else 0
-                        z_val = (peak_val - noise_mean) / noise_std if noise_std > 1e-12 else 0
-                        bca_val = amp_val - noise_mean # Baseline-corrected amplitude
-
-                        # Store results
-                        f_fft[c_idx, f_idx] = amp_val
-                        f_snr[c_idx, f_idx] = snr_val
-                        f_z[c_idx, f_idx] = z_val
-                        f_bca[c_idx, f_idx] = bca_val
-
-                # Accumulate results across Epochs objects (if multiple for this condition)
                 if accum['fft'] is None:
-                    accum = {'fft': f_fft, 'snr': f_snr, 'z': f_z, 'bca': f_bca}
+                    accum = {'fft': metrics_fft, 'snr': metrics_snr, 'z': metrics_z, 'bca': metrics_bca}
                 else:
-                    accum['fft'] += f_fft
-                    accum['snr'] += f_snr
-                    accum['z'] += f_z
-                    accum['bca'] += f_bca
-                valid_count += 1
-
+                    accum['fft'] += metrics_fft;
+                    accum['snr'] += metrics_snr;
+                    accum['z'] += metrics_z;
+                    accum['bca'] += metrics_bca;
+                valid_data_count += 1
             except Exception as e:
-                app.log(f"!!! Error during post-processing Epochs object {file_idx+1} for '{cond_label}': {e}")
-                app.log(traceback.format_exc()) # Print detailed error
-
+                app.log(f"!!! Error post-processing data object {data_idx + 1}: {e}\n{traceback.format_exc()}")
             finally:
-                del epochs_eeg # Clean up copied object
+                del data_eeg;
                 gc.collect()
 
-        # --- Averaging & Saving ---
-        # Average metrics across all valid Epochs objects processed for this condition
-        if valid_count > 0 and final_electrode_names:
-            avg = {k: v / valid_count for k, v in accum.items()}
-            cols = [f"{f:.1f}_Hz" for f in TARGET_FREQUENCIES]
-
-            # Create DataFrames
-            dfs = {
-                'FFT Amplitude (uV)': pd.DataFrame(avg['fft'], index=final_electrode_names, columns=cols),
-                'SNR': pd.DataFrame(avg['snr'], index=final_electrode_names, columns=cols),
-                'Z Score': pd.DataFrame(avg['z'], index=final_electrode_names, columns=cols),
-                'BCA (uV)': pd.DataFrame(avg['bca'], index=final_electrode_names, columns=cols)
+        if valid_data_count > 0 and final_electrode_names_ordered:
+            avg_metrics = {k: v / valid_data_count for k, v in accum.items()}
+            freq_column_names = [f"{f:.1f}_Hz" for f in TARGET_FREQUENCIES]
+            dataframes_to_save = {
+                'FFT Amplitude (uV)': pd.DataFrame(avg_metrics['fft'], index=final_electrode_names_ordered,
+                                                   columns=freq_column_names),
+                'SNR': pd.DataFrame(avg_metrics['snr'], index=final_electrode_names_ordered, columns=freq_column_names),
+                'Z Score': pd.DataFrame(avg_metrics['z'], index=final_electrode_names_ordered,
+                                        columns=freq_column_names),
+                'BCA (uV)': pd.DataFrame(avg_metrics['bca'], index=final_electrode_names_ordered,
+                                         columns=freq_column_names)
             }
-            # Add electrode column
-            for df in dfs.values():
-                df.insert(0, 'Electrode', df.index)
+            for df_name_iter in dataframes_to_save:
+                dataframes_to_save[df_name_iter].insert(0, 'Electrode', dataframes_to_save[df_name_iter].index)
 
-            # --- Excel Writing ---
-            # Sanitize condition label for folder/file name
-            # Replace slashes, remove leading/trailing whitespace
-            safe_label = cond_label.replace('/', '-').replace('\\', '-').strip()
-            # Remove potential leading numbers like "1 - " if desired, adapt regex if needed
-            safe_label_base = re.sub(r'^\d+\s*-\s*', '', safe_label)
-
-            # Create subfolder named after the sanitized condition label base name
-            sub_folder_path = os.path.join(parent_folder, safe_label_base)
             try:
-                 os.makedirs(sub_folder_path, exist_ok=True)
-            except OSError as e:
-                 app.log(f"Error creating subfolder {sub_folder_path}: {e}. Saving to parent folder.")
-                 sub_folder_path = parent_folder # Fallback
-
-            # Construct filename using PID and sanitized label base name
-            excel_filename = f"{pid}_{safe_label_base}_Results.xlsx"
-            excel_path = os.path.join(sub_folder_path, excel_filename)
-
-            app.log(f"Writing Excel for '{cond_label}': {excel_path}")
-            try:
-                with pd.ExcelWriter(excel_path, engine='xlsxwriter') as writer:
+                with pd.ExcelWriter(full_excel_path, engine='xlsxwriter') as writer:
                     workbook = writer.book
-                    # Define format for centered text
                     center_fmt = workbook.add_format({'align': 'center', 'valign': 'vcenter'})
-
-                    for sheet_name, df_out in dfs.items():
-                        df_out.to_excel(writer, sheet_name=sheet_name, index=False)
+                    for sheet_name, df_to_write in dataframes_to_save.items():
+                        df_to_write.to_excel(writer, sheet_name=sheet_name, index=False)
                         worksheet = writer.sheets[sheet_name]
-
-                        # Auto-adjust column widths with padding and center alignment
-                        for col_idx, col_name in enumerate(df_out.columns):
-                            # Calculate max length of header or data
-                            header_len = len(str(col_name))
-                            try:
-                                # Ensure data is treated as string for length calculation
-                                # Handle potential NaN/None values gracefully
-                                max_data_len = df_out[col_name].astype(str).map(len).max()
-                                if pd.isna(max_data_len): max_data_len = 0
-                            except Exception:
-                                max_data_len = 0 # Fallback
-
-                            # Set width with padding (e.g., + 4)
-                            width = max(header_len, int(max_data_len)) + 4
-                            worksheet.set_column(col_idx, col_idx, width, center_fmt)
-
-                app.log(f"Successfully saved Excel for '{cond_label}'.")
+                        for col_idx, header_name in enumerate(df_to_write.columns):
+                            max_len = max(len(str(header_name)),
+                                          df_to_write[header_name].astype(str).map(len).max() if not df_to_write[
+                                              header_name].empty else 0)
+                            worksheet.set_column(col_idx, col_idx, max_len + 4, center_fmt)
+                app.log(f"Successfully saved Excel: {excel_filename}")
                 any_results_saved = True
             except Exception as write_err:
-                 app.log(f"!!! Error writing Excel file {excel_path}: {write_err}")
-                 app.log(traceback.format_exc())
-
+                app.log(f"!!! Error writing Excel file {full_excel_path}: {write_err}\n{traceback.format_exc()}")
         else:
-            app.log(f"No valid data processed for '{cond_label}'. No Excel file generated for this condition.")
+            app.log(f"No valid data to save for '{cond_label_from_keys}' (PID: {pid}). No Excel file generated.")
 
-    # Final message based on whether any results were saved
     if not any_results_saved:
-         app.log("Warning: Processing completed, but no Excel files were saved for any condition.")
-
-    # Optional: Clean up large variables if needed
-    del current_file_epochs
+        app.log("Warning: Post-processing completed, but no Excel files were saved.")
+    del current_epochs_data_source;
     gc.collect()
+    app.log("--- Post-processing finished. ---")
