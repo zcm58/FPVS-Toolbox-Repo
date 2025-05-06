@@ -18,14 +18,17 @@ class PostProcessContextForAdvanced:
     def __init__(self,
                  log_callback: Callable[[str], None],
                  save_folder_path_str: str,
-                 pid_for_output: str,  # Changed from pid_for_group to reflect participant PID
+                 pid_for_output: str,  # This will be the participant's specific PID (e.g., "P1")
                  averaged_epochs_dict: Dict[str, List[Union[mne.Epochs, mne.Evoked]]],
-                 condition_name_for_output: str):  # Changed from group_name for clarity
+                 condition_name_for_output: str):  # This is the recipe name (e.g., "Average A")
         self.log_callback = log_callback
         self.save_folder_path_str = save_folder_path_str
-        self.pid_for_output = pid_for_output  # This will be the participant's PID
+
+        # Store participant PID using the attribute name post_process.py expects for "group" PIDs
+        self.pid_for_group = pid_for_output
         self.averaged_epochs_dict = averaged_epochs_dict
-        self.condition_name_for_output = condition_name_for_output  # This is the 'Average A' part
+        # Store recipe name using the attribute name post_process.py expects for "group" names
+        self.group_name_for_output = condition_name_for_output
 
     def log(self, msg: str) -> None:
         self.log_callback(f"[AdvCorePostProc] {msg}")
@@ -41,9 +44,9 @@ class PostProcessContextForAdvanced:
 
     @property
     def data_paths(self) -> List[str]:
-        # Provides a dummy path for post_process if it needs a base filename structure
-        # Incorporates both participant PID and the condition/recipe name.
-        return [f"{self.pid_for_output}_{self.condition_name_for_output}_averaged.fif"]
+        # This dummy path helps post_process.py form a unique base if needed,
+        # reflecting the participant and condition.
+        return [f"{self.pid_for_group}_{self.group_name_for_output}_averaged.fif"]
 
     @property
     def preprocessed_data(self) -> Dict[str, List[Union[mne.Epochs, mne.Evoked]]]:

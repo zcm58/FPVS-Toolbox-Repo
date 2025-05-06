@@ -745,17 +745,41 @@ class AdvancedAnalysisWindow(ctk.CTkToplevel):
 
     def _extract_pid_for_group(self, group_data: Dict[str, Any]) -> str:
         file_paths = group_data.get('file_paths', [])
-        if not file_paths: return "UnknownPID"
+        if not file_paths:
+            return "UnknownPID"
 
-        base_name = os.path.splitext(os.path.basename(file_paths[0]))[0]
-        PID_REGEX = r"\b(P\d+|Sub\d+|S\d+)\b"
-        match = re.search(PID_REGEX, base_name, re.IGNORECASE)
-        if match: return match.group(1).upper()
+        base_name = os.path.splitext(os.path.basename(file_paths[0]))[0]  # e.g., "mooney_P1"
 
+        # Primary Regex (should capture "P1" from "mooney_P1" or "P1_mooney" etc.)
+        pid_regex_primary = r"\b(P\d+|S\d+|Sub\d+)\b"  # Added S\d+ as common alternative
+        match = re.search(pid_regex_primary, base_name, re.IGNORECASE)
+        if match:
+            return match.group(1).upper()  # e.g., "P1"
+
+        # Fallback 1: Check for patterns like "name_P1" or "name_S1"
+        # This is useful if the primary regex \b boundary fails for some reason with underscores
+        if '_' in base_name:
+            parts = base_name.split('_')
+            for part in parts:  # Check all parts, e.g., last part or any part
+                if re.fullmatch(r"(P\d+|S\d+|Sub\d+)", part, re.IGNORECASE):
+                    return part.upper()
+
+        # Fallback 2: Original cleanup logic (less precise for getting "P1" from "mooneyP1")
+        # This will turn "mooney_P1" into "mooneyP1" if above failed.
         cleaned_pid = re.sub(r"(_unamb|_ambig|_mid|_run\d*|_sess\d*|_task\w*|_eeg|_raw|_preproc|_ica).*", "", base_name,
                              flags=re.IGNORECASE)
-        cleaned_pid = re.sub(r"[^A-Za-z0-9]", "", cleaned_pid)
-        return cleaned_pid if cleaned_pid else base_name
+        cleaned_pid = re.sub(r"[^A-Za-z0-9_]", "", cleaned_pid)  # Allow underscore in initial cleaned version
+
+        # If after initial cleanup, it still looks like "text_P1", try to get "P1"
+        if '_' in cleaned_pid:
+            parts = cleaned_pid.split('_')
+            for part in parts:
+                if re.fullmatch(r"(P\d+|S\d+|Sub\d+)", part, re.IGNORECASE):
+                    return part.upper()
+
+        # Final cleanup if no P<number> pattern was extracted
+        cleaned_pid_alphanum_only = re.sub(r"[^A-Za-z0-9]", "", cleaned_pid)
+        return cleaned_pid_alphanum_only if cleaned_pid_alphanum_only else base_name
 
     def _on_close(self):
         if self.processing_thread and self.processing_thread.is_alive():

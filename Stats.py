@@ -319,7 +319,7 @@ class StatsAnalysisWindow(ctk.CTkToplevel):
         conditions = set()
         self.subject_data = {} # Reset data
         # PID pattern: Starts with 'P' followed by digits, anywhere in the filename before '.xlsx'
-        pid_pattern = re.compile(r"^(P\d+).*\.xlsx$", re.IGNORECASE)
+        pid_pattern = re.compile(r"^(?:[a-zA-Z0-9_.-]*?)(P\d+|S\d+|Sub\d+).*\.xlsx$", re.IGNORECASE)
 
         try:
             for item_name in os.listdir(parent_folder):
