@@ -45,7 +45,7 @@ from packaging.version import parse as version_parse
 import numpy as np
 import pandas as pd
 from scipy.stats import kurtosis
-from averaged_analysis import AdvancedAnalysisWindow
+from advanced_analysis import AdvancedAnalysisWindow
 import customtkinter as ctk
 import mne
 import xlsxwriter
