@@ -502,73 +502,191 @@ class AdvancedAnalysisWindow(ctk.CTkToplevel):
         if hasattr(self, 'start_adv_processing_button'):
             self.start_adv_processing_button.configure(state=button_state)
 
+    def _thread_target_wrapper(self,
+                               defined_groups_arg,
+                               main_app_params_arg,
+                               load_file_method_arg,
+                               preprocess_raw_method_arg,
+                               external_post_process_func_arg,
+                               output_directory_arg,
+                               pid_extraction_func_arg,
+                               log_callback_arg,
+                               progress_callback_arg,
+                               stop_event_arg):
+        try:
+            run_advanced_averaging_processing(
+                defined_groups_arg,
+                main_app_params_arg,
+                load_file_method_arg,
+                preprocess_raw_method_arg,
+                external_post_process_func_arg,
+                output_directory_arg,
+                pid_extraction_func_arg,
+                log_callback_arg,
+                progress_callback_arg,
+                stop_event_arg
+            )
+        except Exception as e:
+            # Log the full traceback from the crashed thread
+            detailed_error = traceback.format_exc()
+            # Ensure logging happens in the main GUI thread using self.after
+            error_message = (f"!!! CRITICAL THREAD ERROR !!!\n"
+                             f"Target function 'run_advanced_averaging_processing' crashed unexpectedly:\n"
+                             f"{detailed_error}")
+            self.after(0, self.log, error_message)
+        # The _check_processing_thread method will handle UI finalization
+        # when this wrapper function (and thus the thread) completes.
+
     def start_advanced_processing(self) -> None:
-        """Validates configurations and starts the background processing thread."""
+        """Validates main‐app params and group configs, then kicks off the background thread."""
         self.log("=" * 30 + "\nAttempting to Start Advanced Processing...")
 
-        # No groups defined
+        # 0) If the main app hasn't yet validated its entries, do so now.
+        self.log(
+            f"[PARAM_CHECK] Initial check: self.master_app has 'validated_params' attribute: {hasattr(self.master_app, 'validated_params')}")
+        if hasattr(self.master_app, 'validated_params'):
+            # Log the type and content, be careful with potentially large/complex objects if not a dict
+            current_params = getattr(self.master_app, 'validated_params', 'Attribute exists but is None')
+            self.log(
+                f"[PARAM_CHECK] Initial self.master_app.validated_params (type: {type(current_params)}): {current_params}")
+
+        # Check if validated_params is None, or an empty dict/list if those are invalid states
+        # For this logic, primarily checking for None as the original code does.
+        main_app_params_are_set = bool(getattr(self.master_app, "validated_params", None))
+
+        if not main_app_params_are_set:
+            self.log(
+                "[PARAM_CHECK] Main app's 'validated_params' not set or is None/empty. Attempting to call _validate_inputs().")
+            ok = False
+            if hasattr(self.master_app, "_validate_inputs"):
+                self.log("[PARAM_CHECK] Calling self.master_app._validate_inputs()...")
+                try:
+                    ok = self.master_app._validate_inputs()  # This method should set self.master_app.validated_params
+                    self.log(f"[PARAM_CHECK] self.master_app._validate_inputs() returned: {ok}")
+
+                    # After calling _validate_inputs, check validated_params again
+                    if hasattr(self.master_app, 'validated_params'):
+                        current_params_after_call = getattr(self.master_app, 'validated_params',
+                                                            'Attribute exists but is None')
+                        self.log(
+                            f"[PARAM_CHECK] After _validate_inputs(), self.master_app.validated_params (type: {type(current_params_after_call)}): {current_params_after_call}")
+                        main_app_params_are_set = bool(current_params_after_call)  # Update based on new state
+                    else:
+                        self.log(
+                            "[PARAM_CHECK] After _validate_inputs(), self.master_app still does not have 'validated_params' attribute.")
+                        main_app_params_are_set = False
+
+                except Exception as e:
+                    self.log(f"[PARAM_CHECK] Error during self.master_app._validate_inputs(): {traceback.format_exc()}")
+                    CTkMessagebox.CTkMessagebox(
+                        title="Error",
+                        message=f"An error occurred while validating main application inputs: {e}",
+                        icon="cancel",
+                        parent=self
+                    )
+                    return  # Bail out if validation call itself fails
+            else:
+                self.log(
+                    "[PARAM_CHECK] Warning: Main app does not have a '_validate_inputs' method, and 'validated_params' was not already set.")
+
+            if not ok and not main_app_params_are_set:  # If validation call failed (or didn't exist) AND params are still not set
+                self.log(
+                    "[PARAM_CHECK] Main app input validation failed or was not performed, and parameters are still not set.")
+                CTkMessagebox.CTkMessagebox(
+                    title="Error",
+                    message="Main application parameters could not be validated or are missing. Please check the main app settings and ensure they are confirmed/applied.",
+                    icon="cancel",
+                    parent=self
+                )
+                return
+            elif ok and not main_app_params_are_set:
+                self.log(
+                    "[PARAM_CHECK] Warning: _validate_inputs returned True, but validated_params is still not set or is None/empty.")
+                # This indicates an issue in the _validate_inputs method itself.
+                CTkMessagebox.CTkMessagebox(
+                    title="Error",
+                    message="Main app validation reported success, but parameters are missing. Please check the main app's _validate_inputs method.",
+                    icon="cancel",
+                    parent=self
+                )
+                return
+
+        # 1) Check that we have at least one fully‐defined, saved group
         if not self.defined_groups:
-            CTkMessagebox.CTkMessagebox(
-                title="Error",
-                message="No averaging groups defined.",
-                icon="cancel"
-            )
+            CTkMessagebox.CTkMessagebox(title="Error", message="No averaging groups defined.", icon="cancel",
+                                        parent=self)
             return
 
-        # Each group must be saved, have files, and have mappings
         for i, group in enumerate(self.defined_groups):
-            if not group.get('config_saved'):
-                CTkMessagebox.CTkMessagebox(
-                    title="Error",
-                    message=f"Group '{group['name']}' has unsaved changes. Please save it first.",
-                    icon="cancel"
-                )
-                self.groups_listbox.selection_set(i)
+            if not group.get("config_saved", False):
+                CTkMessagebox.CTkMessagebox(title="Error",
+                                            message=f"Group '{group['name']}' has unsaved changes. Please save it first.",
+                                            icon="cancel", parent=self)
+                self.groups_listbox.selection_set(i);
+                self.on_group_select(None)
+                return
+            if not group.get("file_paths"):
+                CTkMessagebox.CTkMessagebox(title="Error", message=f"Group '{group['name']}' contains no files.",
+                                            icon="cancel", parent=self)
+                self.groups_listbox.selection_set(i);
+                self.on_group_select(None)
+                return
+            if not group.get("condition_mappings"):
+                CTkMessagebox.CTkMessagebox(title="Error",
+                                            message=f"Group '{group['name']}' has no mapping rules defined.",
+                                            icon="cancel", parent=self)
+                self.groups_listbox.selection_set(i);
                 self.on_group_select(None)
                 return
 
-            if not group.get('file_paths'):
-                CTkMessagebox.CTkMessagebox(
-                    title="Error",
-                    message=f"Group '{group['name']}' contains no files.",
-                    icon="cancel"
-                )
-                self.groups_listbox.selection_set(i)
-                self.on_group_select(None)
-                return
-
-            if not group.get('condition_mappings'):
-                CTkMessagebox.CTkMessagebox(
-                    title="Error",
-                    message=f"Group '{group['name']}' has no mapping rules defined.",
-                    icon="cancel"
-                )
-                self.groups_listbox.selection_set(i)
-                self.on_group_select(None)
-                return
-
-        # Pull main-app parameters and output folder
+        # 2) Pull in the now‐populated parameters
         main_app_params = getattr(self.master_app, 'validated_params', None)
-        save_folder_obj = getattr(self.master_app, 'save_folder_path', None)
-        output_directory = save_folder_obj.get() if (save_folder_obj and hasattr(save_folder_obj, 'get')) else None
+        self.log(f"[PARAM_CHECK] Final fetched main_app_params to be used for processing: {main_app_params}")
 
-        if not main_app_params or not output_directory:
-            CTkMessagebox.CTkMessagebox(
-                title="Error",
-                message="Main application parameters or output folder not set.",
-                icon="cancel"
-            )
-            return
-
-        if run_advanced_averaging_processing is None or _external_post_process_actual is None:
+        if main_app_params is None or not main_app_params:  # Also check for empty dict if that's invalid
+            self.log("[PARAM_CHECK] Critical Error: main_app_params is None or empty after validation attempts.")
             CTkMessagebox.CTkMessagebox(
                 title="Critical Error",
-                message="Core processing module or post_process function not loaded.",
-                icon="cancel"
+                message="Could not retrieve necessary parameters from the main application. Processing cannot start.",
+                icon="cancel",
+                parent=self
             )
             return
 
-        # All good—start the thread
+        # Check if it's a dictionary (basic check, core function will look for specific keys)
+        if not isinstance(main_app_params, dict):
+            self.log(
+                f"[PARAM_CHECK] Critical Error: main_app_params is not a dictionary (type: {type(main_app_params)}).")
+            CTkMessagebox.CTkMessagebox(
+                title="Critical Error",
+                message=f"Main application parameters are not in the expected format (should be a dictionary, but got {type(main_app_params)}).",
+                icon="cancel",
+                parent=self
+            )
+            return
+
+        # 3) Fetch & check the save‐folder path object
+        save_folder_path_obj = getattr(self.master_app, "save_folder_path", None)
+        if save_folder_path_obj is None or not hasattr(save_folder_path_obj, "get"):
+            CTkMessagebox.CTkMessagebox(title="Error", message="Main application output folder path is not configured.",
+                                        icon="cancel", parent=self)
+            return
+
+        # 4) Extract the string and verify it's non‐empty
+        output_directory = save_folder_path_obj.get()
+        if not output_directory:
+            CTkMessagebox.CTkMessagebox(title="Error", message="Main application output folder path is missing.",
+                                        icon="cancel", parent=self)
+            return
+
+        # 5) Core modules must be loaded
+        if run_advanced_averaging_processing is None or _external_post_process_actual is None:
+            CTkMessagebox.CTkMessagebox(title="Critical Error",
+                                        message="Core processing module or post_process function not loaded.",
+                                        icon="cancel", parent=self)
+            return
+
+        # 6) All checks passed—kick off the thread
         self.log("All configurations validated. Starting processing thread...")
         self.progress_bar.grid()
         self.progress_bar.set(0)
@@ -580,10 +698,11 @@ class AdvancedAnalysisWindow(ctk.CTkToplevel):
         preprocess_raw_method = self.master_app.preprocess_raw
 
         self.processing_thread = threading.Thread(
-            target=run_advanced_averaging_processing,
+
+            target=self._thread_target_wrapper,
             args=(
                 self.defined_groups,
-                main_app_params,
+                main_app_params,  # This is the crucial part
                 load_file_method,
                 preprocess_raw_method,
                 _external_post_process_actual,
@@ -597,7 +716,6 @@ class AdvancedAnalysisWindow(ctk.CTkToplevel):
         )
         self.processing_thread.start()
         self.after(100, self._check_processing_thread)
-
 
     def _check_processing_thread(self):
         if self.processing_thread and self.processing_thread.is_alive():
