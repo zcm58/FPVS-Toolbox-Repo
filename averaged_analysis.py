@@ -32,21 +32,33 @@ except ImportError:
 
 
 # Helper to create themed Listbox
-def create_themed_listbox(parent: ctk.CTkBaseClass, **kwargs) -> tk.Listbox:
-    """Creates a tk.Listbox with theming consistent with CustomTkinter."""
-    current_appearance = ctk.get_appearance_mode()
-    listbox = tk.Listbox(
-        parent,
-        background=ctk.ThemeManager.theme["CTkFrame"]["fg_color"][current_appearance],
-        fg=ctk.ThemeManager.theme["CTkLabel"]["text_color"][current_appearance],
-        highlightbackground=ctk.ThemeManager.theme["CTkFrame"]["border_color"][current_appearance],
-        highlightcolor=ctk.ThemeManager.theme["CTkButton"]["fg_color"][current_appearance],
-        selectbackground=ctk.ThemeManager.theme["CTkButton"]["hover_color"][current_appearance],
-        selectforeground=ctk.ThemeManager.theme["CTkButton"]["text_color"][current_appearance],
-        borderwidth=0, highlightthickness=1, activestyle='none',
-        **kwargs
-    )
-    return listbox
+    def create_themed_listbox(parent: ctk.CTkBaseClass, **kwargs) -> tk.Listbox:
+        """Creates a tk.Listbox with theming consistent with CustomTkinter."""
+        appearance = ctk.get_appearance_mode()  # "Light" or "Dark"
+        idx = 0 if appearance == "Light" else 1
+
+        theme = ctk.ThemeManager.theme
+        bg_color = theme["CTkFrame"]["fg_color"][idx]
+        fg_color = theme["CTkLabel"]["text_color"][idx]
+        border_color = theme["CTkFrame"]["border_color"][idx]
+        highlight_color = theme["CTkButton"]["fg_color"][idx]
+        select_bg_color = theme["CTkButton"]["hover_color"][idx]
+        select_fg_color = theme["CTkButton"]["text_color"][idx]
+
+        listbox = tk.Listbox(
+            parent,
+            background=bg_color,
+            fg=fg_color,
+            highlightbackground=border_color,
+            highlightcolor=highlight_color,
+            selectbackground=select_bg_color,
+            selectforeground=select_fg_color,
+            borderwidth=0,
+            highlightthickness=1,
+            activestyle='none',
+            **kwargs
+        )
+        return listbox
 
 
 class AdvancedAnalysisWindow(ctk.CTkToplevel):
