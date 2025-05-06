@@ -45,7 +45,7 @@ from packaging.version import parse as version_parse
 import numpy as np
 import pandas as pd
 from scipy.stats import kurtosis
-
+from averaged_analysis import AdvancedAnalysisWindow
 import customtkinter as ctk
 import mne
 import xlsxwriter
@@ -91,7 +91,7 @@ class FPVSApp(ctk.CTk):
         self.save_preprocessed = tk.BooleanVar(value=False)
         self.busy = False
         self.preprocessed_data = {}
-        self.event_map_entries = []  # Initialize list for event map rows
+        self.event_map_entries = []
         self.data_paths = []
         self.processing_thread = None
         self.detection_thread = None
@@ -102,61 +102,79 @@ class FPVSApp(ctk.CTk):
         # 3) Window Setup
         from datetime import datetime
         self.title(f"FPVS Toolbox v{FPVS_TOOLBOX_VERSION} — {datetime.now():%Y-%m-%d}")
-        self.minsize(700, 900)  # <<< SET MINIMUM SIZE HERE
+        self.minsize(700, 900)
 
-        # 4) Build UI
-        self.create_menu()
-        self.create_widgets()  # <-- all widgets are created here
+        # 4) Build Menu Bar
+        menubar = tk.Menu(self)
 
-        # 5) Add initial event map row
-        self.add_event_map_entry()  # <<< ADD FIRST EVENT MAP ROW
+        # File menu
+        file_menu = tk.Menu(menubar, tearoff=0)
+        file_menu.add_command(label="Open…", command=self.open_file)
+        file_menu.add_separator()
+        file_menu.add_command(label="Exit", command=self.quit)
+        menubar.add_cascade(label="File", menu=file_menu)
 
-        # 6) Welcome messages
+        # Tools menu
+        tools_menu = tk.Menu(menubar, tearoff=0)
+        tools_menu.add_command(label="Some Tool", command=self.some_tool)
+        menubar.add_cascade(label="Tools", menu=tools_menu)
+
+        # Advanced Analysis menu
+        advanced_menu = tk.Menu(menubar, tearoff=0)
+        advanced_menu.add_command(
+            label="Preprocessing Epoch Averaging",
+            command=lambda: AdvancedAnalysisWindow(self)
+        )
+        menubar.add_cascade(label="Advanced Analysis", menu=advanced_menu)
+
+        self.config(menu=menubar)
+
+        # 5) Build main UI
+        self.create_widgets()
+
+        # 6) Add initial event map row
+        self.add_event_map_entry()
+
+        # 7) Welcome messages
         self.log("Welcome to the FPVS Toolbox!")
         self.log(f"Appearance Mode: {ctk.get_appearance_mode()}")
 
-        # 7) Set initial focus
-        if self.event_map_entries:  # <<< SET INITIAL FOCUS
+        # 8) Set initial focus
+        if self.event_map_entries:
             try:
-                # Ensure frame and label exist before focusing
-                if self.event_map_entries[0]['frame'].winfo_exists() and \
-                        self.event_map_entries[0]['label'].winfo_exists():
+                if (self.event_map_entries[0]['frame'].winfo_exists() and
+                        self.event_map_entries[0]['label'].winfo_exists()):
                     self.event_map_entries[0]['label'].focus_set()
             except Exception as e:
                 self.log(f"Warning: Could not set initial focus: {e}")
 
-        # 8) Define toggle widgets list *after* create_widgets runs
-        #    Make sure self.detect_button and self.add_map_button exist now
+        # 9) Define toggle widgets list
         self._toggle_widgets = [
-            # Top‐bar buttons
             self.select_button,
             self.select_output_button,
             self.start_button,
-
-            # Mode & file‐type controls
             self.radio_single, self.radio_batch,
             self.radio_bdf, self.radio_set,
-
-            # Preprocessing entries
             self.low_pass_entry, self.high_pass_entry,
             self.downsample_entry, self.epoch_start_entry,
             self.epoch_end_entry, self.reject_thresh_entry,
-            self.ref_channel1_entry,
-            self.ref_channel2_entry,
-            self.max_idx_keep_entry,
-            self.stim_channel_entry,
+            self.ref_channel1_entry, self.ref_channel2_entry,
+            self.max_idx_keep_entry, self.stim_channel_entry,
             self.save_preprocessed_checkbox,
-
-            # Event‐map buttons (Now should exist)
-            self.detect_button,
-            self.add_map_button,
-            # Add individual event map row widgets if desired (more complex)
+            self.detect_button, self.add_map_button,
         ]
-        # Add logic to disable event map entries/buttons themselves in _set_controls_enabled
-        # for w_dict in self.event_map_entries:
-        #     w_dict['label'].configure(state=state)
-        #     w_dict['id'].configure(state=state)
-        #     w_dict['button'].configure(state=state) # The 'X' button
+
+        # disable event-map widgets in _set_controls_enabled as needed
+
+    def open_file(self):
+        """For the File→Open menu: trigger the same action as your 'Select' button."""
+        # If your 'Select' button calls e.g. self.select_data(), call that instead.
+        # Here we simply invoke the button so its callback runs.
+        try:
+            self.select_button.invoke()
+        except Exception:
+            # Fallback if you have a dedicated method, e.g. self.browse_for_file()
+            self.log("Error invoking select_button; please implement open_file() to call your file-loading logic.")
 
     def _set_controls_enabled(self, enabled: bool):
         """
