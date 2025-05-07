@@ -30,42 +30,31 @@ Key functionalities:
 # === Dependencies ===
 import os
 import glob
-import sys
 import threading
 import queue
 import traceback
 import gc
-import re
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import Stats
 import webbrowser
-import requests
-from packaging.version import parse as version_parse
 import numpy as np
 import pandas as pd
-from scipy.stats import kurtosis
 from advanced_analysis import AdvancedAnalysisWindow
 import customtkinter as ctk
 import mne
-import xlsxwriter
 from FPVSImageResizer import FPVSImageResizerCTK
 import requests
 from packaging.version import parse as version_parse
-from typing import Optional, Dict, Any, List # Add any other type hints you use, like List
+from typing import Optional, Dict, Any  # Add any other type hints you use, like List
 
 from config import (
     FPVS_TOOLBOX_VERSION,
     FPVS_TOOLBOX_UPDATE_API,
     FPVS_TOOLBOX_REPO_PAGE,
-    TARGET_FREQUENCIES,
-    DEFAULT_ELECTRODE_NAMES_64,
     DEFAULT_STIM_CHANNEL,
     CORNER_RADIUS,
-    PAD_X,
-    PAD_Y,
-    ENTRY_WIDTH,
-    LABEL_ID_ENTRY_WIDTH
+    PAD_X
 )
 from post_process import post_process as _external_post_process
 
@@ -1406,7 +1395,6 @@ class FPVSApp(ctk.CTk):
             import numpy as np
             from scipy.stats import kurtosis
             import mne  # Ensure mne is imported globally or here
-            import os  # Needed for os.path.basename if used in debug override (now removed)
             import traceback  # For detailed error logging
 
             try:

@@ -25,7 +25,6 @@ import re
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
-import math # For sqrt in effect size
 import traceback
 import stats_export
 
