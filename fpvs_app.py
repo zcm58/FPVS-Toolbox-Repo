@@ -282,7 +282,7 @@ class FPVSApp(ctk.CTk):
     def show_about_dialog(self):
         messagebox.showinfo(
             "About FPVS ToolBox",
-            f"Version: 1.20 ({pd.Timestamp.now().strftime('%B %Y')})\nwith the ability to process FPVS data."
+            f"Version: 0.8.0 was developed by Zack Murphy at Mississippi State University."
         )
 
     def quit(self):
