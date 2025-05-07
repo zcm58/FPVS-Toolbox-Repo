@@ -145,12 +145,9 @@ class FPVSApp(ctk.CTk):
             self.ref_channel1_entry,
             self.ref_channel2_entry,
             self.max_idx_keep_entry,
-            self.stim_channel_entry,
-            self.save_preprocessed_checkbox,
-
-            # Event‐map buttons (Now should exist)
             self.detect_button,
             self.add_map_button,
+
             # Add individual event map row widgets if desired (more complex)
         ]
         # Add logic to disable event map entries/buttons themselves in _set_controls_enabled
@@ -458,27 +455,24 @@ class FPVSApp(ctk.CTk):
                                                     validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
             self.reject_thresh_entry.insert(0, "5");
             self.reject_thresh_entry.grid(row=3, column=1, padx=PAD_X, pady=PAD_Y)
-            self.save_preprocessed_checkbox = ctk.CTkCheckBox(self.params_frame, text="Save Preprocessed (.fif)",
-                                                              variable=self.save_preprocessed, onvalue=True,
-                                                              offvalue=False, corner_radius=CORNER_RADIUS)
-            self.save_preprocessed_checkbox.grid(row=3, column=2, columnspan=2, padx=PAD_X, pady=PAD_Y, sticky="w")
+
             # Row 4: Initial Reference Channels
             ctk.CTkLabel(self.params_frame, text="Ref Chan 1:").grid(row=4, column=0, sticky="w", padx=PAD_X,
                                                                      pady=PAD_Y)
             self.ref_channel1_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS)
-            # self.ref_channel1_entry.insert(0, "EXG1") # Optional default
+            self.ref_channel1_entry.insert(0, "EXG1") # Optional default
             self.ref_channel1_entry.grid(row=4, column=1, padx=PAD_X, pady=PAD_Y)
             ctk.CTkLabel(self.params_frame, text="Ref Chan 2:").grid(row=4, column=2, sticky="w", padx=PAD_X,
                                                                      pady=PAD_Y)
             self.ref_channel2_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS)
-            # self.ref_channel2_entry.insert(0, "EXG2") # Optional default
+            self.ref_channel2_entry.insert(0, "EXG2") # Optional default
             self.ref_channel2_entry.grid(row=4, column=3, padx=PAD_X, pady=PAD_Y)
             # Row 5: Max Index Keep / Stim Channel
             ctk.CTkLabel(self.params_frame, text="Max Chan Idx Keep:").grid(row=5, column=0, sticky="w", padx=PAD_X,
                                                                             pady=PAD_Y)
             self.max_idx_keep_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS,
                                                    validate='key', validatecommand=validate_int_cmd)
-            # self.max_idx_keep_entry.insert(0, "64") # Optional default
+            self.max_idx_keep_entry.insert(0, "64") # Optional default
             self.max_idx_keep_entry.grid(row=5, column=1, padx=PAD_X, pady=PAD_Y)
             ctk.CTkLabel(self.params_frame, text="Stim Channel:").grid(row=5, column=2, sticky="w", padx=PAD_X,
                                                                        pady=PAD_Y)
