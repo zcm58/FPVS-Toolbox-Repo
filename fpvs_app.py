@@ -474,15 +474,7 @@ class FPVSApp(ctk.CTk):
                                                    validate='key', validatecommand=validate_int_cmd)
             self.max_idx_keep_entry.insert(0, "64") # Optional default
             self.max_idx_keep_entry.grid(row=5, column=1, padx=PAD_X, pady=PAD_Y)
-            ctk.CTkLabel(self.params_frame, text="Stim Channel:").grid(row=5, column=2, sticky="w", padx=PAD_X,
-                                                                       pady=PAD_Y)
-            self.stim_channel_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, corner_radius=CORNER_RADIUS)
-            try:
-                from config import DEFAULT_STIM_CHANNEL
-            except ImportError:
-                DEFAULT_STIM_CHANNEL = 'Status'  # Fallback
-            self.stim_channel_entry.insert(0, DEFAULT_STIM_CHANNEL)
-            self.stim_channel_entry.grid(row=5, column=3, padx=PAD_X, pady=PAD_Y)
+
 
             # --- Event ID Mapping Frame (Row 3 - EXPANDS) ---
             event_map_outer = ctk.CTkFrame(main_frame)
@@ -752,7 +744,7 @@ class FPVSApp(ctk.CTk):
             self.log("Detection failed: No data selected.")
             return
 
-        stim_channel_name = self.stim_channel_entry.get().strip() or DEFAULT_STIM_CHANNEL
+        stim_channel_name = DEFAULT_STIM_CHANNEL
         self.log(f"Using stim channel: {stim_channel_name}")
         representative_file = self.data_paths[0]
         self.busy = True
@@ -934,8 +926,7 @@ class FPVSApp(ctk.CTk):
             assert params['max_idx_keep'] is None or params['max_idx_keep'] > 0
             if params['low_pass'] is not None and params['high_pass'] is not None:
                 assert params['low_pass'] < params['high_pass']
-            stim = self.stim_channel_entry.get().strip()
-            params['stim_channel'] = stim or DEFAULT_STIM_CHANNEL
+            params['stim_channel'] = DEFAULT_STIM_CHANNEL
             params['save_preprocessed'] = self.save_preprocessed.get()
 
         except AssertionError as e:
