@@ -442,12 +442,12 @@ class FPVSApp(ctk.CTk):
                                                   validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
             self.epoch_start_entry.insert(0, "-1");
             self.epoch_start_entry.grid(row=2, column=3, padx=PAD_X, pady=PAD_Y)
-            ctk.CTkLabel(self.params_frame, text="Epoch End (s):").grid(row=2, column=4, sticky="w", padx=PAD_X,
+            ctk.CTkLabel(self.params_frame, text="Epoch End (s):").grid(row=3, column=2, sticky="w", padx=PAD_X,
                                                                         pady=PAD_Y)
             self.epoch_end_entry = ctk.CTkEntry(self.params_frame, width=ENTRY_WIDTH, validate='key',
                                                 validatecommand=validate_num_cmd, corner_radius=CORNER_RADIUS)
             self.epoch_end_entry.insert(0, "125");
-            self.epoch_end_entry.grid(row=2, column=5, padx=PAD_X, pady=PAD_Y)
+            self.epoch_end_entry.grid(row=3, column=3, padx=PAD_X, pady=PAD_Y)
             # Row 3: Reject / Save
             ctk.CTkLabel(self.params_frame, text="Rejection Z-Thresh:").grid(row=3, column=0, sticky="w", padx=PAD_X,
                                                                              pady=PAD_Y)
