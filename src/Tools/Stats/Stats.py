@@ -26,7 +26,7 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 import traceback
-import stats_export
+from . import stats_export
 
 # Attempt to import from config, handle if running standalone
 try:

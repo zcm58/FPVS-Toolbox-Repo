@@ -36,7 +36,6 @@ import traceback
 import gc
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import Stats
 import webbrowser
 import numpy as np
 import pandas as pd
@@ -47,7 +46,7 @@ from FPVSImageResizer import FPVSImageResizerCTK
 import requests
 from packaging.version import parse as version_parse
 from typing import Optional, Dict, Any  # Add any other type hints you use, like List
-
+import Tools.Stats as Stats
 from config import (
     FPVS_TOOLBOX_VERSION,
     FPVS_TOOLBOX_UPDATE_API,
