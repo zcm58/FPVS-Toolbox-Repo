@@ -42,7 +42,7 @@ import pandas as pd
 from advanced_analysis import AdvancedAnalysisWindow
 import customtkinter as ctk
 import mne
-from FPVSImageResizer import FPVSImageResizerCTK
+from src.Tools.FPVSImageResizer import FPVSImageResizerCTK
 import requests
 from packaging.version import parse as version_parse
 from typing import Optional, Dict, Any  # Add any other type hints you use, like List
@@ -71,7 +71,7 @@ class FPVSApp(ctk.CTk):
 
         # 1) DPI scaling (Keep this if you have it)
         try:
-            from FPVSImageResizer import apply_per_monitor_scaling
+            from src.Tools.FPVSImageResizer import apply_per_monitor_scaling
             apply_per_monitor_scaling(self)
         except ImportError:
             pass
