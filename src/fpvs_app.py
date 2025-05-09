@@ -39,14 +39,12 @@ from tkinter import filedialog, messagebox
 import webbrowser
 import numpy as np
 import pandas as pd
-from advanced_analysis import AdvancedAnalysisWindow
 import customtkinter as ctk
 import mne
-from src.Tools.FPVSImageResizer import FPVSImageResizerCTK
 import requests
 from packaging.version import parse as version_parse
 from typing import Optional, Dict, Any  # Add any other type hints you use, like List
-import Tools.Stats as Stats
+
 from config import (
     FPVS_TOOLBOX_VERSION,
     FPVS_TOOLBOX_UPDATE_API,
@@ -57,6 +55,15 @@ from config import (
 )
 from post_process import post_process as _external_post_process
 
+# Advanced averaging UI and core function
+from Tools.Average_Preprocessing import AdvancedAnalysisWindow
+from Tools.Average_Preprocessing import run_advanced_averaging_processing
+
+# Image resizer
+from Tools.Image_Resizer import FPVSImageResizer
+
+# Statistics toolbox
+import Tools.Stats as stats
 # =====================================================
 # GUI Configuration (unchanged)
 # =====================================================
@@ -168,15 +175,15 @@ class FPVSApp(ctk.CTk):
         # Create an instance of the StatsAnalysisWindow from the imported module
         # Pass 'self' (the main FPVSApp instance) as the master window
         # Pass the folder path so the stats window can suggest it
-        stats_win = Stats.StatsAnalysisWindow(master=self, default_folder=last_output_folder)
+        stats_win = stats.StatsAnalysisWindow(master=self, default_folder=last_output_folder)
 
         # Make the stats window modal (user must close it before using main window)
         stats_win.grab_set()
 
     def open_image_resizer(self):
-        """Open the FPVS Image Resizer tool in a new CTkToplevel."""
+        """Open the FPVS Image_Resizer tool in a new CTkToplevel."""
         # We pass `self` so the new window is a child of the main app:
-        win = FPVSImageResizerCTK(self)
+        win = FPVSImageResizer(self)
         win.grab_set()  # optional: make it modal
 
 
@@ -209,7 +216,7 @@ class FPVSApp(ctk.CTk):
         self.menubar.add_cascade(label="Tools", menu=tools_menu)
         tools_menu.add_command(label="Stats Toolbox", command=self.open_stats_analyzer)
         tools_menu.add_separator()
-        tools_menu.add_command(label="Image Resizer", command=self.open_image_resizer)
+        tools_menu.add_command(label="Image_Resizer", command=self.open_image_resizer)
 
         # === Help menu ===
         help_menu = tk.Menu(self.menubar, tearoff=0)
