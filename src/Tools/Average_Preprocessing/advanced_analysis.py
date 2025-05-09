@@ -4,11 +4,11 @@ import tkinter as tk
 from tkinter import filedialog
 import customtkinter as ctk
 from customtkinter import CTkInputDialog
-import CTkMessagebox  # Corrected import
+import CTkMessagebox
 import os
 import re
 import threading
-from typing import List, Dict, Any, Optional, Union  # Keep Union for type hints
+from typing import List, Dict, Any, Optional, Union
 import traceback
 
 # Shared constants (with fallbacks)
@@ -32,12 +32,18 @@ except ImportError:
 
 # Core processing
 try:
-    from advanced_analysis_core import run_advanced_averaging_processing
-    from post_process import post_process as _external_post_process_actual
+    # Keep relative import for a module in the same package
+    from .advanced_analysis_core import run_advanced_averaging_processing
+
+    # CORRECTED: Use ABSOLUTE import from src root for post_process
+    from src.post_process import post_process as _external_post_process_actual
+
 except ImportError as e:
+    # Keep the error handling for robustness
     run_advanced_averaging_processing = None
     _external_post_process_actual = None
-    print(f"ERROR importing advanced_analysis_core or post_process: {e}")
+    # You might want to update this message slightly to be more general
+    print(f"ERROR importing core components for Advanced Analysis: {e}")
 
 
 def create_themed_listbox(parent: ctk.CTkBaseClass, **kwargs) -> tk.Listbox:
