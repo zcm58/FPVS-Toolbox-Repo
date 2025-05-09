@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Stats.py
+stats.py
 
 Provides a Toplevel window for statistical analysis of FPVS results.
 Performs:
