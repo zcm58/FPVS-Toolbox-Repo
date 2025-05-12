@@ -5,7 +5,7 @@ pyinstaller `
   --noconfirm `
   --windowed `
   --name FPVS_Toolbox_0.8.2 `
-  --icon "C:\Users\zcm58\OneDrive - Mississippi State University\Office Desktop\AppIcon.ico" `
+  --icon "C:\Users\zcm58\OneDrive - Mississippi State University\Office Desktop\App Icon.ico"
   --collect-all mne `
   --hidden-import mne.io.bdf `
   --hidden-import mne.io.eeglab `
