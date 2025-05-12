@@ -76,12 +76,6 @@ class FPVSApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        # 1) DPI scaling (Keep this if you have it)
-        try:
-            from src.Tools.FPVSImageResizer import apply_per_monitor_scaling
-            apply_per_monitor_scaling(self)
-        except ImportError:
-            pass
 
         # 2) State variables
         self.save_preprocessed = tk.BooleanVar(value=False)
