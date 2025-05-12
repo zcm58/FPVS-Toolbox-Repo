@@ -14,7 +14,7 @@ PAD_X = 8
 PAD_Y = 8
 CORNER_RADIUS = 8
 
-# === Image processing logic (unchanged) ===
+# === Image processing logic ===
 def process_images_in_folder(input_folder, output_folder,
                              target_width, target_height,
                              desired_ext, update_callback,
