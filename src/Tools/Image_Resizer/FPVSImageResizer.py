@@ -14,7 +14,7 @@ PAD_X = 8
 PAD_Y = 8
 CORNER_RADIUS = 8
 
-# === Image processing logic (unchanged) ===
+# === Image processing logic ===
 def process_images_in_folder(input_folder, output_folder,
                              target_width, target_height,
                              desired_ext, update_callback,
@@ -106,7 +106,7 @@ ctk.set_default_color_theme("blue")
 class FPVSImageResizerCTK(ctk.CTkToplevel):
     def __init__(self, parent):
         super().__init__(parent)
-        self.title("FPVS Image Resizer")
+        self.title("FPVS Image_Resizer")
         self.geometry("800x600")
         self.cancel_requested = False
         self.input_folder = ""
@@ -117,7 +117,7 @@ class FPVSImageResizerCTK(ctk.CTkToplevel):
         # Title
         title = ctk.CTkLabel(
             self,
-            text="FPVS Image Resizer",
+            text="FPVS Image_Resizer",
             font=ctk.CTkFont(size=18, weight="bold")
         )
         title.pack(pady=(PAD_Y, 0))

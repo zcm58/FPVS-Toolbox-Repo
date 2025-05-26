@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Stats.py
+stats.py
 
 Provides a Toplevel window for statistical analysis of FPVS results.
-Performs:
+Features:
+
 1. Paired comparisons (t-test or Wilcoxon) between two conditions
    for selected metrics (Z-Score/SNR etc.) averaged over Regions of Interest (ROIs)
    across multiple selected frequencies. Can analyze a single selected ROI or all defined ROIs.
-2. Single-condition Significance Check to identify Conditions/ROIs/Frequencies
-   where the average metric exceeds a user-specified threshold.
+
+2. Single-Condition significance check to scan the excel files for significant responses based on a user-input
+threshold. For example, the user can choose to scan the files for significant frontal lobe SNR responses above 1.5.
 
 Results are displayed and paired comparison results are exportable to Excel.
 
@@ -25,9 +27,8 @@ import re
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
-import math # For sqrt in effect size
 import traceback
-import stats_export
+from . import stats_export
 
 # Attempt to import from config, handle if running standalone
 try:
@@ -307,6 +308,8 @@ class StatsAnalysisWindow(ctk.CTkToplevel):
         Scans the selected PARENT folder for SUBFOLDERS (conditions).
         Looks inside each subfolder for participant Excel files matching PID pattern.
         Updates internal lists and GUI dropdowns.
+        This file expects a naming scheme like "P1_FPVS" or "P2_FPVS" etc.
+        It matches participants across conditions based on the "P1" "P2" etc filename.
         """
         parent_folder = self.stats_data_folder_var.get()
         if not parent_folder or not os.path.isdir(parent_folder):
