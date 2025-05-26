@@ -30,45 +30,40 @@ Key functionalities:
 # === Dependencies ===
 import os
 import glob
-import sys
 import threading
 import queue
 import traceback
 import gc
-import re
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import Stats
 import webbrowser
-import requests
-from packaging.version import parse as version_parse
 import numpy as np
 import pandas as pd
-from scipy.stats import kurtosis
-from advanced_analysis import AdvancedAnalysisWindow
 import customtkinter as ctk
 import mne
-import xlsxwriter
-from FPVSImageResizer import FPVSImageResizerCTK
 import requests
 from packaging.version import parse as version_parse
-from typing import Optional, Dict, Any, List # Add any other type hints you use, like List
+from typing import Optional, Dict, Any  # Add any other type hints you use, like List
 
 from config import (
     FPVS_TOOLBOX_VERSION,
     FPVS_TOOLBOX_UPDATE_API,
     FPVS_TOOLBOX_REPO_PAGE,
-    TARGET_FREQUENCIES,
-    DEFAULT_ELECTRODE_NAMES_64,
     DEFAULT_STIM_CHANNEL,
     CORNER_RADIUS,
-    PAD_X,
-    PAD_Y,
-    ENTRY_WIDTH,
-    LABEL_ID_ENTRY_WIDTH
+    PAD_X
 )
 from post_process import post_process as _external_post_process
 
+# Advanced averaging UI and core function
+from Tools.Average_Preprocessing import AdvancedAnalysisWindow
+from Tools.Average_Preprocessing import run_advanced_averaging_processing
+
+# Image resizer
+from Tools.Image_Resizer import FPVSImageResizer
+
+# Statistics toolbox
+import Tools.Stats as stats
 # =====================================================
 # GUI Configuration (unchanged)
 # =====================================================
@@ -81,12 +76,6 @@ class FPVSApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        # 1) DPI scaling (Keep this if you have it)
-        try:
-            from FPVSImageResizer import apply_per_monitor_scaling
-            apply_per_monitor_scaling(self)
-        except ImportError:
-            pass
 
         # 2) State variables
         self.save_preprocessed = tk.BooleanVar(value=False)
@@ -180,15 +169,15 @@ class FPVSApp(ctk.CTk):
         # Create an instance of the StatsAnalysisWindow from the imported module
         # Pass 'self' (the main FPVSApp instance) as the master window
         # Pass the folder path so the stats window can suggest it
-        stats_win = Stats.StatsAnalysisWindow(master=self, default_folder=last_output_folder)
+        stats_win = stats.StatsAnalysisWindow(master=self, default_folder=last_output_folder)
 
         # Make the stats window modal (user must close it before using main window)
         stats_win.grab_set()
 
     def open_image_resizer(self):
-        """Open the FPVS Image Resizer tool in a new CTkToplevel."""
+        """Open the FPVS Image_Resizer tool in a new CTkToplevel."""
         # We pass `self` so the new window is a child of the main app:
-        win = FPVSImageResizerCTK(self)
+        win = FPVSImageResizer(self)
         win.grab_set()  # optional: make it modal
 
 
@@ -221,7 +210,7 @@ class FPVSApp(ctk.CTk):
         self.menubar.add_cascade(label="Tools", menu=tools_menu)
         tools_menu.add_command(label="Stats Toolbox", command=self.open_stats_analyzer)
         tools_menu.add_separator()
-        tools_menu.add_command(label="Image Resizer", command=self.open_image_resizer)
+        tools_menu.add_command(label="Image_Resizer", command=self.open_image_resizer)
 
         # === Help menu ===
         help_menu = tk.Menu(self.menubar, tearoff=0)
@@ -279,7 +268,7 @@ class FPVSApp(ctk.CTk):
     def show_about_dialog(self):
         messagebox.showinfo(
             "About FPVS ToolBox",
-            f"Version: 0.8.1 was developed by Zack Murphy at Mississippi State University."
+            f"Version: 0.8.2 was developed by Zack Murphy at Mississippi State University."
         )
 
     def quit(self):
@@ -1406,7 +1395,6 @@ class FPVSApp(ctk.CTk):
             import numpy as np
             from scipy.stats import kurtosis
             import mne  # Ensure mne is imported globally or here
-            import os  # Needed for os.path.basename if used in debug override (now removed)
             import traceback  # For detailed error logging
 
             try:
