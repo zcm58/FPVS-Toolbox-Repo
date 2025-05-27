@@ -9,11 +9,15 @@ during preprocessing.
 import os
 import customtkinter as ctk
 import tkinter as tk
-import pandas as pd  # For easily reading the CSV-like text file
-import traceback  # For more detailed error logging
+import pandas as pd
+import traceback
 
-# Filename constant - ensure this matches what fpvs_app.py writes
-QUALITY_FLAGS_FILENAME = "Potential_Outlier_Participants.txt"
+# Import constants from the main project config file
+try:
+    from config import QUALITY_FLAGS_FILENAME
+except ImportError:
+    print("Warning: Could not import QUALITY_FLAGS_FILENAME from main config.py for stats_qc_outliers. Using default.")
+    QUALITY_FLAGS_FILENAME = "Potential_Outlier_Participants.txt" # Fallback
 
 
 class QualityOutlierReviewFrame(ctk.CTkFrame):

@@ -24,3 +24,29 @@ PAD_X                 = 5
 PAD_Y                 = 5
 ENTRY_WIDTH           = 100
 LABEL_ID_ENTRY_WIDTH  = 120
+
+# === Constants for Stats Toolbox ===
+ROIS = {
+    "Frontal Lobe": ["F3", "F4", "Fz"],
+    "Occipital Lobe": ["O1", "O2", "Oz"],
+    "Parietal Lobe": ["P3", "P4", "Pz"],
+    "Central Lobe": ["C3", "C4", "Cz"]
+    # Add more ROIs here if needed
+}
+ALL_ROIS_OPTION = "(All ROIs)"
+
+HARMONIC_CHECK_ALPHA = 0.05 # Significance level for one-sample t-test in harmonic check
+
+# UI Placeholder Strings for Stats Toolbox
+STATS_PLACEHOLDER_SCAN_FOLDER = "(Scan Folder)"
+STATS_PLACEHOLDER_NO_OTHER_CONDITIONS = "(No other conditions)"
+STATS_PLACEHOLDER_SELECT_CONDITION_A = "(Select Condition A)"
+
+# Filename for Quality Flags (used by fpvs_app.py to write and stats.py to read)
+QUALITY_FLAGS_FILENAME = "Potential_Outlier_Participants.txt"
+
+# Default for populating frequency checkboxes if needed (though currently removed from stats UI)
+# If any other part of stats.py might still conceptually need a default list of target frequencies
+# (even if not for UI checkboxes anymore), it could live here.
+# For now, assuming it's not directly needed by stats.py if checkboxes are gone.
+# DEFAULT_STATS_TARGET_FREQUENCIES = np.round(np.arange(1.2, 17.0, 1.2), 1)
