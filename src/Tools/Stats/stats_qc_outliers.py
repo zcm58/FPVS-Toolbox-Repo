@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Provides a CTkFrame class for reviewing and managing participants
-flagged as potential outliers (e.g., high channel rejection)
+flagged for data quality issues (e.g., high channel rejection)
 during preprocessing.
 """
 
@@ -10,6 +10,7 @@ import os
 import customtkinter as ctk
 import tkinter as tk
 import pandas as pd  # For easily reading the CSV-like text file
+import traceback  # For more detailed error logging
 
 # Filename constant - ensure this matches what fpvs_app.py writes
 QUALITY_FLAGS_FILENAME = "Potential_Outlier_Participants.txt"
@@ -32,10 +33,10 @@ class QualityOutlierReviewFrame(ctk.CTkFrame):
 
         # Stores dictionaries like:
         # {'pid': str, 'filename': str, 'bad_channels': int, 'threshold': int,
-        #  'exclude_var': tk.BooleanVar, 'checkbox_widget': ctk.CTkCheckBox (optional ref)}
+        #  'exclude_var': tk.BooleanVar}
         self.quality_flagged_participants_info = []
 
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)  # Allow content to expand
 
         # --- Header for this section ---
         self.header_label = ctk.CTkLabel(self, text="Review Preprocessing Quality Flags",
@@ -43,16 +44,18 @@ class QualityOutlierReviewFrame(ctk.CTkFrame):
         self.header_label.grid(row=0, column=0, sticky="w", padx=10, pady=(5, 2))
 
         self.info_label = ctk.CTkLabel(self,
-                                       text="Participants listed below were flagged for a high number of rejected channels during initial processing.",
-                                       wraplength=500, justify="left")  # Adjust wraplength as needed
-        self.info_label.grid(row=1, column=0, sticky="w", padx=10, pady=(0, 5))
+                                       text="Participants listed below were flagged for a high number of "
+                                            "rejected channels during initial processing in the main FPVS app.",
+                                       wraplength=self.winfo_width() - 20,  # Adjust wraplength dynamically or set fixed
+                                       justify="left")
+        self.info_label.grid(row=1, column=0, sticky="ew", padx=10, pady=(0, 5))
+        self.bind("<Configure>", lambda event: self.info_label.configure(wraplength=self.winfo_width() - 20))
 
         # --- Scrollable Frame for listing flagged participants ---
-        self.scrollable_frame = ctk.CTkScrollableFrame(self, label_text="Flagged Participants")
+        self.scrollable_frame = ctk.CTkScrollableFrame(self, label_text="Flagged Participants (High Channel Rejection)")
         self.scrollable_frame.grid(row=2, column=0, sticky="nsew", padx=5, pady=5)
-        self.scrollable_frame.configure(height=120)  # Default height, can be adjusted
-        # No need to configure grid inside if packing, but allow column 0 to expand
-        self.scrollable_frame.grid_columnconfigure(0, weight=1)
+        self.scrollable_frame.configure(height=100)  # Default height, adjust as needed
+        self.scrollable_frame.grid_columnconfigure(0, weight=1)  # Allow content within to expand if needed
 
         self.no_flags_label = ctk.CTkLabel(self.scrollable_frame,
                                            text="No quality flags file found or folder not yet scanned.\n"
@@ -63,42 +66,50 @@ class QualityOutlierReviewFrame(ctk.CTkFrame):
         button_frame = ctk.CTkFrame(self, fg_color="transparent")
         button_frame.grid(row=3, column=0, sticky="ew", padx=10, pady=(0, 5))
 
-        self.select_all_button = ctk.CTkButton(button_frame, text="Exclude All Flagged",
-                                               command=self._select_all_for_exclusion)
+        self.select_all_button = ctk.CTkButton(button_frame, text="Mark All as Excluded",
+                                               command=lambda: self._toggle_all_exclusions(True))
         self.select_all_button.pack(side="left", padx=(0, 5))
 
-        self.deselect_all_button = ctk.CTkButton(button_frame, text="Include All Flagged",
-                                                 command=self._deselect_all_for_exclusion)
+        self.deselect_all_button = ctk.CTkButton(button_frame, text="Mark All to Include",
+                                                 command=lambda: self._toggle_all_exclusions(False))
         self.deselect_all_button.pack(side="left", padx=5)
 
-        self.select_all_button.configure(state="disabled")
-        self.deselect_all_button.configure(state="disabled")
+        self._update_button_states()  # Initial state
+
+    def _update_button_states(self):
+        """Enables or disables select/deselect all buttons based on content."""
+        if self.quality_flagged_participants_info:
+            self.select_all_button.configure(state="normal")
+            self.deselect_all_button.configure(state="normal")
+        else:
+            self.select_all_button.configure(state="disabled")
+            self.deselect_all_button.configure(state="disabled")
 
     def _clear_display(self):
         """Clears previously displayed flagged participants."""
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
-        # Re-add the default "no flags" label, it will be destroyed if flags are found
+        self.quality_flagged_participants_info = []  # Reset the internal list
+
+        # Re-add the default "no flags" label, it will be destroyed if flags are found later
         self.no_flags_label = ctk.CTkLabel(self.scrollable_frame,
                                            text="No quality flags file found or folder not yet scanned.\n"
                                                 f"(Looking for '{QUALITY_FLAGS_FILENAME}')")
         self.no_flags_label.pack(pady=10, padx=10, fill="x", expand=True)
-        self.quality_flagged_participants_info = []  # Reset the internal list
-        self.select_all_button.configure(state="disabled")
-        self.deselect_all_button.configure(state="disabled")
+        self._update_button_states()
 
     def load_and_display_flags(self):
         """
         Loads data from the QUALITY_FLAGS_FILENAME, parses it,
         and updates the UI to display the flagged participants with checkboxes.
         """
-        self.app_log_func("QualityOutlierFrame: Checking for quality flags file...")
-        self._clear_display()  # Clear previous entries and reset list
+        self.app_log_func(f"QualityOutlierFrame: Attempting to load '{QUALITY_FLAGS_FILENAME}'...")
+        self._clear_display()
 
         folder_path = self.stats_data_folder_var.get()
         if not folder_path or not os.path.isdir(folder_path):
-            # The no_flags_label already indicates folder not scanned or invalid
-            self.app_log_func("QualityOutlierFrame: Data folder not set or invalid.")
+            self.app_log_func("QualityOutlierFrame: Data folder not set or invalid for loading flags.")
+            self.no_flags_label.configure(text="Select a valid data folder first to check for quality flags.")
             return
 
         quality_file_path = os.path.join(folder_path, QUALITY_FLAGS_FILENAME)
@@ -106,24 +117,21 @@ class QualityOutlierReviewFrame(ctk.CTkFrame):
         if os.path.exists(quality_file_path):
             self.app_log_func(f"QualityOutlierFrame: Found quality flags file: {quality_file_path}")
             try:
-                # Expected header: PID,OriginalFilename,NumBadChannelsIdentified,UserSetThreshold
                 df_flags = pd.read_csv(quality_file_path)
 
                 if df_flags.empty:
                     self.app_log_func("QualityOutlierFrame: Quality flags file is empty.")
-                    self.no_flags_label.configure(
-                        text="Quality flags file ('Potential_Outlier_Participants.txt') found but is empty.")
+                    self.no_flags_label.configure(text=f"'{QUALITY_FLAGS_FILENAME}' was found but is empty.")
                     return
 
-                # If we found flags, destroy the placeholder label
-                if self.no_flags_label.winfo_exists():
+                if self.no_flags_label.winfo_exists():  # If flags are found, remove the placeholder
                     self.no_flags_label.destroy()
 
                 for index, row in df_flags.iterrows():
-                    pid = str(row['PID'])
-                    filename = str(row['OriginalFilename'])
-                    bad_channels = int(row['NumBadChannelsIdentified'])
-                    threshold = int(row['UserSetThreshold'])
+                    pid = str(row.get('PID', 'UnknownPID'))
+                    filename = str(row.get('OriginalFilename', 'N/A'))
+                    bad_channels = int(row.get('NumBadChannelsIdentified', 0))
+                    threshold = int(row.get('UserSetThreshold', 0))
 
                     exclude_var = tk.BooleanVar(master=self, value=False)  # Default to NOT exclude
                     info = {
@@ -135,54 +143,50 @@ class QualityOutlierReviewFrame(ctk.CTkFrame):
                     }
                     self.quality_flagged_participants_info.append(info)
 
-                    # Create UI for this flagged PID within the scrollable_frame
                     entry_text = f"Exclude {pid}? (File: {filename}, Bads: {bad_channels}, Thresh: {threshold})"
                     chk = ctk.CTkCheckBox(self.scrollable_frame, text=entry_text, variable=exclude_var)
-                    # Use pack for items within the scrollable frame for simplicity
-                    chk.pack(anchor="w", padx=5, pady=2)
+                    chk.pack(anchor="w", padx=5, pady=2, fill="x")
 
-                if self.quality_flagged_participants_info:
-                    self.select_all_button.configure(state="normal")
-                    self.deselect_all_button.configure(state="normal")
-                else:  # Should be caught by df_flags.empty, but as a safeguard
+                if not self.quality_flagged_participants_info:
                     self.no_flags_label = ctk.CTkLabel(self.scrollable_frame,
                                                        text="No subjects met quality flag criteria in the file.")
                     self.no_flags_label.pack(pady=10, padx=10, fill="x", expand=True)
 
+                self._update_button_states()
 
-            except FileNotFoundError:  # Should be caught by os.path.exists, but for completeness
+            except FileNotFoundError:
                 self.app_log_func(
-                    f"QualityOutlierFrame: File '{QUALITY_FLAGS_FILENAME}' not found though os.path.exists was true (race condition?).")
+                    f"QualityOutlierFrame: File '{QUALITY_FLAGS_FILENAME}' disappeared (race condition?).")
                 self.no_flags_label.configure(text=f"File '{QUALITY_FLAGS_FILENAME}' seems to have disappeared.")
             except pd.errors.EmptyDataError:
                 self.app_log_func(f"QualityOutlierFrame: File '{QUALITY_FLAGS_FILENAME}' is empty or not valid CSV.")
                 self.no_flags_label.configure(text=f"File '{QUALITY_FLAGS_FILENAME}' is empty or unreadable.")
             except KeyError as ke:
                 self.app_log_func(f"QualityOutlierFrame: Missing expected column in '{QUALITY_FLAGS_FILENAME}': {ke}")
-                self.no_flags_label.configure(text=f"Flags file has incorrect columns (Missing: {ke}).")
+                self.no_flags_label.configure(
+                    text=f"Flags file ('{QUALITY_FLAGS_FILENAME}') has incorrect columns (Missing: {ke}).")
             except Exception as e:
                 self.app_log_func(
                     f"QualityOutlierFrame: Error parsing quality flags file '{quality_file_path}': {e}\n{traceback.format_exc()}")
-                self.no_flags_label.configure(text=f"Error reading flags file. See console log.")
+                self.no_flags_label.configure(text=f"Error reading '{QUALITY_FLAGS_FILENAME}'. See console log.")
         else:
             self.app_log_func(
                 f"QualityOutlierFrame: No quality flags file ('{QUALITY_FLAGS_FILENAME}') found in {folder_path}.")
-            # self.no_flags_label is already set by _clear_display to indicate this.
-            self.no_flags_label.configure(text=f"No quality flags file ('{QUALITY_FLAGS_FILENAME}') found.")
+            self.no_flags_label.configure(
+                text=f"No quality flags file ('{QUALITY_FLAGS_FILENAME}') found in the selected folder.")
 
-    def _select_all_for_exclusion(self, exclude_state=True):
+        self._update_button_states()
+
+    def _toggle_all_exclusions(self, exclude_state: bool):
         """Sets the exclusion state for all currently listed quality-flagged PIDs."""
         if not self.quality_flagged_participants_info:
             self.app_log_func("QualityOutlierFrame: No flagged participants to select/deselect.")
             return
 
-        action = "Excluding" if exclude_state else "Including"
-        self.app_log_func(f"QualityOutlierFrame: {action} all listed quality-flagged participants.")
+        action = "Excluding all" if exclude_state else "Including all (clearing exclusions for)"
+        self.app_log_func(f"QualityOutlierFrame: {action} listed quality-flagged participants.")
         for info in self.quality_flagged_participants_info:
             info['exclude_var'].set(exclude_state)
-
-    def _deselect_all_for_exclusion(self):
-        self._select_all_for_exclusion(exclude_state=False)
 
     def get_pids_to_exclude(self) -> set:
         """
@@ -194,27 +198,7 @@ class QualityOutlierReviewFrame(ctk.CTkFrame):
             if info['exclude_var'].get():
                 excluded_pids.add(info['pid'])
 
-        if excluded_pids:
-            self.app_log_func(
-                f"QualityOutlierFrame: Returning PIDs for exclusion based on quality flags: {sorted(list(excluded_pids))}")
-        # else:
-        # self.app_log_func("QualityOutlierFrame: No PIDs selected for exclusion based on quality flags.")
+        # Log only if there are actual exclusions to report
+        # if excluded_pids:
+        #     self.app_log_func(f"QualityOutlierFrame: Returning PIDs for exclusion based on quality flags: {sorted(list(excluded_pids))}")
         return excluded_pids
-
-    # --- Placeholder for statistical outlier methods ---
-    # def display_statistical_outliers(self, outliers_data):
-    #     # This will be developed in Phase B
-    #     pass
-
-    # def get_pids_to_exclude_from_statistical_outliers(self) -> set:
-    #     # This will be developed in Phase B
-    #     return set()
-
-    # def get_all_excluded_pids_for_analysis(self) -> set:
-    #     """Combines exclusions from quality flags and statistical outliers."""
-    #     quality_excluded = self.get_pids_to_exclude()
-    #     # stat_excluded = self.get_pids_to_exclude_from_statistical_outliers() # For Phase B
-    #     # all_excluded = quality_excluded.union(stat_excluded)
-    #     # self.app_log_func(f"QualityOutlierFrame: Total PIDs for exclusion: {all_excluded if all_excluded else 'None'}")
-    #     # For now, just returns quality excluded as stat outliers are not implemented yet
-    #     return quality_excluded
