@@ -1089,6 +1089,7 @@ class FPVSApp(ctk.CTk):
 
         # --- Background Processing Thread ---
     def _processing_thread_func(self, data_paths, params, gui_queue):
+        # Import necessary libraries locally within the thread
         import os
         import gc
         import traceback
@@ -1100,7 +1101,7 @@ class FPVSApp(ctk.CTk):
         event_id_map_from_gui = params['event_id_map']
         stim_channel_name = params.get('stim_channel', DEFAULT_STIM_CHANNEL)
         save_folder = self.save_folder_path.get()
-        max_bad_channels_alert_thresh = params.get('max_bad_channels_alert_thresh', 9999)  # Get from params
+        max_bad_channels_alert_thresh = params.get('max_bad_channels_alert_thresh', 9999)
 
         original_app_data_paths = list(self.data_paths)
         original_app_preprocessed_data = dict(self.preprocessed_data)
@@ -1115,23 +1116,21 @@ class FPVSApp(ctk.CTk):
 
                 raw = None
                 raw_proc = None
-                num_kurtosis_bads = 0  # Initialize for this file
+                num_kurtosis_bads = 0
                 file_epochs = {}
                 events = np.array([])
 
-                # Attempt to extract a clean PID for logging/flagging
-                # This regex is similar to the one in post_process.py for consistency
                 extracted_pid_for_flagging = "UnknownPID"
                 pid_base_for_flagging = os.path.splitext(f_name)[0]
-                pid_regex_flag = r"(?:[a-zA-Z_]*?)?(P\d+)"  # Allow underscore before P
+                pid_regex_flag = r"(?:[a-zA-Z_]*?)?(P\d+)"
                 match_flag = re.search(pid_regex_flag, pid_base_for_flagging, re.IGNORECASE)
                 if match_flag:
                     extracted_pid_for_flagging = match_flag.group(1).upper()
-                else:  # Fallback if "P<digits>" not found after optional letters/underscores
+                else:
                     temp_pid = re.sub(
                         r'(_unamb|_ambig|_mid|_run\d*|_sess\d*|_task\w*|_eeg|_fpvs|_raw|_preproc|_ica|_EventsUpdated).*$',
                         '', pid_base_for_flagging, flags=re.IGNORECASE)
-                    temp_pid = re.sub(r'[^a-zA-Z0-9]', '', temp_pid)  # Clean non-alphanumeric
+                    temp_pid = re.sub(r'[^a-zA-Z0-9]', '', temp_pid)
                     if temp_pid: extracted_pid_for_flagging = temp_pid
 
                 try:
@@ -1154,7 +1153,6 @@ class FPVSApp(ctk.CTk):
                     # 2) PREPROCESS
                     gui_queue.put({'type': 'log',
                                    'message': f"DEBUG [{f_name}]: Calling preprocess_raw. Configured stim_channel for potential preservation: '{stim_channel_name}'"})
-                    # preprocess_raw now returns raw_proc and num_kurtosis_bads
                     raw_proc, num_kurtosis_bads = self.preprocess_raw(raw.copy(), **params)
                     del raw;
                     gc.collect()
@@ -1164,7 +1162,6 @@ class FPVSApp(ctk.CTk):
                                        'message': f"Skipping file {f_name} due to preprocess error (raw_proc is None)."})
                         continue
 
-                    # Check for quality flag based on Kurtosis bads
                     if num_kurtosis_bads > max_bad_channels_alert_thresh:
                         alert_message = (f"QUALITY ALERT for {f_name} (PID: {extracted_pid_for_flagging}): "
                                          f"{num_kurtosis_bads} channels rejected by Kurtosis (threshold was {max_bad_channels_alert_thresh}). "
@@ -1179,14 +1176,15 @@ class FPVSApp(ctk.CTk):
 
                     gui_queue.put({'type': 'log',
                                    'message': f"DEBUG [{f_name}]: Channel names AFTER preprocess_raw: {raw_proc.ch_names}"})
-                    # ... (rest of the stim channel checks as before) ...
+                    if stim_channel_name in raw_proc.ch_names:  # Check after preprocess_raw
+                        gui_queue.put({'type': 'log',
+                                       'message': f"DEBUG [{f_name}]: Expected stim channel '{stim_channel_name}' IS PRESENT in raw_proc data."})
+                    else:
+                        gui_queue.put({'type': 'log',
+                                       'message': f"DEBUG [{f_name}]: Expected stim channel '{stim_channel_name}' IS NOT PRESENT in raw_proc data."})
 
-                    # 3) EVENT EXTRACTION (Conditional Logic from previous step)
-                    # ... (This part remains as per our last detailed version for event extraction) ...
-                    # --- Make sure this section uses 'event_id_map_from_gui' which is params['event_id_map'] ---
-                    # Example start:
+                    # 3) EVENT EXTRACTION
                     file_extension = os.path.splitext(f_path)[1].lower()
-                    # gui_event_id_map_from_params = params['event_id_map'] # Already have event_id_map_from_gui
 
                     if file_extension == ".set":
                         if hasattr(raw_proc, 'annotations') and raw_proc.annotations and len(raw_proc.annotations) > 0:
@@ -1282,10 +1280,9 @@ class FPVSApp(ctk.CTk):
                                        'message': f"CRITICAL WARNING [{f_name}]: Event extraction resulted in an empty events array. Epoching will not produce results."})
 
                     # 4) EPOCH for each condition
-                    # ... (Epoching loop remains the same, using event_id_map_from_gui and the derived 'events' array) ...
                     gui_queue.put({'type': 'log',
                                    'message': f"DEBUG [{f_name}]: Starting epoching based on GUI event_id_map: {event_id_map_from_gui}"})
-                    for lbl, num_id_val_gui in event_id_map_from_gui.items():  # Iterate through GUI map
+                    for lbl, num_id_val_gui in event_id_map_from_gui.items():
                         gui_queue.put({'type': 'log',
                                        'message': f"DEBUG [{f_name}]: Attempting to epoch for GUI label '{lbl}' (using Int ID: {num_id_val_gui}). Events array shape: {events.shape}"})
                         if events.size > 0 and num_id_val_gui in events[:, 2]:
@@ -1312,23 +1309,25 @@ class FPVSApp(ctk.CTk):
                         {'type': 'log', 'message': f"DEBUG [{f_name}]: Epoching loop for all GUI labels finished."})
 
                     # 5) OPTIONAL: save preprocessed .fif
-                    # ... (as before)
+                    if params.get('save_preprocessed',
+                                  False) and raw_proc is not None:  # save_preprocessed is now hardcoded False via _validate_inputs
+                        p_path = os.path.join(save_folder, f"{os.path.splitext(f_name)[0]}_preproc_raw.fif")
+                        try:
+                            gui_queue.put({'type': 'log', 'message': f"Saving preprocessed to: {p_path}"})
+                            raw_proc.save(p_path, overwrite=True, verbose=False)
+                        except Exception as e_save_fif:
+                            gui_queue.put({'type': 'log',
+                                           'message': f"Warn: Failed to save preprocessed file {p_path}: {e_save_fif}"})
 
                 except Exception as file_proc_err:
                     gui_queue.put({'type': 'log',
-                                   'message': f"!!! Error during main processing stages for {f_name}: {file_proc_err}\n{traceback.format_exc()}"})
+                                   'message': f"!!! Error during main processing stages for {f_name} (before post-processing): {file_proc_err}\n{traceback.format_exc()}"})
 
                 finally:
-                    # ... (Post-process and Cleanup Section as in previous version,
-                    # including the has_valid_data check and call to self.post_process) ...
-                    # The logic for this 'finally' block from the previous version of _processing_thread_func
-                    # which includes has_valid_data check, calling self.post_process, and memory cleanup,
-                    # should be placed here. I'm omitting it for brevity as it doesn't change for this specific request.
-                    # Ensure the variables for temporarily setting self.data_paths and self.preprocessed_data
-                    # use distinct names like current_file_original_app_data_paths_temp to avoid conflict with
-                    # original_app_data_paths defined at the start of the thread function.
                     gui_queue.put({'type': 'log',
                                    'message': f"DEBUG [{f_name}]: Entering finally block for post-processing and cleanup."})
+                    gui_queue.put({'type': 'log',
+                                   'message': f"DEBUG [{f_name}]: file_epochs before has_valid_data check. Keys: {list(file_epochs.keys()) if file_epochs is not None else 'None'}"})
                     if file_epochs:
                         for lbl_debug, epochs_list_debug in file_epochs.items():
                             if epochs_list_debug and epochs_list_debug[0] and isinstance(epochs_list_debug[0],
@@ -1353,9 +1352,9 @@ class FPVSApp(ctk.CTk):
                     if raw_proc is not None and has_valid_data:
                         gui_queue.put({'type': 'log',
                                        'message': f"--- Post‐processing & Saving Excel for {f_name} (has_valid_data is True) ---"})
-                        # Temporarily modify self for post_process call
-                        temp_original_data_paths = self.data_paths
-                        temp_original_preprocessed_data = self.preprocessed_data
+                        temp_original_data_paths = list(self.data_paths)  # Create copies
+                        temp_original_preprocessed_data = dict(self.preprocessed_data)
+
                         self.data_paths = [f_path]
                         self.preprocessed_data = file_epochs
                         try:
@@ -1363,9 +1362,10 @@ class FPVSApp(ctk.CTk):
                         except Exception as e_post:
                             gui_queue.put({'type': 'log',
                                            'message': f"!!! Post-processing/Excel error for {f_name}: {e_post}\n{traceback.format_exc()}"})
-                        finally:  # Restore original attributes on self
+                        finally:
                             self.data_paths = temp_original_data_paths
                             self.preprocessed_data = temp_original_preprocessed_data
+
                     elif raw_proc is not None and not has_valid_data:
                         gui_queue.put({'type': 'log',
                                        'message': f"Skipping Excel generation for {f_name} as no valid epochs were created (has_valid_data was False)."})
@@ -1374,7 +1374,6 @@ class FPVSApp(ctk.CTk):
                                        'message': f"Skipping Excel generation for {f_name} as preprocessed data (raw_proc) is None."})
 
                     gui_queue.put({'type': 'log', 'message': f"Cleaning up memory for {f_name}..."})
-                    # ... (memory cleanup as before) ...
                     if isinstance(file_epochs, dict):
                         for epochs_list_to_del in file_epochs.values():
                             if epochs_list_to_del and epochs_list_to_del[0] is not None:
@@ -1391,18 +1390,20 @@ class FPVSApp(ctk.CTk):
             # --- End of loop for one file ---
 
             # After processing all files, save the quality flagged list
-            if quality_flagged_files_info_for_run:
-                quality_file_path = os.path.join(save_folder, "quality_review_suggestions.txt")
+            if quality_flagged_files_info_for_run:  # Use the correct local variable name
+                # <<<< MODIFIED FILENAME HERE >>>>
+                quality_file_path = os.path.join(save_folder, "Potential_Outlier_Participants.txt")
                 try:
                     with open(quality_file_path, 'w') as qf:
-                        qf.write("PID,OriginalFilename,NumBadChannels,ThresholdUsed\n")
-                        for item in quality_flagged_files_info_for_run:
+                        qf.write("PID,OriginalFilename,NumBadChannelsIdentified,UserSetThreshold\n")  # Clarified header
+                        for item in quality_flagged_files_info_for_run:  # Use the correct local variable name
                             qf.write(
                                 f"{item['pid']},{item['filename']},{item['bad_channels_count']},{item['threshold_used']}\n")
                     gui_queue.put(
-                        {'type': 'log', 'message': f"Quality review suggestions saved to: {quality_file_path}"})
+                        {'type': 'log', 'message': f"Potential outlier participant list saved to: {quality_file_path}"})
                 except Exception as e_qf:
-                    gui_queue.put({'type': 'log', 'message': f"Error saving quality review file: {e_qf}"})
+                    gui_queue.put(
+                        {'type': 'log', 'message': f"Error saving potential outlier participant file: {e_qf}"})
 
             gui_queue.put({'type': 'done'})
 
