@@ -4,6 +4,9 @@
 Provides a Toplevel window for statistical analysis of FPVS results.
 Orchestrates UI (via stats_ui_builder), data handling, analysis,
 and outlier review (via stats_qc_outliers).
+
+Handles most of the statistical analysis after processing data via the main FPVS Toolbox window.
+
 """
 
 import os
