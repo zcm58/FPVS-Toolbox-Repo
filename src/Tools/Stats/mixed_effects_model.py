@@ -6,9 +6,7 @@ statsmodels MixedLM on long-format data.
 """
 
 import pandas as pd
-import logging
-
-logger = logging.getLogger(__name__)
+from .stats_logging import logger
 
 
 def run_mixed_effects_model(data: pd.DataFrame, dv_col: str, group_col: str, fixed_effects: list):
