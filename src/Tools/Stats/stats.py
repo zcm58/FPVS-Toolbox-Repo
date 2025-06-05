@@ -160,8 +160,11 @@ class StatsAnalysisWindow(ctk.CTkToplevel):
         self.condB_menu.grid(row=2, column=3, padx=5, pady=5, sticky="ew")
 
         ctk.CTkLabel(common_setup_frame, text="Post-hoc Factor:").grid(row=3, column=0, padx=5, pady=5, sticky="w")
-        ctk.CTkOptionMenu(common_setup_frame, variable=self.posthoc_factor_var,
-                          values=["condition", "roi"]).grid(row=3, column=1, padx=5, pady=5, sticky="ew")
+        ctk.CTkOptionMenu(
+            common_setup_frame,
+            variable=self.posthoc_factor_var,
+            values=["condition", "roi", "condition by roi"],
+        ).grid(row=3, column=1, padx=5, pady=5, sticky="ew")
 
         # --- Row 2: Section A - Summed BCA Analysis ---
         summed_bca_frame = ctk.CTkFrame(main_frame, fg_color="transparent")
@@ -653,15 +656,19 @@ class StatsAnalysisWindow(ctk.CTkToplevel):
 
         df_long = pd.DataFrame(long_format_data)
         factor = self.posthoc_factor_var.get()
-        if factor not in ["condition", "roi"]:
+        if factor not in ["condition", "roi", "condition by roi"]:
             messagebox.showerror("Input Error", f"Invalid factor selected for post-hoc tests: {factor}")
             self.results_textbox.configure(state="disabled")
             return
 
+        factor_col = factor
+        if factor == "condition by roi":
+            df_long[factor] = df_long["condition"].astype(str) + " | " + df_long["roi"].astype(str)
+
         output_text, results_df = run_posthoc_pairwise_tests(
             data=df_long,
             dv_col='value',
-            factor_col=factor,
+            factor_col=factor_col,
             subject_col='subject'
         )
 
