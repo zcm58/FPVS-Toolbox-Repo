@@ -49,8 +49,9 @@ python src/main.py
 ### Optional C++ Acceleration
 
 The `src/fast_cpp` directory contains a small C++ extension that can
-accelerate downsampling and filtering operations. Building the extension
-requires a C++ compiler and the `pybind11` package:
+accelerate downsampling and filtering operations. The FIR filtering now
+uses an FFT convolution routine implemented in C++ for improved performance.
+Building the extension requires a C++ compiler and the `pybind11` package:
 
 ```bash
 pip install pybind11
@@ -59,6 +60,9 @@ python src/fast_cpp/setup.py build_ext --inplace
 
 If the extension is unavailable, the toolbox will fall back to the pure
 Python implementation.
+
+After building the extension you can run `src/fast_cpp/benchmark_filter.py`
+to compare the speed of the C++ implementation against the Python fallback.
 
 ## Configuration and Settings
 
