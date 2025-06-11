@@ -49,9 +49,11 @@ python src/main.py
 ### Optional C++ Acceleration
 
 The `src/fast_cpp` directory contains a small C++ extension that can
+
 accelerate downsampling and filtering operations. The FIR filtering now
 uses an FFT convolution routine implemented in C++ for improved performance.
 Building the extension requires a C++ compiler and the `pybind11` package:
+
 
 ```bash
 pip install pybind11
