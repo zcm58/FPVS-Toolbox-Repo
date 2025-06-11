@@ -46,6 +46,20 @@ After installing the dependencies, start the GUI with:
 python src/main.py
 ```
 
+### Optional C++ Acceleration
+
+The `src/fast_cpp` directory contains a small C++ extension that can
+accelerate downsampling and filtering operations. Building the extension
+requires a C++ compiler and the `pybind11` package:
+
+```bash
+pip install pybind11
+python src/fast_cpp/setup.py build_ext --inplace
+```
+
+If the extension is unavailable, the toolbox will fall back to the pure
+Python implementation.
+
 ## Configuration and Settings
 
 User preferences are stored in `settings.ini` (generated automatically in a configuration folder such as `%APPDATA%\FPVS_Toolbox`). You can adjust appearance mode, default paths, event labels/IDs, and analysis parameters from the Settings window in the application.
