@@ -50,7 +50,8 @@ python src/main.py
 
 The `src/fast_cpp` directory contains a small C++ extension that can
 accelerate downsampling and filtering operations. Building the extension
-requires a C++ compiler and the `pybind11` package:
+requires a C++ compiler and the `pybind11` package. The build command
+can be executed from the repository root:
 
 ```bash
 pip install pybind11
