@@ -9,6 +9,15 @@ import numpy as np
 from scipy.stats import kurtosis
 import traceback
 
+# Try to import the optional C++ accelerated helpers
+try:  # pragma: no cover - may fail if extension isn't built
+    from .fast_processing import downsample_data, fir_filter_data
+    from fast_cpp import EXTENSION_AVAILABLE as FAST_EXT_AVAILABLE
+except Exception:  # pragma: no cover - safe fallback
+    downsample_data = None
+    fir_filter_data = None
+    FAST_EXT_AVAILABLE = False
+
 # Import DEFAULT_STIM_CHANNEL from config, assuming config.py is accessible
 # If config.py is in src, and Main_App is in src, this import needs adjustment
 # Assuming Main_App is a package, and config is at the same level as Main_App's parent (src)
@@ -128,7 +137,14 @@ def perform_preprocessing(raw_input: mne.io.BaseRaw,
             log_func(f"Downsample check for {filename_for_log}: Curr {sf:.1f}Hz, Tgt {downsample_rate}Hz.")
             if sf > downsample_rate:
                 try:
-                    raw.resample(downsample_rate, npad="auto", window='hann', verbose=False)
+                    if FAST_EXT_AVAILABLE and downsample_data:
+                        data = raw.get_data()
+                        new_data = downsample_data(data, sf, downsample_rate)
+                        new_info = raw.info.copy()
+                        new_info['sfreq'] = float(downsample_rate)
+                        raw = mne.io.RawArray(new_data, new_info, verbose=False)
+                    else:
+                        raw.resample(downsample_rate, npad="auto", window='hann', verbose=False)
                     log_func(f"Resampled {filename_for_log} to {raw.info['sfreq']:.1f}Hz.")
                 except Exception as resample_err:
                     log_func(f"Warn: Resampling failed for {filename_for_log}: {resample_err}")
@@ -145,9 +161,29 @@ def perform_preprocessing(raw_input: mne.io.BaseRaw,
                 low_trans_bw, high_trans_bw, filter_len_points = 0.1, 0.1, 8449
                 log_func(
                     f"Filtering {filename_for_log} ({l_freq if l_freq else 'DC'}-{h_freq if h_freq else 'Nyq'}Hz) ...")
-                raw.filter(l_freq, h_freq, method='fir', phase='zero-double', fir_window='hamming', fir_design='firwin',
-                           l_trans_bandwidth=low_trans_bw, h_trans_bandwidth=high_trans_bw,
-                           filter_length=filter_len_points, skip_by_annotation='edge', verbose=False)
+                if FAST_EXT_AVAILABLE and fir_filter_data:
+                    from numpy import hamming
+                    nyq = raw.info['sfreq'] / 2.0
+                    freq_band = [f for f in [l_freq, h_freq] if f]
+                    if not freq_band:
+                        coeffs = np.array([1.0])
+                    else:
+                        norm_band = [f / nyq for f in freq_band]
+                        num_taps = filter_len_points
+                        window = hamming(num_taps)
+                        t = np.arange(num_taps)
+                        center = (num_taps - 1) / 2.0
+                        sinc_func = np.sinc(2 * norm_band[0] * (t - center)) if h_freq is None else (
+                            np.sinc(2 * norm_band[1] * (t - center)) - np.sinc(2 * norm_band[0] * (t - center)))
+                        coeffs = sinc_func * window
+                        coeffs /= np.sum(coeffs)
+                    data = raw.get_data()
+                    new_data = fir_filter_data(data, coeffs.astype(float))
+                    raw = mne.io.RawArray(new_data, raw.info.copy(), verbose=False)
+                else:
+                    raw.filter(l_freq, h_freq, method='fir', phase='zero-double', fir_window='hamming',
+                               fir_design='firwin', l_trans_bandwidth=low_trans_bw, h_trans_bandwidth=high_trans_bw,
+                               filter_length=filter_len_points, skip_by_annotation='edge', verbose=False)
                 log_func(f"Filter OK for {filename_for_log}.")
             except Exception as e:
                 log_func(f"Warn: Filter failed for {filename_for_log}: {e}")
