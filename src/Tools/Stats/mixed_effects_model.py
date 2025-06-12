@@ -86,13 +86,24 @@ def run_mixed_effects_model(data: pd.DataFrame, dv_col: str, group_col: str, fix
             logger.info(
                 "Summary format unexpected. Building table from model parameters and p-values."
             )
-            df_result = pd.DataFrame({"Coef.": result.params, "P>|z|": result.pvalues})
-            df_result.index.name = "Effect"
-            df_result = df_result.reset_index()
+            df_result = pd.DataFrame({
+                "Effect": result.fe_params.index,
+                "Coef.": result.fe_params.values,
+                "Std.Err.": result.bse_fe,
+                "z": result.fe_params / result.bse_fe,
+                "P>|z|": result.pvalues.loc[result.fe_params.index],
+            })
+            conf_int = result.conf_int().loc[result.fe_params.index]
+            df_result["[0.025"] = conf_int[0]
+            df_result["0.975]"] = conf_int[1]
 
-        if df_result.columns[0] == "":
+        first_col = df_result.columns[0]
+        if first_col.strip() == "" or first_col.strip().lower() != "effect":
             logger.info("Renaming first column to 'Effect'.")
-            df_result = df_result.rename(columns={"": "Effect"})
+            df_result = df_result.rename(columns={first_col: "Effect"})
+
+        # Drop rows that do not correspond to fixed effects
+        df_result = df_result[~df_result["Effect"].str.lower().str.contains("group var|resid", na=False)]
 
         logger.info("Interpreting fixed effects results for user-friendly output.")
 
