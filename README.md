@@ -10,11 +10,11 @@ The FPVS Toolbox is a GUI based application for preprocessing, cleaning, and ana
 - Built in Statistical analysis tool with repeated-measures ANOVA, linear mixed-effects models, and post-hoc pairwise tests to check for significant FPVS oddball responses in the Frontal, Central, Parietal, and Occipital lobes
 - Image Resizer tool for quickly resizing images for PsychoPy experiments
 - Averaging utility for combining epochs across files prior to post‑processing (useful if one needs to combine two similar FPVS experiments prior to calculating BCA)
+- Publication quality BCA frequency plots
 
 ## Features currently under development:
 
 - Publication quality 2D heatmaps
-- Publication quality BCA frequency plots
 
 
 ## Installation
@@ -38,11 +38,18 @@ The application can also be launched from source on Windows. Clone the repositor
 - `scipy`
 - `customtkinter`
 - `statsmodels` (for statistical analyses)
+- `matplotlib`
 
 After installing the dependencies, start the GUI with:
 
 ```bash
 python src/main.py
+```
+
+To generate a BCA frequency plot from an Excel results file:
+
+```bash
+python -m Tools.bca_plotter results.xlsx -o bca_plot.png
 ```
 
 
