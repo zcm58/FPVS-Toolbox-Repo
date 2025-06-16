@@ -70,12 +70,13 @@ from config import (
 
 from Main_App.post_process import post_process as _external_post_process
 
-
 # Advanced averaging UI and core function
 from Tools.Average_Preprocessing import AdvancedAnalysisWindow
 
 # Image resizer
 from Tools.Image_Resizer import FPVSImageResizer
+# Heatmap generator
+from Tools.BCA_Heatmaps.heatmap_tool import BCAHeatmapTool
 
 # Statistics toolbox
 import Tools.Stats as stats
@@ -261,6 +262,12 @@ class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
         # We pass `self` so the new window is a child of the main app:
         win = FPVSImageResizer(self)
         win.geometry(self.settings.get('gui', 'resizer_size', '800x600'))
+
+    def open_heatmap_tool(self):
+        """Open the BCA Heatmap Generator tool."""
+        self.debug("Heatmap tool window requested")
+        win = BCAHeatmapTool(self)
+        win.geometry(self.settings.get('gui', 'heatmap_size', '700x600'))
 
 
     # --- Menu Methods ---

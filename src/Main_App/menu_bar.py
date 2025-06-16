@@ -43,6 +43,8 @@ class AppMenuBar:
         menubar_widget.add_cascade(label="Tools", menu=tools_menu)
         tools_menu.add_command(label="Stats Toolbox", command=self.app_ref.open_stats_analyzer)
         tools_menu.add_separator()
+        tools_menu.add_command(label="BCA Heatmaps", command=self.app_ref.open_heatmap_tool)
+        tools_menu.add_separator()
         tools_menu.add_command(label="Image_Resizer", command=self.app_ref.open_image_resizer)
         tools_menu.add_separator()
         tools_menu.add_command(

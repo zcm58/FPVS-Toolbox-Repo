@@ -24,7 +24,8 @@ DEFAULTS = {
         'main_size': '750x920',
         'stats_size': '700x650',
         'resizer_size': '600x600',
-        'advanced_size': '500x500'
+        'advanced_size': '500x500',
+        'heatmap_size': '700x600'
     },
     'stim': {
         'channel': 'Status'
