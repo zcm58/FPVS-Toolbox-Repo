@@ -76,6 +76,7 @@ from Tools.Average_Preprocessing import AdvancedAnalysisWindow
 
 # Image resizer
 from Tools.Image_Resizer import FPVSImageResizer
+from Tools.bca_plotter import BCAPlotterWindow
 
 # Statistics toolbox
 import Tools.Stats as stats
@@ -261,6 +262,12 @@ class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
         # We pass `self` so the new window is a child of the main app:
         win = FPVSImageResizer(self)
         win.geometry(self.settings.get('gui', 'resizer_size', '800x600'))
+
+    def open_bca_plotter(self):
+        """Open the BCA Plotter window."""
+        self.debug("BCA plotter window requested")
+        win = BCAPlotterWindow(self)
+        win.geometry(self.settings.get('gui', 'bca_plot_size', '600x300'))
 
 
     # --- Menu Methods ---

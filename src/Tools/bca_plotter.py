@@ -13,6 +13,17 @@ from typing import Iterable, Optional, Sequence, Tuple
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import customtkinter as ctk
+import tkinter as tk
+from tkinter import filedialog, messagebox
+
+from config import init_fonts, FONT_MAIN
+
+__all__ = [
+    "load_bca_values",
+    "generate_bca_plot",
+    "BCAPlotterWindow",
+]
 
 
 def load_bca_values(excel_path: str | Path, roi_channels: Optional[Sequence[str]] = None
@@ -86,6 +97,60 @@ def generate_bca_plot(
         plt.close(fig)
     else:
         plt.show()
+
+
+class BCAPlotterWindow(ctk.CTkToplevel):
+    """Simple window for selecting a results file and plotting BCA data."""
+
+    def __init__(self, master: tk.Misc) -> None:
+        super().__init__(master)
+        self.transient(master)
+        init_fonts()
+        self.option_add("*Font", str(FONT_MAIN), 80)
+        self.title("BCA Frequency Plotter")
+        self.geometry("600x300")
+        self.lift()
+        self.attributes("-topmost", True)
+        self.after(0, lambda: self.attributes("-topmost", False))
+        self.focus_force()
+
+        self.file_var = tk.StringVar(master=self)
+        self.roi_var = tk.StringVar(master=self)
+        self._build_ui()
+
+    def _build_ui(self) -> None:
+        pad = 10
+
+        ctk.CTkLabel(self, text="Results Excel File").pack(anchor="w", padx=pad, pady=(pad, 0))
+        entry_frame = ctk.CTkFrame(self, fg_color="transparent")
+        entry_frame.pack(fill="x", padx=pad)
+        ctk.CTkEntry(entry_frame, textvariable=self.file_var).pack(side="left", fill="x", expand=True)
+        ctk.CTkButton(entry_frame, text="Browse", command=self._choose_file).pack(side="left", padx=(pad, 0))
+
+        ctk.CTkLabel(self, text="ROI Channels (comma)").pack(anchor="w", padx=pad, pady=(pad, 0))
+        ctk.CTkEntry(self, textvariable=self.roi_var).pack(fill="x", padx=pad)
+
+        btn_frame = ctk.CTkFrame(self, fg_color="transparent")
+        btn_frame.pack(pady=pad)
+        ctk.CTkButton(btn_frame, text="Plot", command=self._plot).pack(side="left", padx=(0, pad))
+        ctk.CTkButton(btn_frame, text="Close", command=self.destroy).pack(side="left")
+
+    def _choose_file(self) -> None:
+        path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])
+        if path:
+            self.file_var.set(path)
+
+    def _plot(self) -> None:
+        file_path = self.file_var.get()
+        if not file_path:
+            messagebox.showwarning("No File", "Please select a results file.")
+            return
+        roi_text = self.roi_var.get().strip()
+        roi_list = [ch.strip() for ch in roi_text.split(",") if ch.strip()] or None
+        try:
+            generate_bca_plot(file_path, roi_channels=roi_list)
+        except Exception as e:  # pragma: no cover - GUI error path
+            messagebox.showerror("Error", str(e))
 
 
 if __name__ == "__main__":

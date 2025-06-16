@@ -52,6 +52,8 @@ To generate a BCA frequency plot from an Excel results file:
 python -m Tools.bca_plotter results.xlsx -o bca_plot.png
 ```
 
+The BCA Plotter is also available from the **Tools** menu inside the GUI.
+
 
 
 ## License

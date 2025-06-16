@@ -24,6 +24,7 @@ DEFAULTS = {
         'main_size': '750x920',
         'stats_size': '700x650',
         'resizer_size': '600x600',
+        'bca_plot_size': '600x300',
         'advanced_size': '500x500'
     },
     'stim': {

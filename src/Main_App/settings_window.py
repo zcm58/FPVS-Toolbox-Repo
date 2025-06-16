@@ -80,30 +80,35 @@ class SettingsWindow(ctk.CTkToplevel):
         ctk.CTkEntry(gen_tab, textvariable=resize_var).grid(row=6, column=1, columnspan=2, sticky="ew", padx=pad)
         self.resize_var = resize_var
 
-        ctk.CTkLabel(gen_tab, text="Advanced Analysis Size (WxH)").grid(row=7, column=0, sticky="w", padx=pad)
+        ctk.CTkLabel(gen_tab, text="BCA Plotter Size (WxH)").grid(row=7, column=0, sticky="w", padx=pad)
+        plot_size_var = tk.StringVar(value=self.manager.get('gui', 'bca_plot_size', '600x300'))
+        ctk.CTkEntry(gen_tab, textvariable=plot_size_var).grid(row=7, column=1, columnspan=2, sticky="ew", padx=pad)
+        self.plot_size_var = plot_size_var
+
+        ctk.CTkLabel(gen_tab, text="Advanced Analysis Size (WxH)").grid(row=8, column=0, sticky="w", padx=pad)
         adv_var = tk.StringVar(value=self.manager.get('gui', 'advanced_size', '1050x850'))
-        ctk.CTkEntry(gen_tab, textvariable=adv_var).grid(row=7, column=1, columnspan=2, sticky="ew", padx=pad)
+        ctk.CTkEntry(gen_tab, textvariable=adv_var).grid(row=8, column=1, columnspan=2, sticky="ew", padx=pad)
         self.adv_var = adv_var
 
-        ctk.CTkLabel(gen_tab, text="Stim Channel").grid(row=8, column=0, sticky="w", padx=pad, pady=(pad, 0))
+        ctk.CTkLabel(gen_tab, text="Stim Channel").grid(row=9, column=0, sticky="w", padx=pad, pady=(pad, 0))
         stim_var = tk.StringVar(value=self.manager.get('stim', 'channel', 'Status'))
-        ctk.CTkEntry(gen_tab, textvariable=stim_var).grid(row=8, column=1, columnspan=2, sticky="ew", padx=pad, pady=(pad, 0))
+        ctk.CTkEntry(gen_tab, textvariable=stim_var).grid(row=9, column=1, columnspan=2, sticky="ew", padx=pad, pady=(pad, 0))
         self.stim_var = stim_var
 
-        ctk.CTkLabel(gen_tab, text="Default Conditions (comma)").grid(row=9, column=0, sticky="w", padx=pad, pady=(pad, 0))
+        ctk.CTkLabel(gen_tab, text="Default Conditions (comma)").grid(row=10, column=0, sticky="w", padx=pad, pady=(pad, 0))
         cond_var = tk.StringVar(value=self.manager.get('events', 'labels', ''))
-        ctk.CTkEntry(gen_tab, textvariable=cond_var).grid(row=9, column=1, columnspan=2, sticky="ew", padx=pad, pady=(pad, 0))
+        ctk.CTkEntry(gen_tab, textvariable=cond_var).grid(row=10, column=1, columnspan=2, sticky="ew", padx=pad, pady=(pad, 0))
         self.cond_var = cond_var
 
-        ctk.CTkLabel(gen_tab, text="Default IDs (comma)").grid(row=10, column=0, sticky="w", padx=pad)
+        ctk.CTkLabel(gen_tab, text="Default IDs (comma)").grid(row=11, column=0, sticky="w", padx=pad)
         id_var = tk.StringVar(value=self.manager.get('events', 'ids', ''))
-        ctk.CTkEntry(gen_tab, textvariable=id_var).grid(row=10, column=1, columnspan=2, sticky="ew", padx=pad)
+        ctk.CTkEntry(gen_tab, textvariable=id_var).grid(row=11, column=1, columnspan=2, sticky="ew", padx=pad)
         self.id_var = id_var
 
         debug_default = self.manager.get('debug', 'enabled', 'False').lower() == 'true'
         self.debug_var = tk.BooleanVar(value=debug_default)
-        ctk.CTkLabel(gen_tab, text="Debug Mode").grid(row=11, column=0, sticky="w", padx=pad, pady=(pad, 0))
-        ctk.CTkCheckBox(gen_tab, text="Enable", variable=self.debug_var).grid(row=11, column=1, sticky="w", padx=pad, pady=(pad, 0))
+        ctk.CTkLabel(gen_tab, text="Debug Mode").grid(row=12, column=0, sticky="w", padx=pad, pady=(pad, 0))
+        ctk.CTkCheckBox(gen_tab, text="Enable", variable=self.debug_var).grid(row=12, column=1, sticky="w", padx=pad, pady=(pad, 0))
 
         # --- Stats Tab ---
         ctk.CTkLabel(stats_tab, text="FPVS Base Frequency (Hz)").grid(row=0, column=0, sticky="w", padx=pad, pady=(pad, 0))
@@ -154,6 +159,7 @@ class SettingsWindow(ctk.CTkToplevel):
         self.manager.set('gui', 'main_size', self.main_var.get())
         self.manager.set('gui', 'stats_size', self.stats_var.get())
         self.manager.set('gui', 'resizer_size', self.resize_var.get())
+        self.manager.set('gui', 'bca_plot_size', self.plot_size_var.get())
         self.manager.set('gui', 'advanced_size', self.adv_var.get())
         self.manager.set('stim', 'channel', self.stim_var.get())
         self.manager.set('events', 'labels', self.cond_var.get())
