@@ -49,6 +49,11 @@ class AppMenuBar:
             label="Average Epochs in Pre-Processing Phase",
             command=self.app_ref.open_advanced_analysis_window,
         )
+        tools_menu.add_separator()
+        tools_menu.add_command(
+            label="BCA Scalp Maps",
+            command=self.app_ref.open_bca_scalp_maps,
+        )
 
         # === Help menu ===
         help_menu = tk.Menu(menubar_widget, tearoff=0)

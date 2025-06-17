@@ -76,6 +76,7 @@ from Tools.Average_Preprocessing import AdvancedAnalysisWindow
 
 # Image resizer
 from Tools.Image_Resizer import FPVSImageResizer
+from Tools.Scalp_Map import BcaScalpMapWindow
 
 # Statistics toolbox
 import Tools.Stats as stats
@@ -261,6 +262,12 @@ class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
         # We pass `self` so the new window is a child of the main app:
         win = FPVSImageResizer(self)
         win.geometry(self.settings.get('gui', 'resizer_size', '800x600'))
+
+    def open_bca_scalp_maps(self):
+        """Launch the BCA scalp map generator window."""
+        self.debug("BCA scalp map window requested")
+        win = BcaScalpMapWindow(self)
+        win.geometry("500x400")
 
 
     # --- Menu Methods ---
