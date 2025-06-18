@@ -8,7 +8,7 @@ import tkinter as tk
 import customtkinter as ctk
 import traceback
 import warnings
-from typing import Optional, Dict, Any
+from typing import Optional, Dict
 
 try:
     # When running ``main.py`` directly, relative imports like ``..config``

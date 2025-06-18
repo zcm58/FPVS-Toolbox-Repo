@@ -6,7 +6,6 @@ This module implements functions that take the groups configured in the
 FPVS application's loading, preprocessing and post-processing callbacks.
 """
 
-import os
 import gc
 import logging
 import traceback
@@ -14,7 +13,6 @@ from pathlib import Path
 from typing import List, Dict, Any, Callable, Optional, Union
 
 import mne
-import numpy as np
 import threading
 
 # Set up module level logger

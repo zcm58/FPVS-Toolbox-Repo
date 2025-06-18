@@ -4,7 +4,6 @@
 Manages the creation of the "Processing Options" and "Preprocessing Parameters"
 UI panels for the FPVS Toolbox.
 """
-import tkinter as tk
 import customtkinter as ctk
 import warnings
 

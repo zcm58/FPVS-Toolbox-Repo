@@ -5,7 +5,6 @@ messages are shown when something is missing so the pipeline
 doesn't run with invalid settings."""
 import os
 import traceback
-import tkinter as tk
 from tkinter import messagebox
 from config import DEFAULT_STIM_CHANNEL
 
