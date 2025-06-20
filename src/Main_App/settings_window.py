@@ -7,7 +7,7 @@ user.
 """
 
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 import customtkinter as ctk
 
 from config import init_fonts, FONT_MAIN
@@ -28,6 +28,10 @@ class SettingsWindow(ctk.CTkToplevel):
         # is not clipped on some platforms
         self.geometry("600x600")
         self.resizable(False, False)
+        self._section_map = {
+            'General': ['appearance', 'paths', 'gui', 'stim', 'events', 'debug'],
+            'Stats': ['analysis', 'rois']
+        }
         self._build_ui()
         # Bring settings window to the front when opened
         self.lift()
@@ -46,6 +50,7 @@ class SettingsWindow(ctk.CTkToplevel):
         stats_tab = tabview.add("Stats")
         gen_tab.columnconfigure(1, weight=1)
         stats_tab.columnconfigure(1, weight=1)
+        self._tabview = tabview
 
         # --- General Tab ---
         ctk.CTkLabel(gen_tab, text="Appearance", font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, columnspan=2, pady=(pad, 0))
@@ -105,6 +110,9 @@ class SettingsWindow(ctk.CTkToplevel):
         ctk.CTkLabel(gen_tab, text="Debug Mode").grid(row=11, column=0, sticky="w", padx=pad, pady=(pad, 0))
         ctk.CTkCheckBox(gen_tab, text="Enable", variable=self.debug_var).grid(row=11, column=1, sticky="w", padx=pad, pady=(pad, 0))
 
+        ctk.CTkButton(gen_tab, text="Reset to Defaults",
+                       command=lambda: self._reset_tab('General')).grid(row=12, column=0, columnspan=3, pady=(pad, 0))
+
         # --- Stats Tab ---
         ctk.CTkLabel(stats_tab, text="FPVS Base Frequency (Hz)").grid(row=0, column=0, sticky="w", padx=pad, pady=(pad, 0))
         base_var = tk.StringVar(value=self.manager.get('analysis', 'base_freq', '6.0'))
@@ -133,6 +141,9 @@ class SettingsWindow(ctk.CTkToplevel):
         stats_tab.rowconfigure(5, weight=1)
         ctk.CTkButton(stats_tab, text="+ Add ROI", command=self.roi_editor.add_entry).grid(row=6, column=0, columnspan=3, sticky="w", padx=pad, pady=(0, pad))
 
+        ctk.CTkButton(stats_tab, text="Reset to Defaults",
+                       command=lambda: self._reset_tab('Stats')).grid(row=7, column=0, columnspan=3, pady=(0, pad))
+
         btn_frame = ctk.CTkFrame(self, fg_color="transparent")
         btn_frame.grid(row=1, column=0, pady=(0, pad))
         ctk.CTkButton(btn_frame, text="Reset to Defaults", command=self._reset).pack(side="left", padx=pad)
@@ -146,6 +157,38 @@ class SettingsWindow(ctk.CTkToplevel):
     def _reset(self):
         self.manager.reset()
         self.destroy()
+
+    def _reset_tab(self, name):
+        if not messagebox.askyesno(
+            "Reset Confirmation",
+            f"WARNING: you are about to return all {name} settings to their default values. Do you wish to continue?"):
+            return
+        sections = self._section_map.get(name, [])
+        self.manager.reset_sections(sections)
+        if name == 'General':
+            self._load_general()
+        elif name == 'Stats':
+            self._load_stats()
+
+    def _load_general(self):
+        self.mode_var.set(self.manager.get('appearance', 'mode', 'System'))
+        self.data_var.set(self.manager.get('paths', 'data_folder', ''))
+        self.out_var.set(self.manager.get('paths', 'output_folder', ''))
+        self.main_var.set(self.manager.get('gui', 'main_size', '750x920'))
+        self.stats_var.set(self.manager.get('gui', 'stats_size', '700x650'))
+        self.resize_var.set(self.manager.get('gui', 'resizer_size', '600x600'))
+        self.adv_var.set(self.manager.get('gui', 'advanced_size', '500x500'))
+        self.stim_var.set(self.manager.get('stim', 'channel', 'Status'))
+        self.cond_var.set(self.manager.get('events', 'labels', ''))
+        self.id_var.set(self.manager.get('events', 'ids', ''))
+        self.debug_var.set(self.manager.get('debug', 'enabled', 'False').lower() == 'true')
+
+    def _load_stats(self):
+        self.base_var.set(self.manager.get('analysis', 'base_freq', '6.0'))
+        self.odd_var.set(self.manager.get('analysis', 'oddball_freq', '1.2'))
+        self.bca_var.set(self.manager.get('analysis', 'bca_upper_limit', '16.8'))
+        self.alpha_var.set(self.manager.get('analysis', 'alpha', '0.05'))
+        self.roi_editor.set_pairs(self.manager.get_roi_pairs())
 
     def _save(self):
         self.manager.set('appearance', 'mode', self.mode_var.get())

@@ -85,6 +85,16 @@ class SettingsManager:
         self.config.read_dict(DEFAULTS)
         self.save()
 
+    def reset_sections(self, sections: List[str]) -> None:
+        """Reset only the specified sections to their default values."""
+        for section in sections:
+            if section in DEFAULTS:
+                if not self.config.has_section(section):
+                    self.config.add_section(section)
+                for opt, val in DEFAULTS[section].items():
+                    self.config.set(section, opt, val)
+        self.save()
+
     def get(self, section: str, option: str, fallback: str = '') -> str:
         return self.config.get(section, option, fallback=fallback)
 
