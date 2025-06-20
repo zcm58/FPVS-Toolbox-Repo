@@ -5,6 +5,7 @@ from config import FONT_BOLD
 from . import stats_export
 
 
+
 def create_widgets(self):
     validate_num_cmd = (self.register(self._validate_numeric), '%P')
 
@@ -38,25 +39,30 @@ def create_widgets(self):
     buttons_summed_frame.pack(fill="x", padx=0, pady=0)
     buttons_summed_frame.grid_columnconfigure(0, weight=1)
     buttons_summed_frame.grid_columnconfigure(1, weight=1)
+
+    from . import stats as stats_mod
+    roi_options = [stats_mod.ALL_ROIS_OPTION] + list(stats_mod.ROIS.keys())
+    self.roi_menu = ctk.CTkOptionMenu(buttons_summed_frame, variable=self.roi_var, values=roi_options)
+    self.roi_menu.grid(row=0, column=0, columnspan=2, padx=5, pady=(0, 5), sticky="ew")
     # Paired t-tests were removed; only RM-ANOVA remains
     ctk.CTkButton(
         buttons_summed_frame,
         text="Run RM-ANOVA (Summed BCA)",
         command=self.run_rm_anova,
-    ).grid(row=0, column=0, padx=5, pady=(0, 5), sticky="ew")
+    ).grid(row=1, column=0, padx=5, pady=(0, 5), sticky="ew")
 
     ctk.CTkButton(
         buttons_summed_frame,
         text="Run Mixed Model",
         command=self.run_mixed_model,
-    ).grid(row=1, column=0, padx=5, pady=(0, 5), sticky="ew")
+    ).grid(row=2, column=0, padx=5, pady=(0, 5), sticky="ew")
 
     self.run_posthoc_btn = ctk.CTkButton(
         buttons_summed_frame,
         text="Run Interaction Post-hocs",
         command=self.run_interaction_posthocs,
     )
-    self.run_posthoc_btn.grid(row=2, column=0, padx=5, pady=(0, 5), sticky="ew")
+    self.run_posthoc_btn.grid(row=3, column=0, padx=5, pady=(0, 5), sticky="ew")
 
     self.export_rm_anova_btn = ctk.CTkButton(
         buttons_summed_frame,
@@ -68,7 +74,7 @@ def create_widgets(self):
             log_func=self.log_to_main_app,
         ),
     )
-    self.export_rm_anova_btn.grid(row=0, column=1, padx=5, pady=(0, 5), sticky="ew")
+    self.export_rm_anova_btn.grid(row=1, column=1, padx=5, pady=(0, 5), sticky="ew")
 
     self.export_mixed_model_btn = ctk.CTkButton(
         buttons_summed_frame,
@@ -80,7 +86,7 @@ def create_widgets(self):
             log_func=self.log_to_main_app,
         ),
     )
-    self.export_mixed_model_btn.grid(row=1, column=1, padx=5, pady=(0, 5), sticky="ew")
+    self.export_mixed_model_btn.grid(row=2, column=1, padx=5, pady=(0, 5), sticky="ew")
 
     self.export_posthoc_btn = ctk.CTkButton(
         buttons_summed_frame,
@@ -93,7 +99,7 @@ def create_widgets(self):
             log_func=self.log_to_main_app,
         ),
     )
-    self.export_posthoc_btn.grid(row=2, column=1, padx=5, pady=(0, 5), sticky="ew")
+    self.export_posthoc_btn.grid(row=3, column=1, padx=5, pady=(0, 5), sticky="ew")
 
 
     # --- Row 3: Section B - Harmonic Significance Check ---

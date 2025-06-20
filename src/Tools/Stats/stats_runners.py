@@ -15,6 +15,7 @@ from .posthoc_tests import (
     run_interaction_posthocs as perform_interaction_posthocs,
 )
 from .stats_helpers import load_rois_from_settings, apply_rois_to_modules
+from .stats_analysis import ALL_ROIS_OPTION
 
 # These variables are set from settings at runtime
 ROIS = {}
@@ -35,13 +36,15 @@ def run_rm_anova(self):
         self.results_textbox.configure(state="disabled");
         return
 
+    selected_roi = self.roi_var.get()
     long_format_data = []
     for pid, cond_data in self.all_subject_data.items():
         for cond_name, roi_data in cond_data.items():
             for roi_name, value in roi_data.items():
+                if selected_roi != ALL_ROIS_OPTION and roi_name != selected_roi:
+                    continue
                 if not pd.isna(value):
-                    long_format_data.append(
-                        {'subject': pid, 'condition': cond_name, 'roi': roi_name, 'value': value})
+                    long_format_data.append({'subject': pid, 'condition': cond_name, 'roi': roi_name, 'value': value})
 
     if not long_format_data:
         messagebox.showerror("Data Error", "No valid data available for RM-ANOVA after filtering NaNs.");
@@ -227,10 +230,13 @@ def run_mixed_model(self):
         self.results_textbox.configure(state="disabled")
         return
 
+    selected_roi = self.roi_var.get()
     long_format_data = []
     for pid, cond_data in self.all_subject_data.items():
         for cond_name, roi_data in cond_data.items():
             for roi_name, value in roi_data.items():
+                if selected_roi != ALL_ROIS_OPTION and roi_name != selected_roi:
+                    continue
                 if not pd.isna(value):
                     long_format_data.append({'subject': pid, 'condition': cond_name, 'roi': roi_name, 'value': value})
 
@@ -303,10 +309,13 @@ def run_posthoc_tests(self):
         self.results_textbox.configure(state="disabled")
         return
 
+    selected_roi = self.roi_var.get()
     long_format_data = []
     for pid, cond_data in self.all_subject_data.items():
         for cond_name, roi_data in cond_data.items():
             for roi_name, value in roi_data.items():
+                if selected_roi != ALL_ROIS_OPTION and roi_name != selected_roi:
+                    continue
                 if not pd.isna(value):
                     long_format_data.append({'subject': pid, 'condition': cond_name, 'roi': roi_name, 'value': value})
 
@@ -370,13 +379,15 @@ def run_interaction_posthocs(self):
         self.run_posthoc_btn.configure(state="normal")
         return
 
+    selected_roi = self.roi_var.get()
     long_format_data = []
     for pid, cond_data in self.all_subject_data.items():
         for cond_name, roi_data in cond_data.items():
             for roi_name, value in roi_data.items():
+                if selected_roi != ALL_ROIS_OPTION and roi_name != selected_roi:
+                    continue
                 if not pd.isna(value):
-                    long_format_data.append(
-                        {'subject': pid, 'condition': cond_name, 'roi': roi_name, 'value': value})
+                    long_format_data.append({'subject': pid, 'condition': cond_name, 'roi': roi_name, 'value': value})
 
     if not long_format_data:
         messagebox.showerror("Data Error", "Could not assemble any data for post-hoc tests.")
@@ -483,6 +494,7 @@ def run_harmonic_check(self):
     self.harmonic_check_results_data.clear()
 
     selected_metric = self.harmonic_metric_var.get()
+    selected_roi = self.roi_var.get()
     try:
         mean_value_threshold = float(self.harmonic_threshold_var.get())
     except ValueError:
@@ -510,6 +522,8 @@ def run_harmonic_check(self):
         found_significant_in_this_condition = False
 
         for roi_name in ROIS.keys():
+            if selected_roi != ALL_ROIS_OPTION and roi_name != selected_roi:
+                continue
             # Determine included frequencies based on a sample file for this condition
             sample_file_path = None
             for pid_s in self.subjects:  # Find first subject with data for this condition
@@ -532,6 +546,7 @@ def run_harmonic_check(self):
                     loaded_dataframes[sample_file_path] = pd.read_excel(sample_file_path,
                                                                         sheet_name=selected_metric,
                                                                         index_col="Electrode")
+                    loaded_dataframes[sample_file_path].index = loaded_dataframes[sample_file_path].index.astype(str).str.upper()
 
                 sample_df_cols = loaded_dataframes[sample_file_path].columns
                 included_freq_values = self._get_included_freqs(sample_df_cols)
@@ -566,6 +581,7 @@ def run_harmonic_check(self):
                             self.log_to_main_app(
                                 f"Cache miss for {os.path.basename(file_path)}. Loading sheet: '{selected_metric}'")
                             current_df = pd.read_excel(file_path, sheet_name=selected_metric, index_col="Electrode")
+                            current_df.index = current_df.index.astype(str).str.upper()
                             loaded_dataframes[file_path] = current_df  # Cache it
                         except FileNotFoundError:
                             self.log_to_main_app(

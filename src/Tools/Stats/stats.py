@@ -149,6 +149,8 @@ class StatsAnalysisWindow(ctk.CTkToplevel):
         """Reload ROI definitions from settings and update all modules."""
         rois_from_settings = load_rois_from_settings(getattr(self.master_app, "settings", None))
         apply_rois_to_modules(rois_from_settings)
+        if self.roi_menu is not None:
+            self.roi_menu.configure(values=[ALL_ROIS_OPTION] + list(ROIS.keys()))
 
     # Bind imported methods to keep class API unchanged
     browse_folder = browse_folder
