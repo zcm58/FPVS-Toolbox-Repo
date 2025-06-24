@@ -24,7 +24,9 @@ def _load_data(fif_path: str) -> mne.Evoked:
 
 def _default_template_location() -> str:
     """Return the directory where the template MRI should reside."""
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    base_dir = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "..")
+    )
     return os.path.join(base_dir, "fsaverage")
 
 
@@ -79,6 +81,7 @@ def _prepare_forward(
     """Construct a forward model using MRI info from settings or fsaverage."""
     stored_dir = settings.get("loreta", "mri_path", "")
     subject = "fsaverage"
+r
     if not stored_dir or not os.path.isdir(stored_dir):
         log_func(
             "Default MRI template not found. Downloading 'fsaverage'. This may take a few minutes..."
@@ -92,10 +95,12 @@ def _prepare_forward(
         # ``configparser.ConfigParser`` requires string values
         settings.set("loreta", "mri_path", str(fs_path))
 
+
         try:
             settings.save()
         except Exception:
             pass
+
 
         log_func(f"Template downloaded to: {fs_path}")
 
@@ -105,6 +110,7 @@ def _prepare_forward(
         subjects_dir = os.path.dirname(stored_dir)
     else:
         subjects_dir = stored_dir
+
 
     # Use fsaverage transformation if no custom trans file is specified
     trans = settings.get("paths", "trans_file", "fsaverage")
