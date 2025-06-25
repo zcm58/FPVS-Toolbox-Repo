@@ -193,6 +193,14 @@ class SettingsWindow(ctk.CTkToplevel):
             variable=self.auto_loc_var,
         ).grid(row=5, column=0, columnspan=2, sticky="w", padx=pad)
 
+        run_loreta_default = self.manager.get('loreta', 'run_in_pipeline', 'True').lower() == 'true'
+        self.run_loreta_var = tk.BooleanVar(value=run_loreta_default)
+        ctk.CTkCheckBox(
+            loreta_tab,
+            text="Run LORETA in main processing pipeline?",
+            variable=self.run_loreta_var,
+        ).grid(row=6, column=0, columnspan=2, sticky="w", padx=pad)
+
         btn_frame = ctk.CTkFrame(self, fg_color="transparent")
         btn_frame.grid(row=1, column=0, pady=(0, pad))
         ctk.CTkButton(btn_frame, text="Reset to Defaults", command=self._reset).pack(side="left", padx=pad)
@@ -232,6 +240,11 @@ class SettingsWindow(ctk.CTkToplevel):
             'loreta',
             'auto_oddball_localization',
             str(self.auto_loc_var.get()),
+        )
+        self.manager.set(
+            'loreta',
+            'run_in_pipeline',
+            str(self.run_loreta_var.get()),
         )
         prev_debug = self.manager.get('debug', 'enabled', 'False').lower() == 'true'
         self.manager.set('debug', 'enabled', str(self.debug_var.get()))

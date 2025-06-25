@@ -49,7 +49,8 @@ DEFAULTS = {
         'loreta_high_freq': '40.0',
         'oddball_harmonics': '1,2,3',
         'loreta_snr': '3.0',
-        'auto_oddball_localization': 'False'
+        'auto_oddball_localization': 'False',
+        'run_in_pipeline': 'True'
     },
     'debug': {
         'enabled': 'False'
@@ -91,6 +92,7 @@ class SettingsManager:
                 'oddball_harmonics',
                 'loreta_snr',
                 'auto_oddball_localization',
+                'run_in_pipeline',
             ):
                 if not existing.has_option('loreta', opt):
                     missing_loreta = True
