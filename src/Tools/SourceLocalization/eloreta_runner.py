@@ -16,6 +16,7 @@ if os.environ.get("MNE_3D_BACKEND", "").lower() != "pyvistaqt":
     os.environ["MNE_3D_BACKEND"] = "pyvistaqt"
 
 import numpy as np
+import imageio.v2 as imageio
 import mne
 from Main_App.settings_manager import SettingsManager
 from . import source_localization
@@ -332,6 +333,29 @@ def _add_brain_labels(brain: mne.viz.Brain, left: str, right: str) -> None:
         brain.add_text(0.5, 0.95, right, name="rh_label", font_size=10)
     except Exception:
         logger.debug("Failed to add hemisphere labels", exc_info=True)
+
+
+def save_brain_image(brain: mne.viz.Brain, path: str, alpha: float = 1.0) -> None:
+    """Save a screenshot of ``brain`` supporting transparency."""
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+    except Exception:
+        pass
+
+    if alpha < 1.0 and hasattr(brain, "screenshot"):
+        try:
+            array = brain.screenshot(mode="rgb", transparent=True)
+            imageio.imwrite(path, array)
+            logger.debug("Saved transparent screenshot to %s", path)
+            return
+        except Exception:
+            logger.debug("Transparent screenshot failed", exc_info=True)
+
+    try:
+        brain.save_image(path)
+        logger.debug("Saved image using Brain.save_image to %s", path)
+    except Exception:
+        logger.debug("brain.save_image failed", exc_info=True)
 
 
 def _load_data(fif_path: str) -> mne.Evoked:
@@ -756,9 +780,11 @@ def run_source_localization(
             ("dorsal", "top"),
         ]:
             brain.show_view(view)
-            brain.save_image(os.path.join(output_dir, f"{name}.png"))
+            save_brain_image(
+                brain, os.path.join(output_dir, f"{name}.png"), alpha=alpha
+            )
         # Save the current view as an additional screenshot
-        brain.save_image(os.path.join(output_dir, "overview.png"))
+        save_brain_image(brain, os.path.join(output_dir, "overview.png"), alpha=alpha)
     if export_rois:
         try:
             roi_path = os.path.join(output_dir, "roi_values.csv")

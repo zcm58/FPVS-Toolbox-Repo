@@ -152,12 +152,19 @@ class SourceLocalizationWindow(ctk.CTkToplevel):
 
         compare_btn.grid(row=12, column=0, columnspan=3, pady=(0, PAD_Y))
 
+        export_btn = ctk.CTkButton(
+            frame,
+            text="Export Transparent PNGs",
+            command=self._export_pngs,
+        )
+
+        export_btn.grid(row=13, column=0, columnspan=3, pady=(0, PAD_Y))
 
         self.progress_bar = ctk.CTkProgressBar(frame, orientation="horizontal", variable=self.progress_var)
-        self.progress_bar.grid(row=13, column=0, columnspan=3, sticky="ew", padx=PAD_X, pady=(0, PAD_Y))
+        self.progress_bar.grid(row=14, column=0, columnspan=3, sticky="ew", padx=PAD_X, pady=(0, PAD_Y))
         self.progress_bar.set(0)
 
-        ctk.CTkLabel(frame, textvariable=self.remaining_var).grid(row=14, column=0, columnspan=3, sticky="w", padx=PAD_X, pady=(0, PAD_Y))
+        ctk.CTkLabel(frame, textvariable=self.remaining_var).grid(row=15, column=0, columnspan=3, sticky="w", padx=PAD_X, pady=(0, PAD_Y))
 
 
     def _browse_file(self):
@@ -421,4 +428,28 @@ class SourceLocalizationWindow(ctk.CTkToplevel):
         except Exception as err:
             log_func(f"STC viewer failed: {err}")
             messagebox.showerror("Error", str(err))
+
+    def _export_pngs(self) -> None:
+        """Export transparent screenshots from the current Brain viewer."""
+        if self.brain is None:
+            messagebox.showerror("Error", "No brain viewer open.")
+            return
+        folder = filedialog.askdirectory(title="Select Export Folder", parent=self)
+        if not folder:
+            return
+        alpha = self.alpha_var.get()
+        for view, name in [
+            ("lat", "side"),
+            ("rostral", "frontal"),
+            ("dorsal", "top"),
+        ]:
+            self.brain.show_view(view)
+            eloreta_runner.save_brain_image(
+                self.brain, os.path.join(folder, f"{name}.png"), alpha=alpha
+            )
+        eloreta_runner.save_brain_image(
+            self.brain, os.path.join(folder, "overview.png"), alpha=alpha
+        )
+        log_func = getattr(self.master, "log", print)
+        log_func(f"Screenshots saved to {folder}")
 
