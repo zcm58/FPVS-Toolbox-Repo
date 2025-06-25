@@ -80,6 +80,11 @@ displayed with a red heatmap so you can easily spot the peak response. The
 color bar at the bottom of the viewer shows the magnitude of the estimated
 current density and is labeled **Source amplitude** for clarity.
 
+You can also average multiple STC results by selecting **Average STC files** in the
+Source Localization window. Choose several `*-lh.stc` files, pick where to save the
+averaged result and the toolbox will write a new pair that opens automatically in the
+3‑D viewer.
+
 The underlying module exposes an `is_pyvistaqt_backend()` helper which
 returns ``True`` when the viewer will use the interactive PyVistaQt
 backend. This can be queried before opening any 3‑D windows to ensure

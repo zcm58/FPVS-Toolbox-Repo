@@ -152,12 +152,21 @@ class SourceLocalizationWindow(ctk.CTkToplevel):
 
         compare_btn.grid(row=12, column=0, columnspan=3, pady=(0, PAD_Y))
 
+        avg_btn = ctk.CTkButton(
+            frame,
+            text="Average STC files",
+            command=self._average_stc,
+        )
 
-        self.progress_bar = ctk.CTkProgressBar(frame, orientation="horizontal", variable=self.progress_var)
-        self.progress_bar.grid(row=13, column=0, columnspan=3, sticky="ew", padx=PAD_X, pady=(0, PAD_Y))
+        avg_btn.grid(row=13, column=0, columnspan=3, pady=(0, PAD_Y))
+
+        self.progress_bar = ctk.CTkProgressBar(
+            frame, orientation="horizontal", variable=self.progress_var
+        )
+        self.progress_bar.grid(row=14, column=0, columnspan=3, sticky="ew", padx=PAD_X, pady=(0, PAD_Y))
         self.progress_bar.set(0)
 
-        ctk.CTkLabel(frame, textvariable=self.remaining_var).grid(row=14, column=0, columnspan=3, sticky="w", padx=PAD_X, pady=(0, PAD_Y))
+        ctk.CTkLabel(frame, textvariable=self.remaining_var).grid(row=15, column=0, columnspan=3, sticky="w", padx=PAD_X, pady=(0, PAD_Y))
 
 
     def _browse_file(self):
@@ -239,6 +248,49 @@ class SourceLocalizationWindow(ctk.CTkToplevel):
                 messagebox.showerror("Error", str(err))
 
         self.after(0, _open_viewer)
+
+    def _average_stc(self):
+        paths = filedialog.askopenfilenames(
+            title="Select SourceEstimate files",
+            filetypes=[("SourceEstimate", "*-lh.stc"), ("All files", "*")],
+            parent=self,
+        )
+        if not paths:
+            return
+
+        base_paths = []
+        for p in paths:
+            if p.endswith("-lh.stc") or p.endswith("-rh.stc"):
+                p = p[:-7]
+            base_paths.append(p)
+
+        base_paths = list(dict.fromkeys(base_paths))
+
+        log_func = getattr(self.master, "log", print)
+        log_func(f"Averaging {len(base_paths)} STC files")
+
+        try:
+            stc = eloreta_runner.average_stc_files(base_paths)
+        except Exception as err:
+            log_func(f"STC averaging failed: {err}")
+            messagebox.showerror("Error", str(err))
+            return
+
+        save_path = filedialog.asksaveasfilename(
+            title="Save averaged STC",
+            defaultextension="-lh.stc",
+            filetypes=[("SourceEstimate", "*-lh.stc"), ("All files", "*")],
+            parent=self,
+        )
+        if not save_path:
+            return
+        if save_path.endswith("-lh.stc") or save_path.endswith("-rh.stc"):
+            save_base = save_path[:-7]
+        else:
+            save_base = save_path
+
+        stc.save(save_base)
+        self._open_brain(save_base, self.threshold_var.get(), self.alpha_var.get(), os.path.basename(save_base))
 
     def _run(self):
         fif_path = self.input_var.get()

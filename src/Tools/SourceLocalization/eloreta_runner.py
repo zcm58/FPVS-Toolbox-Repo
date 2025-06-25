@@ -937,3 +937,51 @@ def compare_source_estimates(
         logger.debug("Failed to arrange compare windows", exc_info=True)
 
     return brain_left, brain_right
+
+
+def average_stc_files(stc_paths: List[str]) -> mne.SourceEstimate:
+    """Return the element-wise mean of multiple ``SourceEstimate`` files.
+
+    Parameters
+    ----------
+    stc_paths
+        List of paths pointing to the base name of ``*.stc`` files. Each path
+        should refer to the common prefix used by :meth:`mne.SourceEstimate.save`
+        (i.e. without the ``-lh.stc`` suffix).
+
+    Returns
+    -------
+    mne.SourceEstimate
+        The averaged source estimate using ``fsaverage`` as the subject.
+
+    Raises
+    ------
+    ValueError
+        If no paths are provided or if the files do not share the same
+        vertices/time information.
+    """
+
+    if not stc_paths:
+        raise ValueError("No STC paths provided")
+
+    logger.debug("Averaging %d STC files", len(stc_paths))
+
+    stcs = [mne.read_source_estimate(p) for p in stc_paths]
+
+    base_vertices = stcs[0].vertices
+    base_times = stcs[0].times
+    for stc in stcs[1:]:
+        if stc.vertices != base_vertices or not np.array_equal(stc.times, base_times):
+            raise ValueError("STC files must have identical vertices and times")
+
+    data_stack = np.stack([stc.data for stc in stcs], axis=0)
+    mean_data = data_stack.mean(axis=0)
+
+    averaged = mne.SourceEstimate(
+        mean_data,
+        vertices=base_vertices,
+        tmin=stcs[0].tmin,
+        tstep=stcs[0].tstep,
+        subject="fsaverage",
+    )
+    return averaged
