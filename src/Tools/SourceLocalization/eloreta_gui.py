@@ -34,10 +34,10 @@ class SourceLocalizationWindow(ctk.CTkToplevel):
         self.input_var = tk.StringVar(master=self)
         self.output_var = tk.StringVar(master=self)
         self.method_var = tk.StringVar(master=self, value="eLORETA")
-        self.threshold_var = tk.DoubleVar(master=self, value=0.0)
+        self.threshold_var = tk.DoubleVar(master=self, value=0.3)
         # use a separate StringVar for the entry widget so partially typed
         # values don't raise TclError
-        self.threshold_str = tk.StringVar(master=self, value="0.0")
+        self.threshold_str = tk.StringVar(master=self, value="0.3")
 
         # Default to 50% transparency (alpha = 0.5)
         self.alpha_var = tk.DoubleVar(master=self, value=0.5)
@@ -95,16 +95,8 @@ class SourceLocalizationWindow(ctk.CTkToplevel):
         method_menu.grid(row=2, column=1, sticky="w", padx=PAD_X, pady=PAD_Y)
 
         ctk.CTkLabel(frame, text="Threshold:").grid(row=3, column=0, sticky="e", padx=PAD_X, pady=PAD_Y)
-        self.threshold_slider = ctk.CTkSlider(
-            frame,
-            from_=0.0,
-            to=1.0,
-            variable=self.threshold_var,
-            command=self._on_threshold_slider,
-        )
-        self.threshold_slider.grid(row=3, column=1, sticky="we", padx=PAD_X, pady=PAD_Y)
         self.threshold_entry = ctk.CTkEntry(frame, textvariable=self.threshold_str, width=60)
-        self.threshold_entry.grid(row=3, column=2, sticky="w", padx=PAD_X, pady=PAD_Y)
+        self.threshold_entry.grid(row=3, column=1, columnspan=2, sticky="w", padx=PAD_X, pady=PAD_Y)
         self.threshold_entry.bind("<Return>", self._on_threshold_entry)
         self.threshold_entry.bind("<FocusOut>", self._on_threshold_entry)
 
@@ -469,17 +461,8 @@ class SourceLocalizationWindow(ctk.CTkToplevel):
         if self.processing_thread and self.processing_thread.is_alive():
             self.after(1000, self._update_time_remaining)
 
-    def _on_threshold_slider(self, value: float) -> None:
-        """Update variable when slider moves."""
-        try:
-            new_val = round(float(value), 3)
-            self.threshold_var.set(new_val)
-            self.threshold_str.set(str(new_val))
-        except tk.TclError:
-            pass
-
     def _on_threshold_entry(self, _event=None) -> None:
-        """Validate entry value and update slider."""
+        """Validate entry value."""
         try:
             value = float(self.threshold_str.get())
         except (ValueError, tk.TclError):
@@ -487,7 +470,6 @@ class SourceLocalizationWindow(ctk.CTkToplevel):
         value = max(0.0, min(1.0, value))
         self.threshold_var.set(value)
         self.threshold_str.set(str(value))
-        self.threshold_slider.set(value)
 
     def _on_alpha_slider(self, value: float) -> None:
         """Update alpha when slider moves."""
