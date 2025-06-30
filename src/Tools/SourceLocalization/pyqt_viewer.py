@@ -49,6 +49,7 @@ class STCViewer(QtWidgets.QMainWindow):
         layout.setContentsMargins(0, 0, 0, 0)
 
         self.plotter = QtInteractor(central)
+        self.plotter.enable_depth_peeling()
         layout.addWidget(self.plotter)
 
         ctrl = QtWidgets.QWidget()
@@ -95,13 +96,28 @@ class STCViewer(QtWidgets.QMainWindow):
 
         self.heat_lh = lh.copy()
         self.heat_rh = rh.copy()
+        # Slight offset to avoid z-fighting when both layers overlap
+        self.heat_lh.points = self.heat_lh.points + self.heat_lh.point_normals * 1e-2
+        self.heat_rh.points = self.heat_rh.points + self.heat_rh.point_normals * 1e-2
         self.heat_lh.point_data["activation"] = np.zeros(lh.n_points)
         self.heat_rh.point_data["activation"] = np.zeros(rh.n_points)
         self.act_lh = self.plotter.add_mesh(
-            self.heat_lh, scalars="activation", cmap="hot", nan_opacity=0.0, name="act_lh"
+            self.heat_lh,
+            scalars="activation",
+            cmap="hot",
+            nan_opacity=0.0,
+            name="act_lh",
+            copy=False,
+            show_scalar_bar=False,
         )
         self.act_rh = self.plotter.add_mesh(
-            self.heat_rh, scalars="activation", cmap="hot", nan_opacity=0.0, name="act_rh"
+            self.heat_rh,
+            scalars="activation",
+            cmap="hot",
+            nan_opacity=0.0,
+            name="act_rh",
+            copy=False,
+            show_scalar_bar=False,
         )
         self.plotter.add_scalar_bar(title="Source Amplitude", n_colors=8)
 
@@ -119,8 +135,8 @@ class STCViewer(QtWidgets.QMainWindow):
         arr_rh = np.full(self.heat_rh.n_points, np.nan)
         arr_lh[self.stc.vertices[0]] = data[:n_lh]
         arr_rh[self.stc.vertices[1]] = data[n_lh:]
-        self.plotter.update_scalars(arr_lh, mesh=self.heat_lh, render=False)
-        self.plotter.update_scalars(arr_rh, mesh=self.heat_rh, render=False)
+        self.heat_lh.point_data["activation"] = arr_lh
+        self.heat_rh.point_data["activation"] = arr_rh
         self.plotter.render()
 
 
