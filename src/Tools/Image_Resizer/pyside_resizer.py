@@ -32,23 +32,6 @@ from PySide6.QtWidgets import (
 from .image_resize_core import process_images_in_folder
 
 
-def _is_light_theme() -> bool:
-    """Return ``True`` if the system theme is light."""
-    if sys.platform.startswith("win"):
-        try:
-            import winreg
-
-            key = winreg.OpenKey(
-                winreg.HKEY_CURRENT_USER,
-                r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
-            )
-            value, _ = winreg.QueryValueEx(key, "AppsUseLightTheme")
-            return bool(value)
-        except Exception:
-            pass
-    return True
-
-
 def _get_accent_color() -> QColor:
     """Return the system accent color or a default Windows blue."""
     if sys.platform.startswith("win"):
@@ -176,9 +159,8 @@ class FPVSImageResizerQt(QWidget):
 
     def _apply_theme(self) -> None:
         accent = _get_accent_color()
-        light = _is_light_theme()
-        bg = QColor("#ffffff") if light else QColor("#202020")
-        fg = QColor("#000000") if light else QColor("#ffffff")
+        bg = QColor("#ffffff")
+        fg = QColor("#000000")
         hover = _adjust_color(accent, 20)
         pressed = _adjust_color(accent, -30)
 
