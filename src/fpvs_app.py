@@ -267,10 +267,16 @@ class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
         def run():
             from PySide6.QtWidgets import QApplication
 
-            app = QApplication([])
+            app = QApplication.instance()
+            created = False
+            if app is None:
+                app = QApplication([])
+                created = True
             win = FPVSImageResizer()
             win.show()
             app.exec()
+            if created:
+                app.deleteLater()
 
         import threading
 

@@ -12,13 +12,15 @@ import subprocess
 import sys
 from typing import List, Tuple
 
-from PySide6.QtCore import QObject, QThread, Signal
+from PySide6.QtCore import QEasingCurve, QObject, QPropertyAnimation, QThread, Signal
+from PySide6.QtGui import QColor, QFont
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
     QComboBox,
     QFileDialog,
     QGridLayout,
+    QGraphicsDropShadowEffect,
     QLabel,
     QLineEdit,
     QMessageBox,
@@ -27,9 +29,70 @@ from PySide6.QtWidgets import (
     QPlainTextEdit,
     QWidget,
 )
-
 from .image_resize_core import process_images_in_folder
 
+
+def _get_accent_color() -> QColor:
+    """Return the system accent color or a default Windows blue."""
+    if sys.platform.startswith("win"):
+        try:
+            import winreg
+
+            key = winreg.OpenKey(
+                winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM"
+            )
+            value, _ = winreg.QueryValueEx(key, "ColorizationColor")
+            color = int(value)
+            r = (color >> 16) & 0xFF
+            g = (color >> 8) & 0xFF
+            b = color & 0xFF
+            return QColor(r, g, b)
+        except Exception:
+            pass
+    return QColor("#0078d4")
+
+
+def _adjust_color(color: QColor, delta: int) -> str:
+    """Lighten or darken a ``QColor`` by ``delta``."""
+    c = QColor(color)
+    h, s, lightness, a = c.getHsl()
+    lightness = max(0, min(255, lightness + delta))
+    c.setHsl(h, s, lightness, a)
+    return c.name()
+
+
+class AnimatedButton(QPushButton):
+    """QPushButton with simple hover and click animations."""
+
+    def __init__(self, text: str) -> None:
+        super().__init__(text)
+        self._opacity_anim = QPropertyAnimation(self, b"windowOpacity", self)
+        self._opacity_anim.setDuration(150)
+        self._opacity_anim.setEasingCurve(QEasingCurve.InOutQuad)
+
+    def enterEvent(self, event) -> None:  # type: ignore[override]
+        self._opacity_anim.stop()
+        self._opacity_anim.setEndValue(0.85)
+        self._opacity_anim.start()
+        super().enterEvent(event)
+
+    def leaveEvent(self, event) -> None:  # type: ignore[override]
+        self._opacity_anim.stop()
+        self._opacity_anim.setEndValue(1.0)
+        self._opacity_anim.start()
+        super().leaveEvent(event)
+
+    def mousePressEvent(self, event) -> None:  # type: ignore[override]
+        self._opacity_anim.stop()
+        self._opacity_anim.setEndValue(0.6)
+        self._opacity_anim.start()
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event) -> None:  # type: ignore[override]
+        self._opacity_anim.stop()
+        self._opacity_anim.setEndValue(0.85)
+        self._opacity_anim.start()
+        super().mouseReleaseEvent(event)
 
 class _Worker(QObject):
     """Worker object running image resizing in a separate thread."""
@@ -92,6 +155,49 @@ class FPVSImageResizerQt(QWidget):
         self._worker: _Worker | None = None
 
         self._build_ui()
+        self._apply_theme()
+
+    def _apply_theme(self) -> None:
+        accent = _get_accent_color()
+        bg = QColor("#ffffff")
+        fg = QColor("#000000")
+        hover = _adjust_color(accent, 20)
+        pressed = _adjust_color(accent, -30)
+
+        font = QFont("Segoe UI Variable", 10)
+        QApplication.instance().setFont(font)
+
+        style = f"""
+            QWidget {{
+                background-color: {bg.name()};
+                color: {fg.name()};
+                font-family: 'Segoe UI Variable', 'Segoe UI', sans-serif;
+            }}
+            QLineEdit, QComboBox, QPlainTextEdit {{
+                border-radius: 8px;
+                padding: 4px;
+            }}
+            QPushButton {{
+                background-color: {accent.name()};
+                color: white;
+                border-radius: 8px;
+                padding: 6px 12px;
+            }}
+            QPushButton:hover {{
+                background-color: {hover};
+            }}
+            QPushButton:pressed {{
+                background-color: {pressed};
+            }}
+        """
+        self.setStyleSheet(style)
+
+        shadow = QGraphicsDropShadowEffect(self)
+        shadow.setBlurRadius(20)
+        shadow.setColor(QColor(0, 0, 0, 120))
+        shadow.setXOffset(0)
+        shadow.setYOffset(2)
+        self.setGraphicsEffect(shadow)
 
     def _build_ui(self) -> None:
         layout = QGridLayout(self)
@@ -101,7 +207,7 @@ class FPVSImageResizerQt(QWidget):
         self.in_edit = QLineEdit()
         self.in_edit.setReadOnly(True)
         layout.addWidget(self.in_edit, row, 1)
-        btn = QPushButton("Browse…")
+        btn = AnimatedButton("Browse…")
         btn.clicked.connect(self._select_input)
         layout.addWidget(btn, row, 2)
         row += 1
@@ -110,7 +216,7 @@ class FPVSImageResizerQt(QWidget):
         self.out_edit = QLineEdit()
         self.out_edit.setReadOnly(True)
         layout.addWidget(self.out_edit, row, 1)
-        btn = QPushButton("Browse…")
+        btn = AnimatedButton("Browse…")
         btn.clicked.connect(self._select_output)
         layout.addWidget(btn, row, 2)
         row += 1
@@ -132,16 +238,16 @@ class FPVSImageResizerQt(QWidget):
         layout.addWidget(self.overwrite_check, row, 2, 1, 2)
         row += 1
 
-        self.start_btn = QPushButton("Process")
+        self.start_btn = AnimatedButton("Process")
         self.start_btn.clicked.connect(self._start)
         layout.addWidget(self.start_btn, row, 0)
 
-        self.cancel_btn = QPushButton("Cancel")
+        self.cancel_btn = AnimatedButton("Cancel")
         self.cancel_btn.setEnabled(False)
         self.cancel_btn.clicked.connect(self._cancel)
         layout.addWidget(self.cancel_btn, row, 1)
 
-        self.open_btn = QPushButton("Open Folder")
+        self.open_btn = AnimatedButton("Open Folder")
         self.open_btn.setEnabled(False)
         self.open_btn.clicked.connect(self._open_folder)
         layout.addWidget(self.open_btn, row, 2)
@@ -149,6 +255,9 @@ class FPVSImageResizerQt(QWidget):
 
         self.progress = QProgressBar()
         layout.addWidget(self.progress, row, 0, 1, 3)
+        self._progress_anim = QPropertyAnimation(self.progress, b"value", self)
+        self._progress_anim.setEasingCurve(QEasingCurve.InOutQuad)
+        self._progress_anim.setDuration(100)
         row += 1
 
         self.log = QPlainTextEdit()
@@ -224,7 +333,11 @@ class FPVSImageResizerQt(QWidget):
     def _on_progress(self, msg: str, processed: int, total: int) -> None:
         if msg:
             self._append_log(msg)
-        self.progress.setValue(int(100 * processed / total) if total else 0)
+        value = int(100 * processed / total) if total else 0
+        self._progress_anim.stop()
+        self._progress_anim.setStartValue(self.progress.value())
+        self._progress_anim.setEndValue(value)
+        self._progress_anim.start()
 
     def _on_finished(
         self,
