@@ -39,6 +39,12 @@ The application can also be launched from source on Windows. Clone the repositor
 - `customtkinter`
 - `statsmodels` (for statistical analyses)
 
+When bundling the application with **PyInstaller**, list both `statsmodels`
+and `patsy` as hidden imports. If these packages are not included in the
+generated bundle, the application will display the "statsmodels is required"
+error message at runtime even when they are installed in your development
+environment.
+
 After installing the dependencies, start the GUI with:
 
 ```bash
