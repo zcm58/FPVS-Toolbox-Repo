@@ -39,6 +39,10 @@ def scan_folder(self):
 
     try:
         for item_name in os.listdir(parent_folder):  # These are expected to be condition subfolders
+            if '.fif' in item_name.lower():
+                self.log_to_main_app(
+                    f"  Skipping subfolder '{item_name}' because name contains '.fif'.")
+                continue
             item_path = os.path.join(parent_folder, item_name)
             if os.path.isdir(item_path):
                 condition_name_raw = item_name
