@@ -86,6 +86,11 @@ class STCViewer(QtWidgets.QMainWindow):
         self.opacity_slider.setValue(50)
         self.opacity_slider.valueChanged.connect(self._update_opacity)
 
+        self.threshold_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal)
+        self.threshold_slider.setRange(0, 100)
+        self.threshold_slider.setValue(0)
+        self.threshold_slider.valueChanged.connect(self._update_threshold)
+
         self.time_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal)
         self.time_slider.setRange(0, self.stc.data.shape[1] - 1)
         self.time_slider.valueChanged.connect(self._update_time)
@@ -97,6 +102,9 @@ class STCViewer(QtWidgets.QMainWindow):
 
         ctrl_layout.addWidget(QtWidgets.QLabel("Opacity"))
         ctrl_layout.addWidget(self.opacity_slider)
+        ctrl_layout.addSpacing(20)
+        ctrl_layout.addWidget(QtWidgets.QLabel("Threshold"))
+        ctrl_layout.addWidget(self.threshold_slider)
         ctrl_layout.addSpacing(20)
         ctrl_layout.addWidget(QtWidgets.QLabel("Time"))
         ctrl_layout.addWidget(self.time_slider)
@@ -162,9 +170,16 @@ class STCViewer(QtWidgets.QMainWindow):
         if SettingsManager().debug_enabled():
             logger.debug("Cortex visibility %s", visible)
 
+    def _update_threshold(self, value: int) -> None:
+        self._update_time(self.time_slider.value())
+
     def _update_time(self, value: int) -> None:
         idx = max(0, min(int(value), self.stc.data.shape[1] - 1))
-        data = self.stc.data[:, idx]
+        data = self.stc.data[:, idx].copy()
+        thr = self.threshold_slider.value() / 100
+        if thr > 0:
+            val = thr * float(np.max(np.abs(self.stc.data)))
+            data[np.abs(data) < val] = np.nan
         if SettingsManager().debug_enabled():
             logger.debug(
                 "update_time idx=%s range=(%.5f, %.5f)",

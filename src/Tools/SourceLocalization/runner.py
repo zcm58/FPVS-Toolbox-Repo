@@ -13,6 +13,7 @@ import mne
 from mne import combine_evoked
 from Main_App.settings_manager import SettingsManager
 from . import source_localization
+from . import frequency_domain_localization as fd_loc
 from .backend_utils import _ensure_pyvista_backend, get_current_backend
 from .brain_utils import (
     _plot_with_alpha,
@@ -228,10 +229,10 @@ def run_source_localization(
             harmonic_freqs = harmonics
             if harmonic_freqs:
                 log_func(
-                    "Reconstructing harmonics: "
+                    "Summing harmonic amplitudes: "
                     + ", ".join(f"{h:.2f}Hz" for h in harmonic_freqs)
                 )
-                evoked = source_localization.reconstruct_harmonics(evoked, harmonic_freqs)
+                evoked = fd_loc.evoked_from_harmonics(evoked, harmonic_freqs)
 
             tmax = min(evoked.times[-1], 1.0 / oddball_freq)
             evoked = evoked.copy().crop(tmin=0.0, tmax=tmax)
@@ -267,10 +268,10 @@ def run_source_localization(
         harmonic_freqs = harmonics
         if harmonic_freqs:
             log_func(
-                "Reconstructing harmonics: "
+                "Summing harmonic amplitudes: "
                 + ", ".join(f"{h:.2f}Hz" for h in harmonic_freqs)
             )
-            evoked = source_localization.reconstruct_harmonics(evoked, harmonic_freqs)
+            evoked = fd_loc.evoked_from_harmonics(evoked, harmonic_freqs)
         tmax = min(evoked.times[-1], 1.0 / oddball_freq)
         evoked = evoked.copy().crop(tmin=0.0, tmax=tmax)
         if time_window is not None:

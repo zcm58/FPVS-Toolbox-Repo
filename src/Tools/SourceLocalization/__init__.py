@@ -2,6 +2,7 @@
 
 from .eloreta_gui import SourceLocalizationWindow
 from .runner import run_source_localization
+from .frequency_domain_localization import evoked_from_harmonics
 from .worker import run_localization_worker
 from .stc_utils import (
     average_stc_files,
@@ -24,4 +25,5 @@ __all__ = [
     "run_localization_worker",
     "morph_to_fsaverage",
     "STCViewer",
+    "evoked_from_harmonics",
 ]

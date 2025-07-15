@@ -202,22 +202,22 @@ class SettingsWindow(ctk.CTkToplevel):
         ctk.CTkEntry(loreta_tab, textvariable=snr_var).grid(row=3, column=1, sticky="ew", padx=pad)
         self.snr_var = snr_var
 
-        ctk.CTkLabel(loreta_tab, text="Threshold").grid(row=5, column=0, sticky="w", padx=pad)
+        ctk.CTkLabel(loreta_tab, text="Threshold").grid(row=6, column=0, sticky="w", padx=pad)
         thr_var = tk.StringVar(value=self.manager.get('loreta', 'loreta_threshold', '0.0'))
-        ctk.CTkEntry(loreta_tab, textvariable=thr_var).grid(row=5, column=1, sticky="ew", padx=pad)
+        ctk.CTkEntry(loreta_tab, textvariable=thr_var).grid(row=6, column=1, sticky="ew", padx=pad)
         self.thr_var = thr_var
 
-        ctk.CTkLabel(loreta_tab, text="Time Window (ms)").grid(row=6, column=0, sticky="w", padx=pad)
+        ctk.CTkLabel(loreta_tab, text="Time Window (ms)").grid(row=7, column=0, sticky="w", padx=pad)
         t_start_var = tk.StringVar(value=self.manager.get('loreta', 'time_window_start_ms', ''))
         t_end_var = tk.StringVar(value=self.manager.get('loreta', 'time_window_end_ms', ''))
-        ctk.CTkEntry(loreta_tab, textvariable=t_start_var, width=80).grid(row=6, column=1, sticky="w", padx=pad)
-        ctk.CTkEntry(loreta_tab, textvariable=t_end_var, width=80).grid(row=6, column=2, sticky="w", padx=pad)
+        ctk.CTkEntry(loreta_tab, textvariable=t_start_var, width=80).grid(row=7, column=1, sticky="w", padx=pad)
+        ctk.CTkEntry(loreta_tab, textvariable=t_end_var, width=80).grid(row=7, column=2, sticky="w", padx=pad)
         self.t_start_var = t_start_var
         self.t_end_var = t_end_var
 
-        ctk.CTkLabel(loreta_tab, text="Display Time (ms)").grid(row=7, column=0, sticky="w", padx=pad)
+        ctk.CTkLabel(loreta_tab, text="Display Time (ms)").grid(row=8, column=0, sticky="w", padx=pad)
         disp_var = tk.StringVar(value=self.manager.get('visualization', 'time_index_ms', '100'))
-        ctk.CTkEntry(loreta_tab, textvariable=disp_var, width=80).grid(row=7, column=1, sticky="w", padx=pad)
+        ctk.CTkEntry(loreta_tab, textvariable=disp_var, width=80).grid(row=8, column=1, sticky="w", padx=pad)
         self.disp_var = disp_var
 
         auto_loc_default = self.manager.get('loreta', 'auto_oddball_localization', 'False').lower() == 'true'
@@ -228,6 +228,8 @@ class SettingsWindow(ctk.CTkToplevel):
             variable=self.auto_loc_var,
 
         ).grid(row=4, column=0, columnspan=2, sticky="w", padx=pad)
+
+
 
 
         btn_frame = ctk.CTkFrame(self, fg_color="transparent")

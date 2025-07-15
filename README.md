@@ -87,7 +87,8 @@ python src/Tools/SourceLocalization/pyqt_viewer.py --stc path/to/source
 ```
 
 The viewer provides sliders for adjusting cortex opacity and selecting the time
-point displayed.
+point displayed. A new threshold slider lets you interactively hide low-level
+activity so only the strongest sources remain visible.
 
 The underlying module exposes an `is_pyvistaqt_backend()` helper which
 returns ``True`` when the viewer will use the interactive PyVistaQt
@@ -97,11 +98,11 @@ on‑screen log whenever a 3‑D viewer is opened so you can verify it
 directly from the GUI.
 
 Additional parameters for band‑pass filtering and oddball cycle localisation can be
-configured under the **LORETA** tab in the Settings window. Here you may define
-the low and high filter bounds, choose which oddball harmonics to reconstruct
-(specified in Hz, e.g. ``1.2, 2.4, 3.6``) and set the SNR value used when
-applying sLORETA. These values are populated in the Source Localization dialog
-so they can be tweaked per analysis.
+configured under the **LORETA** tab in the Settings window. Define the low and
+high filter bounds and list the oddball harmonics to sum in the frequency domain
+(for example ``1.2, 2.4, 3.6``). The summed harmonic amplitude is used when
+applying sLORETA, and the SNR value controls regularisation. These values are
+populated in the Source Localization dialog so they can be tweaked per analysis.
 
 
 
