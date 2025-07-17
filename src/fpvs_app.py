@@ -61,7 +61,9 @@ from Main_App.post_process import post_process as _external_post_process
 
 
 # Advanced averaging UI and core function
-from Tools.Average_Preprocessing import AdvancedAnalysisWindow
+from Tools.Average_Preprocessing import AdvancedAnalysisWindowQt
+from PySide6.QtWidgets import QApplication
+import sys
 
 # Statistics toolbox
 import Tools.Stats as stats
@@ -223,12 +225,18 @@ class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
             self.log(f"Auto update check failed: {e}")
 
     def open_advanced_analysis_window(self):
-        """Opens the Advanced Preprocessing Epoch Averaging window."""
+        """Open the PySide6-based advanced averaging window."""
         self.log("Opening Advanced Analysis (Preprocessing Epoch Averaging) tool...")
         self.debug("Advanced analysis window requested")
-        # AdvancedAnalysisWindow is imported from Tools.Average_Preprocessing
-        adv_win = AdvancedAnalysisWindow(master=self)
-        adv_win.geometry(self.settings.get('gui', 'advanced_size', '1050x850'))
+        _app = QApplication.instance() or QApplication(sys.argv)
+        adv_win = AdvancedAnalysisWindowQt(master=self)
+        width, height = map(int, self.settings.get('gui', 'advanced_size', '1050x850').split('x'))
+        adv_win.resize(width, height)
+        try:
+            adv_win._center()
+        except Exception:
+            pass
+        adv_win.exec()
 
     def _set_controls_enabled(self, enabled: bool):
         """
