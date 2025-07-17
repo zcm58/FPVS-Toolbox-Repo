@@ -237,6 +237,7 @@ class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
             adv_win._center()
         except Exception:
             pass
+
         adv_win.setModal(False)
         adv_win.setWindowModality(Qt.NonModal)
         adv_win.show()
@@ -248,6 +249,7 @@ class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
 
         self.after(50, _process_qt_events)
         self._qt_adv_win = adv_win
+
 
     def _set_controls_enabled(self, enabled: bool):
         """
