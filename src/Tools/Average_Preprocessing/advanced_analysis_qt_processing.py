@@ -189,4 +189,5 @@ class AdvancedAnalysisProcessingMixin:
         self.stop_btn.setEnabled(False)
         for thread, _ in list(self._active_threads):
             thread.requestInterruption()
+
         # threads will shut down via _on_worker_finished

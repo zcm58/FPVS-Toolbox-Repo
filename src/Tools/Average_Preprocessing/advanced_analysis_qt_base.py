@@ -207,7 +207,6 @@ class AdvancedAnalysisWindowBase(QDialog):
     def _update_current_group_avg_method(self) -> None: ...
     def _on_close(self) -> None: ...
 
-
     def closeEvent(self, event) -> None:
         # Allow mixins to override with custom close logic
         super().closeEvent(event)

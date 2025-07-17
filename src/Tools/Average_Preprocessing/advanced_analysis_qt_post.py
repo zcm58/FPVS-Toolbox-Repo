@@ -97,5 +97,11 @@ class AdvancedAnalysisPostMixin:
                 worker.deleteLater()
                 thread.deleteLater()
                 self._active_threads.remove((thread, worker))
+
+        if hasattr(self.master_app, "_on_qt_window_closed"):
+            try:
+                self.master_app._on_qt_window_closed()
+            except Exception:
+                pass
         super().closeEvent(event)
 

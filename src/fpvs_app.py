@@ -166,6 +166,8 @@ class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
         self._settings_win = None
         self._queue_job_id = None
         self._detect_job_id = None
+        self._qt_adv_win = None
+        self._qt_after_job = None
 
         # --- Register Validation Commands ---
         self.validate_num_cmd = (self.register(self._validate_numeric_input), '%P')
@@ -245,10 +247,23 @@ class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
         def _process_qt_events() -> None:
             if adv_win.isVisible():
                 _app.processEvents()
-                self.after(50, _process_qt_events)
 
-        self.after(50, _process_qt_events)
+                self._qt_after_job = self.after(50, _process_qt_events)
+            else:
+                self._qt_after_job = None
+
+        self._qt_after_job = self.after(50, _process_qt_events)
         self._qt_adv_win = adv_win
+
+    def _on_qt_window_closed(self) -> None:
+        """Handle cleanup when the Qt averaging window closes."""
+        if self._qt_after_job is not None:
+            try:
+                self.after_cancel(self._qt_after_job)
+            except Exception:
+                pass
+            self._qt_after_job = None
+        self._qt_adv_win = None
 
 
     def _set_controls_enabled(self, enabled: bool):
@@ -419,8 +434,19 @@ class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
             ):
                 return
 
+        if self._qt_adv_win is not None:
+            try:
+                self._qt_adv_win.close()
+            except Exception:
+                pass
+            self._on_qt_window_closed()
+
         # Cancel any pending Tk jobs before quitting
-        for job_id in (getattr(self, "_queue_job_id", None), getattr(self, "_detect_job_id", None)):
+        for job_id in (
+            getattr(self, "_queue_job_id", None),
+            getattr(self, "_detect_job_id", None),
+            getattr(self, "_qt_after_job", None),
+        ):
             if job_id is not None:
                 try:
                     self.after_cancel(job_id)
