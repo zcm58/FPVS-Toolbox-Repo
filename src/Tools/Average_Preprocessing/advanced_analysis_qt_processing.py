@@ -154,7 +154,21 @@ class AdvancedAnalysisProcessingMixin:
         self._thread.finished.connect(self._thread.deleteLater)
         self._thread.start()
 
+        self._active_threads.append((self._thread, self._worker))
+
     def _on_worker_finished(self) -> None:
+        thread = getattr(self, "_thread", None)
+        worker = getattr(self, "_worker", None)
+        if thread and worker:
+            thread.quit()
+            thread.wait(5000)
+            try:
+                self._active_threads.remove((thread, worker))
+            except ValueError:
+                pass
+            self._thread = None
+            self._worker = None
+
         self.stop_btn.setEnabled(False)
         self.close_btn.setEnabled(True)
         self.progress_bar.hide()
@@ -172,9 +186,12 @@ class AdvancedAnalysisProcessingMixin:
 
     def stop_processing(self) -> None:
 
-        if getattr(self, "_thread", None) and self._thread.isRunning():
+        thread = getattr(self, "_thread", None)
+        if thread and thread.isRunning():
             self._stop_requested.set()
+            thread.requestInterruption()
             self.log("Stop requested. Waiting for processing to terminate...")
             self.stop_btn.setEnabled(False)
         else:
             self.log("Processing is not currently running.")
+
