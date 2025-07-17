@@ -31,7 +31,9 @@ class AdvancedAnalysisWindowBase(QDialog):
     """Base dialog containing common UI for advanced averaging."""
 
     def __init__(self, master) -> None:
-        super().__init__(master)
+
+        super().__init__(None)
+
         self.master_app = master
         self.debug_mode = SettingsManager().debug_enabled()
         self.setWindowTitle("Advanced Averaging Analysis")

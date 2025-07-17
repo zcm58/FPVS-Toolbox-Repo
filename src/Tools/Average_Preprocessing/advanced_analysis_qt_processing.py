@@ -160,7 +160,11 @@ class AdvancedAnalysisProcessingMixin:
         self._launch_processing_thread(params, out_dir)
 
     def stop_processing(self) -> None:
-        if self._thread and self._thread.isRunning():
+
+        if getattr(self, "_thread", None) and self._thread.isRunning():
             self._stop_requested.set()
             self.log("Stop requested. Waiting for processing to terminate...")
             self.stop_btn.setEnabled(False)
+        else:
+            self.log("Processing is not currently running.")
+
