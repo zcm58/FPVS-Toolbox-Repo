@@ -15,6 +15,7 @@ from customtkinter import CTkInputDialog
 import CTkMessagebox
 import os
 import json
+import glob
 from pathlib import Path
 import re
 import threading
@@ -170,6 +171,7 @@ class AdvancedAnalysisWindow(ctk.CTkToplevel):
         self._tooltips = []
 
         self._build_ui()
+        self._populate_default_eeg_files()
         if self.debug_mode:
             logger.debug("UI built; initializing main app parameter checks")
         self.log("Advanced Averaging Analysis window initialized.")
@@ -359,6 +361,26 @@ class AdvancedAnalysisWindow(ctk.CTkToplevel):
         self.close_button.pack(side="left", padx=PAD_X)
 
         self._clear_group_config_display()
+
+    def _populate_default_eeg_files(self):
+        """Populate the source list with .bdf files from the default folder."""
+        directory = ""
+        if hasattr(self.master_app, "settings"):
+            directory = self.master_app.settings.get("paths", "data_folder", "")
+        if (not directory or not os.path.isdir(directory)) and hasattr(self.master_app, "data_paths") and self.master_app.data_paths:
+            first = self.master_app.data_paths[0]
+            directory = first if os.path.isdir(first) else os.path.dirname(first)
+        if directory and os.path.isdir(directory):
+            bdf_files = sorted(glob.glob(os.path.join(directory, "*.bdf")))
+            added = 0
+            for fp in bdf_files:
+                if fp not in self.source_eeg_files:
+                    self.source_eeg_files.append(fp)
+                    added += 1
+            if added:
+                self.source_eeg_files.sort()
+                self._update_source_files_listbox()
+                self.log(f"Auto-added {added} BDF file(s) from {directory}.")
 
     def _center_window(self):
         self.update_idletasks()

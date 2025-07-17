@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import logging
 import threading
+import os
+import glob
 
 from typing import List, Dict, Any, Optional
 
@@ -51,6 +53,7 @@ class AdvancedAnalysisWindowBase(QDialog):
 
 
         self._build_ui()
+        self._populate_default_eeg_files()
         self._center()
 
     # ------------------------------------------------------------------
@@ -164,6 +167,26 @@ class AdvancedAnalysisWindowBase(QDialog):
         bottom_layout.addLayout(cb)
 
         self._clear_group_config_display()
+
+    def _populate_default_eeg_files(self) -> None:
+        """Load .bdf files from the default input folder if available."""
+        directory = ""
+        if hasattr(self.master_app, "settings"):
+            directory = self.master_app.settings.get("paths", "data_folder", "")
+        if (not directory or not os.path.isdir(directory)) and hasattr(self.master_app, "data_paths") and self.master_app.data_paths:
+            first = self.master_app.data_paths[0]
+            directory = first if os.path.isdir(first) else os.path.dirname(first)
+        if directory and os.path.isdir(directory):
+            bdf_files = sorted(glob.glob(os.path.join(directory, "*.bdf")))
+            added = 0
+            for fp in bdf_files:
+                if fp not in self.source_eeg_files:
+                    self.source_eeg_files.append(fp)
+                    added += 1
+            if added:
+                self.source_eeg_files.sort()
+                self._update_source_files_listbox()
+                self.log(f"Auto-added {added} BDF file(s) from {directory}.")
 
     def _center(self) -> None:
         geo = self.frameGeometry()
