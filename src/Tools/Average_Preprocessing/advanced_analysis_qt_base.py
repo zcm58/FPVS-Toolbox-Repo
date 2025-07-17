@@ -70,6 +70,7 @@ class AdvancedAnalysisWindowBase(QDialog):
 
         left_layout.addWidget(QLabel("Source EEG Files"))
         self.source_files_list = QListWidget()
+        self.source_files_list.setSelectionMode(QListWidget.ExtendedSelection)
         left_layout.addWidget(self.source_files_list)
 
         h = QHBoxLayout()
