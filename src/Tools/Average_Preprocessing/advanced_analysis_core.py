@@ -10,7 +10,9 @@ import gc
 import logging
 import traceback
 from pathlib import Path
-from typing import List, Dict, Any, Callable, Optional, Union
+from typing import List, Dict, Any, Callable, Optional, Union, Tuple
+
+import numpy as np
 
 import mne
 import threading
@@ -117,6 +119,32 @@ def run_advanced_averaging_processing(
     if DEBUG_ENABLED:
         logger.debug("Advanced averaging core processing started with %d group definitions", len(defined_groups))
 
+    # Helper functions -----------------------------------------------------
+    def load_and_preprocess(fpath: str) -> Optional[mne.io.Raw]:
+        raw = main_app_load_file_func(fpath)
+        if raw is None or stop_event.is_set():
+            return None
+        processed = main_app_preprocess_raw_func(raw.copy(), **main_app_params.copy())
+        del raw
+        return processed
+
+    def get_events(raw: mne.io.Raw) -> np.ndarray:
+        stim_channel = main_app_params.get('stim_channel', 'Status')
+        return mne.find_events(raw, stim_channel=stim_channel, consecutive=True, verbose=False)
+
+    def get_epochs(raw: mne.io.Raw, events: np.ndarray, event_id: int) -> mne.Epochs:
+        return mne.Epochs(
+            raw,
+            events,
+            event_id=event_id,
+            tmin=main_app_params['epoch_start'],
+            tmax=main_app_params['epoch_end'],
+            preload=True,
+            baseline=None,
+            verbose=False,
+            on_missing='warn',
+        )
+
     # Estimate total operations for progress bar
     total_source_ops = 0
     total_participant_post_ops = 0
@@ -137,16 +165,57 @@ def run_advanced_averaging_processing(
     current_operation_count = 0
     overall_success = True
 
-    # Count how many times each file will be used across all mappings
+    # Count how many times each file and event ID will be used
     file_usage_counts: Dict[str, int] = {}
+    event_usage_counts: Dict[Tuple[str, int], int] = {}
+    events_needed_per_file: Dict[str, set[int]] = {}
     for group in defined_groups:
         for mapping in group.get('condition_mappings', []):
             for source_info in mapping.get('sources', []):
                 fpath = source_info['file_path']
+                eid = source_info['original_id']
                 file_usage_counts[fpath] = file_usage_counts.get(fpath, 0) + 1
+                event_usage_counts[(fpath, eid)] = event_usage_counts.get((fpath, eid), 0) + 1
+                events_needed_per_file.setdefault(fpath, set()).add(eid)
 
-    # Cache of preprocessed Raw objects reused across event IDs
+    # Caches ---------------------------------------------------------------
     preprocessed_cache: Dict[str, mne.io.Raw] = {}
+    events_cache: Dict[str, np.ndarray] = {}
+    epochs_cache: Dict[Tuple[str, int], Optional[mne.Epochs]] = {}
+
+    # Single-pass preprocessing phase -------------------------------------
+    for fpath, event_ids in events_needed_per_file.items():
+        if stop_event.is_set():
+            return False
+
+        file_basename = Path(fpath).name
+        log_callback(f"Preprocessing {file_basename} and extracting epochs...")
+        try:
+            raw_proc = load_and_preprocess(fpath)
+            if raw_proc is None:
+                log_callback(f"  Skipping {file_basename} (load or preprocess failed).")
+                overall_success = False
+                for eid in event_ids:
+                    epochs_cache[(fpath, eid)] = None
+                continue
+
+            preprocessed_cache[fpath] = raw_proc
+            events = get_events(raw_proc)
+            events_cache[fpath] = events
+
+            for eid in event_ids:
+                if eid not in events[:, 2]:
+                    epochs_cache[(fpath, eid)] = None
+                    continue
+                epochs_cache[(fpath, eid)] = get_epochs(raw_proc, events, eid)
+        except Exception as e:
+            logger.exception("Error during preprocessing for %s", file_basename)
+            log_callback(
+                f"  !!! Error preprocessing {file_basename}: {e}\n{traceback.format_exc()}"
+            )
+            overall_success = False
+            for eid in event_ids:
+                epochs_cache[(fpath, eid)] = None
 
     for group_definition in defined_groups:  # A "group definition" is like a recipe, e.g., "Average A"
         if stop_event.is_set():
@@ -192,57 +261,33 @@ def run_advanced_averaging_processing(
                         continue
 
                     file_path_of_source = source_info['file_path']
-                    original_event_label = source_info['original_label']
                     original_event_id = source_info['original_id']
                     file_basename = Path(file_path_of_source).name
 
                     log_callback(
-                        f"      Loading & Preprocessing: {file_basename} for Event ID {original_event_id} ('{original_event_label}')")
+                        f"      Retrieving cached epochs: {file_basename} ID {original_event_id}")
 
-                    raw_proc = None
+                    key = (file_path_of_source, original_event_id)
                     participant_source_epochs = None
                     try:
-                        if file_path_of_source in preprocessed_cache:
-                            raw_proc = preprocessed_cache[file_path_of_source]
-                        else:
-                            raw = main_app_load_file_func(file_path_of_source)
-                            if raw is None or stop_event.is_set():
-                                log_callback(f"      Skipping {file_basename} (load failed or stop event).")
-                                overall_success = False
-                                continue
-                            raw_proc = main_app_preprocess_raw_func(raw.copy(), **main_app_params.copy())
-                            del raw
-                            if raw_proc is None or stop_event.is_set():
-                                log_callback(f"      Skipping {file_basename} (preprocess failed or stop event).")
-                                overall_success = False
-                                continue
-                            preprocessed_cache[file_path_of_source] = raw_proc
-
-                        stim_channel = main_app_params.get('stim_channel', 'Status')
-                        events = mne.find_events(raw_proc, stim_channel=stim_channel, consecutive=True, verbose=False)
-
-                        if original_event_id not in events[:, 2]:
+                        cached_epochs = epochs_cache.get(key)
+                        if cached_epochs is None:
                             log_callback(
                                 f"      Warning: Event ID {original_event_id} not found in {file_basename}. Skipping this event for {participant_pid}.")
                             continue
 
-                        event_id_dict_for_mne = {original_event_label: original_event_id}
-                        participant_source_epochs = mne.Epochs(  # Assignment happens here
-                            raw_proc, events, event_id=event_id_dict_for_mne,
-                            tmin=main_app_params['epoch_start'], tmax=main_app_params['epoch_end'],
-                            preload=True, baseline=None, verbose=False, on_missing='warn'
-                        )
-                        if len(participant_source_epochs) > 0:
+                        if len(cached_epochs) > 0:
+                            participant_source_epochs = cached_epochs.copy()
                             log_callback(
-                                f"        Created {len(participant_source_epochs)} epochs from {file_basename} for ID {original_event_id}.")
+                                f"        Reused {len(participant_source_epochs)} epochs from {file_basename} for ID {original_event_id}.")
                             epochs_for_this_participant_this_rule.append(participant_source_epochs)
                         else:
                             log_callback(
                                 f"        No epochs created from {file_basename} for ID {original_event_id}.")
                     except Exception as e:
-                        logger.exception("Error during epoching for %s", file_basename)
+                        logger.exception("Error during epoch retrieval for %s", file_basename)
                         log_callback(
-                            f"      !!! Error during epoching for {file_basename}, ID {original_event_id} for {participant_pid}: {e}\n{traceback.format_exc()}")
+                            f"      !!! Error retrieving epochs for {file_basename}, ID {original_event_id} for {participant_pid}: {e}\n{traceback.format_exc()}")
                         overall_success = False
                     finally:
                         if participant_source_epochs is not None:
@@ -250,8 +295,14 @@ def run_advanced_averaging_processing(
                         current_operation_count += 1
                         progress_callback(current_operation_count / total_operations_estimate)
                         file_usage_counts[file_path_of_source] -= 1
-                        if file_usage_counts[file_path_of_source] == 0 and file_path_of_source in preprocessed_cache:
-                            del preprocessed_cache[file_path_of_source]
+                        event_usage_counts[key] -= 1
+                        if event_usage_counts[key] == 0 and key in epochs_cache:
+                            del epochs_cache[key]
+                        if file_usage_counts[file_path_of_source] == 0:
+                            if file_path_of_source in preprocessed_cache:
+                                del preprocessed_cache[file_path_of_source]
+                            if file_path_of_source in events_cache:
+                                del events_cache[file_path_of_source]
                             gc.collect()
 
                 if epochs_for_this_participant_this_rule:
