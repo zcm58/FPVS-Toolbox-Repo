@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import logging
 import threading
+
 from typing import List, Dict, Any, Optional, Tuple
 
 from PySide6.QtCore import Qt, QThread
@@ -12,6 +13,7 @@ from PySide6.QtWidgets import (
     QDialog, QFrame, QGridLayout, QHBoxLayout, QLabel,
     QListWidget, QPushButton, QRadioButton, QTextEdit,
     QVBoxLayout, QProgressBar, QMessageBox, QApplication
+
 )
 
 from Main_App.settings_manager import SettingsManager
@@ -31,7 +33,9 @@ class AdvancedAnalysisWindowBase(QDialog):
     """Base dialog containing common UI for advanced averaging."""
 
     def __init__(self, master) -> None:
+
         super().__init__(None)
+
         self.master_app = master
         self.debug_mode = SettingsManager().debug_enabled()
         self.setWindowTitle("Advanced Averaging Analysis")
@@ -47,6 +51,7 @@ class AdvancedAnalysisWindowBase(QDialog):
         app = QApplication.instance()
         if app is not None:
             app.aboutToQuit.connect(self._cleanup_active_threads)
+
 
         self._build_ui()
         self._center()
@@ -181,6 +186,7 @@ class AdvancedAnalysisWindowBase(QDialog):
         if self.debug_mode:
             self.log(f"[DEBUG] {message}")
 
+
     def _cleanup_active_threads(self) -> None:
         for thread, _ in list(getattr(self, "_active_threads", [])):
             if thread.isRunning():
@@ -188,6 +194,7 @@ class AdvancedAnalysisWindowBase(QDialog):
                 thread.requestInterruption()
                 thread.quit()
                 thread.wait(5000)
+
 
     def _clear_group_config_display(self) -> None:
         for layout in (self.group_config_layout, self.condition_mapping_layout):
@@ -211,7 +218,7 @@ class AdvancedAnalysisWindowBase(QDialog):
     def stop_processing(self) -> None: ...
     def _update_current_group_avg_method(self) -> None: ...
     def _on_close(self) -> None: ...
-
+      
     def closeEvent(self, event) -> None:
         running = [(t, w) for t, w in getattr(self, "_active_threads", []) if t.isRunning()]
         if running:

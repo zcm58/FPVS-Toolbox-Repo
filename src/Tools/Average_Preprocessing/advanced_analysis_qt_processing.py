@@ -89,6 +89,7 @@ class AdvancedAnalysisProcessingMixin:
                 return None
         params = getattr(self.master_app, 'validated_params', None)
         if not params:
+
             ok = False
             if hasattr(self.master_app, '_validate_inputs'):
                 try:
@@ -100,6 +101,7 @@ class AdvancedAnalysisProcessingMixin:
             if not ok or not params:
                 QMessageBox.critical(self, "Error", "Main application parameters not set.")
                 return None
+
         out_obj = getattr(self.master_app, 'save_folder_path', None)
         if not out_obj or not hasattr(out_obj, 'get'):
             QMessageBox.critical(self, "Error", "Main application output folder path is not configured.")
@@ -151,6 +153,7 @@ class AdvancedAnalysisProcessingMixin:
         self._worker.finished.connect(self._worker.deleteLater)
         self._thread.finished.connect(self._thread.deleteLater)
         self._thread.start()
+
         self._active_threads.append((self._thread, self._worker))
 
     def _on_worker_finished(self) -> None:
@@ -165,6 +168,7 @@ class AdvancedAnalysisProcessingMixin:
                 pass
             self._thread = None
             self._worker = None
+
         self.stop_btn.setEnabled(False)
         self.close_btn.setEnabled(True)
         self.progress_bar.hide()
@@ -181,6 +185,7 @@ class AdvancedAnalysisProcessingMixin:
         self._launch_processing_thread(params, out_dir)
 
     def stop_processing(self) -> None:
+
         thread = getattr(self, "_thread", None)
         if thread and thread.isRunning():
             self._stop_requested.set()
@@ -189,3 +194,4 @@ class AdvancedAnalysisProcessingMixin:
             self.stop_btn.setEnabled(False)
         else:
             self.log("Processing is not currently running.")
+
