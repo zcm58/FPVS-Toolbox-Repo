@@ -74,8 +74,28 @@ class AdvancedAnalysisPostMixin:
             QMessageBox.critical(self, "Error", f"Failed to load configuration:\n{e}")
 
     def _on_close(self) -> None:
-        if hasattr(self, '_thread') and self._thread.isRunning():
-            if QMessageBox.question(self, "Confirm Close", "Processing is ongoing. Stop and close?") != QMessageBox.Yes:
+
+        self.close()
+
+    # ------------------------------------------------------------------
+    # Qt window close handling
+    # ------------------------------------------------------------------
+    def closeEvent(self, event) -> None:
+        if getattr(self, "_active_threads", None):
+            if QMessageBox.question(
+                self,
+                "Confirm Close",
+                "Processing is ongoing. Stop and close?",
+            ) != QMessageBox.Yes:
+                event.ignore()
                 return
             self.stop_processing()
-        self.close()
+            for thread, worker in list(self._active_threads):
+                thread.requestInterruption()
+                thread.quit()
+                thread.wait(10000)
+                worker.deleteLater()
+                thread.deleteLater()
+                self._active_threads.remove((thread, worker))
+        super().closeEvent(event)
+

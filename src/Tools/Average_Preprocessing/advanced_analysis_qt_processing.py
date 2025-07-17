@@ -134,8 +134,10 @@ class AdvancedAnalysisProcessingMixin:
             def preprocess_raw_method(raw, **params):
                 return _pp(raw_input=raw, params=params, log_func=self.master_app.log)[0]
 
-        self._thread = QThread()
-        self._worker = _Worker(
+
+        thread = QThread()
+        worker = _Worker(
+
             self.defined_groups,
             main_app_params,
             load_file_method,
@@ -144,30 +146,23 @@ class AdvancedAnalysisProcessingMixin:
             self._extract_pid_for_group,
             self._stop_requested,
         )
-        self._worker.moveToThread(self._thread)
-        self._thread.started.connect(self._worker.run)
-        self._worker.log.connect(self.log)
-        self._worker.progress.connect(lambda v: self.progress_bar.setValue(int(v * 100)))
-        self._worker.finished.connect(self._on_worker_finished)
-        self._worker.finished.connect(self._thread.quit)
-        self._worker.finished.connect(self._worker.deleteLater)
-        self._thread.finished.connect(self._thread.deleteLater)
-        self._thread.start()
 
-        self._active_threads.append((self._thread, self._worker))
+        worker.moveToThread(thread)
+        thread.started.connect(worker.run)
+        worker.log.connect(self.log)
+        worker.progress.connect(lambda v: self.progress_bar.setValue(int(v * 100)))
+        worker.finished.connect(lambda: self._on_worker_finished(thread, worker))
+        self._active_threads.append((thread, worker))
+        thread.start()
 
-    def _on_worker_finished(self) -> None:
-        thread = getattr(self, "_thread", None)
-        worker = getattr(self, "_worker", None)
-        if thread and worker:
-            thread.quit()
-            thread.wait(5000)
-            try:
-                self._active_threads.remove((thread, worker))
-            except ValueError:
-                pass
-            self._thread = None
-            self._worker = None
+    def _on_worker_finished(self, thread: QThread, worker: QObject) -> None:
+        if (thread, worker) in self._active_threads:
+            self._active_threads.remove((thread, worker))
+        thread.requestInterruption()
+        thread.quit()
+        thread.wait()
+        worker.deleteLater()
+        thread.deleteLater()
 
         self.stop_btn.setEnabled(False)
         self.close_btn.setEnabled(True)
@@ -186,12 +181,12 @@ class AdvancedAnalysisProcessingMixin:
 
     def stop_processing(self) -> None:
 
-        thread = getattr(self, "_thread", None)
-        if thread and thread.isRunning():
-            self._stop_requested.set()
-            thread.requestInterruption()
-            self.log("Stop requested. Waiting for processing to terminate...")
-            self.stop_btn.setEnabled(False)
-        else:
+        if not self._active_threads:
             self.log("Processing is not currently running.")
-
+            return
+        self._stop_requested.set()
+        self.log("Stop requested. Waiting for processing to terminate...")
+        self.stop_btn.setEnabled(False)
+        for thread, _ in list(self._active_threads):
+            thread.requestInterruption()
+        # threads will shut down via _on_worker_finished

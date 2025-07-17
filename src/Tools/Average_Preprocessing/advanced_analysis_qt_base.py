@@ -6,13 +6,13 @@ from __future__ import annotations
 import logging
 import threading
 
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional
 
-from PySide6.QtCore import Qt, QThread
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QDialog, QFrame, QGridLayout, QHBoxLayout, QLabel,
     QListWidget, QPushButton, QRadioButton, QTextEdit,
-    QVBoxLayout, QProgressBar, QMessageBox, QApplication
+    QVBoxLayout, QProgressBar
 
 )
 
@@ -47,10 +47,7 @@ class AdvancedAnalysisWindowBase(QDialog):
 
         self.processing_thread: Optional[threading.Thread] = None
         self._stop_requested = threading.Event()
-        self._active_threads: List[Tuple[QThread, object]] = []
-        app = QApplication.instance()
-        if app is not None:
-            app.aboutToQuit.connect(self._cleanup_active_threads)
+        self._active_threads: List[tuple] = []
 
 
         self._build_ui()
@@ -187,15 +184,6 @@ class AdvancedAnalysisWindowBase(QDialog):
             self.log(f"[DEBUG] {message}")
 
 
-    def _cleanup_active_threads(self) -> None:
-        for thread, _ in list(getattr(self, "_active_threads", [])):
-            if thread.isRunning():
-                self._stop_requested.set()
-                thread.requestInterruption()
-                thread.quit()
-                thread.wait(5000)
-
-
     def _clear_group_config_display(self) -> None:
         for layout in (self.group_config_layout, self.condition_mapping_layout):
             while layout.count():
@@ -218,20 +206,9 @@ class AdvancedAnalysisWindowBase(QDialog):
     def stop_processing(self) -> None: ...
     def _update_current_group_avg_method(self) -> None: ...
     def _on_close(self) -> None: ...
-      
+
+
     def closeEvent(self, event) -> None:
-        running = [(t, w) for t, w in getattr(self, "_active_threads", []) if t.isRunning()]
-        if running:
-            if QMessageBox.question(
-                self,
-                "Confirm Close",
-                "Processing is ongoing. Stop and close?",
-            ) != QMessageBox.Yes:
-                event.ignore()
-                return
-            self._stop_requested.set()
-            for thread, _ in running:
-                thread.requestInterruption()
-                thread.quit()
-                thread.wait(5000)
-        event.accept()
+        # Allow mixins to override with custom close logic
+        super().closeEvent(event)
+
