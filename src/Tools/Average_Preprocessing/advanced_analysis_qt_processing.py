@@ -89,6 +89,7 @@ class AdvancedAnalysisProcessingMixin:
                 return None
         params = getattr(self.master_app, 'validated_params', None)
         if not params:
+
             ok = False
             if hasattr(self.master_app, '_validate_inputs'):
                 try:
@@ -100,6 +101,7 @@ class AdvancedAnalysisProcessingMixin:
             if not ok or not params:
                 QMessageBox.critical(self, "Error", "Main application parameters not set.")
                 return None
+
         out_obj = getattr(self.master_app, 'save_folder_path', None)
         if not out_obj or not hasattr(out_obj, 'get'):
             QMessageBox.critical(self, "Error", "Main application output folder path is not configured.")
@@ -132,8 +134,10 @@ class AdvancedAnalysisProcessingMixin:
             def preprocess_raw_method(raw, **params):
                 return _pp(raw_input=raw, params=params, log_func=self.master_app.log)[0]
 
+
         thread = QThread()
         worker = _Worker(
+
             self.defined_groups,
             main_app_params,
             load_file_method,
@@ -142,6 +146,7 @@ class AdvancedAnalysisProcessingMixin:
             self._extract_pid_for_group,
             self._stop_requested,
         )
+
         worker.moveToThread(thread)
         thread.started.connect(worker.run)
         worker.log.connect(self.log)
@@ -158,6 +163,7 @@ class AdvancedAnalysisProcessingMixin:
         thread.wait()
         worker.deleteLater()
         thread.deleteLater()
+
         self.stop_btn.setEnabled(False)
         self.close_btn.setEnabled(True)
         self.progress_bar.hide()
@@ -174,6 +180,7 @@ class AdvancedAnalysisProcessingMixin:
         self._launch_processing_thread(params, out_dir)
 
     def stop_processing(self) -> None:
+
         if not self._active_threads:
             self.log("Processing is not currently running.")
             return
@@ -183,6 +190,3 @@ class AdvancedAnalysisProcessingMixin:
         for thread, _ in list(self._active_threads):
             thread.requestInterruption()
         # threads will shut down via _on_worker_finished
-
-
-

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import logging
 import threading
+
 from typing import List, Dict, Any, Optional
 
 from PySide6.QtCore import Qt
@@ -12,6 +13,7 @@ from PySide6.QtWidgets import (
     QDialog, QFrame, QGridLayout, QHBoxLayout, QLabel,
     QListWidget, QPushButton, QRadioButton, QTextEdit,
     QVBoxLayout, QProgressBar
+
 )
 
 from Main_App.settings_manager import SettingsManager
@@ -31,7 +33,9 @@ class AdvancedAnalysisWindowBase(QDialog):
     """Base dialog containing common UI for advanced averaging."""
 
     def __init__(self, master) -> None:
+
         super().__init__(None)
+
         self.master_app = master
         self.debug_mode = SettingsManager().debug_enabled()
         self.setWindowTitle("Advanced Averaging Analysis")
@@ -44,6 +48,7 @@ class AdvancedAnalysisWindowBase(QDialog):
         self.processing_thread: Optional[threading.Thread] = None
         self._stop_requested = threading.Event()
         self._active_threads: List[tuple] = []
+
 
         self._build_ui()
         self._center()
@@ -178,6 +183,7 @@ class AdvancedAnalysisWindowBase(QDialog):
         if self.debug_mode:
             self.log(f"[DEBUG] {message}")
 
+
     def _clear_group_config_display(self) -> None:
         for layout in (self.group_config_layout, self.condition_mapping_layout):
             while layout.count():
@@ -201,6 +207,8 @@ class AdvancedAnalysisWindowBase(QDialog):
     def _update_current_group_avg_method(self) -> None: ...
     def _on_close(self) -> None: ...
 
+
     def closeEvent(self, event) -> None:
         # Allow mixins to override with custom close logic
         super().closeEvent(event)
+

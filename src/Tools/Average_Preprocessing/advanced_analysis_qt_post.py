@@ -74,6 +74,7 @@ class AdvancedAnalysisPostMixin:
             QMessageBox.critical(self, "Error", f"Failed to load configuration:\n{e}")
 
     def _on_close(self) -> None:
+
         self.close()
 
     # ------------------------------------------------------------------
@@ -97,3 +98,4 @@ class AdvancedAnalysisPostMixin:
                 thread.deleteLater()
                 self._active_threads.remove((thread, worker))
         super().closeEvent(event)
+
