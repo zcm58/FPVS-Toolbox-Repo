@@ -89,8 +89,19 @@ class AdvancedAnalysisProcessingMixin:
                 return None
         params = getattr(self.master_app, 'validated_params', None)
         if not params:
-            QMessageBox.critical(self, "Error", "Main application parameters not set.")
-            return None
+
+            ok = False
+            if hasattr(self.master_app, '_validate_inputs'):
+                try:
+                    ok = self.master_app._validate_inputs()
+                except Exception as e:  # pragma: no cover - user display
+                    QMessageBox.critical(self, "Error", f"Error validating main application inputs:\n{e}")
+                    return None
+                params = getattr(self.master_app, 'validated_params', None)
+            if not ok or not params:
+                QMessageBox.critical(self, "Error", "Main application parameters not set.")
+                return None
+
         out_obj = getattr(self.master_app, 'save_folder_path', None)
         if not out_obj or not hasattr(out_obj, 'get'):
             QMessageBox.critical(self, "Error", "Main application output folder path is not configured.")
@@ -167,4 +178,3 @@ class AdvancedAnalysisProcessingMixin:
             self.stop_btn.setEnabled(False)
         else:
             self.log("Processing is not currently running.")
-
