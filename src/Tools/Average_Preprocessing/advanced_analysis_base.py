@@ -8,11 +8,6 @@ Users can group source files together, choose an averaging method and then
 initiate processing via :mod:`advanced_analysis_core`.
 """
 
-import tkinter as tk
-from tkinter import filedialog
-import customtkinter as ctk
-from customtkinter import CTkInputDialog
-import CTkMessagebox
 import os
 import json
 import glob
