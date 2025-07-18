@@ -4,10 +4,14 @@
 
 """Entry point for launching the FPVS Toolbox GUI application."""
 
-from ctypes import windll
-
 try:
-    windll.shcore.SetProcessDpiAwareness(1)
+    from ctypes import windll  # type: ignore[attr-defined]
+except Exception:  # pragma: no cover - non-Windows
+    windll = None
+
+try:  # pragma: no cover - best effort on Windows
+    if windll is not None:
+        windll.shcore.SetProcessDpiAwareness(1)
 except Exception:
     pass
 

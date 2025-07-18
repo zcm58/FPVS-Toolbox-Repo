@@ -46,6 +46,7 @@ from Main_App.file_selection import FileSelectionMixin
 from Main_App.event_detection import EventDetectionMixin
 from Main_App.validation_mixins import ValidationMixin
 from Main_App.processing_utils import ProcessingMixin
+# ``LoggingMixin`` is provided by :class:`QtLoggingMixin` for the Qt port
 from Main_App.logging_mixin import LoggingMixin
 from Main_App import update_manager
 
