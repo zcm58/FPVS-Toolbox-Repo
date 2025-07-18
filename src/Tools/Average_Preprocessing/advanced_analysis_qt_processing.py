@@ -62,13 +62,17 @@ class _Worker(QObject):
 
 class AdvancedAnalysisProcessingMixin:
     def _update_start_processing_button_state(self) -> None:
+        has_params = bool(getattr(self.master_app, "validated_params", None))
+        out_dir_obj = getattr(self.master_app, "save_folder_path", None)
+        has_out_dir = out_dir_obj is not None and getattr(out_dir_obj, "get", None) and out_dir_obj.get()
+
         all_valid = False
         if self.defined_groups:
             all_valid = all(
                 g.get('config_saved') and g.get('file_paths') and g.get('condition_mappings')
                 for g in self.defined_groups
             )
-        self.start_btn.setEnabled(all_valid)
+        self.start_btn.setEnabled(all_valid and has_params and has_out_dir)
 
     def _validate_processing_setup(self) -> Optional[tuple]:
         if not self.defined_groups:

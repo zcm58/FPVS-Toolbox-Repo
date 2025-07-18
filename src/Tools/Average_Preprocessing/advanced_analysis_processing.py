@@ -2,14 +2,18 @@
 from .advanced_analysis_base import *  # noqa: F401,F403,F405
 class AdvancedAnalysisProcessingMixin:
         def _update_start_processing_button_state(self):
+            has_params = bool(getattr(self.master_app, "validated_params", None))
+            out_dir_obj = getattr(self.master_app, "save_folder_path", None)
+            has_out_dir = out_dir_obj is not None and getattr(out_dir_obj, "get", None) and out_dir_obj.get()
+
             all_groups_valid_and_saved = False
             if self.defined_groups:
                 all_groups_valid_and_saved = all(
                     g.get('config_saved') and g.get('file_paths') and g.get('condition_mappings')
                     for g in self.defined_groups
                 )
-    
-            button_state = "normal" if all_groups_valid_and_saved else "disabled"
+
+            button_state = "normal" if all_groups_valid_and_saved and has_params and has_out_dir else "disabled"
             if hasattr(self, 'start_adv_processing_button'):
                 self.start_adv_processing_button.configure(state=button_state)
     
