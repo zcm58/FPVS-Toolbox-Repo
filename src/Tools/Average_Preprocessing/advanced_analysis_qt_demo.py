@@ -38,7 +38,8 @@ class DummyMasterApp:
         return "dummy_proc_raw_obj_for_test"
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Launch the Qt demo window."""
     logging.basicConfig(level=logging.INFO)
     app = QApplication(sys.argv)
     master = DummyMasterApp()
@@ -47,3 +48,7 @@ if __name__ == "__main__":
     win = AdvancedAnalysisWindow(master)
     win.show()
     app.exec()
+
+
+if __name__ == "__main__":
+    main()
