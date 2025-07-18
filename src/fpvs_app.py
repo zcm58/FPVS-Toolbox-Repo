@@ -46,8 +46,7 @@ from Main_App.file_selection import FileSelectionMixin
 from Main_App.event_detection import EventDetectionMixin
 from Main_App.validation_mixins import ValidationMixin
 from Main_App.processing_utils import ProcessingMixin
-# ``LoggingMixin`` is provided by :class:`QtLoggingMixin` for the Qt port
-from Main_App.logging_mixin import LoggingMixin
+from Main_App.tk_logging_mixin import TkLoggingMixin
 from Main_App import update_manager
 
 from config import (
@@ -82,7 +81,7 @@ ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
 
 
-class FPVSApp(LoggingMixin, ctk.CTk, EventMapMixin, FileSelectionMixin,
+class FPVSApp(TkLoggingMixin, ctk.CTk, EventMapMixin, FileSelectionMixin,
               EventDetectionMixin, ValidationMixin, ProcessingMixin):
 
     """ Main application class replicating MATLAB FPVS analysis workflow using numerical triggers. """
