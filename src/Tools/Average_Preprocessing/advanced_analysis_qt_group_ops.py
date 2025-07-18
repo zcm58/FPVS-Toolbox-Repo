@@ -89,8 +89,9 @@ class AdvancedAnalysisGroupOpsMixin:
             self._update_start_processing_button_state()
         except Exception as exc:  # pragma: no cover - runtime guard
             logger.exception("Unhandled error creating new group")
+            group_name = locals().get("name", "<unknown>")
             self.log_signal.emit(
-                f"!!! Error creating group '{name}': {exc}\n{traceback.format_exc()}"
+                f"!!! Error creating group '{group_name}': {exc}\n{traceback.format_exc()}"
             )
 
     def delete_selected_group(self) -> None:
