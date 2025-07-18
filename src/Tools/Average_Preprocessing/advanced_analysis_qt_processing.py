@@ -62,7 +62,6 @@ class _Worker(QObject):
 
 class AdvancedAnalysisProcessingMixin:
     def _update_start_processing_button_state(self) -> None:
-        has_params = bool(getattr(self.master_app, "validated_params", None))
         out_dir_obj = getattr(self.master_app, "save_folder_path", None)
         has_out_dir = out_dir_obj is not None and getattr(out_dir_obj, "get", None) and out_dir_obj.get()
 
@@ -72,7 +71,7 @@ class AdvancedAnalysisProcessingMixin:
                 g.get('config_saved') and g.get('file_paths') and g.get('condition_mappings')
                 for g in self.defined_groups
             )
-        self.start_btn.setEnabled(all_valid and has_params and has_out_dir)
+        self.start_btn.setEnabled(all_valid and has_out_dir)
 
     def _validate_processing_setup(self) -> Optional[tuple]:
         if not self.defined_groups:
@@ -91,20 +90,20 @@ class AdvancedAnalysisProcessingMixin:
                 QMessageBox.critical(self, "Error", f"Group '{group['name']}' has no mapping rules defined.")
                 self.groups_list.setCurrentRow(i)
                 return None
-        params = getattr(self.master_app, 'validated_params', None)
-        if not params:
-
-            ok = False
-            if hasattr(self.master_app, '_validate_inputs'):
-                try:
-                    ok = self.master_app._validate_inputs()
-                except Exception as e:  # pragma: no cover - user display
-                    QMessageBox.critical(self, "Error", f"Error validating main application inputs:\n{e}")
-                    return None
-                params = getattr(self.master_app, 'validated_params', None)
-            if not ok or not params:
-                QMessageBox.critical(self, "Error", "Main application parameters not set.")
+        ok = True
+        if hasattr(self.master_app, '_validate_inputs'):
+            try:
+                ok = self.master_app._validate_inputs()
+            except Exception as e:  # pragma: no cover - user display
+                QMessageBox.critical(self, "Error", f"Error validating main application inputs:\n{e}")
                 return None
+            params = getattr(self.master_app, 'validated_params', None)
+        else:
+            params = getattr(self.master_app, 'validated_params', None)
+
+        if not ok or not params:
+            QMessageBox.critical(self, "Error", "Main application parameters not set.")
+            return None
 
         out_obj = getattr(self.master_app, 'save_folder_path', None)
         if not out_obj or not hasattr(out_obj, 'get'):
