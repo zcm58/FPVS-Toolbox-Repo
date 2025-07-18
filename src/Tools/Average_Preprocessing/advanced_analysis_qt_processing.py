@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import logging
 import threading
+from types import SimpleNamespace
 from typing import Any, Dict, Optional
 
 from PySide6.QtCore import QObject, QThread, Signal
@@ -125,25 +126,21 @@ class AdvancedAnalysisProcessingMixin:
         self.close_btn.setEnabled(False)
         self._stop_requested.clear()
 
-        if hasattr(self.master_app, 'load_eeg_file'):
-            load_file_method = self.master_app.load_eeg_file
-        else:
-            from Main_App.load_utils import load_eeg_file as _load
+        from Main_App.load_utils import load_eeg_file as _load
 
-            def load_file_method(fp):
-                return _load(self.master_app, fp)
+        def load_file_method(fp: str):
+            """Load EEG using our Qt logger rather than the main app logger."""
+            proxy = SimpleNamespace(log=self.log_signal.emit)
+            return _load(proxy, fp)
 
-        if hasattr(self.master_app, 'preprocess_raw'):
-            preprocess_raw_method = self.master_app.preprocess_raw
-        else:
-            from Main_App.eeg_preprocessing import perform_preprocessing as _pp
+        from Main_App.eeg_preprocessing import perform_preprocessing as _pp
 
-            def preprocess_raw_method(raw, **params):
-                return _pp(
-                    raw_input=raw,
-                    params=params,
-                    log_func=self.log_signal.emit,
-                )[0]
+        def preprocess_raw_method(raw, **params):
+            return _pp(
+                raw_input=raw,
+                params=params,
+                log_func=self.log_signal.emit,
+            )[0]
 
 
         thread = QThread()
