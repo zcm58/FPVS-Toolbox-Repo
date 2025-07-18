@@ -36,7 +36,7 @@ class AdvancedAnalysisWindowBase(QDialog, QtLoggingMixin):
     """Base dialog containing common UI for advanced averaging."""
 
     def __init__(self, master) -> None:
-        QDialog.__init__(self, None)
+        super().__init__(parent=None)
         QtLoggingMixin.__init__(self)
 
         self.master_app = master

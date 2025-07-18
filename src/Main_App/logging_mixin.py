@@ -17,10 +17,8 @@ class QtLoggingMixin(QObject):
     log_signal = Signal(str)
 
     def __init__(self) -> None:  # pragma: no cover - GUI helper
-        try:
-            QObject.__init__(self)
-        except RuntimeError:
-            pass  # already initialized by another Qt base
+        # Avoid calling :class:`QObject`'s initializer directly to prevent
+        # double initialization when used alongside Qt widgets.
         self.log_output: QPlainTextEdit | None = None
 
         if not getattr(self, "_connected", False):
@@ -32,9 +30,10 @@ class QtLoggingMixin(QObject):
     def log(self, message: str, level: int = logging.INFO) -> None:
         """Emit ``message`` to the GUI log widget and :mod:`logging`."""
         if not getattr(self, "_initialized", False):
+            # Lazily connect the signal if ``__init__`` was not called
+            # (e.g. when used without explicit initialization).
+            self.log_output = None
             try:
-                QObject.__init__(self)
-                self.log_output = None
                 self.log_signal.connect(self._append_log)
             except Exception:  # pragma: no cover - fallback if mixin not init
                 pass
