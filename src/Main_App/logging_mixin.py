@@ -22,9 +22,11 @@ class QtLoggingMixin(QObject):
         except RuntimeError:
             pass  # already initialized by another Qt base
         self.log_output: QPlainTextEdit | None = None
+
         if not getattr(self, "_connected", False):
             self.log_signal.connect(self._append_log)
             self._connected = True
+
         self._initialized = True
 
     def log(self, message: str, level: int = logging.INFO) -> None:
