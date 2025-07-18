@@ -113,7 +113,7 @@ class AdvancedAnalysisProcessingMixin:
         return params, output_directory
 
     def _launch_processing_thread(self, main_app_params: Dict[str, Any], output_directory: str) -> None:
-        self.log("Starting processing thread...")
+        self.log_signal.emit("Starting processing thread...")
         self.progress_bar.show()
         self.progress_bar.setValue(0)
         self.start_btn.setEnabled(False)
@@ -152,7 +152,7 @@ class AdvancedAnalysisProcessingMixin:
 
         worker.moveToThread(thread)
         thread.started.connect(worker.run)
-        worker.log.connect(self.log)
+        worker.log.connect(self.log_signal.emit)
         worker.progress.connect(lambda v: self.progress_bar.setValue(int(v * 100)))
         worker.finished.connect(lambda: self._on_worker_finished(thread, worker))
         self._active_threads.append((thread, worker))
@@ -172,10 +172,10 @@ class AdvancedAnalysisProcessingMixin:
         self.progress_bar.hide()
         self._update_start_processing_button_state()
         self._stop_requested.clear()
-        self.log("Processing finished.")
+        self.log_signal.emit("Processing finished.")
 
     def start_advanced_processing(self) -> None:
-        self.log("Attempting to start advanced processing...")
+        self.log_signal.emit("Attempting to start advanced processing...")
         validation = self._validate_processing_setup()
         if not validation:
             return
@@ -185,10 +185,10 @@ class AdvancedAnalysisProcessingMixin:
     def stop_processing(self) -> None:
 
         if not self._active_threads:
-            self.log("Processing is not currently running.")
+            self.log_signal.emit("Processing is not currently running.")
             return
         self._stop_requested.set()
-        self.log("Stop requested. Waiting for processing to terminate...")
+        self.log_signal.emit("Stop requested. Waiting for processing to terminate...")
         self.stop_btn.setEnabled(False)
         for thread, _ in list(self._active_threads):
             thread.requestInterruption()

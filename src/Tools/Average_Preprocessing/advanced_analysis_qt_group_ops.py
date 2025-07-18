@@ -17,14 +17,14 @@ class AdvancedAnalysisGroupOpsMixin:
     def create_new_group(self) -> None:
         name, ok = QInputDialog.getText(self, "New Averaging Group", "Group name:")
         if not ok or not name.strip():
-            self.log("Group creation cancelled.")
+            self.log_signal.emit("Group creation cancelled.")
             return
         if any(g['name'] == name for g in self.defined_groups):
             QMessageBox.critical(self, "Error", f"A group named '{name}' already exists.")
             return
         id_str, ok = QInputDialog.getText(self, "Event IDs", "IDs to average (comma separated):")
         if not ok or not id_str:
-            self.log("Group creation cancelled (no IDs).")
+            self.log_signal.emit("Group creation cancelled (no IDs).")
             return
         try:
             ids_to_average = [int(x.strip()) for x in id_str.split(',') if x.strip()]
@@ -55,7 +55,9 @@ class AdvancedAnalysisGroupOpsMixin:
         }
         self.defined_groups.append(new_group)
         self._update_groups_listbox()
-        self.log(f"Created group '{name}' averaging IDs {ids_to_average} in all {len(self.source_eeg_files)} files.")
+        self.log_signal.emit(
+            f"Created group '{name}' averaging IDs {ids_to_average} in all {len(self.source_eeg_files)} files."
+        )
         idx = len(self.defined_groups) - 1
         self.groups_list.setCurrentRow(idx)
         self.on_group_select()
@@ -64,14 +66,14 @@ class AdvancedAnalysisGroupOpsMixin:
     def delete_selected_group(self) -> None:
         row = self.groups_list.currentRow()
         if row < 0:
-            self.log("No group selected to delete.")
+            self.log_signal.emit("No group selected to delete.")
             return
         name = self.defined_groups[row]['name']
         if QMessageBox.question(self, "Confirm Delete", f"Delete group '{name}'?") != QMessageBox.Yes:
             return
         del self.defined_groups[row]
         self._update_groups_listbox()
-        self.log(f"Deleted group: {name}")
+        self.log_signal.emit(f"Deleted group: {name}")
         self.selected_group_index = None
         self._clear_group_config_display()
         self._update_start_processing_button_state()
@@ -79,7 +81,7 @@ class AdvancedAnalysisGroupOpsMixin:
     def rename_selected_group(self) -> None:
         row = self.groups_list.currentRow()
         if row < 0:
-            self.log("No group selected to rename.")
+            self.log_signal.emit("No group selected to rename.")
             return
         current = self.defined_groups[row]['name']
         new_name, ok = QInputDialog.getText(self, "Rename Group", f"Enter a new name for '{current}':")
@@ -91,7 +93,7 @@ class AdvancedAnalysisGroupOpsMixin:
         self.defined_groups[row]['name'] = new_name
         self.defined_groups[row]['config_saved'] = False
         self._update_groups_listbox()
-        self.log(f"Renamed group to '{new_name}'.")
+        self.log_signal.emit(f"Renamed group to '{new_name}'.")
 
     def _update_groups_listbox(self) -> None:
         current = self.groups_list.currentRow()
@@ -142,11 +144,11 @@ class AdvancedAnalysisGroupOpsMixin:
     def save_current_group_config(self) -> bool:
         idx = self.selected_group_index
         if idx is None:
-            self.log("No group selected to save configuration for.")
+            self.log_signal.emit("No group selected to save configuration for.")
             return False
         g = self.defined_groups[idx]
         g['config_saved'] = True
-        self.log(f"Configuration saved for group '{g['name']}'.")
+        self.log_signal.emit(f"Configuration saved for group '{g['name']}'.")
         self._update_groups_listbox()
         self.save_group_config_btn.setEnabled(False)
         self._update_start_processing_button_state()

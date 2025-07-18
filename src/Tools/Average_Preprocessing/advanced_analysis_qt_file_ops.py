@@ -25,17 +25,19 @@ class AdvancedAnalysisFileOpsMixin:
         if added:
             self.source_eeg_files.sort()
             self._update_source_files_listbox()
-            self.log(f"Added {added} source file(s). Total: {len(self.source_eeg_files)}.")
+            self.log_signal.emit(
+                f"Added {added} source file(s). Total: {len(self.source_eeg_files)}."
+            )
 
     def remove_source_files(self) -> None:
         indices = [self.source_files_list.row(it) for it in self.source_files_list.selectedItems()]
         if not indices:
-            self.log("No source files selected to remove.")
+            self.log_signal.emit("No source files selected to remove.")
             return
         removed_paths = [self.source_eeg_files[i] for i in indices]
         self.source_eeg_files = [f for i, f in enumerate(self.source_eeg_files) if i not in indices]
         self._update_source_files_listbox()
-        self.log(f"Removed {len(removed_paths)} file(s) from source list.")
+        self.log_signal.emit(f"Removed {len(removed_paths)} file(s) from source list.")
         self._check_groups_for_removed_files(removed_paths)
 
     def _update_source_files_listbox(self) -> None:

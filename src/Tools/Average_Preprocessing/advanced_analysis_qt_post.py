@@ -44,7 +44,7 @@ class AdvancedAnalysisPostMixin:
         try:
             with open(file_path, "w", encoding="utf-8") as f:
                 json.dump(self.defined_groups, f, indent=2)
-            self.log(f"Saved group configuration to {file_path}.")
+            self.log_signal.emit(f"Saved group configuration to {file_path}.")
         except Exception as e:  # pragma: no cover - display error
             QMessageBox.critical(self, "Error", f"Failed to save configuration:\n{e}")
 
@@ -69,7 +69,9 @@ class AdvancedAnalysisPostMixin:
             self._update_groups_listbox()
             self._clear_group_config_display()
             self._update_start_processing_button_state()
-            self.log(f"Loaded {len(self.defined_groups)} group(s) from {file_path}.")
+            self.log_signal.emit(
+                f"Loaded {len(self.defined_groups)} group(s) from {file_path}."
+            )
         except Exception as e:  # pragma: no cover - display error
             QMessageBox.critical(self, "Error", f"Failed to load configuration:\n{e}")
 
