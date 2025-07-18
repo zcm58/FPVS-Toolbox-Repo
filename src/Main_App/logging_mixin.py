@@ -1,12 +1,10 @@
-"""Mixin that timestamps and routes messages to the GUI and ``logging``.
+"""Logging helpers for both Tkinter and Qt widgets."""
+from __future__ import annotations
 
-The mixin writes messages to a Tk ``Text`` widget if present while also
-forwarding them through :mod:`logging` for console output. Debug messages
-are only shown when the global logging level allows them, which is
-controlled via ``debug_utils.configure_logging``.
-"""
 import logging
 import tkinter as tk
+from PySide6.QtCore import QObject, Signal, Slot
+from PySide6.QtWidgets import QPlainTextEdit
 import pandas as pd
 
 logger = logging.getLogger(__name__)
@@ -23,7 +21,7 @@ class LoggingMixin:
         formatted = f"{ts} [GUI]: {message}\n"
 
         try:
-            if hasattr(self, 'log_text') and self.log_text and self.log_text.winfo_exists():
+            if hasattr(self, "log_text") and self.log_text and self.log_text.winfo_exists():
                 if level != logging.DEBUG or logger.isEnabledFor(logging.DEBUG):
                     self.log_text.configure(state="normal")
                     self.log_text.insert(tk.END, formatted)
@@ -46,3 +44,23 @@ class LoggingMixin:
     def debug(self, message: str) -> None:
         if logger.isEnabledFor(logging.DEBUG):
             self.log(f"[DEBUG] {message}", level=logging.DEBUG)
+
+
+class QtLoggingMixin(QObject):
+    """Provide a thread-safe logging mechanism for Qt widgets."""
+
+    log_signal = Signal(str)
+
+    def __init__(self) -> None:  # pragma: no cover - GUI helper
+        super().__init__()
+        self.log_output: QPlainTextEdit | None = None
+        self.log_signal.connect(self._append_log)
+
+    @Slot(str)
+    def _append_log(self, msg: str) -> None:  # pragma: no cover - GUI helper
+        """Append ``msg`` to ``self.log_output`` and scroll to bottom."""
+        if self.log_output is None:
+            return
+        self.log_output.appendPlainText(msg)
+        bar = self.log_output.verticalScrollBar()
+        bar.setValue(bar.maximum())

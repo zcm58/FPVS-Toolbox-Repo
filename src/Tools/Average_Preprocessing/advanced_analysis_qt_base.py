@@ -13,10 +13,11 @@ from typing import List, Dict, Any, Optional
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QDialog, QFrame, QGridLayout, QHBoxLayout, QLabel,
-    QListWidget, QPushButton, QRadioButton, QTextEdit,
-    QVBoxLayout, QProgressBar
-
+    QListWidget, QPushButton, QRadioButton, QPlainTextEdit,
+    QVBoxLayout, QProgressBar,
 )
+
+from Main_App.logging_mixin import QtLoggingMixin
 
 from Main_App.settings_manager import SettingsManager
 
@@ -31,12 +32,12 @@ except Exception:  # pragma: no cover - defaults
 logger = logging.getLogger(__name__)
 
 
-class AdvancedAnalysisWindowBase(QDialog):
+class AdvancedAnalysisWindowBase(QDialog, QtLoggingMixin):
     """Base dialog containing common UI for advanced averaging."""
 
     def __init__(self, master) -> None:
-
-        super().__init__(None)
+        QDialog.__init__(self, None)
+        QtLoggingMixin.__init__(self)
 
         self.master_app = master
         self.debug_mode = SettingsManager().debug_enabled()
@@ -51,6 +52,8 @@ class AdvancedAnalysisWindowBase(QDialog):
         self._stop_requested = threading.Event()
         self._active_threads: List[tuple] = []
 
+        if hasattr(self.master_app, "log"):
+            self.log_signal.connect(lambda m: self.master_app.log(f"[AdvAnalysis] {m}"))
 
         self._build_ui()
         self._populate_default_eeg_files()
@@ -141,9 +144,9 @@ class AdvancedAnalysisWindowBase(QDialog):
         bottom_layout = QVBoxLayout(bottom)
         layout.addWidget(bottom, 1, 0, 1, 2)
 
-        self.log_text = QTextEdit()
-        self.log_text.setReadOnly(True)
-        bottom_layout.addWidget(self.log_text)
+        self.log_output = QPlainTextEdit()
+        self.log_output.setReadOnly(True)
+        bottom_layout.addWidget(self.log_output)
 
         hb = QHBoxLayout()
         self.progress_bar = QProgressBar()
@@ -187,7 +190,7 @@ class AdvancedAnalysisWindowBase(QDialog):
             if added:
                 self.source_eeg_files.sort()
                 self._update_source_files_listbox()
-                self.log(f"Auto-added {added} BDF file(s) from {directory}.")
+                self.log_signal.emit(f"Auto-added {added} BDF file(s) from {directory}.")
 
     def _center(self) -> None:
         geo = self.frameGeometry()
@@ -195,17 +198,12 @@ class AdvancedAnalysisWindowBase(QDialog):
         geo.moveCenter(center)
         self.move(geo.topLeft())
 
-    def log(self, message: str) -> None:
-        self.log_text.append(message)
-        if hasattr(self.master_app, "log"):
-            self.master_app.log(f"[AdvAnalysis] {message}")
-
     def clear_log(self) -> None:
-        self.log_text.clear()
+        self.log_output.clear()
 
     def debug(self, message: str) -> None:
         if self.debug_mode:
-            self.log(f"[DEBUG] {message}")
+            self.log_signal.emit(f"[DEBUG] {message}")
 
 
     def _clear_group_config_display(self) -> None:
