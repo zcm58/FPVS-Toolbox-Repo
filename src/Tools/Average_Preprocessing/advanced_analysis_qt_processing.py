@@ -63,7 +63,11 @@ class _Worker(QObject):
 class AdvancedAnalysisProcessingMixin:
     def _update_start_processing_button_state(self) -> None:
         out_dir_obj = getattr(self.master_app, "save_folder_path", None)
-        has_out_dir = out_dir_obj is not None and getattr(out_dir_obj, "get", None) and out_dir_obj.get()
+        has_out_dir = bool(
+            out_dir_obj
+            and getattr(out_dir_obj, "get", None)
+            and out_dir_obj.get()
+        )
 
         all_valid = False
         if self.defined_groups:
