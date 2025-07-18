@@ -12,6 +12,12 @@ class FileSelectionMixin:
         if folder:
             self.save_folder_path.set(folder)
             self.log(f"Output folder: {folder}")
+            adv = getattr(self, "_qt_adv_win", None)
+            if adv is not None:
+                try:
+                    adv._update_start_processing_button_state()
+                except Exception:
+                    pass
         else:
             self.log("Save folder selection cancelled.")
 
