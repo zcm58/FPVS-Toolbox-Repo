@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from PySide6.QtCore import QObject, Signal, Slot
 from PySide6.QtGui import QTextCursor
+import logging
 
 from .settings_manager import SettingsManager
 
@@ -37,6 +38,7 @@ class QtLoggingMixin:
     def debug(self, message: str) -> None:
         if getattr(self, "debug_mode", False):
             self.log_signal.emit(f"[DEBUG] {message}")
+            logging.getLogger(type(self).__module__).debug(message)
 
 
 LoggingMixin = QtLoggingMixin
