@@ -55,7 +55,9 @@ class DummyButton:
         self.enabled = None
 
     def setEnabled(self, val):
-        self.enabled = bool(val)
+        if not isinstance(val, bool):
+            raise TypeError("setEnabled expected a bool")
+        self.enabled = val
 
 
 class DummyVar:
