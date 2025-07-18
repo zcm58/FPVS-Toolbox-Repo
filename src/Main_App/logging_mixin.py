@@ -17,12 +17,26 @@ class QtLoggingMixin(QObject):
     log_signal = Signal(str)
 
     def __init__(self) -> None:  # pragma: no cover - GUI helper
-        super().__init__()
+        try:
+            QObject.__init__(self)
+        except RuntimeError:
+            pass  # already initialized by another Qt base
         self.log_output: QPlainTextEdit | None = None
-        self.log_signal.connect(self._append_log)
+        if not getattr(self, "_connected", False):
+            self.log_signal.connect(self._append_log)
+            self._connected = True
+        self._initialized = True
 
     def log(self, message: str, level: int = logging.INFO) -> None:
         """Emit ``message`` to the GUI log widget and :mod:`logging`."""
+        if not getattr(self, "_initialized", False):
+            try:
+                QObject.__init__(self)
+                self.log_output = None
+                self.log_signal.connect(self._append_log)
+            except Exception:  # pragma: no cover - fallback if mixin not init
+                pass
+            self._initialized = True
         ts = pd.Timestamp.now().strftime("%H:%M:%S.%f")[:-3]
         formatted = f"{ts} [GUI]: {message}"
         logger.log(level, formatted)
