@@ -51,8 +51,8 @@ class AdvancedAnalysisWindowBase(QtLoggingMixin, QDialog):
         self._stop_requested = threading.Event()
         self._active_threads: List[tuple] = []
 
-        if hasattr(self.master_app, "log"):
-            self.log_signal.connect(lambda m: self.master_app.log(f"[AdvAnalysis] {m}"))
+        # Do not forward log messages to the main application; keep them local
+        # to this window's log output.
 
         self._build_ui()
         self._populate_default_eeg_files()
