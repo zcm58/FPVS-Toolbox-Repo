@@ -87,7 +87,7 @@ def test_start_processing_button_state(monkeypatch):
 
     win = DummyWin()
 
-    # No params or output dir
+    # No groups or output dir
     win._update_start_processing_button_state()
     assert win.start_btn.enabled is False
 
@@ -97,7 +97,7 @@ def test_start_processing_button_state(monkeypatch):
     ]
     win.master_app.save_folder_path.set("/tmp")
     win._update_start_processing_button_state()
-    assert win.start_btn.enabled is False
+    assert win.start_btn.enabled is True
 
     # Params but missing output dir
     win.master_app.validated_params = {"a": 1}

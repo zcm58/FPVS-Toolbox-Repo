@@ -2,7 +2,6 @@
 from .advanced_analysis_base import *  # noqa: F401,F403,F405
 class AdvancedAnalysisProcessingMixin:
         def _update_start_processing_button_state(self):
-            has_params = bool(getattr(self.master_app, "validated_params", None))
             out_dir_obj = getattr(self.master_app, "save_folder_path", None)
             has_out_dir = out_dir_obj is not None and getattr(out_dir_obj, "get", None) and out_dir_obj.get()
 
@@ -13,7 +12,7 @@ class AdvancedAnalysisProcessingMixin:
                     for g in self.defined_groups
                 )
 
-            button_state = "normal" if all_groups_valid_and_saved and has_params and has_out_dir else "disabled"
+            button_state = "normal" if all_groups_valid_and_saved and has_out_dir else "disabled"
             if hasattr(self, 'start_adv_processing_button'):
                 self.start_adv_processing_button.configure(state=button_state)
     
@@ -59,80 +58,14 @@ class AdvancedAnalysisProcessingMixin:
     
         def _validate_processing_setup(self) -> Optional[tuple]:
             """Validate configuration before launching the processing thread.
-    
+
             Returns
             -------
             tuple[Dict[str, Any], str] or None
                 ``(main_app_params, output_directory)`` if validation succeeds,
                 otherwise ``None``.
             """
-    
-    
-            # 0) If the main app hasn't yet validated its entries, do so now.
-            self.debug(
-                f"[PARAM_CHECK] Initial check: self.master_app has 'validated_params' attribute: {hasattr(self.master_app, 'validated_params')}" )
-            if hasattr(self.master_app, 'validated_params'):
-                current_params = getattr(self.master_app, 'validated_params', 'Attribute exists but is None')
-                self.debug(
-                    f"[PARAM_CHECK] Initial self.master_app.validated_params (type: {type(current_params)}): {current_params}")
-    
-            main_app_params_are_set = bool(getattr(self.master_app, "validated_params", None))
-    
-            if not main_app_params_are_set:
-                self.debug(
-                    "[PARAM_CHECK] Main app's 'validated_params' not set or is None/empty. Attempting to call _validate_inputs().")
-                ok = False
-                if hasattr(self.master_app, "_validate_inputs"):
-                    self.debug("[PARAM_CHECK] Calling self.master_app._validate_inputs()...")
-                    try:
-                        ok = self.master_app._validate_inputs()
-                        self.debug(f"[PARAM_CHECK] self.master_app._validate_inputs() returned: {ok}")
-    
-                        if hasattr(self.master_app, 'validated_params'):
-                            current_params_after_call = getattr(self.master_app, 'validated_params', 'Attribute exists but is None')
-                            self.debug(
-                                f"[PARAM_CHECK] After _validate_inputs(), self.master_app.validated_params (type: {type(current_params_after_call)}): {current_params_after_call}")
-                            main_app_params_are_set = bool(current_params_after_call)
-                        else:
-                            self.debug(
-                                "[PARAM_CHECK] After _validate_inputs(), self.master_app still does not have 'validated_params' attribute.")
-                            main_app_params_are_set = False
-    
-                    except Exception as e:
-                        self.debug(f"[PARAM_CHECK] Error during self.master_app._validate_inputs(): {traceback.format_exc()}")
-                        CTkMessagebox.CTkMessagebox(
-                            title="Error",
-                            message=f"An error occurred while validating main application inputs: {e}",
-                            icon="cancel",
-                            master=self,
-                        )
-                        return None
-                else:
-                    self.debug(
-                        "[PARAM_CHECK] Warning: Main app does not have a '_validate_inputs' method, and 'validated_params' was not already set.")
-    
-                if not ok and not main_app_params_are_set:
-                    self.debug(
-                        "[PARAM_CHECK] Main app input validation failed or was not performed, and parameters are still not set.")
-                    CTkMessagebox.CTkMessagebox(
-                        title="Error",
-                        message="Main application parameters could not be validated or are missing. Please check the main app settings and ensure they are confirmed/applied.",
-                        icon="cancel",
-                        master=self,
-                    )
-                    return None
-                elif ok and not main_app_params_are_set:
-                    self.debug(
-                        "[PARAM_CHECK] Warning: _validate_inputs returned True, but validated_params is still not set or is None/empty.")
-                    CTkMessagebox.CTkMessagebox(
-                        title="Error",
-                        message="Main app validation reported success, but parameters are missing. Please check the main app's _validate_inputs method.",
-                        icon="cancel",
-                        master=self,
-                    )
-                    return None
-    
-    
+
             if not self.defined_groups:
                 CTkMessagebox.CTkMessagebox(
                     title="Error",
@@ -141,7 +74,7 @@ class AdvancedAnalysisProcessingMixin:
                     master=self,
                 )
                 return None
-    
+
             for i, group in enumerate(self.defined_groups):
                 if not group.get("config_saved", False):
                     CTkMessagebox.CTkMessagebox(
@@ -173,33 +106,32 @@ class AdvancedAnalysisProcessingMixin:
                     self.groups_listbox.selection_set(i)
                     self.on_group_select(None)
                     return None
-    
-    
-            main_app_params = getattr(self.master_app, 'validated_params', None)
-    
-            self.debug(f"[PARAM_CHECK] Final fetched main_app_params to be used for processing: {main_app_params}")
-    
-            if main_app_params is None or not main_app_params:
-                self.debug("[PARAM_CHECK] Critical Error: main_app_params is None or empty after validation attempts.")
+
+            ok = True
+            if hasattr(self.master_app, "_validate_inputs"):
+                try:
+                    ok = self.master_app._validate_inputs()
+                except Exception as e:
+                    self.debug(f"[PARAM_CHECK] Error during self.master_app._validate_inputs(): {traceback.format_exc()}")
+                    CTkMessagebox.CTkMessagebox(
+                        title="Error",
+                        message=f"An error occurred while validating main application inputs: {e}",
+                        icon="cancel",
+                        master=self,
+                    )
+                    return None
+
+            main_app_params = getattr(self.master_app, "validated_params", None)
+
+            if not ok or not main_app_params:
                 CTkMessagebox.CTkMessagebox(
-                    title="Critical Error",
-                    message="Could not retrieve necessary parameters from the main application. Processing cannot start.",
+                    title="Error",
+                    message="Main application parameters could not be validated or are missing. Please check the main app settings and ensure they are confirmed/applied.",
                     icon="cancel",
                     master=self,
                 )
                 return None
-    
-            if not isinstance(main_app_params, dict):
-                self.debug(
-                    f"[PARAM_CHECK] Critical Error: main_app_params is not a dictionary (type: {type(main_app_params)}).")
-                CTkMessagebox.CTkMessagebox(
-                    title="Critical Error",
-                    message=f"Main application parameters are not in the expected format (should be a dictionary, but got {type(main_app_params)}).",
-                    icon="cancel",
-                    master=self,
-                )
-                return None
-    
+
             save_folder_path_obj = getattr(self.master_app, "save_folder_path", None)
             if save_folder_path_obj is None or not hasattr(save_folder_path_obj, "get"):
                 CTkMessagebox.CTkMessagebox(
@@ -209,7 +141,7 @@ class AdvancedAnalysisProcessingMixin:
                     master=self,
                 )
                 return None
-    
+
             output_directory = save_folder_path_obj.get()
             if not output_directory:
                 CTkMessagebox.CTkMessagebox(
@@ -219,7 +151,7 @@ class AdvancedAnalysisProcessingMixin:
                     master=self,
                 )
                 return None
-    
+
             if run_advanced_averaging_processing is None or _external_post_process_actual is None:
                 CTkMessagebox.CTkMessagebox(
                     title="Critical Error",
@@ -228,7 +160,7 @@ class AdvancedAnalysisProcessingMixin:
                     master=self,
                 )
                 return None
-    
+
             return main_app_params, output_directory
     
         def _launch_processing_thread(self, main_app_params: Dict[str, Any], output_directory: str) -> None:
