@@ -139,7 +139,11 @@ class AdvancedAnalysisProcessingMixin:
             from Main_App.eeg_preprocessing import perform_preprocessing as _pp
 
             def preprocess_raw_method(raw, **params):
-                return _pp(raw_input=raw, params=params, log_func=self.master_app.log)[0]
+                return _pp(
+                    raw_input=raw,
+                    params=params,
+                    log_func=self.log_signal.emit,
+                )[0]
 
 
         thread = QThread()
