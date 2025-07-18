@@ -16,9 +16,8 @@ class QtLoggingMixin(QObject):
 
     log_signal = Signal(str)
 
-    def __init__(self) -> None:  # pragma: no cover - GUI helper
-        # Avoid calling :class:`QObject`'s initializer directly to prevent
-        # double initialization when used alongside Qt widgets.
+    def __init__(self, *args, **kwargs) -> None:  # pragma: no cover - GUI helper
+        super().__init__(*args, **kwargs)
         self.log_output: QPlainTextEdit | None = None
 
         if not getattr(self, "_connected", False):
