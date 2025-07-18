@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import customtkinter as ctk
 
+# log() and debug() schedule updates using the widget's ``after`` method
+# when available so they can be safely invoked from background threads.
+
 from .settings_manager import SettingsManager
 
 
@@ -25,8 +28,19 @@ class TkLoggingMixin:
                 self.log_text.configure(state="disabled")
 
     def log(self, message: str) -> None:
-        self._append_log(message)
+        """Append a message to the log widget in a thread-safe manner."""
+        # Use Tk's event queue when available so calls from background threads
+        # don't manipulate the widget directly.  When ``after`` is not present
+        # (e.g. in unit tests), fall back to a direct call.
+        if hasattr(self, "after"):
+            self.after(0, self._append_log, message)
+        else:
+            self._append_log(message)
 
     def debug(self, message: str) -> None:
+        """Append a debug message when debug mode is enabled."""
         if getattr(self, "debug_mode", False):
-            self._append_log(f"[DEBUG] {message}")
+            if hasattr(self, "after"):
+                self.after(0, self._append_log, f"[DEBUG] {message}")
+            else:
+                self._append_log(f"[DEBUG] {message}")
