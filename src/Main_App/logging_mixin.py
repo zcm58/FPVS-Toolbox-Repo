@@ -17,9 +17,16 @@ class QtLoggingMixin(QObject):
     log_signal = Signal(str)
 
     def __init__(self) -> None:  # pragma: no cover - GUI helper
-        super().__init__()
+        try:
+            QObject.__init__(self)
+        except RuntimeError:
+            pass  # already initialized by another Qt base
         self.log_output: QPlainTextEdit | None = None
-        self.log_signal.connect(self._append_log)
+
+        if not getattr(self, "_connected", False):
+            self.log_signal.connect(self._append_log)
+            self._connected = True
+
         self._initialized = True
 
     def log(self, message: str, level: int = logging.INFO) -> None:
