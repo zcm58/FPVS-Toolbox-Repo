@@ -32,12 +32,11 @@ except Exception:  # pragma: no cover - defaults
 logger = logging.getLogger(__name__)
 
 
-class AdvancedAnalysisWindowBase(QDialog, QtLoggingMixin):
+class AdvancedAnalysisWindowBase(QtLoggingMixin, QDialog):
     """Base dialog containing common UI for advanced averaging."""
 
     def __init__(self, master) -> None:
         super().__init__(parent=None)
-        QtLoggingMixin.__init__(self)
 
         self.master_app = master
         self.debug_mode = SettingsManager().debug_enabled()
