@@ -82,7 +82,7 @@ ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
 
 
-class FPVSApp(ctk.CTk, LoggingMixin, EventMapMixin, FileSelectionMixin,
+class FPVSApp(LoggingMixin, ctk.CTk, EventMapMixin, FileSelectionMixin,
               EventDetectionMixin, ValidationMixin, ProcessingMixin):
 
     """ Main application class replicating MATLAB FPVS analysis workflow using numerical triggers. """
