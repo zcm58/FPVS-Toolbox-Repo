@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+
 from . import stats_export
 
 
@@ -136,6 +137,7 @@ def create_widgets(self) -> None:
     btn_layout.addWidget(self.run_posthoc_btn, 2, 0)
 
     self.export_rm_anova_btn = _Button("Export RM-ANOVA")
+
     self.export_rm_anova_btn.setEnabled(False)
     self.export_rm_anova_btn.clicked.connect(
         lambda: stats_export.export_rm_anova_results_to_excel(
@@ -144,9 +146,11 @@ def create_widgets(self) -> None:
             log_func=self.log_to_main_app,
         )
     )
+
     btn_layout.addWidget(self.export_rm_anova_btn, 0, 1)
 
     self.export_mixed_model_btn = _Button("Export Mixed Model")
+
     self.export_mixed_model_btn.setEnabled(False)
     self.export_mixed_model_btn.clicked.connect(
         lambda: stats_export.export_mixed_model_results_to_excel(
@@ -155,9 +159,11 @@ def create_widgets(self) -> None:
             log_func=self.log_to_main_app,
         )
     )
+
     btn_layout.addWidget(self.export_mixed_model_btn, 1, 1)
 
     self.export_posthoc_btn = _Button("Export Post-hoc Results")
+
     self.export_posthoc_btn.setEnabled(False)
     self.export_posthoc_btn.clicked.connect(
         lambda: stats_export.export_posthoc_results_to_excel(
@@ -166,6 +172,7 @@ def create_widgets(self) -> None:
             parent_folder=self.stats_data_folder_var.get(),
             log_func=self.log_to_main_app,
         )
+
     )
     btn_layout.addWidget(self.export_posthoc_btn, 2, 1)
 
@@ -207,6 +214,7 @@ def create_widgets(self) -> None:
     controls_layout.addWidget(run_check_btn, 0, 4)
 
     self.export_harmonic_check_btn = _Button("Export Harmonic Results")
+
     self.export_harmonic_check_btn.setEnabled(False)
     self.export_harmonic_check_btn.clicked.connect(
         lambda: stats_export.export_significance_results_to_excel(
@@ -226,3 +234,4 @@ def create_widgets(self) -> None:
     self.results_textbox.setFont(QFont("Courier New", 12))
     main_layout.addWidget(self.results_textbox, 3, 0)
     main_layout.setRowStretch(3, 1)
+
