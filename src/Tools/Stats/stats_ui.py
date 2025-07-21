@@ -1,136 +1,174 @@
 # UI creation method extracted from stats.py
 
-import customtkinter as ctk
-from config import FONT_BOLD
+from PySide6.QtWidgets import (
+    QComboBox,
+    QFrame,
+    QGridLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QTextEdit,
+    QVBoxLayout,
+)
+from PySide6.QtGui import QFont, QDoubleValidator
+from PySide6.QtCore import Qt
+
+from config import FONT_FAMILY
 from . import stats_export
 
 
 def create_widgets(self):
-    validate_num_cmd = (self.register(self._validate_numeric), '%P')
+    bold_font = QFont(FONT_FAMILY, 12, QFont.Bold)
 
-    main_frame = ctk.CTkFrame(self)
-    main_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
-    self.grid_rowconfigure(0, weight=1)
-    self.grid_columnconfigure(0, weight=1)
-    main_frame.grid_columnconfigure(0, weight=1)
+    main_layout = QGridLayout(self)
+    self.setLayout(main_layout)
+    main_layout.setContentsMargins(10, 10, 10, 10)
+    main_layout.setRowStretch(3, 1)
+    main_layout.setColumnStretch(0, 1)
 
     # --- Row 0: Folder Selection ---
-    folder_frame = ctk.CTkFrame(main_frame)
-    folder_frame.grid(row=0, column=0, sticky="ew", padx=5, pady=(5, 10))
-    folder_frame.grid_columnconfigure(1, weight=1)
-    ctk.CTkLabel(folder_frame, text="Data Folder:").grid(row=0, column=0, padx=5, pady=5, sticky="w")
-    ctk.CTkEntry(folder_frame, textvariable=self.stats_data_folder_var, state="readonly").grid(row=0, column=1,
-                   padx=5, pady=5,
-                   sticky="ew")
-    ctk.CTkButton(folder_frame, text="Browse...", command=self.browse_folder).grid(row=0, column=2, padx=5, pady=5)
-    ctk.CTkLabel(folder_frame, textvariable=self.detected_info_var, justify="left", anchor="w").grid(row=1,
-                         column=0,
-                         columnspan=3,
-                         padx=5, pady=5,
-                         sticky="w")
+    folder_frame = QFrame(self)
+    folder_layout = QGridLayout(folder_frame)
+    folder_layout.setContentsMargins(5, 5, 5, 10)
+    folder_layout.setColumnStretch(1, 1)
+
+    folder_label = QLabel("Data Folder:")
+    folder_layout.addWidget(folder_label, 0, 0, alignment=Qt.AlignLeft)
+
+    self.folder_entry = QLineEdit()
+    self.folder_entry.setReadOnly(True)
+    if hasattr(self.stats_data_folder_var, "get"):
+        self.folder_entry.setText(self.stats_data_folder_var.get())
+        self.folder_entry.textChanged.connect(lambda t: self.stats_data_folder_var.set(t))
+    folder_layout.addWidget(self.folder_entry, 0, 1)
+
+    browse_btn = QPushButton("Browse...")
+    browse_btn.clicked.connect(self.browse_folder)
+    folder_layout.addWidget(browse_btn, 0, 2)
+
+    self.detected_info_label = QLabel(
+        self.detected_info_var.get() if hasattr(self.detected_info_var, "get") else ""
+    )
+    self.detected_info_label.setAlignment(Qt.AlignLeft)
+    self.detected_info_label.setWordWrap(True)
+    folder_layout.addWidget(self.detected_info_label, 1, 0, 1, 3)
+
+    main_layout.addWidget(folder_frame, 0, 0)
 
     # --- Row 1: Section A - Summed BCA Analysis ---
-    summed_bca_frame = ctk.CTkFrame(main_frame, fg_color="transparent")
-    summed_bca_frame.grid(row=1, column=0, sticky="ew", padx=5, pady=(10, 5))
-    ctk.CTkLabel(summed_bca_frame, text="Summed BCA Analysis:", font=FONT_BOLD).pack(anchor="w",
-                          pady=(0, 5))
-    buttons_summed_frame = ctk.CTkFrame(summed_bca_frame)
-    buttons_summed_frame.pack(fill="x", padx=0, pady=0)
-    buttons_summed_frame.grid_columnconfigure(0, weight=1)
-    buttons_summed_frame.grid_columnconfigure(1, weight=1)
-    # Paired t-tests were removed; only RM-ANOVA remains
-    ctk.CTkButton(
-        buttons_summed_frame,
-        text="Run RM-ANOVA (Summed BCA)",
-        command=self.run_rm_anova,
-    ).grid(row=0, column=0, padx=5, pady=(0, 5), sticky="ew")
+    summed_bca_frame = QFrame(self)
+    summed_bca_layout = QVBoxLayout(summed_bca_frame)
+    label = QLabel("Summed BCA Analysis:")
+    label.setFont(bold_font)
+    summed_bca_layout.addWidget(label, alignment=Qt.AlignLeft)
 
-    ctk.CTkButton(
-        buttons_summed_frame,
-        text="Run Mixed Model",
-        command=self.run_mixed_model,
-    ).grid(row=1, column=0, padx=5, pady=(0, 5), sticky="ew")
+    buttons_frame = QFrame()
+    buttons_layout = QGridLayout(buttons_frame)
+    buttons_layout.setColumnStretch(0, 1)
+    buttons_layout.setColumnStretch(1, 1)
 
-    self.run_posthoc_btn = ctk.CTkButton(
-        buttons_summed_frame,
-        text="Run Interaction Post-hocs",
-        command=self.run_interaction_posthocs,
-    )
-    self.run_posthoc_btn.grid(row=2, column=0, padx=5, pady=(0, 5), sticky="ew")
+    btn_rm_anova = QPushButton("Run RM-ANOVA (Summed BCA)")
+    btn_rm_anova.clicked.connect(self.run_rm_anova)
+    buttons_layout.addWidget(btn_rm_anova, 0, 0)
 
-    self.export_rm_anova_btn = ctk.CTkButton(
-        buttons_summed_frame,
-        text="Export RM-ANOVA",
-        state="disabled",
-        command=lambda: stats_export.export_rm_anova_results_to_excel(
+    btn_mixed = QPushButton("Run Mixed Model")
+    btn_mixed.clicked.connect(self.run_mixed_model)
+    buttons_layout.addWidget(btn_mixed, 1, 0)
+
+    self.run_posthoc_btn = QPushButton("Run Interaction Post-hocs")
+    self.run_posthoc_btn.clicked.connect(self.run_interaction_posthocs)
+    buttons_layout.addWidget(self.run_posthoc_btn, 2, 0)
+
+    self.export_rm_anova_btn = QPushButton("Export RM-ANOVA")
+    self.export_rm_anova_btn.setEnabled(False)
+    self.export_rm_anova_btn.clicked.connect(
+        lambda: stats_export.export_rm_anova_results_to_excel(
             anova_table=self.rm_anova_results_data,
             parent_folder=self.stats_data_folder_var.get(),
             log_func=self.log_to_main_app,
-        ),
+        )
     )
-    self.export_rm_anova_btn.grid(row=0, column=1, padx=5, pady=(0, 5), sticky="ew")
+    buttons_layout.addWidget(self.export_rm_anova_btn, 0, 1)
 
-    self.export_mixed_model_btn = ctk.CTkButton(
-        buttons_summed_frame,
-        text="Export Mixed Model",
-        state="disabled",
-        command=lambda: stats_export.export_mixed_model_results_to_excel(
+    self.export_mixed_model_btn = QPushButton("Export Mixed Model")
+    self.export_mixed_model_btn.setEnabled(False)
+    self.export_mixed_model_btn.clicked.connect(
+        lambda: stats_export.export_mixed_model_results_to_excel(
             results_df=self.mixed_model_results_data,
             parent_folder=self.stats_data_folder_var.get(),
             log_func=self.log_to_main_app,
-        ),
+        )
     )
-    self.export_mixed_model_btn.grid(row=1, column=1, padx=5, pady=(0, 5), sticky="ew")
+    buttons_layout.addWidget(self.export_mixed_model_btn, 1, 1)
 
-    self.export_posthoc_btn = ctk.CTkButton(
-        buttons_summed_frame,
-        text="Export Post-hoc Results",
-        state="disabled",
-        command=lambda: stats_export.export_posthoc_results_to_excel(
+    self.export_posthoc_btn = QPushButton("Export Post-hoc Results")
+    self.export_posthoc_btn.setEnabled(False)
+    self.export_posthoc_btn.clicked.connect(
+        lambda: stats_export.export_posthoc_results_to_excel(
             results_df=self.posthoc_results_data,
             factor=self.posthoc_factor_var.get(),
             parent_folder=self.stats_data_folder_var.get(),
             log_func=self.log_to_main_app,
-        ),
+        )
     )
-    self.export_posthoc_btn.grid(row=2, column=1, padx=5, pady=(0, 5), sticky="ew")
+    buttons_layout.addWidget(self.export_posthoc_btn, 2, 1)
 
-    # --- Row 3: Section B - Harmonic Significance Check ---
-    harmonic_check_frame = ctk.CTkFrame(main_frame, fg_color="transparent")
-    harmonic_check_frame.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
-    ctk.CTkLabel(harmonic_check_frame, text="Per-Harmonic Significance Check:",
-                 font=FONT_BOLD).pack(anchor="w", pady=(0, 5))
-    controls_harmonic_frame = ctk.CTkFrame(harmonic_check_frame)
-    controls_harmonic_frame.pack(fill="x", padx=0, pady=0)
-    ctk.CTkLabel(controls_harmonic_frame, text="Metric:").grid(row=0, column=0, padx=(0, 5), pady=5, sticky="w")
-    self.harmonic_metric_menu = ctk.CTkOptionMenu(controls_harmonic_frame, variable=self.harmonic_metric_var,
-                                                  values=["SNR", "Z Score"])  # Stored instance
-    self.harmonic_metric_menu.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
-    ctk.CTkLabel(controls_harmonic_frame, text="Mean Threshold:").grid(row=0, column=2, padx=(15, 5), pady=5,
-                                                                           sticky="w")
-    ctk.CTkEntry(controls_harmonic_frame, textvariable=self.harmonic_threshold_var, validate='key',
-                 validatecommand=validate_num_cmd, width=100).grid(row=0, column=3, padx=5, pady=5, sticky="w")
-    ctk.CTkButton(controls_harmonic_frame, text="Run Harmonic Check", command=self.run_harmonic_check).grid(row=0,
-                                column=4,
-                                padx=15,
-                                pady=5)
-    self.export_harmonic_check_btn = ctk.CTkButton(
-        controls_harmonic_frame,
-        text="Export Harmonic Results",
-        state="disabled",
-        command=lambda: stats_export.export_significance_results_to_excel(
+    summed_bca_layout.addWidget(buttons_frame)
+    main_layout.addWidget(summed_bca_frame, 1, 0)
+
+    # --- Row 2: Section B - Harmonic Significance Check ---
+    harmonic_check_frame = QFrame(self)
+    harmonic_layout = QVBoxLayout(harmonic_check_frame)
+    label = QLabel("Per-Harmonic Significance Check:")
+    label.setFont(bold_font)
+    harmonic_layout.addWidget(label, alignment=Qt.AlignLeft)
+
+    controls_frame = QFrame()
+    controls_layout = QGridLayout(controls_frame)
+    controls_layout.setColumnStretch(1, 1)
+
+    metric_label = QLabel("Metric:")
+    controls_layout.addWidget(metric_label, 0, 0, alignment=Qt.AlignLeft)
+
+    self.harmonic_metric_menu = QComboBox()
+    self.harmonic_metric_menu.addItems(["SNR", "Z Score"])
+    if hasattr(self.harmonic_metric_var, "get"):
+        self.harmonic_metric_menu.setCurrentText(self.harmonic_metric_var.get())
+        self.harmonic_metric_menu.currentTextChanged.connect(self.harmonic_metric_var.set)
+    controls_layout.addWidget(self.harmonic_metric_menu, 0, 1)
+
+    threshold_label = QLabel("Mean Threshold:")
+    controls_layout.addWidget(threshold_label, 0, 2, alignment=Qt.AlignLeft)
+
+    self.harmonic_threshold_entry = QLineEdit()
+    self.harmonic_threshold_entry.setValidator(QDoubleValidator())
+    if hasattr(self.harmonic_threshold_var, "get"):
+        self.harmonic_threshold_entry.setText(self.harmonic_threshold_var.get())
+        self.harmonic_threshold_entry.textChanged.connect(self.harmonic_threshold_var.set)
+    controls_layout.addWidget(self.harmonic_threshold_entry, 0, 3)
+
+    run_harmonic_btn = QPushButton("Run Harmonic Check")
+    run_harmonic_btn.clicked.connect(self.run_harmonic_check)
+    controls_layout.addWidget(run_harmonic_btn, 0, 4)
+
+    self.export_harmonic_check_btn = QPushButton("Export Harmonic Results")
+    self.export_harmonic_check_btn.setEnabled(False)
+    self.export_harmonic_check_btn.clicked.connect(
+        lambda: stats_export.export_significance_results_to_excel(
             findings_dict=self._structure_harmonic_results(),
             metric=self.harmonic_metric_var.get(),
             threshold=float(self.harmonic_threshold_var.get()),
             parent_folder=self.stats_data_folder_var.get(),
             log_func=self.log_to_main_app,
-        ),
+        )
     )
-    self.export_harmonic_check_btn.grid(row=0, column=5, padx=5, pady=5)
-    controls_harmonic_frame.grid_columnconfigure(1, weight=1)  # Allow metric menu to expand
+    controls_layout.addWidget(self.export_harmonic_check_btn, 0, 5)
 
-    # --- Row 4: Results Textbox ---
-    self.results_textbox = ctk.CTkTextbox(main_frame, wrap="word", state="disabled",
-                                          font=ctk.CTkFont(family="Courier New", size=12))
-    self.results_textbox.grid(row=3, column=0, sticky="nsew", padx=5, pady=(10, 5))
-    main_frame.grid_rowconfigure(3, weight=1)
+    harmonic_layout.addWidget(controls_frame)
+    main_layout.addWidget(harmonic_check_frame, 2, 0)
+
+    # --- Row 3: Results Textbox ---
+    self.results_textbox = QTextEdit()
+    self.results_textbox.setReadOnly(True)
+    self.results_textbox.setFont(QFont("Courier New", 12))
+    main_layout.addWidget(self.results_textbox, 3, 0)
