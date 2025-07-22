@@ -23,8 +23,10 @@ from PySide6.QtWidgets import (
     QDockWidget,
     QToolButton,
     QSizePolicy,
+    QStackedWidget,
+    QGraphicsOpacityEffect,
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QPropertyAnimation
 from PySide6.QtGui import QIcon
 import logging
 import pandas as pd
@@ -51,15 +53,34 @@ class MainWindow(QMainWindow):
         self._settings_dialog = None
         self.setWindowTitle("FPVS Toolbox")
         self.setMinimumSize(1024, 768)
-        self._init_ui()
-        self._init_sidebar()
+        self.initSidebar()
+        self.stack = QStackedWidget(self)
+        self.setCentralWidget(self.stack)
+        self.homeWidget = self._init_ui()
+        self.settingsWidget = SettingsDialog(self.settings, self)
+        self.statsToolWidget = QLabel("Stats Tool Page", self)
+        self.snrPlotWidget = QLabel("Graphs Page", self)
+        self.imageResizerWidget = QLabel("Image Resizer Page", self)
+        self.epochAveragingWidget = QLabel("Epoch Averaging Page", self)
+        for w in (
+            self.homeWidget,
+            self.statsToolWidget,
+            self.snrPlotWidget,
+            self.imageResizerWidget,
+            self.epochAveragingWidget,
+            self.settingsWidget,
+        ):
+            self.stack.addWidget(w)
+        self.setStatusBar(QStatusBar(self))
+        self._connect_sidebar()
+        self.switchPage(0)
         self.log("Welcome to the FPVS Toolbox!")
         self.log(
             f"Appearance Mode: {self.settings.get('appearance', 'mode', 'System')}"
         )
 
     # ------------------------------------------------------------------
-    def _init_ui(self) -> None:
+    def _init_ui(self) -> QWidget:
         # Menu bar
         menu = build_menu_bar(self)
         self.setMenuBar(menu)
@@ -123,50 +144,8 @@ class MainWindow(QMainWindow):
         )
         self.cb_loreta.setChecked(loreta_enabled)
 
-        # Preprocessing Parameters group
-        grp_pre = QGroupBox("Preprocessing Parameters", container)
-        grid = QGridLayout(grp_pre)
-        params = [
-            "Low Pass (Hz):",
-            "High Pass (Hz):",
-            "Downsample (Hz):",
-            "Epoch Start (s):",
-            "Rejection Z-Thresh:",
-            "Epoch End (s):",
-            "Ref Chan 1:",
-            "Ref Chan 2:",
-            "Max Chan Idx Keep:",
-            "Max Bad Chans (Flag):",
-        ]
-        self.pre_edits: list[QLineEdit] = []
-        for i, label_text in enumerate(params):
-            row, col = divmod(i, 2)
-            lbl = QLabel(label_text, grp_pre)
-            edit = QLineEdit(grp_pre)
-            self.pre_edits.append(edit)
-            grid.addWidget(lbl, row, col * 2)
-            grid.addWidget(edit, row, col * 2 + 1)
-        # Populate defaults using stored settings with fallbacks from the legacy app
-        pre_keys = [
-            ("preprocessing", "low_pass", "0.1"),
-            ("preprocessing", "high_pass", "50"),
-            ("preprocessing", "downsample", "256"),
-            ("preprocessing", "epoch_start", "-1"),
-            ("preprocessing", "reject_thresh", "5"),
-            ("preprocessing", "epoch_end", "125"),
-            ("preprocessing", "ref_chan1", "EXG1"),
-            ("preprocessing", "ref_chan2", "EXG2"),
-            ("preprocessing", "max_idx_keep", "64"),
-            ("preprocessing", "max_bad_chans", "10"),
-        ]
-        for edit, (sec, opt, fallback) in zip(self.pre_edits, pre_keys):
-            edit.setText(self.settings.get(sec, opt, fallback))
-        self.cb_save_fif = QCheckBox("Save Preprocessed .fif", grp_pre)
-        self.cb_save_fif.setChecked(
-            self.settings.get("paths", "save_fif", "False").lower() == "true"
-        )
-        grid.addWidget(self.cb_save_fif, 5, 0, 1, 4)
-        main_layout.addWidget(grp_pre)
+        # Preprocessing placeholder
+        main_layout.addWidget(QLabel("Configure Preprocessing in Settings.", container))
 
         # Event Map group
         grp_event = QGroupBox(
@@ -205,8 +184,6 @@ class MainWindow(QMainWindow):
 
         # Finalize
         self.homeWidget = container
-        self.setCentralWidget(container)
-        self.setStatusBar(QStatusBar(self))
 
         # Connect toolbar buttons to methods
         self.btn_open_eeg.clicked.connect(self.select_eeg_file)
@@ -217,9 +194,10 @@ class MainWindow(QMainWindow):
 
         # Sync the select button label with the current mode
         self._update_select_button_text()
+        return container
 
     # ------------------------------------------------------------------
-    def _init_sidebar(self) -> None:
+    def initSidebar(self) -> None:
         """Create the dark sidebar with tool buttons."""
         sidebar = QWidget(self)
         sidebar.setObjectName("sidebar")
@@ -228,36 +206,85 @@ class MainWindow(QMainWindow):
         lay.setContentsMargins(0, 0, 0, 0)
         lay.setSpacing(0)
 
-        def make_button(name: str, text: str, icon: str | None, slot) -> QToolButton:
+        self.sidebar_buttons = []
+
+        def make_button(name: str, text: str, icon_name: str) -> QToolButton:
             btn = QToolButton()
             btn.setObjectName(name)
             btn.setText(text)
+            btn.setIcon(QIcon.fromTheme(icon_name))
+            btn.setCheckable(True)
             btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
             btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-            btn.setCursor(Qt.PointingHandCursor)
-            if icon:
-                btn.setIcon(QIcon.fromTheme(icon))
-            if slot:
-                btn.clicked.connect(slot)
+            self.sidebar_buttons.append(btn)
             lay.addWidget(btn)
             return btn
 
-        self.btn_home = make_button("btn_home", "Home", "go-home", lambda: None)
-        self.btn_data = make_button("btn_data", "Data Analysis", "view-statistics", self.open_stats_analyzer)
-        self.btn_graphs = make_button("btn_graphs", "Graphs", "view-media-visualization", self.open_plot_generator)
-        self.btn_image = make_button("btn_image", "Image Resizer", "camera-photo", self.open_image_resizer)
-        self.btn_epoch = make_button("btn_epoch", "Epoch Averaging", "view-refresh", self.open_advanced_analysis_window)
+        self.btn_home = make_button("btn_home", "Home", "go-home")
+        self.btn_data = make_button("btn_data", "Data Analysis", "view-statistics")
+        self.btn_graphs = make_button("btn_graphs", "Graphs", "view-media-visualization")
+        self.btn_image = make_button("btn_image", "Image Resizer", "camera-photo")
+        self.btn_epoch = make_button("btn_epoch", "Epoch Averaging", "view-refresh")
 
         lay.addStretch(1)
 
-        self.btn_settings = make_button("btn_settings", "Settings", "settings", self.open_settings_window)
-        self.btn_info = make_button("btn_info", "Information", None, self.show_relevant_publications)
-        self.btn_help = make_button("btn_help", "Help", None, self.show_about_dialog)
+        self.btn_settings = make_button("btn_settings", "Settings", "settings")
+        self.btn_info = make_button("btn_info", "Information", "help-about")
+        self.btn_help = make_button("btn_help", "Help", "help-contents")
 
         dock = QDockWidget("", self)
         dock.setWidget(sidebar)
         dock.setFeatures(QDockWidget.NoDockWidgetFeatures)
         self.addDockWidget(Qt.LeftDockWidgetArea, dock)
+
+    # ------------------------------------------------------------------
+    def _connect_sidebar(self) -> None:
+        buttons = [
+            self.btn_home,
+            self.btn_data,
+            self.btn_graphs,
+            self.btn_image,
+            self.btn_epoch,
+            self.btn_settings,
+        ]
+        for i, btn in enumerate(buttons):
+            btn.clicked.connect(lambda _, ix=i: self.switchPage(ix))
+
+    # ------------------------------------------------------------------
+    def switchPage(self, index: int) -> None:
+        old = self.stack.currentWidget()
+        new = self.stack.widget(index)
+        if old is new:
+            return
+        for i, btn in enumerate([
+            self.btn_home,
+            self.btn_data,
+            self.btn_graphs,
+            self.btn_image,
+            self.btn_epoch,
+            self.btn_settings,
+        ]):
+            btn.setChecked(i == index)
+        old_effect = QGraphicsOpacityEffect(old)
+        old.setGraphicsEffect(old_effect)
+        anim_out = QPropertyAnimation(old_effect, b"opacity")
+        anim_out.setDuration(200)
+        anim_out.setStartValue(1.0)
+        anim_out.setEndValue(0.0)
+
+        def _finish() -> None:
+            self.stack.setCurrentIndex(index)
+            new_effect = QGraphicsOpacityEffect(new)
+            new.setGraphicsEffect(new_effect)
+            anim_in = QPropertyAnimation(new_effect, b"opacity")
+            anim_in.setDuration(200)
+            anim_in.setStartValue(0.0)
+            anim_in.setEndValue(1.0)
+            anim_in.finished.connect(lambda: new.setGraphicsEffect(None))
+            anim_in.start()
+
+        anim_out.finished.connect(_finish)
+        anim_out.start()
 
     # ------------------------------------------------------------------
     def log(self, message: str, level: int = logging.INFO) -> None:
@@ -286,15 +313,8 @@ class MainWindow(QMainWindow):
 
     # ------------------------------------------------------------------
     def open_settings_window(self) -> None:
-        if self._settings_dialog and self._settings_dialog.isVisible():
-            self._settings_dialog.raise_()
-            self._settings_dialog.activateWindow()
-            return
-        dlg = SettingsDialog(self.settings, self)
-        self._settings_dialog = dlg
-        dlg.exec()
+        self.switchPage(5)
         self.lbl_debug.setVisible(self.settings.debug_enabled())
-        self._settings_dialog = None
 
     def check_for_updates(self) -> None:
         from Main_App import update_manager
