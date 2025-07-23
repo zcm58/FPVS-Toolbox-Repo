@@ -26,11 +26,7 @@ from Main_App.PySide6_App.Backend import Project
 from Main_App.PySide6_App.Backend.processing_controller import (
     _animate_progress_to,
 )
-from Main_App.Legacy_App.load_utils import load_eeg_file
-from Main_App.Legacy_App.app_logic import preprocess_raw
-from Main_App.Legacy_App.eeg_preprocessing import perform_preprocessing
-from Main_App.PySide6_App.Backend.processing import process_data
-from Main_App.Legacy_App.post_process import post_process
+from Main_App.PySide6_App.Backend.legacy_adapter import run_full_pipeline
 from Main_App.PySide6_App.Backend.project_manager import (
     select_projects_root,
     new_project,
@@ -219,61 +215,23 @@ class MainWindow(QMainWindow):
                     return
                 bdf_files = [Path(file_path)]
 
-            for fp in bdf_files:
-                self.log(f"Loading EEG file: {fp.name}")
-                if self.settings.debug_enabled():
-                    self.log(f"[DEBUG] Calling load_eeg_file(self, '{fp}')")
-                raw = load_eeg_file(self, str(fp))
-                if self.settings.debug_enabled():
-                    self.log(f"[DEBUG] load_eeg_file returned: {raw!r}")
+            out_dir = str(
+                self.currentProject.project_root
+                / self.currentProject.subfolders["excel"]
+            )
 
-                self.log("Preprocessing raw data")
-                if self.settings.debug_enabled():
-                    self.log("[DEBUG] Calling preprocess_raw(self, raw)")
-                proc1 = preprocess_raw(self, raw)
-                if self.settings.debug_enabled():
-                    self.log(f"[DEBUG] preprocess_raw returned: {proc1!r}")
+            condition_labels = list(self.currentProject.event_map.keys())
 
-                if self.settings.debug_enabled():
-                    self.log("[DEBUG] Collecting preprocessing parameters")
-                params = {
-                    "downsample_rate": self.currentProject.preprocessing.get("downsample"),
-                    "low_pass": self.currentProject.preprocessing.get("low_pass"),
-                    "high_pass": self.currentProject.preprocessing.get("high_pass"),
-                    "reject_thresh": self.currentProject.preprocessing.get("rejection_z"),
-                    "ref_channel1": self.currentProject.preprocessing.get("ref_chan1"),
-                    "ref_channel2": self.currentProject.preprocessing.get("ref_chan2"),
-                    "max_idx_keep": self.currentProject.preprocessing.get("max_chan_idx"),
-                    "stim_channel": self.settings.get("stim", "channel", "Status"),
-                }
-                if self.settings.debug_enabled():
-                    self.log(f"[DEBUG] Calling perform_preprocessing(proc1, {params})")
-                proc2, _ = perform_preprocessing(proc1, params, self.log, fp.name)
-                if self.settings.debug_enabled():
-                    self.log(f"[DEBUG] perform_preprocessing returned: {proc2!r}")
+            results = run_full_pipeline(
+                app=self,
+                filepaths=bdf_files,
+                output_dir=out_dir,
+                run_loreta=run_loreta,
+                condition_labels=condition_labels,
+            )
 
-                out_dir = str(
-                    self.currentProject.project_root
-                    / self.currentProject.subfolders["excel"]
-                )
-                self.log(f"Running main processing (run_loreta={run_loreta})")
-                if self.settings.debug_enabled():
-                    self.log(
-                        f"[DEBUG] Calling process_data(proc2, '{out_dir}', {run_loreta})"
-                    )
-                result = process_data(proc2, out_dir, run_loreta)
-                if self.settings.debug_enabled():
-                    self.log(f"[DEBUG] process_data returned: {result!r}")
-
-                self.log("Post-processing results")
-                condition_labels = list(self.currentProject.event_map.keys())
-                if self.settings.debug_enabled():
-                    self.log(
-                        f"[DEBUG] Calling post_process(self, {condition_labels})"
-                    )
-                post_process(self, condition_labels)
-                if self.settings.debug_enabled():
-                    self.log("[DEBUG] post_process completed")
+            if self.settings.debug_enabled():
+                self.log(f"[DEBUG] run_full_pipeline returned: {results!r}")
 
             self._animate_progress_to(100)
             self.log("Processing complete")
