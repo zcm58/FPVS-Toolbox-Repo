@@ -149,6 +149,9 @@ def init_ui(self) -> None:
         """
     )
 
+    # Support legacy .set() calls from processing_utils
+    self.progress_bar.set = self.progress_bar.setValue
+
     # 3) Add with stretch so the bar fills leftover space
     action_row.addWidget(self.btn_start)
     action_row.addWidget(self.progress_bar, 1)
