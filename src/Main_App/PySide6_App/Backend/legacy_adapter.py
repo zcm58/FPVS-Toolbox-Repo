@@ -4,7 +4,9 @@ from __future__ import annotations
 from Main_App.Legacy_App.load_utils import load_eeg_file
 from Main_App.Legacy_App.app_logic import preprocess_raw
 from Main_App.Legacy_App.eeg_preprocessing import perform_preprocessing
-from Main_App.Legacy_App.processing import process_data
+# ``process_data`` lives under the PySide6 backend. Importing from there keeps
+# this adapter independent of the GUI while reusing the legacy logic.
+from Main_App.PySide6_App.Backend.processing import process_data
 from Main_App.Legacy_App.post_process import post_process
 
 
