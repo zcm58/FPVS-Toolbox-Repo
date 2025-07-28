@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 
-from .repeated_m_anova import run_repeated_measures_anova
+from Tools.Stats.repeated_m_anova import run_repeated_measures_anova
 from Main_App import SettingsManager
 
 # Regions of Interest (10-20 montage)
