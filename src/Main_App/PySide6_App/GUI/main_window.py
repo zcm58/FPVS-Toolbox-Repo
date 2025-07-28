@@ -7,7 +7,9 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLineEdit,
     QPushButton,
+    QMenu,
 )
+from PySide6.QtGui import QAction
 from PySide6.QtCore import QObject, Signal, QTimer
 import tkinter.messagebox as tk_messagebox
 from PySide6.QtWidgets import QMessageBox
@@ -39,6 +41,8 @@ from Main_App.PySide6_App.Backend.project_manager import (
     openProjectPath,
     loadProject,
 )
+from Tools.Stats import StatsToolWidget, launch_ctk_stats_tool
+from config import USE_CTK_GUI
 from types import SimpleNamespace
 
 # Redirect legacy tkinter dialogs to Qt
@@ -121,6 +125,11 @@ class MainWindow(QMainWindow, FileSelectionMixin, ValidationMixin, ProcessingMix
         self.setMinimumSize(1024, 768)
         self.currentProject: Project | None = None
         init_ui(self)
+        tools_menu = self.menuBar().findChild(QMenu, "toolsMenu")
+        if tools_menu is not None:
+            action = QAction("Stats Toolbox", self)
+            action.triggered.connect(self.open_stats_analyzer)
+            tools_menu.addAction(action)
         # Prevent spurious finalize/error dialogs until a run starts
         self._run_active = False
         # Support legacy .set() calls from processing_utils
@@ -271,11 +280,11 @@ class MainWindow(QMainWindow, FileSelectionMixin, ValidationMixin, ProcessingMix
         openProjectPath(self, folder)
 
     def open_stats_analyzer(self) -> None:
-        QMessageBox.information(
-            self,
-            "Stats Toolbox",
-            "The statistics tool is not yet available in the Qt interface.",
-        )
+        if USE_CTK_GUI:
+            launch_ctk_stats_tool()
+        else:
+            widget = StatsToolWidget()
+            widget.show()
 
     def open_image_resizer(self) -> None:
         cmd = [sys.executable]

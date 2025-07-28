@@ -15,6 +15,9 @@ import customtkinter as ctk
 
 FPVS_TOOLBOX_VERSION       = "1.1.1"
 
+# Feature flag toggling between CustomTkinter and PySide6 stats tool
+USE_CTK_GUI = True  # switch to False once PySide6 is verified
+
 FPVS_TOOLBOX_UPDATE_API    = "https://api.github.com/repos/zcm58/FPVS-Toolbox-Repo/releases/latest"
 FPVS_TOOLBOX_REPO_PAGE     = "https://github.com/zcm58/FPVS-Toolbox-Repo/releases"
 
