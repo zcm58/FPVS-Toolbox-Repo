@@ -25,8 +25,8 @@ def build_menu_bar(parent: QMainWindow) -> QMenuBar:
 
     # Tools
     tools_menu = menu_bar.addMenu("Tools")
+    tools_menu.setObjectName("toolsMenu")
     items = [
-        ("Stats Toolbox",                              parent.open_stats_analyzer),
         ("Source Localization (eLORETA/sLORETA)",      lambda: open_eloreta_tool(parent)),
         ("Image Resizer",                              parent.open_image_resizer),
         ("Generate SNR Plots",                         parent.open_plot_generator),

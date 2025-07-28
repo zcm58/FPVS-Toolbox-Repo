@@ -28,7 +28,7 @@ from config import init_fonts, FONT_MAIN
 import pandas as pd
 
 from .stats_file_scanner import browse_folder, scan_folder, update_condition_menus, update_condition_B_options
-from .stats_ui import create_widgets
+from .stats_ui_ctk import create_widgets
 from .stats_runners import (
     run_rm_anova,
     run_mixed_model,
