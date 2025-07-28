@@ -27,9 +27,9 @@ from config import init_fonts, FONT_MAIN
 
 import pandas as pd
 
-from .stats_file_scanner import browse_folder, scan_folder, update_condition_menus, update_condition_B_options
-from .stats_ui_ctk import create_widgets
-from .stats_runners import (
+from Tools.Stats.stats_file_scanner import browse_folder, scan_folder, update_condition_menus, update_condition_B_options
+from Tools.Stats.stats_ui_ctk import create_widgets
+from Tools.Stats.stats_runners import (
     run_rm_anova,
     run_mixed_model,
     run_posthoc_tests,
@@ -37,7 +37,7 @@ from .stats_runners import (
     run_harmonic_check,
     _structure_harmonic_results,
 )
-from .stats_helpers import (
+from Tools.Stats.stats_helpers import (
     _load_base_freq,
     _load_bca_upper_limit,
     _load_alpha,
@@ -208,8 +208,8 @@ if __name__ == "__main__":
         if 'stats_export' not in sys.modules: sys.modules['stats_export'] = MockStatsExport()
         if 'repeated_m_anova' not in sys.modules: sys.modules['repeated_m_anova'] = MockRepeatedMAnova()
         # Re-import after mocking (or ensure they are imported after this block)
-        from . import stats_export
-        from repeated_m_anova import run_repeated_measures_anova
+        from Tools.Stats import stats_export
+        from Tools.Stats.repeated_m_anova import run_repeated_measures_anova
 
         ctk.CTkButton(root, text="Open Stats Tool",
                       command=lambda: StatsAnalysisWindow(master=TestMaster(), default_folder="")).pack(pady=20)

@@ -8,15 +8,15 @@ from scipy import stats
 import traceback
 import os
 
-from .repeated_m_anova import run_repeated_measures_anova
-from .mixed_effects_model import run_mixed_effects_model
-from .interpretation_helpers import generate_lme_summary
-from .posthoc_tests import (
+from Tools.Stats.repeated_m_anova import run_repeated_measures_anova
+from Tools.Stats.mixed_effects_model import run_mixed_effects_model
+from Tools.Stats.interpretation_helpers import generate_lme_summary
+from Tools.Stats.posthoc_tests import (
     run_posthoc_pairwise_tests,
     run_interaction_posthocs as perform_interaction_posthocs,
 )
-from .stats_helpers import load_rois_from_settings, apply_rois_to_modules
-from .stats_analysis import ALL_ROIS_OPTION
+from Tools.Stats.stats_helpers import load_rois_from_settings, apply_rois_to_modules
+from Tools.Stats.stats_analysis import ALL_ROIS_OPTION
 
 # These variables are set from settings at runtime
 ROIS = {}
