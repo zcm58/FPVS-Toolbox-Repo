@@ -166,8 +166,8 @@ class MainWindow(QMainWindow, FileSelectionMixin, ValidationMixin, ProcessingMix
         self._processing_timer.timeout.connect(self._periodic_queue_check)
         self._processing_timer.start(50)
 
-        # Allow legacy processing_utils to call self.post_process(...)
-        self.post_process = MethodType(_legacy_post_process, self)
+        # Allow legacy processing_utils to call self.post_process(...) safely
+        self.post_process = MethodType(MainWindow._export_with_post_process, self)
 
         try:
             update_manager.check_for_updates_async(
@@ -198,6 +198,23 @@ class MainWindow(QMainWindow, FileSelectionMixin, ValidationMixin, ProcessingMix
     def debug(self, message: str) -> None:
         if logger.isEnabledFor(logging.DEBUG):
             self.log(f"[DEBUG] {message}", level=logging.DEBUG)
+
+    def _export_with_post_process(self, labels: list[str]) -> None:
+        """Safely call the legacy ``post_process`` function for Excel export."""
+        excel_dir = self.save_folder_path.get() if hasattr(self, "save_folder_path") else ""
+        if not excel_dir or not Path(excel_dir).is_dir():
+            QMessageBox.warning(self, "Invalid Output Folder", excel_dir)
+            return
+        try:
+            self.log(f"Post-process condition labels: {labels}")
+            _legacy_post_process(self, labels)
+            self.log("Excel export completed")
+        except Exception as err:  # pragma: no cover - GUI dialog
+            logging.exception("Excel export failed")
+            QMessageBox.critical(self, "Post-processing Error", str(err))
+            if hasattr(self, "btn_start"):
+                self.btn_start.setEnabled(False)
+            return
 
     # ------------------------------------------------------------------
     def _on_mode_changed(self, mode: str) -> None:
