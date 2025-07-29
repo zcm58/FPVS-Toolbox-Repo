@@ -9,8 +9,9 @@ import os
 import json
 from types import SimpleNamespace
 
-# Legacy imports for scanning and analysis
-from Tools.Stats.stats_file_scanner_pyside6 import scan_folder_simple, ScanError
+# Imports for scanning (PySide6) and statistical analysis (legacy)
+# Use the PySide6-specific file scanner rather than the legacy one
+from .stats_file_scanner_pyside6 import scan_folder_simple, ScanError
 from Tools.Stats.stats_runners import (
     run_rm_anova, run_mixed_model,
     run_posthoc_tests, run_interaction_posthocs,
