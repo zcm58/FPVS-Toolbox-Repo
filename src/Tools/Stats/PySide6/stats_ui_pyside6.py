@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt, QTimer
 import os
+import json
 import pandas as pd
 import numpy as np
 from types import SimpleNamespace
@@ -33,12 +34,6 @@ from Tools.Stats.Legacy.stats_helpers import (
     load_rois_from_settings, apply_rois_to_modules
 )
 # Import all the new, UI-agnostic export functions
-from Tools.Stats.Legacy.stats_export import (
-    export_rm_anova_results_to_excel,
-    export_mixed_model_results_to_excel,
-    export_posthoc_results_to_excel,
-    export_significance_results_to_excel
-)
 from Main_App import SettingsManager
 
 
@@ -65,6 +60,15 @@ class StatsWindow(QMainWindow):
             proj = getattr(parent, 'currentProject', None)
             self.project_dir = str(proj.project_root) if proj and hasattr(proj,
                                                                           'project_root') else _auto_detect_project_dir()
+
+        config_path = os.path.join(self.project_dir, 'project.json')
+        try:
+            with open(config_path, 'r') as f:
+                cfg = json.load(f)
+                # Fallback to folder name if neither 'name' nor 'title' is set
+                self.project_title = cfg.get('name', cfg.get('title', os.path.basename(self.project_dir)))
+        except Exception:
+            self.project_title = os.path.basename(self.project_dir)
 
         super().__init__(parent)
         self.setWindowFlags(self.windowFlags() | Qt.Window)
@@ -189,10 +193,10 @@ class StatsWindow(QMainWindow):
         self.run_mixed_model_btn.clicked.connect(self.on_run_mixed_model)
         self.run_posthoc_btn.clicked.connect(self.on_run_interaction_posthocs)
         self.run_harm_btn.clicked.connect(self.on_run_harmonic_check)
-        self.export_rm_anova_btn.clicked.connect(lambda: self.on_export("rm_anova"))
-        self.export_mixed_model_btn.clicked.connect(lambda: self.on_export("mixed_model"))
-        self.export_posthoc_btn.clicked.connect(lambda: self.on_export("posthoc"))
-        self.export_harm_btn.clicked.connect(lambda: self.on_export("harmonic"))
+        self.export_rm_anova_btn.clicked.connect(self.on_export_rm_anova)
+        self.export_mixed_model_btn.clicked.connect(self.on_export_mixed_model)
+        self.export_posthoc_btn.clicked.connect(self.on_export_posthoc)
+        self.export_harm_btn.clicked.connect(self.on_export_harmonic)
 
     def on_run_rm_anova(self):
         if not self.subject_data:
@@ -621,72 +625,34 @@ class StatsWindow(QMainWindow):
             self.le_folder.setText(default)
             self._scan_button_clicked()
 
-    def on_export(self, export_type: str):
-        """Handles exporting different result types to Excel."""
+    def on_export_rm_anova(self):
+        results_dir = os.path.join(self.project_dir, '3 - Statistical Analysis Results')
+        os.makedirs(results_dir, exist_ok=True)
+        path = os.path.join(results_dir, f"{self.project_title} RM-ANOVA Results.xlsx")
+        from Tools.Stats.stats_export import export_rm_anova_results_to_excel
+        export_rm_anova_results_to_excel(self.rm_anova_results_data, path, self.log_to_main_app)
+        QMessageBox.information(self, "Export Complete", f"Saved RM-ANOVA results to:\n{path}")
 
-        export_map = {
-            "rm_anova": {
-                "data": self.rm_anova_results_data,
-                "func": export_rm_anova_results_to_excel,
-                "name": "RM-ANOVA",
-                "file": "Stats_RM_ANOVA_SummedBCA.xlsx",
-                "kwargs": {}
-            },
-            "mixed_model": {
-                "data": self.mixed_model_results_data,
-                "func": export_mixed_model_results_to_excel,
-                "name": "Mixed Model",
-                "file": "Stats_MixedModel.xlsx",
-                "kwargs": {}
-            },
-            "posthoc": {
-                "data": self.posthoc_results_data,
-                "func": export_posthoc_results_to_excel,
-                "name": "Post-hoc",
-                "file": "Stats_Posthoc_Interaction.xlsx",
-                "kwargs": {'factor': 'condition by roi'}
-            },
-            "harmonic": {
-                "data": self._structure_harmonic_results(),  # Call the structuring function
-                "func": export_significance_results_to_excel,
-                "name": "Harmonic Check",
-                "file": f"Stats_HarmonicCheck_{self.harmonic_metric_var.get()}.xlsx",
-                "kwargs": {'metric': self.harmonic_metric_var.get()}
-            }
-        }
+    def on_export_mixed_model(self):
+        results_dir = os.path.join(self.project_dir, '3 - Statistical Analysis Results')
+        os.makedirs(results_dir, exist_ok=True)
+        path = os.path.join(results_dir, f"{self.project_title} Mixed Model Results.xlsx")
+        from Tools.Stats.stats_export import export_mixed_model_results_to_excel
+        export_mixed_model_results_to_excel(self.mixed_model_results_data, path, self.log_to_main_app)
+        QMessageBox.information(self, "Export Complete", f"Saved Mixed Model results to:\n{path}")
 
-        config = export_map.get(export_type)
-        if not config:
-            QMessageBox.critical(self, "Export Error", f"Unknown export type: {export_type}")
-            return
+    def on_export_posthoc(self):
+        results_dir = os.path.join(self.project_dir, '3 - Statistical Analysis Results')
+        os.makedirs(results_dir, exist_ok=True)
+        path = os.path.join(results_dir, f"{self.project_title} Post-hoc Results.xlsx")
+        from Tools.Stats.stats_export import export_posthoc_results_to_excel
+        export_posthoc_results_to_excel(self.posthoc_results_data, path, self.log_to_main_app)
+        QMessageBox.information(self, "Export Complete", f"Saved Post-hoc results to:\n{path}")
 
-        data_to_export = config["data"]
-
-        # Correctly check if the data is empty (works for DataFrames and other types)
-        is_empty = False
-        if data_to_export is None:
-            is_empty = True
-        elif isinstance(data_to_export, pd.DataFrame):
-            is_empty = data_to_export.empty
-        elif isinstance(data_to_export, (list, dict)):
-            is_empty = not data_to_export
-
-        if is_empty:
-            QMessageBox.warning(self, "No Data",
-                                f"No {config['name']} results to export. Please run the analysis first.")
-            return
-
-        file_path, _ = QFileDialog.getSaveFileName(
-            self, f"Save {config['name']} Results", self.project_dir, "Excel Files (*.xlsx)"
-        )
-        if not file_path:
-            return
-
-        try:
-            # Pass the data and path to the UI-agnostic export function
-            config["func"](data_to_export, file_path, self.log_to_main_app, **config["kwargs"])
-            QMessageBox.information(self, "Export Successful",
-                                    f"{config['name']} results have been saved to:\n{file_path}")
-        except Exception as e:
-            QMessageBox.critical(self, "Export Failed",
-                                 f"An error occurred while exporting {config['name']} results:\n{e}")
+    def on_export_harmonic(self):
+        results_dir = os.path.join(self.project_dir, '3 - Statistical Analysis Results')
+        os.makedirs(results_dir, exist_ok=True)
+        path = os.path.join(results_dir, f"{self.project_title} Harmonic Check Results.xlsx")
+        from Tools.Stats.stats_export import export_harmonic_results_to_excel
+        export_harmonic_results_to_excel(self.harmonic_check_results_data, path, self.log_to_main_app)
+        QMessageBox.information(self, "Export Complete", f"Saved Harmonic Check results to:\n{path}")
