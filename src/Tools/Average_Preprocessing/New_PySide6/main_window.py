@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
 )
 from PySide6.QtGui import QCloseEvent
+from PySide6.QtCore import Qt
 import os
 
 # --- Ported Mixin Imports ---
@@ -56,6 +57,15 @@ class AdvancedAveragingWindow(
     def _build_ui(self):
         central = QWidget()
         main_v = QVBoxLayout(central)
+
+        # — Window Header —
+        header = QLabel("Advanced Averaging Analysis")
+        font = header.font()
+        font.setPointSize(font.pointSize() + 2)
+        font.setBold(True)
+        header.setFont(font)
+        header.setAlignment(Qt.AlignCenter)
+        main_v.addWidget(header)
 
         # Row 1: Explanatory Box
         info_box = QGroupBox()
