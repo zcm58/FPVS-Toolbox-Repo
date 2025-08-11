@@ -7,12 +7,13 @@
 
 USE_PYSIDE6 = True #"currently in dual GUI mode - set to False to use the legacy Tkinter GUI"
 
-from ctypes import windll
+import ctypes
 import sys
 from PySide6.QtCore import QCoreApplication
 
+# Set DPI awareness on Windows; safe to ignore on other platforms
 try:
-    windll.shcore.SetProcessDpiAwareness(1)
+    ctypes.windll.shcore.SetProcessDpiAwareness(1)
 except Exception:
     pass
 
