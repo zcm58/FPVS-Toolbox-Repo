@@ -5,13 +5,14 @@ from pathlib import Path
 import sys
 
 from PySide6.QtWidgets import QFileDialog, QMessageBox, QInputDialog
-from PySide6.QtCore import QSettings
+
+from Main_App.PySide6_App.utils.settings import get_app_settings
 
 from .project import Project
 
 
 def select_projects_root(self) -> None:
-    settings = QSettings()
+    settings = get_app_settings()
     settings.beginGroup("paths")
     saved_root = settings.value("projectsRoot", "", type=str)
     settings.endGroup()
@@ -93,8 +94,12 @@ def openProjectPath(self, folder: str) -> None:
     self.currentProject = project
     self.loadProject(project)
 
-    settings = QSettings()
+    settings = get_app_settings()
     recent = settings.value("recentProjects", [], type=list)
+    if isinstance(recent, str):
+        recent = [recent] if recent else []
+    elif not isinstance(recent, list):
+        recent = []
     if folder in recent:
         recent.remove(folder)
     recent.insert(0, folder)

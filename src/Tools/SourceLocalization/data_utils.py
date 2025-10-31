@@ -3,10 +3,11 @@
 
 from __future__ import annotations
 
-import threading
-import time
 import logging
 import shutil
+import threading
+import time
+import uuid
 from pathlib import Path
 from typing import Callable, Optional, Tuple
 
@@ -15,6 +16,11 @@ import mne
 from Main_App import SettingsManager
 
 logger = logging.getLogger(__name__)
+
+
+class MissingTemplateError(Exception):
+    """Raised when the required MRI template is unavailable."""
+
 
 
 def _load_data(fif_path: str) -> mne.Evoked:
@@ -99,6 +105,90 @@ def _threshold_stc(stc: mne.SourceEstimate, thr: float) -> mne.SourceEstimate:
     return stc
 
 
+def prepare_fsaverage(
+    target_dir: Path, progress_cb: Optional[Callable[[int], None]] = None
+) -> Path:
+    """Download the ``fsaverage`` template into ``target_dir``.
+
+    Parameters
+    ----------
+    target_dir
+        Destination directory where the ``fsaverage`` dataset should be
+        installed. Must be writable and outside of the application install
+        directory.
+    progress_cb
+        Optional callable receiving integer progress units (approximate MB
+        downloaded) during the transfer.
+
+    Returns
+    -------
+    Path
+        The path to the nested ``fsaverage`` directory (``<target>/fsaverage/fsaverage``).
+
+    Raises
+    ------
+    ValueError
+        If ``target_dir`` is not writable or resides within the application
+        install directory.
+    """
+
+    resolved_target = target_dir.expanduser().resolve()
+    source_file = Path(__file__).resolve()
+    install_root = source_file.parents[3] if len(source_file.parents) >= 4 else source_file.parent
+    if resolved_target == install_root or install_root in resolved_target.parents:
+        raise ValueError("Target directory must be outside the application install tree.")
+
+    resolved_target.mkdir(parents=True, exist_ok=True)
+
+    probe = resolved_target / f".fpvs_write_test_{uuid.uuid4().hex}"
+    try:
+        with open(probe, "w", encoding="utf-8") as handle:
+            handle.write("ok")
+    except OSError as exc:  # pragma: no cover - depends on filesystem perms
+        raise ValueError("Target directory is not writable.") from exc
+    finally:
+        try:
+            probe.unlink()
+        except FileNotFoundError:
+            pass
+
+    dest = resolved_target / "fsaverage"
+    nested = dest / "fsaverage"
+    if (nested / "surf" / "lh.white").exists() and (nested / "bem" / "fsaverage-5120-bem.fif").exists():
+        _wrap_fsaverage(resolved_target, subject="fsaverage")
+        return nested.resolve()
+
+    stop_event = threading.Event()
+
+    def _report_progress() -> None:
+        last = -1
+        while not stop_event.is_set():
+            if dest.is_dir():
+                size = int(_dir_size_mb(dest))
+                if size != last and progress_cb is not None:
+                    progress_cb(size)
+                last = size
+            time.sleep(1)
+
+    thread = threading.Thread(target=_report_progress, daemon=True)
+    thread.start()
+    try:
+        path = Path(
+            mne.datasets.fetch_fsaverage(subjects_dir=str(resolved_target), verbose=True)
+        )
+    finally:
+        stop_event.set()
+        thread.join()
+
+    if progress_cb is not None:
+        progress_cb(int(_dir_size_mb(path)))
+
+    _wrap_fsaverage(resolved_target, subject="fsaverage")
+    final_path = path.resolve()
+    logger.info("prepare_fsaverage complete", extra={"op": "prepare_fsaverage", "path": str(final_path)})
+    return final_path
+
+
 def _estimate_epochs_covariance(
     epochs: mne.Epochs,
     log_func: Callable[[str], None] = logger.info,
@@ -121,42 +211,26 @@ def _estimate_epochs_covariance(
 def fetch_fsaverage_with_progress(
     subjects_dir: str | Path, log_func: Callable[[str], None] = logger.info
 ) -> str:
-    """Download ``fsaverage`` while logging progress to ``log_func``."""
-    subjects_dir = Path(subjects_dir)
-    dest = subjects_dir / "fsaverage"
+    """Return the path to ``fsaverage`` if present or raise :class:`MissingTemplateError`."""
 
-    if (dest / "fsaverage" / "surf" / "lh.white").exists() and (
-        dest / "fsaverage" / "bem" / "fsaverage-5120-bem.fif"
+    subjects_dir = Path(subjects_dir).resolve()
+    if subjects_dir.name.lower() == "fsaverage" and (subjects_dir / "surf").exists():
+        dest = subjects_dir.parent
+    else:
+        dest = subjects_dir / "fsaverage"
+    nested = dest / "fsaverage"
+
+    if (nested / "surf" / "lh.white").exists() and (
+        nested / "bem" / "fsaverage-5120-bem.fif"
     ).exists():
-        _wrap_fsaverage(subjects_dir, subject="fsaverage")
-        return str(dest / "fsaverage")
+        _wrap_fsaverage(dest, subject="fsaverage")
+        log_func(f"Using existing fsaverage template at {nested}")
+        return str(nested)
 
-    stop_event = threading.Event()
-
-    def _report():
-        dest2 = subjects_dir / "fsaverage"
-        last = -1.0
-        while not stop_event.is_set():
-            if dest2.is_dir():
-                size = _dir_size_mb(dest2)
-                if size != last:
-                    log_func(f"Downloaded {size:.1f} MB...")
-                    last = size
-            time.sleep(1)
-
-    thread = threading.Thread(target=_report, daemon=True)
-    thread.start()
-    try:
-        path = Path(
-            mne.datasets.fetch_fsaverage(subjects_dir=str(subjects_dir), verbose=True)
-        )
-    finally:
-        stop_event.set()
-        thread.join()
-
-    _wrap_fsaverage(subjects_dir, subject="fsaverage")
-    log_func(f"Download complete. Total size: {_dir_size_mb(path):.1f} MB")
-    return str(path)
+    raise MissingTemplateError(
+        f"fsaverage template not found under '{nested}'. "
+        "Download it using prepare_fsaverage() before continuing."
+    )
 
 
 def _project_cache_dir(settings: SettingsManager, fallback_base: Path) -> Path:
@@ -213,40 +287,43 @@ def _prepare_forward(
     log_func(f"Initial stored MRI directory: {stored_dir_path or stored_dir}")
 
     if stored_dir_path is None or not stored_dir_path.is_dir():
-        log_func("Default MRI template not found. Downloading 'fsaverage' …")
-        install_parent = _default_template_location().parent
-        log_func(f"Attempting download to: {install_parent}")
-        try:
-            fs_path = fetch_fsaverage_with_progress(install_parent, log_func)
-        except Exception as err:
-            log_func(f"Progress download failed ({err}). Falling back to MNE fetch")
-            fs_path = Path(
-                mne.datasets.fetch_fsaverage(subjects_dir=str(install_parent), verbose=True)
-            )
-        settings.set("loreta", "mri_path", str(fs_path))
-        try:
-            settings.save()
-        except Exception:
-            pass
-        log_func(f"Template downloaded to: {fs_path}")
-        stored_dir_path = Path(fs_path)
-    else:
-        log_func(f"Using existing MRI directory: {stored_dir_path}")
+        raise MissingTemplateError(
+            "The fsaverage template is not configured. Download it using prepare_fsaverage() "
+            "and update the Source Localization settings."
+        )
 
+    log_func(f"Using existing MRI directory: {stored_dir_path}")
     subjects_dir_path = _resolve_subjects_dir(stored_dir_path, subject)
-    log_func(f"Subjects directory resolved to: {subjects_dir_path}")
 
     trans = settings.get("paths", "trans_file", "fsaverage")
     log_func(f"Using trans file: {trans}")
 
-    # NEW: project-aware cache location (falls back to legacy next to subjects_dir)
-    cache_dir = _project_cache_dir(settings, subjects_dir_path)
-    fwd_file = cache_dir / f"forward-{subject}.fif"
+    def _cache_path(current_subjects_dir: Path) -> Path:
+        cache_base = _project_cache_dir(settings, current_subjects_dir)
+        return cache_base / f"forward-{subject}.fif"
+
+    fwd_file = _cache_path(subjects_dir_path)
 
     if fwd_file.is_file():
         log_func(f"Loading cached forward model from {fwd_file}")
         fwd = mne.read_forward_solution(str(fwd_file))
         return fwd, subject, str(subjects_dir_path)
+
+    try:
+        fs_path = Path(fetch_fsaverage_with_progress(stored_dir_path, log_func))
+    except MissingTemplateError as exc:
+        raise MissingTemplateError(str(exc)) from exc
+    stored_dir_path = fs_path
+    settings.set("loreta", "mri_path", str(stored_dir_path))
+    try:
+        settings.save()
+    except Exception:
+        pass
+
+    subjects_dir_path = _resolve_subjects_dir(stored_dir_path, subject)
+    log_func(f"Subjects directory resolved to: {subjects_dir_path}")
+
+    fwd_file = _cache_path(subjects_dir_path)
 
     log_func(
         f"Building source space using subjects_dir={subjects_dir_path}, subject={subject}"
