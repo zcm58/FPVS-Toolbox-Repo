@@ -99,7 +99,7 @@ sys.modules["tkinter.messagebox"] = _tk_msg_module
 import config
 from Main_App.Legacy_App.file_selection import FileSelectionMixin
 from Main_App.Legacy_App.processing_utils import ProcessingMixin
-from Main_App.Legacy_App.settings_manager import SettingsManager
+from Main_App.PySide6_App.Backend.settings_manager import SettingsManager
 from Main_App.PySide6_App.Backend import Project
 from Main_App.PySide6_App.Backend.processing_controller import _animate_progress_to
 from Main_App.PySide6_App.Backend.project_manager import (

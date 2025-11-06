@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
 )
 
-from Main_App.Legacy_App.settings_manager import SettingsManager
+from Main_App.PySide6_App.Backend.settings_manager import SettingsManager
 from .roi_settings_editor import ROISettingsEditor
 from ..config.projects_root import changeProjectsRoot
 

@@ -1,3 +1,4 @@
+# src/Tools/Plot_Generator/gui.py
 """GUI elements for the plot generator."""
 from __future__ import annotations
 
@@ -8,6 +9,7 @@ import sys
 from pathlib import Path
 
 from PySide6.QtCore import QThread, QPropertyAnimation, Qt
+from PySide6.QtGui import QAction, QColor
 from PySide6.QtWidgets import (
     QFileDialog,
     QGroupBox,
@@ -29,10 +31,8 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QStyle,
     QSizePolicy,
+    QColorDialog,
 )
-from PySide6.QtGui import QAction, QColor
-from PySide6.QtWidgets import QColorDialog
-
 
 from Tools.Stats.Legacy.stats_helpers import load_rois_from_settings
 from Tools.Stats.Legacy.stats_analysis import ALL_ROIS_OPTION
@@ -40,14 +40,6 @@ from Main_App import SettingsManager
 from Tools.Plot_Generator.plot_settings import PlotSettingsManager
 from .worker import _Worker
 
-def _auto_detect_project_dir() -> str:
-    """Return folder containing ``project.json`` or CWD if not found."""
-    path = Path.cwd()
-    while not (path / "project.json").is_file():
-        if path.parent == path:
-            return str(Path.cwd())
-        path = path.parent
-    return str(path)
 
 ALL_CONDITIONS_OPTION = "All Conditions"
 
@@ -62,37 +54,15 @@ def _auto_detect_project_dir() -> Path:
     return path
 
 
-def _project_paths(parent: QWidget | None, project_dir: str | None) -> tuple[str | None, str | None]:
-    """Return Excel and SNR plot folders for the given or detected project."""
-    if project_dir and os.path.isdir(project_dir):
-        root = Path(project_dir)
-    else:
-        proj = getattr(parent, "currentProject", None)
-        if proj and hasattr(proj, "project_root"):
-            root = Path(proj.project_root)
-        else:
-            root = _auto_detect_project_dir()
-
-    manifest = root / "project.json"
-    if manifest.is_file():
-        try:
-            with open(manifest, "r") as f:
-                cfg = json.load(f)
-            excel_sub = cfg.get("subfolders", {}).get("excel", "1 - Excel Data Files")
-            snr_sub = cfg.get("subfolders", {}).get("snr", "2 - SNR Plots")
-            return str(root / excel_sub), str(root / snr_sub)
-        except Exception:
-            pass
-    return None, None
-
 class _SettingsDialog(QDialog):
-    """Dialog for configuring plot options."""
+    """Dialog for configuring plot colors."""
 
     def __init__(self, parent: QWidget, color_a: str, color_b: str) -> None:
         super().__init__(parent)
         self.setWindowTitle("Settings")
         layout = QVBoxLayout(self)
 
+        # Row A
         row_a = QHBoxLayout()
         row_a.addWidget(QLabel("Condition A Color:"))
         self.color_a = color_a
@@ -101,6 +71,7 @@ class _SettingsDialog(QDialog):
         row_a.addWidget(pick_a)
         layout.addLayout(row_a)
 
+        # Row B
         row_b = QHBoxLayout()
         row_b.addWidget(QLabel("Condition B Color:"))
         self.color_b = color_b
@@ -109,6 +80,7 @@ class _SettingsDialog(QDialog):
         row_b.addWidget(pick_b)
         layout.addLayout(row_b)
 
+        # Buttons
         btns = QHBoxLayout()
         ok = QPushButton("OK")
         ok.clicked.connect(self.accept)
@@ -130,53 +102,60 @@ class _SettingsDialog(QDialog):
     def selected_colors(self) -> tuple[str, str]:
         return self.color_a.lower(), self.color_b.lower()
 
+
 class PlotGeneratorWindow(QWidget):
-    """Main window for generating plots."""
+    """Main window for generating SNR plots."""
 
     def __init__(self, parent: QWidget | None = None, project_dir: str | None = None) -> None:
         super().__init__(parent)
         self.setWindowTitle("Generate SNR Plots")
+
+        # ROIs
         self.roi_map = load_rois_from_settings()
 
-        mgr = SettingsManager()
+        # Settings managers
+        self._main_mgr = SettingsManager()
         self.plot_mgr = PlotSettingsManager()
         default_in = self.plot_mgr.get("paths", "input_folder", "")
         default_out = self.plot_mgr.get("paths", "output_folder", "")
         self.stem_color = self.plot_mgr.get_stem_color()
         self.stem_color_b = self.plot_mgr.get_second_color()
 
-
-        project_dir: Path | None = None
+        # Determine project root and defaults
+        proj_root: Path | None = None
         proj = getattr(parent, "currentProject", None)
         if proj and hasattr(proj, "project_root"):
-            project_dir = Path(proj.project_root)
+            proj_root = Path(proj.project_root)
         else:
             env_dir = os.environ.get("FPVS_PROJECT_ROOT")
             if env_dir and Path(env_dir).is_dir():
-                project_dir = Path(env_dir)
+                proj_root = Path(env_dir)
             else:
-                cand = Path(_auto_detect_project_dir())
+                cand = _auto_detect_project_dir()
                 if (cand / "project.json").is_file():
-                    project_dir = cand
+                    proj_root = cand
 
-        if project_dir is not None:
+        if proj_root is not None:
             try:
-                with open(project_dir / "project.json", "r") as f:
+                with open(proj_root / "project.json", "r", encoding="utf-8") as f:
                     cfg = json.load(f)
                 subfolders = cfg.get("subfolders", {})
                 excel_sub = subfolders.get("excel", "1 - Excel Data Files")
                 snr_sub = subfolders.get("snr", "2 - SNR Plots")
-                default_in = str(project_dir / excel_sub)
-                default_out = str(project_dir / snr_sub)
+                default_in = str(proj_root / excel_sub)
+                default_out = str(proj_root / snr_sub)
             except Exception:
+                # If anything fails, leave defaults as previously loaded
                 pass
         else:
-            main_default = mgr.get("paths", "output_folder", "")
+            # Fallback to main settings if plot settings do not define paths
+            main_default = self._main_mgr.get("paths", "output_folder", "")
             if not default_in:
                 default_in = main_default
             if not default_out:
                 default_out = main_default
 
+        # Default field values
         self._defaults = {
             "title_snr": "SNR Plot",
             "xlabel": "Frequency (Hz)",
@@ -189,45 +168,54 @@ class PlotGeneratorWindow(QWidget):
             "output_folder": default_out,
         }
         self._orig_defaults = self._defaults.copy()
+
+        # Rolling state for batch generation
         self._conditions_queue: list[str] = []
         self._total_conditions = 0
         self._current_condition = 0
-
         self._all_conditions = False
 
-
+        # Build UI
         self._build_ui()
+
+        # Overlay animations
         self._overlay_width_anim = QPropertyAnimation(self.overlay_container, b"maximumWidth")
         self._overlay_width_anim.setDuration(200)
         self._overlay_opacity_anim = QPropertyAnimation(self.overlay_container, b"windowOpacity")
         self._overlay_opacity_anim.setDuration(200)
         self.overlay_container.setMaximumWidth(0)
         self.overlay_container.setWindowOpacity(0.0)
-        # Prepare animation for smooth progress updates
+
+        # Progress animation
         self._progress_anim = QPropertyAnimation(self.progress_bar, b"value")
         self._progress_anim.setDuration(200)
+
+        # Seed paths and conditions
         if default_in:
             self.folder_edit.setText(default_in)
             self._populate_conditions(default_in)
         if default_out:
             self.out_edit.setText(default_out)
 
+        # Worker plumbing
         self._thread: QThread | None = None
         self._worker: _Worker | None = None
         self._gen_params: tuple[str, str, float, float, float, float] | None = None
 
+    # ---------- UI helpers ----------
+
     def _bold_label(self, text: str) -> QLabel:
         label = QLabel(text)
-        font = label.font()
-        font.setBold(True)
-        label.setFont(font)
+        f = label.font()
+        f.setBold(True)
+        label.setFont(f)
         return label
 
     def _style_box(self, box: QGroupBox) -> None:
-        font = box.font()
-        font.setPointSize(10)
-        font.setBold(False)
-        box.setFont(font)
+        f = box.font()
+        f.setPointSize(10)
+        f.setBold(False)
+        box.setFont(f)
         box.setStyleSheet("QGroupBox::title {font-weight: bold;}")
 
     def _build_ui(self) -> None:
@@ -235,6 +223,7 @@ class PlotGeneratorWindow(QWidget):
         root_layout.setContentsMargins(10, 10, 10, 10)
         root_layout.setSpacing(8)
 
+        # Menu bar
         menu = QMenuBar()
         menu.setNativeMenuBar(False)
         menu.setStyleSheet(
@@ -248,24 +237,25 @@ class PlotGeneratorWindow(QWidget):
         menu.addAction(action)
         root_layout.addWidget(menu)
 
+        # Splitters
         controls_splitter = QSplitter(Qt.Horizontal)
         controls_splitter.setContentsMargins(0, 0, 0, 0)
 
+        # ---- File I/O box ----
         file_box = QGroupBox("File I/O")
         self._style_box(file_box)
         file_layout = QVBoxLayout(file_box)
         file_layout.setContentsMargins(8, 8, 8, 8)
         file_layout.setSpacing(6)
 
+        # Input
         self.folder_edit = QLineEdit()
         self.folder_edit.setReadOnly(True)
         self.folder_edit.setPlaceholderText("Select the folder containing your Excel sheets")
         self.folder_edit.setText(self._defaults.get("input_folder", ""))
         self.folder_edit.setToolTip("Select the folder containing your Excel sheets.")
         browse = QPushButton("Browse…")
-        browse.setToolTip(
-            "Select the FOLDER that contains your results excel files"
-        )
+        browse.setToolTip("Select the FOLDER that contains your results Excel files")
         browse.setIcon(self.style().standardIcon(QStyle.SP_DirOpenIcon))
         browse.clicked.connect(self._select_folder)
         in_row = QHBoxLayout()
@@ -275,6 +265,7 @@ class PlotGeneratorWindow(QWidget):
         self.folder_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         file_layout.addWidget(self.folder_edit)
 
+        # Output
         self.out_edit = QLineEdit()
         self.out_edit.setReadOnly(True)
         self.out_edit.setPlaceholderText("Folder where plots will be saved")
@@ -296,12 +287,67 @@ class PlotGeneratorWindow(QWidget):
         self.out_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         file_layout.addWidget(self.out_edit)
 
+        # ---- Axis ranges box ----
+        ranges_box = QGroupBox("Axis Ranges")
+        self._style_box(ranges_box)
+        ranges_form = QFormLayout(ranges_box)
+        ranges_form.setContentsMargins(10, 10, 10, 10)
+        ranges_form.setSpacing(8)
+
+        self.xmin_spin = QDoubleSpinBox()
+        self.xmin_spin.setRange(-9999.0, 9999.0)
+        self.xmin_spin.setDecimals(2)
+        self.xmin_spin.setSingleStep(0.1)
+        self.xmin_spin.setSuffix(" Hz")
+        self.xmin_spin.setValue(float(self._defaults["x_min"]))
+        self.xmin_spin.setToolTip("Minimum X frequency")
+
+        self.xmax_spin = QDoubleSpinBox()
+        self.xmax_spin.setRange(-9999.0, 9999.0)
+        self.xmax_spin.setDecimals(2)
+        self.xmax_spin.setSingleStep(0.1)
+        self.xmax_spin.setSuffix(" Hz")
+        self.xmax_spin.setValue(float(self._defaults["x_max"]))
+        self.xmax_spin.setToolTip("Maximum X frequency")
+
+        x_row = QHBoxLayout()
+        x_row.setContentsMargins(10, 10, 10, 10)
+        x_row.setSpacing(8)
+        x_row.addWidget(self.xmin_spin)
+        x_row.addWidget(QLabel("to"))
+        x_row.addWidget(self.xmax_spin)
+        ranges_form.addRow(QLabel("X Range:"), x_row)
+
+        self.ymin_spin = QDoubleSpinBox()
+        self.ymin_spin.setRange(-9999.0, 9999.0)
+        self.ymin_spin.setDecimals(2)
+        self.ymin_spin.setSingleStep(0.1)
+        self.ymin_spin.setValue(float(self._defaults["y_min_snr"]))
+        self.ymin_spin.setToolTip("Minimum Y value")
+
+        self.ymax_spin = QDoubleSpinBox()
+        self.ymax_spin.setRange(-9999.0, 9999.0)
+        self.ymax_spin.setDecimals(2)
+        self.ymax_spin.setSingleStep(0.1)
+        self.ymax_spin.setValue(float(self._defaults["y_max_snr"]))
+        self.ymax_spin.setToolTip("Maximum Y value")
+
+        y_row = QHBoxLayout()
+        y_row.setContentsMargins(10, 10, 10, 10)
+        y_row.setSpacing(8)
+        y_row.addWidget(self.ymin_spin)
+        y_row.addWidget(QLabel("to"))
+        y_row.addWidget(self.ymax_spin)
+        ranges_form.addRow(QLabel("Y Range:"), y_row)
+
+        # ---- Params box ----
         params_box = QGroupBox("Plot Parameters")
         self._style_box(params_box)
         params_form = QFormLayout(params_box)
         params_form.setContentsMargins(10, 10, 10, 10)
         params_form.setSpacing(8)
 
+        # Conditions
         self.condition_combo = QComboBox()
         self.condition_combo.setToolTip("Select the condition to plot")
         self.condition_combo.currentTextChanged.connect(self._update_chart_title_state)
@@ -326,6 +372,8 @@ class PlotGeneratorWindow(QWidget):
         cond_row.addWidget(QLabel("Condition A"))
         cond_row.addWidget(self.condition_combo)
         cond_row.addWidget(self.color_a_btn)
+
+        # Overlay container (animated)
         self.overlay_container = QWidget()
         oc_layout = QHBoxLayout(self.overlay_container)
         oc_layout.setContentsMargins(0, 0, 0, 0)
@@ -336,19 +384,20 @@ class PlotGeneratorWindow(QWidget):
         oc_layout.addWidget(self.condition_b_combo)
         oc_layout.addWidget(self.color_b_btn)
         cond_row.addWidget(self.overlay_container)
+
         params_form.addRow(cond_row)
 
         self.overlay_check = QCheckBox("Overlay Comparison")
         self.overlay_check.toggled.connect(self._overlay_toggled)
         params_form.addRow("", self.overlay_check)
 
-
-
+        # ROI
         self.roi_combo = QComboBox()
         self.roi_combo.addItems([ALL_ROIS_OPTION] + list(self.roi_map.keys()))
         self.roi_combo.setToolTip("Select the region of interest")
         params_form.addRow(QLabel("ROI:"), self.roi_combo)
 
+        # Labels
         self.title_edit = QLineEdit(self._defaults["title_snr"])
         self.title_edit.setPlaceholderText("e.g. Fruit vs Veg")
         self.title_edit.setToolTip("Title shown on the plot")
@@ -364,54 +413,7 @@ class PlotGeneratorWindow(QWidget):
         self.ylabel_edit.setToolTip("Label for the Y axis")
         params_form.addRow(QLabel("Y-axis label:"), self.ylabel_edit)
 
-        ranges_box = QGroupBox("Axis Ranges")
-        self._style_box(ranges_box)
-        ranges_form = QFormLayout(ranges_box)
-        ranges_form.setContentsMargins(10, 10, 10, 10)
-        ranges_form.setSpacing(8)
-
-        self.xmin_spin = QDoubleSpinBox()
-        self.xmin_spin.setRange(-9999.0, 9999.0)
-        self.xmin_spin.setDecimals(2)
-        self.xmin_spin.setSingleStep(0.1)
-        self.xmin_spin.setSuffix(" Hz")
-        self.xmin_spin.setValue(float(self._defaults["x_min"]))
-        self.xmin_spin.setToolTip("Minimum X frequency")
-        self.xmax_spin = QDoubleSpinBox()
-        self.xmax_spin.setRange(-9999.0, 9999.0)
-        self.xmax_spin.setDecimals(2)
-        self.xmax_spin.setSingleStep(0.1)
-        self.xmax_spin.setSuffix(" Hz")
-        self.xmax_spin.setValue(float(self._defaults["x_max"]))
-        self.xmax_spin.setToolTip("Maximum X frequency")
-        x_row = QHBoxLayout()
-        x_row.setContentsMargins(10, 10, 10, 10)
-        x_row.setSpacing(8)
-        x_row.addWidget(self.xmin_spin)
-        x_row.addWidget(QLabel("to"))
-        x_row.addWidget(self.xmax_spin)
-        ranges_form.addRow(QLabel("X Range:"), x_row)
-
-        self.ymin_spin = QDoubleSpinBox()
-        self.ymin_spin.setRange(-9999.0, 9999.0)
-        self.ymin_spin.setDecimals(2)
-        self.ymin_spin.setSingleStep(0.1)
-        self.ymin_spin.setValue(float(self._defaults["y_min_snr"]))
-        self.ymin_spin.setToolTip("Minimum Y value")
-        self.ymax_spin = QDoubleSpinBox()
-        self.ymax_spin.setRange(-9999.0, 9999.0)
-        self.ymax_spin.setDecimals(2)
-        self.ymax_spin.setSingleStep(0.1)
-        self.ymax_spin.setValue(float(self._defaults["y_max_snr"]))
-        self.ymax_spin.setToolTip("Maximum Y value")
-        y_row = QHBoxLayout()
-        y_row.setContentsMargins(10, 10, 10, 10)
-        y_row.setSpacing(8)
-        y_row.addWidget(self.ymin_spin)
-        y_row.addWidget(QLabel("to"))
-        y_row.addWidget(self.ymax_spin)
-        ranges_form.addRow(QLabel("Y Range:"), y_row)
-
+        # ---- Actions box ----
         actions_box = QGroupBox("Actions")
         self._style_box(actions_box)
         actions_layout = QVBoxLayout(actions_box)
@@ -421,33 +423,37 @@ class PlotGeneratorWindow(QWidget):
         btn_row = QHBoxLayout()
         btn_row.setContentsMargins(10, 10, 10, 10)
         btn_row.setSpacing(8)
+
         self.save_defaults_btn = QPushButton("Save Defaults")
         self.save_defaults_btn.setToolTip("Save current folders as defaults")
         self.save_defaults_btn.clicked.connect(self._save_defaults)
+
         self.load_defaults_btn = QPushButton("Reset to Default settings")
         self.load_defaults_btn.setToolTip("Reset all values to defaults")
         self.load_defaults_btn.clicked.connect(self._load_defaults)
+
         self.gen_btn = QPushButton("Generate")
         self.gen_btn.setToolTip("Start plot generation")
         self.gen_btn.clicked.connect(self._generate)
         self.gen_btn.setEnabled(False)
+
         self.cancel_btn = QPushButton("Cancel")
         self.cancel_btn.setToolTip("Cancel generation")
         self.cancel_btn.setEnabled(False)
         self.cancel_btn.clicked.connect(self._cancel_generation)
-        for w in (self.save_defaults_btn, self.load_defaults_btn):
-            btn_row.addWidget(w)
+
+        btn_row.addWidget(self.save_defaults_btn)
+        btn_row.addWidget(self.load_defaults_btn)
         btn_row.addStretch()
-        for w in (self.gen_btn, self.cancel_btn):
-            btn_row.addWidget(w)
+        btn_row.addWidget(self.gen_btn)
+        btn_row.addWidget(self.cancel_btn)
         actions_layout.addLayout(btn_row)
 
         self.progress_bar = QProgressBar()
-        self.progress_bar.setStyleSheet(
-            "QProgressBar::chunk {background-color: #16C60C;}"
-        )
+        self.progress_bar.setStyleSheet("QProgressBar::chunk {background-color: #16C60C;}")
         actions_layout.addWidget(self.progress_bar)
 
+        # Left/Right columns
         left_container = QWidget()
         left_layout = QVBoxLayout(left_container)
         left_layout.setContentsMargins(10, 10, 10, 10)
@@ -466,9 +472,7 @@ class PlotGeneratorWindow(QWidget):
         controls_splitter.addWidget(right_container)
         controls_splitter.setSizes([600, 300])
 
-        splitter = QSplitter(Qt.Vertical)
-        splitter.addWidget(controls_splitter)
-
+        # Console
         console_box = QGroupBox()
         self._style_box(console_box)
         console_layout = QVBoxLayout(console_box)
@@ -492,24 +496,30 @@ class PlotGeneratorWindow(QWidget):
 
         self.log = QTextEdit()
         self.log.setReadOnly(True)
-        font = self.log.font()
-        font.setBold(False)
-        self.log.setFont(font)
+        f = self.log.font()
+        f.setBold(False)
+        self.log.setFont(f)
         console_layout.addWidget(self.log)
 
+        # Vertical splitter
+        splitter = QSplitter(Qt.Vertical)
+        splitter.addWidget(controls_splitter)
         splitter.addWidget(console_box)
         splitter.setSizes([500, 200])
-        root_layout.addWidget(splitter)
 
+        root_layout.addWidget(splitter)
         root_layout.setSpacing(10)
         root_layout.setContentsMargins(10, 10, 10, 10)
 
+        # Enable/disable Generate
         self.folder_edit.textChanged.connect(self._check_required)
         self.out_edit.textChanged.connect(self._check_required)
         self.condition_combo.currentTextChanged.connect(self._check_required)
         self.condition_b_combo.currentTextChanged.connect(self._check_required)
         self.overlay_check.toggled.connect(self._check_required)
         self._check_required()
+
+    # ---------- UI events ----------
 
     def _overlay_toggled(self, checked: bool) -> None:
         for anim in (self._overlay_width_anim, self._overlay_opacity_anim):
@@ -521,29 +531,25 @@ class PlotGeneratorWindow(QWidget):
             self._overlay_width_anim.setEndValue(end_width)
             self._overlay_opacity_anim.setStartValue(self.overlay_container.windowOpacity())
             self._overlay_opacity_anim.setEndValue(1.0)
-        else:
-            self._overlay_width_anim.setStartValue(self.overlay_container.maximumWidth())
-            self._overlay_width_anim.setEndValue(0)
-            self._overlay_opacity_anim.setStartValue(self.overlay_container.windowOpacity())
-            self._overlay_opacity_anim.setEndValue(0.0)
-        self._overlay_width_anim.start()
-        self._overlay_opacity_anim.start()
-        if checked:
             self.title_edit.setEnabled(True)
             self.title_edit.clear()
             self.title_edit.setPlaceholderText(
                 "Enter base chart name (e.g. Color Response vs Category Response)"
             )
         else:
-            # Revert to auto-generation behavior when comparison mode is off
+            self._overlay_width_anim.setStartValue(self.overlay_container.maximumWidth())
+            self._overlay_width_anim.setEndValue(0)
+            self._overlay_opacity_anim.setStartValue(self.overlay_container.windowOpacity())
+            self._overlay_opacity_anim.setEndValue(0.0)
             self._update_chart_title_state(self.condition_combo.currentText())
+        self._overlay_width_anim.start()
+        self._overlay_opacity_anim.start()
 
     def _select_folder(self) -> None:
         folder = QFileDialog.getExistingDirectory(self, "Select Excel Folder")
         if folder:
             self.folder_edit.setText(folder)
             self._populate_conditions(folder)
-
 
     def _select_output(self) -> None:
         folder = QFileDialog.getExistingDirectory(self, "Select Output Folder")
@@ -575,9 +581,7 @@ class PlotGeneratorWindow(QWidget):
         if condition == ALL_CONDITIONS_OPTION:
             self.title_edit.setEnabled(False)
             self.title_edit.setPlaceholderText("")
-            self.title_edit.setText(
-                "Chart Names Automatically Generated Based on Condition"
-            )
+            self.title_edit.setText("Chart Names Automatically Generated Based on Condition")
         else:
             self.title_edit.setEnabled(True)
             self.title_edit.setPlaceholderText("e.g. Fruit vs Veg")
@@ -589,9 +593,7 @@ class PlotGeneratorWindow(QWidget):
         self.condition_b_combo.clear()
         try:
             subfolders = [
-                f.name
-                for f in Path(folder).iterdir()
-                if f.is_dir() and ".fif" not in f.name.lower()
+                f.name for f in Path(folder).iterdir() if f.is_dir() and ".fif" not in f.name.lower()
             ]
         except Exception:
             subfolders = []
@@ -599,7 +601,6 @@ class PlotGeneratorWindow(QWidget):
             self.condition_combo.addItem(ALL_CONDITIONS_OPTION)
             self.condition_combo.addItems(subfolders)
             self.condition_b_combo.addItems(subfolders)
-            # Default to "All Conditions" which auto-generates chart names
             self._update_chart_title_state(ALL_CONDITIONS_OPTION)
 
     def _save_defaults(self) -> None:
@@ -619,7 +620,6 @@ class PlotGeneratorWindow(QWidget):
         self.ylabel_edit.setText(self._defaults["ylabel_snr"])
         self.ymin_spin.setValue(float(self._defaults["y_min_snr"]))
         self.ymax_spin.setValue(float(self._defaults["y_max_snr"]))
-        # Update the chart title field based on the current condition
         self._update_chart_title_state(self.condition_combo.currentText())
         QMessageBox.information(self, "Defaults", "Settings reset to defaults.")
 
@@ -637,9 +637,8 @@ class PlotGeneratorWindow(QWidget):
     def _on_progress(self, msg: str, processed: int, total: int) -> None:
         if msg:
             self._append_log(msg)
-        # Avoid resetting the progress bar when only log messages are emitted
         if total == 0:
-            return
+            return  # log-only update
 
         if self._total_conditions:
             frac = (self._current_condition - 1) / self._total_conditions
@@ -666,6 +665,12 @@ class PlotGeneratorWindow(QWidget):
         if not self._conditions_queue:
             self._finish_all()
             return
+
+        if not self._gen_params:
+            QMessageBox.critical(self, "Error", "Internal error: missing generation parameters.")
+            self._finish_all()
+            return
+
         folder, out_dir, x_min, x_max, y_min, y_max = self._gen_params
         condition = self._conditions_queue.pop(0)
         self._current_condition += 1
@@ -708,6 +713,7 @@ class PlotGeneratorWindow(QWidget):
         self._animate_progress_to(100)
         self._total_conditions = 0
         self._current_condition = 0
+
         out_dir = self.out_edit.text()
         images = []
         try:
@@ -717,6 +723,7 @@ class PlotGeneratorWindow(QWidget):
                 images = list(Path(out_dir).glob("*.png"))
         except Exception:
             pass
+
         if images:
             resp = QMessageBox.question(
                 self,
@@ -747,6 +754,7 @@ class PlotGeneratorWindow(QWidget):
         if not self.condition_combo.currentText():
             QMessageBox.critical(self, "Error", "No condition selected.")
             return
+
         try:
             x_min = self.xmin_spin.value()
             x_max = self.xmax_spin.value()
@@ -760,6 +768,8 @@ class PlotGeneratorWindow(QWidget):
         self.cancel_btn.setEnabled(True)
         self.log.clear()
         self._animate_progress_to(0)
+
+        # Overlay mode: run a single worker with A vs B
         if self.overlay_check.isChecked():
             cond_a = self.condition_combo.currentText()
             cond_b = self.condition_b_combo.currentText()
@@ -768,6 +778,7 @@ class PlotGeneratorWindow(QWidget):
                 self.gen_btn.setEnabled(True)
                 self.cancel_btn.setEnabled(False)
                 return
+
             self._thread = QThread()
             self._worker = _Worker(
                 folder,
@@ -795,21 +806,21 @@ class PlotGeneratorWindow(QWidget):
             self._thread.finished.connect(self._thread.deleteLater)
             self._thread.finished.connect(self._finish_all)
             self._thread.start()
+            return
+
+        # Non-overlay: possibly iterate all conditions
+        self._all_conditions = self.condition_combo.currentText() == ALL_CONDITIONS_OPTION
+        if self._all_conditions:
+            self._conditions_queue = [
+                self.condition_combo.itemText(i) for i in range(1, self.condition_combo.count())
+            ]
         else:
-            self._all_conditions = (
-                self.condition_combo.currentText() == ALL_CONDITIONS_OPTION
-            )
-            if self._all_conditions:
-                self._conditions_queue = [
-                    self.condition_combo.itemText(i)
-                    for i in range(1, self.condition_combo.count())
-                ]
-            else:
-                self._conditions_queue = [self.condition_combo.currentText()]
-            self._total_conditions = len(self._conditions_queue)
-            self._current_condition = 0
-            self._gen_params = (folder, out_dir, x_min, x_max, y_min, y_max)
-            self._start_next_condition()
+            self._conditions_queue = [self.condition_combo.currentText()]
+
+        self._total_conditions = len(self._conditions_queue)
+        self._current_condition = 0
+        self._gen_params = (folder, out_dir, x_min, x_max, y_min, y_max)
+        self._start_next_condition()
 
     def _open_settings(self) -> None:
         dlg = _SettingsDialog(self, self.stem_color, self.stem_color_b)
@@ -824,18 +835,14 @@ class PlotGeneratorWindow(QWidget):
         if not folder:
             return
         if sys.platform.startswith("win"):
-            os.startfile(folder)
+            os.startfile(folder)  # noqa: P204
         elif sys.platform == "darwin":
             subprocess.call(["open", folder])
         else:
             subprocess.call(["xdg-open", folder])
 
     def _check_required(self) -> None:
-        required = bool(
-            self.folder_edit.text()
-            and self.out_edit.text()
-            and self.condition_combo.currentText()
-        )
+        required = bool(self.folder_edit.text() and self.out_edit.text() and self.condition_combo.currentText())
         if self.overlay_check.isChecked():
             required = required and bool(self.condition_b_combo.currentText())
         self.gen_btn.setEnabled(required)

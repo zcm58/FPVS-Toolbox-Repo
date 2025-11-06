@@ -1,8 +1,9 @@
-"""Project management utilities extracted from main_window.py."""
+""""Project management utilities extracted from main_window.py."""
 from __future__ import annotations
 
 import logging
 from pathlib import Path
+import re
 import sys
 
 from PySide6.QtWidgets import QFileDialog, QMessageBox, QInputDialog, QWidget
@@ -16,6 +17,21 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 _open_project_guard = OpGuard()
+
+
+def _sanitize_windows_name(name: str) -> str:
+    """
+    Make a safe Windows folder name.
+    Removes reserved characters <>:\"/\\|?* and trailing spaces/dots.
+    Collapses whitespace to single spaces.
+    """
+    # Remove invalid characters
+    sanitized = re.sub(r'[<>:"/\\|?*]', "_", name)
+    # Normalize whitespace
+    sanitized = re.sub(r"\s+", " ", sanitized).strip()
+    # Strip trailing dots/spaces
+    sanitized = sanitized.rstrip(" .")
+    return sanitized
 
 
 def select_projects_root(self) -> None:
@@ -45,26 +61,115 @@ def select_projects_root(self) -> None:
 
 
 def new_project(self) -> None:
+    # Project name
     name, ok = QInputDialog.getText(
         self, "Project Name", "Enter a name for this new project:"
     )
     if not ok or not name.strip():
         return
+    proj_name = _sanitize_windows_name(name.strip())
+    if not proj_name:
+        QMessageBox.warning(self, "Invalid Name", "Please enter a valid project name.")
+        return
 
+    # Input folder
     input_folder = QFileDialog.getExistingDirectory(
         self, "Select Input Folder (BDF files)", ""
     )
     if not input_folder:
         return
 
-    project_dir = self.projectsRoot / name.strip()
+    # Group count (no hard cap; use a high upper bound)
+    group_count, ok = QInputDialog.getInt(
+        self,
+        "Experimental Groups",
+        "How many experimental groups?",
+        1,  # default
+        1,  # min
+        999,  # max (effectively uncapped for practical purposes)
+        1,
+    )
+    if not ok:
+        return
+
+    # Group names
+    group_names: list[str] = []
+    for idx in range(group_count):
+        while True:
+            gname_raw, gok = QInputDialog.getText(
+                self,
+                "Group Name",
+                f"Enter name for Group {idx + 1}:",
+            )
+            if not gok:
+                return  # cancel entire creation
+            gname = _sanitize_windows_name(gname_raw.strip())
+            if not gname:
+                QMessageBox.warning(self, "Invalid Name", "Group name cannot be empty.")
+                continue
+            if gname in group_names:
+                QMessageBox.warning(self, "Duplicate Name", "Group name must be unique.")
+                continue
+            group_names.append(gname)
+            break
+
+    # Create project folder
+    project_dir = self.projectsRoot / proj_name
     project_dir.mkdir(parents=True, exist_ok=True)
 
-    project = Project.load(project_dir)
-    project.name = name.strip()
-    project.input_folder = input_folder
-    project.save()
+    # Create group folders (keep existing per-group scheme creation elsewhere unchanged)
+    created = []
+    for g in group_names:
+        try:
+            (project_dir / g).mkdir(parents=True, exist_ok=True)
+            created.append(g)
+        except (OSError, PermissionError) as exc:
+            logger.error(
+                "Failed to create group folder",
+                exc_info=exc,
+                extra={"op": "new_project", "project": proj_name, "group": g, "path": str(project_dir / g)},
+            )
+            QMessageBox.critical(
+                self,
+                "Folder Creation Error",
+                f"Could not create group folder:\n{project_dir / g}\n{exc}",
+            )
+            return
 
+    # Initialize and save manifest
+    project = Project.load(project_dir)
+    project.name = proj_name
+    project.input_folder = input_folder
+    # Store groups in manifest via existing options dict to avoid schema breaks elsewhere
+    try:
+        if not isinstance(project.options, dict):
+            project.options = {}
+    except AttributeError:
+        # If Project lacks .options, we still proceed without storing groups
+        logger.warning(
+            "Project object has no 'options' attribute; groups will not be persisted.",
+            extra={"op": "new_project", "project": proj_name},
+        )
+    else:
+        project.options["groups"] = created  # persists in project.json
+        project.options["has_groups"] = True
+
+    try:
+        project.save()
+    except Exception as exc:
+        logger.error(
+            "Failed to save project.json",
+            exc_info=exc,
+            extra={"op": "new_project", "project": proj_name, "path": str(project_dir)},
+        )
+        QMessageBox.critical(
+            self,
+            "Save Error",
+            f"Could not save project at:\n{project_dir}\n{exc}",
+        )
+        return
+
+    # Load into UI
     self.currentProject = project
     self.loadProject(project)
 
@@ -166,7 +271,6 @@ def open_existing_project(self, parent: QWidget | None = None) -> None:
         self.loadProject(project)
     finally:
         _open_project_guard.end()
-
 
 
 def openProjectPath(self, folder: str) -> None:

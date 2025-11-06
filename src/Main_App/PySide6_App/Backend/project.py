@@ -4,15 +4,19 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Stable defaults used by GUI/processing
 DEFAULTS: Dict[str, Any] = {
     "input_folder": "Input",
     "results_folder": "Results",
+    "snr_plots_folder": "SNR Plots",  # New: SNR plots live at project root, not under Results
     "options": {
         "mode": "single",
         "loreta": False,
+        # Optional keys the creator may set:
+        # "has_groups": bool
+        # "groups": List[str]
     },
     # Friendly label; UI falls back to folder name if None/missing
     "name": None,
@@ -59,6 +63,8 @@ class Project:
       - name: str
       - input_folder: Path (absolute)
       - results_folder: Path (absolute)
+      - snr_plots_folder: Path (absolute)  # new
+      - groups: List[str]                  # new, may be empty
       - subfolders: Dict[str, Path] (absolute paths under results_folder)
       - options: Dict[str, Any]
       - preprocessing: Dict[str, Any]
@@ -81,6 +87,10 @@ class Project:
         self.results_folder = _resolve_subpath(
             self.project_root, manifest.get("results_folder", DEFAULTS["results_folder"])
         )
+        # SNR plots folder lives at project root by default
+        self.snr_plots_folder = _resolve_subpath(
+            self.project_root, manifest.get("snr_plots_folder", DEFAULTS["snr_plots_folder"])
+        )
 
         # Options with default keys ensured
         opts = manifest.get("options", {})
@@ -90,6 +100,12 @@ class Project:
         merged_opts.update(opts)
         self.options = merged_opts
 
+        # Groups (optional)
+        groups_val = self.options.get("groups", [])
+        if not isinstance(groups_val, list):
+            groups_val = []
+        self.groups: List[str] = [str(g).strip() for g in groups_val if str(g).strip()]
+
         # Preprocessing dict
         pp = manifest.get("preprocessing", {})
         self.preprocessing: Dict[str, Any] = pp if isinstance(pp, dict) else {}
@@ -97,6 +113,20 @@ class Project:
         # Event map dict
         ev = manifest.get("event_map", {})
         self.event_map: Dict[str, Any] = ev if isinstance(ev, dict) else {}
+
+        # Ensure core directories exist
+        self.input_folder.mkdir(parents=True, exist_ok=True)
+        self.results_folder.mkdir(parents=True, exist_ok=True)
+        self.snr_plots_folder.mkdir(parents=True, exist_ok=True)
+
+        # Create group folders at the project root if groups are defined
+        if self.groups:
+            for g in self.groups:
+                try:
+                    (self.project_root / g).mkdir(parents=True, exist_ok=True)
+                except Exception:
+                    # Do not raise; logging is handled by callers where needed
+                    pass
 
         # Results subfolders (absolute paths under results_folder)
         sub = manifest.get("subfolders", {})
@@ -115,7 +145,7 @@ class Project:
     def load(path: Path) -> "Project":
         """
         Load a project from folder. Accepts absolute or relative manifest paths.
-        Ensures Input/Results and subfolders exist.
+        Ensures Input/Results/SNR Plots and subfolders exist. Creates group folders if listed.
         """
         project_root = Path(path).resolve()
         manifest_path = project_root / "project.json"
@@ -138,8 +168,10 @@ class Project:
         # Ensure main directories exist using resolved absolute paths
         input_dir = _resolve_subpath(project_root, merged.get("input_folder", DEFAULTS["input_folder"]))
         results_dir = _resolve_subpath(project_root, merged.get("results_folder", DEFAULTS["results_folder"]))
+        snr_plots_dir = _resolve_subpath(project_root, merged.get("snr_plots_folder", DEFAULTS["snr_plots_folder"]))
         input_dir.mkdir(parents=True, exist_ok=True)
         results_dir.mkdir(parents=True, exist_ok=True)
+        snr_plots_dir.mkdir(parents=True, exist_ok=True)
 
         proj = Project(project_root, merged)
         return proj
@@ -170,14 +202,18 @@ class Project:
         # Normalize current runtime folders back into manifest form
         current_input = Path(data.get("input_folder", DEFAULTS["input_folder"]))
         current_results = Path(data.get("results_folder", DEFAULTS["results_folder"]))
+        current_snr_plots = Path(data.get("snr_plots_folder", DEFAULTS["snr_plots_folder"]))
 
         if hasattr(self, "input_folder") and self.input_folder:
             current_input = Path(self.input_folder)
         if hasattr(self, "results_folder") and self.results_folder:
             current_results = Path(self.results_folder)
+        if hasattr(self, "snr_plots_folder") and self.snr_plots_folder:
+            current_snr_plots = Path(self.snr_plots_folder)
 
         data["input_folder"] = _relativize(self.project_root, current_input)
         data["results_folder"] = _relativize(self.project_root, current_results)
+        data["snr_plots_folder"] = _relativize(self.project_root, current_snr_plots)
 
         # Options: ensure default keys exist, keep user values
         opts = data.get("options", {})
@@ -185,6 +221,10 @@ class Project:
             opts = {}
         normalized_opts = DEFAULTS["options"].copy()
         normalized_opts.update(opts)
+        # Keep groups and has_groups if present in memory
+        if hasattr(self, "groups"):
+            normalized_opts["groups"] = list(self.groups)
+            normalized_opts["has_groups"] = bool(self.groups)
         data["options"] = normalized_opts
 
         # Preprocessing: ensure dict type

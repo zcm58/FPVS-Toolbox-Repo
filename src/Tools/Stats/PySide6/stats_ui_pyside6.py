@@ -30,7 +30,7 @@ from PySide6.QtWidgets import (
 )
 
 # Qt imports proof: QAction from PySide6.QtGui
-from Main_App import SettingsManager
+from Main_App.PySide6_App.Backend.settings_manager import SettingsManager
 from Main_App.PySide6_App.utils.op_guard import OpGuard
 from Main_App.PySide6_App.widgets.busy_spinner import BusySpinner
 from Tools.Stats.Legacy.interpretation_helpers import generate_lme_summary
@@ -238,13 +238,21 @@ class StatsWindow(QMainWindow):
                 str(proj.project_root) if proj and hasattr(proj, "project_root") else _auto_detect_project_dir()
             )
 
+        # read project.json for title and optional groups
+        self.project_title = os.path.basename(self.project_dir)
+        self.project_groups: List[str] = []
         config_path = os.path.join(self.project_dir, "project.json")
         try:
             with open(config_path, "r", encoding="utf-8") as f:
                 cfg = json.load(f)
-            self.project_title = cfg.get("name", cfg.get("title", os.path.basename(self.project_dir)))
+            self.project_title = cfg.get("name", cfg.get("title", self.project_title))
+            opts = cfg.get("options", {}) if isinstance(cfg, dict) else {}
+            if isinstance(opts, dict):
+                grps = opts.get("groups", [])
+                if isinstance(grps, list):
+                    self.project_groups = [str(g).strip() for g in grps if str(g).strip()]
         except Exception:
-            self.project_title = os.path.basename(self.project_dir)
+            pass
 
         super().__init__(parent)
         self.setWindowFlags(self.windowFlags() | Qt.Window)
@@ -273,6 +281,9 @@ class StatsWindow(QMainWindow):
         self._harmonic_metric: str = ""
         self._current_base_freq: float = 6.0
         self._current_alpha: float = 0.05
+
+        # currently selected group (for folder auto-pick); default first group if present
+        self._current_group_name: Optional[str] = self.project_groups[0] if self.project_groups else None
 
         # --- legacy UI proxies ---
         self.stats_data_folder_var = SimpleNamespace(get=lambda: self.le_folder.text() if hasattr(self, "le_folder") else "",
@@ -620,6 +631,21 @@ class StatsWindow(QMainWindow):
         main_layout.setContentsMargins(10, 10, 10, 10)
         main_layout.setSpacing(10)
 
+        # optional group row (appears only when project defines groups)
+        if self.project_groups:
+            grp_row = QHBoxLayout()
+            grp_row.setSpacing(6)
+            grp_row.addWidget(QLabel("Group:"))
+            self.cb_group = QComboBox()
+            self.cb_group.addItems(self.project_groups)
+            if self._current_group_name and self._current_group_name in self.project_groups:
+                self.cb_group.setCurrentText(self._current_group_name)
+            self.cb_group.currentTextChanged.connect(self._on_group_changed)
+            grp_row.addWidget(self.cb_group, 1)
+            main_layout.addLayout(grp_row)
+        else:
+            self.cb_group = None  # type: ignore[assignment]
+
         # folder row
         folder_row = QHBoxLayout()
         folder_row.setSpacing(5)
@@ -747,6 +773,26 @@ class StatsWindow(QMainWindow):
         self._update_export_buttons()
 
     # --------------------------- actions ---------------------------
+
+    def _current_group(self) -> Optional[str]:
+        if getattr(self, "cb_group", None):
+            try:
+                txt = self.cb_group.currentText().strip()
+                return txt or None
+            except Exception:
+                return self._current_group_name
+        return None
+
+    def _excel_dir_for_group(self, group_name: Optional[str]) -> Path:
+        """
+        Preferred stats folder resolution:
+          - If group specified: <project_root>/<Group>/1 - Excel Data Files
+          - Else: <project_root>/1 - Excel Data Files
+        """
+        proj_root = Path(self.project_dir).resolve()
+        if group_name:
+            return (proj_root / group_name / "1 - Excel Data Files").resolve()
+        return (proj_root / "1 - Excel Data Files").resolve()
 
     def _check_for_open_excel_files(self, folder_path: str) -> bool:
         """Best-effort check to avoid writing to open Excel files."""
@@ -910,7 +956,7 @@ class StatsWindow(QMainWindow):
     # ---- folder & scan ----
 
     def on_browse_folder(self) -> None:
-        start_dir = self.le_folder.text() or self.project_dir
+        start_dir = self.le_folder.text() or str(self._excel_dir_for_group(self._current_group()))
         folder = QFileDialog.getExistingDirectory(self, "Select Data Folder", start_dir)
         if folder:
             self.le_folder.setText(folder)
@@ -937,35 +983,44 @@ class StatsWindow(QMainWindow):
         finally:
             self._scan_guard.done()
 
-
-
-    def _preferred_stats_folder(self) -> Path:
-        """
-        Project-standard stats folder:
-          <project_root>\1 - Excel Data Files
-        """
-        # project_root comes from parent if available; else fall back to self.project_dir
-        proj_root = None
-        if self.parent() and hasattr(self.parent(), "currentProject"):
-            try:
-                proj_root = Path(getattr(self.parent().currentProject, "project_root", "")).resolve()
-            except Exception:
-                proj_root = None
-        if not proj_root:
-            proj_root = Path(self.project_dir).resolve()
-        return (proj_root / "1 - Excel Data Files").resolve()
-
-    def _load_default_data_folder(self) -> None:
-        """
-        On open, auto-select <project root>\1 - Excel Data Files.
-        If it doesn't exist, do nothing (user can Browse).
-        """
-        target = self._preferred_stats_folder()
+    def _on_group_changed(self, name: str) -> None:
+        """When user picks a group, auto-point to that group's Excel folder and rescan if present."""
+        self._current_group_name = name.strip() or None
+        target = self._excel_dir_for_group(self._current_group_name)
         if target.exists() and target.is_dir():
             self.le_folder.setText(str(target))
             self._scan_button_clicked()
         else:
-            # Leave UI as-is; user will browse. Status hint only.
-            self._set_status("Select the project's '1 - Excel Data Files' folder to begin.")
+            # Do not clear, just inform. User may browse manually.
+            self._set_status(f"Group '{name}' selected. Folder not found yet: {target}")
 
+    def _preferred_stats_folder(self) -> Path:
+        """
+        Project-standard stats folder:
+          - With groups: <project_root>/<Group>/1 - Excel Data Files
+          - Without groups: <project_root>/1 - Excel Data Files
+        """
+        return self._excel_dir_for_group(self._current_group())
+
+    def _load_default_data_folder(self) -> None:
+        """
+        On open, auto-select group-aware Excel folder.
+        Pref order:
+          1) Selected group (or first defined group) Excel folder
+          2) Legacy single-group default: <project root>\1 - Excel Data Files
+        """
+        # group-aware target
+        g_target = self._preferred_stats_folder()
+        if g_target.exists() and g_target.is_dir():
+            self.le_folder.setText(str(g_target))
+            self._scan_button_clicked()
+            return
+
+        # fallback: legacy location
+        legacy = (Path(self.project_dir).resolve() / "1 - Excel Data Files").resolve()
+        if legacy.exists() and legacy.is_dir():
+            self.le_folder.setText(str(legacy))
+            self._scan_button_clicked()
+        else:
+            self._set_status("Select the project's '1 - Excel Data Files' folder to begin.")
 

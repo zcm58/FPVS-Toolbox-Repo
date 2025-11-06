@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import os
+import re
 import math
+import json
 from pathlib import Path
-from typing import Dict, List, Iterable, Sequence
+from typing import Dict, List, Iterable, Sequence, Optional, Tuple, Set
 
 import pandas as pd
 import matplotlib
@@ -29,6 +31,9 @@ plt.rcParams.update(
     }
 )
 
+# Subject ID pattern used across the toolbox
+_PID_RE = re.compile(r"(?:[A-Za-z]*)?(P\d+)", re.IGNORECASE)
+
 
 class _Worker(QObject):
     """Worker to process Excel files and generate plots."""
@@ -41,7 +46,7 @@ class _Worker(QObject):
         folder: str,
         condition: str,
         roi_map: Dict[str, List[str]],
-        selected_roi: str,
+        roi_choice: str,
         title: str,
         xlabel: str,
         ylabel: str,
@@ -57,12 +62,16 @@ class _Worker(QObject):
         oddballs: Sequence[float] | None = None,
         use_matlab_style: bool = False,
         overlay: bool = False,
+        # new flags for group comparison
+        compare_groups: bool = False,
+        group_a: str | None = None,
+        group_b: str | None = None,
     ) -> None:
         super().__init__()
         self.folder = folder
         self.condition = condition
         self.roi_map = roi_map
-        self.selected_roi = selected_roi
+        self.selected_roi = roi_choice
         self.metric = "SNR"
         self.title = title
         self.xlabel = xlabel
@@ -73,14 +82,25 @@ class _Worker(QObject):
         self.y_max = y_max
 
         self.out_dir = Path(out_dir)
-        self.stem_color = stem_color.lower()
-        self.stem_color_b = stem_color_b.lower()
+        self.stem_color = (stem_color or "red").lower()
+        self.stem_color_b = (stem_color_b or "blue").lower()
         self.condition_b = condition_b
         self.overlay = overlay
+
+        self.compare_groups = compare_groups
+        self.group_a = (group_a or "").strip()
+        self.group_b = (group_b or "").strip()
+
         # maintain oddballs attribute for compatibility with older versions
         self.oddballs: List[float] = list(oddballs or [])
         self.use_matlab_style = use_matlab_style
         self._stop_requested = False
+
+        # project manifest cache
+        self._project_root: Optional[Path] = None
+        self._group_members: Dict[str, Set[str]] = {}
+
+    # ---------- lifecycle ----------
 
     def run(self) -> None:
         try:
@@ -91,20 +111,86 @@ class _Worker(QObject):
     def stop(self) -> None:
         self._stop_requested = True
 
+    # ---------- logging/progress ----------
+
     def _emit(self, msg: str, processed: int = 0, total: int = 0) -> None:
         self.progress.emit(msg, processed, total)
 
-    def _count_excel_files(self, condition: str) -> int:
-        """Return the number of Excel files for a condition."""
+    # ---------- project + groups ----------
+
+    def _find_project_root(self) -> Optional[Path]:
+        if self._project_root:
+            return self._project_root
+        p = Path(self.folder).resolve()
+        for cand in [p, *p.parents]:
+            if (cand / "project.json").is_file():
+                self._project_root = cand
+                return cand
+        return None
+
+    def _load_group_members(self) -> None:
+        """Load group membership from project.json.
+
+        Accepts either:
+          - {"group_members": {"GroupA": ["P01","P02"], "GroupB": ["P03"]}}
+          - {"groups": {"GroupA": ["P01",...], "GroupB": [...]}}
+
+        Values are normalized to uppercase PIDs.
+        """
+        root = self._find_project_root()
+        if not root:
+            return
+        try:
+            with open(root / "project.json", "r", encoding="utf-8") as f:
+                cfg = json.load(f)
+        except Exception:
+            return
+
+        members: Dict[str, Set[str]] = {}
+        # Prefer explicit group_members
+        src = None
+        if isinstance(cfg.get("group_members"), dict):
+            src = cfg["group_members"]
+        elif isinstance(cfg.get("groups"), dict):
+            # only use if dict; ignore if list
+            src = cfg["groups"]
+        if isinstance(src, dict):
+            for gname, ids in src.items():
+                if not isinstance(ids, (list, tuple)):
+                    continue
+                norm = {s.upper() for s in ids if isinstance(s, str)}
+                members[str(gname)] = norm
+        self._group_members = members
+
+    def _subjects_for_group(self, group_name: str) -> Set[str]:
+        if not self._group_members:
+            self._load_group_members()
+        return self._group_members.get(group_name, set())
+
+    @staticmethod
+    def _pid_from_filename(path: Path) -> Optional[str]:
+        m = _PID_RE.search(path.name)
+        return m.group(1).upper() if m else None
+
+    # ---------- discovery ----------
+
+    def _count_excel_files(self, condition: str, include_subjects: Optional[Set[str]] = None) -> int:
         cond_folder = Path(self.folder) / condition
         if not cond_folder.is_dir():
             return 0
-        return sum(
-            1
-            for root, _, files in os.walk(cond_folder)
-            for f in files
-            if f.lower().endswith(".xlsx")
-        )
+        n = 0
+        for root, _, files in os.walk(cond_folder):
+            for f in files:
+                if not f.lower().endswith(".xlsx"):
+                    continue
+                if include_subjects is not None:
+                    pid = self._pid_from_filename(Path(root) / f)
+                    if not pid or pid not in include_subjects:
+                        continue
+                n += 1
+        return n
+
+    # ---------- IO + aggregation ----------
 
     def _collect_data(
         self,
@@ -112,6 +198,7 @@ class _Worker(QObject):
         *,
         offset: int = 0,
         total_override: int | None = None,
+        include_subjects: Optional[Set[str]] = None,
     ) -> tuple[List[float], Dict[str, List[float]]]:
         cond_folder = Path(self.folder) / condition
         if not cond_folder.is_dir():
@@ -120,12 +207,18 @@ class _Worker(QObject):
 
         self.out_dir.mkdir(parents=True, exist_ok=True)
 
-        excel_files = [
-            Path(root) / f
-            for root, _, files in os.walk(cond_folder)
-            for f in files
-            if f.lower().endswith(".xlsx")
-        ]
+        excel_files: List[Path] = []
+        for root, _, files in os.walk(cond_folder):
+            for f in files:
+                if not f.lower().endswith(".xlsx"):
+                    continue
+                p = Path(root) / f
+                if include_subjects is not None:
+                    pid = self._pid_from_filename(p)
+                    if not pid or pid not in include_subjects:
+                        continue
+                excel_files.append(p)
+
         if not excel_files:
             self._emit("No Excel files found for condition.")
             return [], {}
@@ -151,7 +244,7 @@ class _Worker(QObject):
         for excel_path in excel_files:
             if self._stop_requested:
                 self._emit("Generation cancelled by user.")
-                return
+                return [], {}
             self._emit(
                 f"Reading {excel_path.name}",
                 offset + processed_files,
@@ -172,9 +265,12 @@ class _Worker(QObject):
                     snr_vals.columns = freq_cols_tmp
                     snr_vals.insert(0, "Electrode", df_amp["Electrode"])
                     df = snr_vals
-            except Exception as e:  # pragma: no cover - simple logging
+            except Exception as e:
                 self._emit(f"Failed reading {excel_path.name}: {e}")
+                processed_files += 1
+                self._emit("", offset + processed_files, overall_total)
                 continue
+
             freq_cols = [c for c in df.columns if isinstance(c, str) and c.endswith("_Hz")]
             if not freq_cols:
                 self._emit(
@@ -183,12 +279,8 @@ class _Worker(QObject):
                     overall_total,
                 )
                 processed_files += 1
+                self._emit("", offset + processed_files, overall_total)
                 continue
-            self._emit(
-                f"Found {len(freq_cols)} frequency columns in {excel_path.name}",
-                offset + processed_files,
-                overall_total,
-            )
 
             freq_pairs: List[tuple[float, str]] = []
             for col in freq_cols:
@@ -206,7 +298,11 @@ class _Worker(QObject):
 
             for roi in roi_names:
                 chans = [c.upper() for c in self.roi_map.get(roi, [])]
-                df_roi = df[df["Electrode"].str.upper().isin(chans)]
+                try:
+                    df_roi = df[df["Electrode"].str.upper().isin(chans)]
+                except Exception:
+                    self._emit(f"Missing 'Electrode' column in {excel_path.name}")
+                    continue
                 if df_roi.empty:
                     self._emit(f"No electrodes for ROI {roi} in {excel_path.name}")
                     continue
@@ -238,7 +334,10 @@ class _Worker(QObject):
 
         return list(freqs), averaged
 
+    # ---------- main driver ----------
+
     def _run(self) -> None:
+        # Mode 1: Condition overlay (A vs B)
         if self.overlay and self.condition_b:
             total_a = self._count_excel_files(self.condition)
             total_b = self._count_excel_files(self.condition_b)
@@ -254,12 +353,55 @@ class _Worker(QObject):
                 total_override=total,
             )
             if freqs_a and data_a and freqs_b and data_b:
-                self._plot_overlay(freqs_a, data_a, data_b)
+                self._plot_overlay(freqs_a, data_a, data_b, legend_a=self.condition, legend_b=self.condition_b)
             return
 
+        # Mode 2: Group comparison within a single condition
+        if self.compare_groups:
+            if not self.group_a or not self.group_b:
+                self._emit("Group comparison requested but groups not selected.")
+                return
+            members_a = self._subjects_for_group(self.group_a)
+            members_b = self._subjects_for_group(self.group_b)
+            if not members_a or not members_b:
+                self._emit(
+                    f"Missing group membership in project.json for '{self.group_a}' or '{self.group_b}'."
+                )
+                return
+
+            total_a = self._count_excel_files(self.condition, include_subjects=members_a)
+            total_b = self._count_excel_files(self.condition, include_subjects=members_b)
+            total = total_a + total_b
+
+            freqs_a, data_a = self._collect_data(
+                self.condition,
+                offset=0,
+                total_override=total,
+                include_subjects=members_a,
+            )
+            freqs_b, data_b = self._collect_data(
+                self.condition,
+                offset=total_a,
+                total_override=total,
+                include_subjects=members_b,
+            )
+            if freqs_a and data_a and freqs_b and data_b:
+                self._plot_overlay(
+                    freqs_a,
+                    data_a,
+                    data_b,
+                    legend_a=self.group_a,
+                    legend_b=self.group_b,
+                    group_mode=True,
+                )
+            return
+
+        # Default: single condition plot
         freqs, averaged = self._collect_data(self.condition)
         if freqs and averaged:
             self._plot(freqs, averaged)
+
+    # ---------- plotting ----------
 
     def _plot(self, freqs: List[float], roi_data: Dict[str, List[float]]) -> None:
         mgr = SettingsManager()
@@ -274,28 +416,23 @@ class _Worker(QObject):
             cfg_odds = []
         odd_freqs = self.oddballs if self.oddballs else cfg_odds
 
-
         for roi, amps in roi_data.items():
             if self._stop_requested:
                 self._emit("Generation cancelled by user.")
                 return
             fig, ax = plt.subplots(figsize=(12, 4))
 
-            line_color = self.stem_color
-
             stem_vals = amps
             cont = ax.stem(
                 freqs,
                 stem_vals,
-                linefmt=line_color,
+                linefmt=self.stem_color,
                 markerfmt=" ",
                 basefmt=" ",
                 bottom=1.0,
             )
             cont.markerline.set_label(self.metric)
-            self._emit(
-                f"Plotted {len(stem_vals)} SNR stems for ROI {roi}", 0, 0
-            )
+            self._emit(f"Plotted {len(stem_vals)} SNR stems for ROI {roi}", 0, 0)
 
             if odd_freqs and not self.use_matlab_style:
                 freq_array = np.array(freqs)
@@ -311,9 +448,7 @@ class _Worker(QObject):
                         label=label,
                     )
                 ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), frameon=True)
-                self._emit(
-                    f"Marked {len(odd_freqs)} oddball points on ROI {roi}", 0, 0
-                )
+                self._emit(f"Marked {len(odd_freqs)} oddball points on ROI {roi}", 0, 0)
 
             tick_start = math.ceil(self.x_min)
             tick_end = math.floor(self.x_max) + 1
@@ -321,21 +456,9 @@ class _Worker(QObject):
             ax.set_xlim(self.x_min, self.x_max)
             ax.set_ylim(self.y_min, self.y_max)
             for fx in range(max(1, tick_start), tick_end):
-                ax.axvline(
-                    fx,
-                    color="lightgray",
-                    linestyle="--",
-                    linewidth=0.5,
-                    zorder=0,
-                )
+                ax.axvline(fx, color="lightgray", linestyle="--", linewidth=0.5, zorder=0)
             for y in range(math.ceil(self.y_min), math.floor(self.y_max) + 1):
-                ax.axhline(
-                    y,
-                    color="lightgray",
-                    linestyle="--",
-                    linewidth=0.5,
-                    zorder=0,
-                )
+                ax.axhline(y, color="lightgray", linestyle="--", linewidth=0.5, zorder=0)
             if not self.use_matlab_style:
                 ax.axhline(1.0, color="gray", linestyle="--", linewidth=1)
 
@@ -356,6 +479,10 @@ class _Worker(QObject):
         freqs: List[float],
         data_a: Dict[str, List[float]],
         data_b: Dict[str, List[float]],
+        *,
+        legend_a: str,
+        legend_b: str,
+        group_mode: bool = False,
     ) -> None:
         plt.rcParams.update({"font.family": "Times New Roman", "font.size": 12})
         mgr = SettingsManager()
@@ -375,8 +502,8 @@ class _Worker(QObject):
                 self._emit("Generation cancelled by user.")
                 return
             fig, ax = plt.subplots(figsize=(12, 4))
-            ax.plot(freqs, data_a[roi], color=self.stem_color, label=self.condition)
-            ax.plot(freqs, data_b.get(roi, []), color=self.stem_color_b, label=self.condition_b)
+            ax.plot(freqs, data_a[roi], label=legend_a, color=self.stem_color)
+            ax.plot(freqs, data_b.get(roi, []), label=legend_b, color=self.stem_color_b)
 
             if odd_freqs:
                 freq_array = np.array(freqs)
@@ -384,8 +511,8 @@ class _Worker(QObject):
                     closest = int(np.abs(freq_array - odd).argmin())
                     val_a = data_a[roi][closest]
                     val_b = data_b[roi][closest]
-                    label_a = "A-Peaks" if idx == 0 else "_nolegend_"
-                    label_b = "B-Peaks" if idx == 0 else "_nolegend_"
+                    label_a = f"{legend_a} Peaks" if idx == 0 else "_nolegend_"
+                    label_b = f"{legend_b} Peaks" if idx == 0 else "_nolegend_"
                     ax.scatter(
                         freq_array[closest],
                         val_a,
@@ -404,40 +531,36 @@ class _Worker(QObject):
                         zorder=4,
                         label=label_b,
                     )
+
             tick_start = math.ceil(self.x_min)
             tick_end = math.floor(self.x_max) + 1
             ax.set_xticks(range(tick_start, tick_end))
             ax.set_xlim(self.x_min, self.x_max)
             ax.set_ylim(self.y_min, self.y_max)
             for fx in range(max(1, tick_start), tick_end):
-                ax.axvline(
-                    fx,
-                    color="lightgray",
-                    linestyle="--",
-                    linewidth=0.5,
-                    zorder=0,
-                )
+                ax.axvline(fx, color="lightgray", linestyle="--", linewidth=0.5, zorder=0)
             for y in range(math.ceil(self.y_min), math.floor(self.y_max) + 1):
-                ax.axhline(
-                    y,
-                    color="lightgray",
-                    linestyle="--",
-                    linewidth=0.5,
-                    zorder=0,
-                )
+                ax.axhline(y, color="lightgray", linestyle="--", linewidth=0.5, zorder=0)
             if not self.use_matlab_style:
                 ax.axhline(1.0, color="gray", linestyle="--", linewidth=1)
 
             ax.set_xlabel(self.xlabel)
             ax.set_ylabel(self.ylabel)
-            base = self.title or f"{self.condition} vs {self.condition_b}"
+            base = self.title or (
+                f"{self.condition} {legend_a} vs {legend_b}" if group_mode
+                else f"{self.condition} vs {self.condition_b}"
+            )
             ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), frameon=True)
             ax.grid(axis="y", linestyle=":", linewidth=0.8, color="gray")
 
             combined_title = f"{base}: {roi}"
             fig.suptitle(combined_title, fontsize=16, ha="center", va="top")
             fig.tight_layout(rect=[0, 0, 1, 0.95])
-            fname = f"{self.condition}_vs_{self.condition_b}_{roi}_{self.metric}.png"
+
+            if group_mode:
+                fname = f"{self.condition}_{legend_a}_vs_{legend_b}_{roi}_{self.metric}.png"
+            else:
+                fname = f"{self.condition}_vs_{legend_b}_{roi}_{self.metric}.png"
             fig.savefig(self.out_dir / fname, dpi=300, bbox_inches="tight", pad_inches=0.05)
             plt.close(fig)
             self._emit(f"Saved {fname}")
