@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import os
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
+from typing import Dict, List, Optional, Set, Tuple
 
 from PySide6.QtCore import QThread, QPropertyAnimation, Qt
 from PySide6.QtGui import QAction, QColor
@@ -42,6 +44,147 @@ from .worker import _Worker
 
 
 ALL_CONDITIONS_OPTION = "All Conditions"
+
+# --- PID extraction per spec (accept P#, SCP#; canonicalize to P{digits})
+PID_RE = re.compile(r"(?i)\b(?:P|SCP)0*(\d{1,4})\b")
+
+
+def _extract_pid(path: Path) -> Optional[str]:
+    """
+    Extract canonical PID from filename.
+    Matches 'P7', 'p07', 'SCP7', 'scp0007' -> 'P7'.
+    Returns None if no PID-like token is present.
+    """
+
+    m = PID_RE.search(path.name)
+    if not m:
+        return None
+    return f"P{int(m.group(1))}"
+
+
+# --- persistence keys
+PLOT_MODE_KEY = ("plot", "mode")          # values: single | overlay | groups
+PLOT_GROUP_A_KEY = ("plot", "group_a")
+PLOT_GROUP_B_KEY = ("plot", "group_b")
+
+
+def _parse_groups(project_json: Path) -> Tuple[Dict[str, Set[str]], Optional[str]]:
+    """
+    Parse groups from project.json.
+    Accepts nested keys and multiple shapes.
+    Returns (group_map, error_msg). Names kept; PIDs canonicalized to 'P{digits}'.
+    """
+
+    def _canon_pid_token(txt: str) -> Optional[str]:
+        m = re.search(r"(?i)\b(?:P|SCP)0*(\d{1,4})\b", txt or "")
+        return f"P{int(m.group(1))}" if m else None
+
+    try:
+        with open(project_json, "r", encoding="utf-8") as f:
+            cfg = json.load(f)
+    except Exception as e:
+        return {}, f"Failed to read project.json: {e}"
+
+    key_variants = {
+        "group_members",
+        "groups",
+        "experimental_groups",
+        "GroupMembers",
+        "Group_Members",
+        "groupNames",
+        "group_names",
+    }
+
+    def _collect(val) -> Dict[str, Set[str]]:
+        out: Dict[str, Set[str]] = {}
+        if isinstance(val, dict):
+            for name, lst in val.items():
+                if not isinstance(name, str):
+                    continue
+                if isinstance(lst, list):
+                    s: Set[str] = set()
+                    for pid in lst:
+                        tok = _canon_pid_token(str(pid))
+                        if tok:
+                            s.add(tok)
+                    out[name] = s
+                else:
+                    out[name] = set()
+        elif isinstance(val, list):
+            names_only = [v for v in val if isinstance(v, str)]
+            if names_only and len(names_only) == len(val):
+                for name in names_only:
+                    out[name] = set()
+            else:
+                for obj in val:
+                    if not isinstance(obj, dict):
+                        continue
+                    name = (
+                        str(
+                            obj.get("name")
+                            or obj.get("label")
+                            or obj.get("group")
+                            or ""
+                        ).strip()
+                    )
+                    if not name:
+                        continue
+                    pids = obj.get("pids") or obj.get("members") or obj.get("ids") or []
+                    s: Set[str] = set()
+                    if isinstance(pids, list):
+                        for pid in pids:
+                            tok = _canon_pid_token(str(pid))
+                            if tok:
+                                s.add(tok)
+                    out[name] = s
+        return out
+
+    def _find_groups(node) -> Optional[Dict[str, Set[str]]]:
+        if isinstance(node, dict):
+            for k, v in node.items():
+                if k in key_variants:
+                    gm = _collect(v)
+                    if gm:
+                        return gm
+            for v in node.values():
+                gm = _find_groups(v)
+                if gm:
+                    return gm
+        elif isinstance(node, list):
+            for v in node:
+                gm = _find_groups(v)
+                if gm:
+                    return gm
+        return None
+
+    group_map = _find_groups(cfg) or {}
+    if not group_map:
+        return {}, "No valid 'group_members' or 'groups' found."
+    return {str(name): set(pids) for name, pids in group_map.items()}, None
+
+
+def _list_condition_excels(condition_dir: Path) -> List[Path]:
+    if not condition_dir.is_dir():
+        return []
+    try:
+        return [p for p in condition_dir.iterdir() if p.is_file() and p.suffix.lower() == ".xlsx"]
+    except Exception:
+        return []
+
+
+def _walk_for_project_json(start: Path) -> Optional[Path]:
+    """Walk upward from a file or folder to find project.json."""
+
+    p = start if start.is_dir() else start.parent
+    p = p.resolve()
+    root = p.anchor
+    while True:
+        cand = p / "project.json"
+        if cand.is_file():
+            return cand
+        if str(p) == root:
+            return None
+        p = p.parent
 
 
 def _auto_detect_project_dir() -> Path:
@@ -174,6 +317,8 @@ class PlotGeneratorWindow(QWidget):
         self._total_conditions = 0
         self._current_condition = 0
         self._all_conditions = False
+        self._project_json_path: Optional[Path] = None
+        self._group_map: Dict[str, Set[str]] = {}
 
         # Build UI
         self._build_ui()
@@ -202,6 +347,21 @@ class PlotGeneratorWindow(QWidget):
         self._worker: _Worker | None = None
         self._gen_params: tuple[str, str, float, float, float, float] | None = None
 
+        # Restore last-used mode and groups
+        last_mode = self.plot_mgr.get(*PLOT_MODE_KEY, "single")
+        idx = max(0, self.mode_combo.findData(last_mode))
+        if self.mode_combo.currentIndex() != idx:
+            self.mode_combo.setCurrentIndex(idx)
+        else:
+            self._on_mode_changed()
+
+        last_ga = self.plot_mgr.get(*PLOT_GROUP_A_KEY, "")
+        last_gb = self.plot_mgr.get(*PLOT_GROUP_B_KEY, "")
+        if last_ga and self.group_a_combo.findText(last_ga) >= 0:
+            self.group_a_combo.setCurrentText(last_ga)
+        if last_gb and self.group_b_combo.findText(last_gb) >= 0:
+            self.group_b_combo.setCurrentText(last_gb)
+
     # ---------- UI helpers ----------
 
     def _bold_label(self, text: str) -> QLabel:
@@ -217,6 +377,81 @@ class PlotGeneratorWindow(QWidget):
         f.setBold(False)
         box.setFont(f)
         box.setStyleSheet("QGroupBox::title {font-weight: bold;}")
+
+    def _load_groups_if_available(self) -> None:
+        base = Path(self.folder_edit.text() or ".")
+        cond = self.condition_combo.currentText()
+        start = base / cond if cond and cond != ALL_CONDITIONS_OPTION else base
+        pj = _walk_for_project_json(start)
+        self._project_json_path = pj
+        self._group_map.clear()
+        self.group_a_combo.clear()
+        self.group_b_combo.clear()
+
+        if not pj:
+            if self.mode_combo.currentData() == "groups":
+                self._append_log("project.json not found. Group compare disabled.")
+            self._check_required()
+            return
+
+        group_map, err = _parse_groups(pj)
+        if err:
+            self._append_log(err)
+        self._group_map = group_map
+
+        if not group_map:
+            self._append_log("No valid groups to load from project.json.")
+            self._check_required()
+            return
+
+        names = sorted(group_map.keys())
+        self.group_a_combo.addItems(names)
+        self.group_b_combo.addItems(names)
+
+        # restore persisted choices if present
+        last_ga = self.plot_mgr.get(*PLOT_GROUP_A_KEY, "")
+        last_gb = self.plot_mgr.get(*PLOT_GROUP_B_KEY, "")
+        if last_ga and self.group_a_combo.findText(last_ga) >= 0:
+            self.group_a_combo.setCurrentText(last_ga)
+        if last_gb and self.group_b_combo.findText(last_gb) >= 0:
+            self.group_b_combo.setCurrentText(last_gb)
+        self._check_required()
+
+    def _on_mode_changed(self) -> None:
+        mode = self.mode_combo.currentData()
+        self.plot_mgr.set(*PLOT_MODE_KEY, value=mode)
+        self.plot_mgr.save()
+        is_overlay = mode == "overlay"
+        is_groups = mode == "groups"
+        # drive legacy overlay checkbox and containers
+        self.overlay_check.setChecked(is_overlay)
+        self.overlay_check.setEnabled(False)
+        self.overlay_container.setVisible(is_overlay)
+        self.group_container.setVisible(is_groups)
+        if is_groups:
+            self._load_groups_if_available()
+        self._update_chart_title_state(self.condition_combo.currentText())
+        self._check_required()
+
+    def _on_group_changed(self, _: str) -> None:
+        self.plot_mgr.set(*PLOT_GROUP_A_KEY, value=self.group_a_combo.currentText())
+        self.plot_mgr.set(*PLOT_GROUP_B_KEY, value=self.group_b_combo.currentText())
+        self.plot_mgr.save()
+        self._check_required()
+
+    def _on_folder_changed(self, _: str) -> None:
+        folder = self.folder_edit.text()
+        if folder:
+            self._populate_conditions(folder)
+            self._load_groups_if_available()
+        else:
+            self.condition_combo.clear()
+            self.condition_b_combo.clear()
+            self._group_map.clear()
+            self.group_a_combo.clear()
+            self.group_b_combo.clear()
+            self._project_json_path = None
+        self._check_required()
 
     def _build_ui(self) -> None:
         root_layout = QVBoxLayout(self)
@@ -347,6 +582,14 @@ class PlotGeneratorWindow(QWidget):
         params_form.setContentsMargins(10, 10, 10, 10)
         params_form.setSpacing(8)
 
+        # Mode selector
+        self.mode_combo = QComboBox()
+        self.mode_combo.addItem("Single condition", userData="single")
+        self.mode_combo.addItem("Overlay A vs B", userData="overlay")
+        self.mode_combo.addItem("Group compare", userData="groups")
+        self.mode_combo.currentIndexChanged.connect(self._on_mode_changed)
+        params_form.addRow(QLabel("Mode:"), self.mode_combo)
+
         # Conditions
         self.condition_combo = QComboBox()
         self.condition_combo.setToolTip("Select the condition to plot")
@@ -390,6 +633,20 @@ class PlotGeneratorWindow(QWidget):
         self.overlay_check = QCheckBox("Overlay Comparison")
         self.overlay_check.toggled.connect(self._overlay_toggled)
         params_form.addRow("", self.overlay_check)
+
+        # Group compare container
+        self.group_container = QWidget()
+        gc_layout = QHBoxLayout(self.group_container)
+        gc_layout.setContentsMargins(0, 0, 0, 0)
+        gc_layout.setSpacing(6)
+        self.group_a_combo = QComboBox()
+        self.group_b_combo = QComboBox()
+        gc_layout.addWidget(QLabel("Group A"))
+        gc_layout.addWidget(self.group_a_combo)
+        gc_layout.addWidget(QLabel("Group B"))
+        gc_layout.addWidget(self.group_b_combo)
+        self.group_container.setVisible(False)
+        params_form.addRow("", self.group_container)
 
         # ROI
         self.roi_combo = QComboBox()
@@ -512,11 +769,14 @@ class PlotGeneratorWindow(QWidget):
         root_layout.setContentsMargins(10, 10, 10, 10)
 
         # Enable/disable Generate
-        self.folder_edit.textChanged.connect(self._check_required)
+        self.folder_edit.textChanged.connect(self._on_folder_changed)
         self.out_edit.textChanged.connect(self._check_required)
         self.condition_combo.currentTextChanged.connect(self._check_required)
         self.condition_b_combo.currentTextChanged.connect(self._check_required)
         self.overlay_check.toggled.connect(self._check_required)
+        self.condition_combo.currentTextChanged.connect(lambda _: self._load_groups_if_available())
+        self.group_a_combo.currentTextChanged.connect(self._on_group_changed)
+        self.group_b_combo.currentTextChanged.connect(self._on_group_changed)
         self._check_required()
 
     # ---------- UI events ----------
@@ -549,7 +809,6 @@ class PlotGeneratorWindow(QWidget):
         folder = QFileDialog.getExistingDirectory(self, "Select Excel Folder")
         if folder:
             self.folder_edit.setText(folder)
-            self._populate_conditions(folder)
 
     def _select_output(self) -> None:
         folder = QFileDialog.getExistingDirectory(self, "Select Output Folder")
@@ -614,6 +873,7 @@ class PlotGeneratorWindow(QWidget):
         self.folder_edit.setText(self._defaults["input_folder"])
         self.out_edit.setText(self._defaults["output_folder"])
         self._populate_conditions(self._defaults["input_folder"])
+        self._load_groups_if_available()
         self.xlabel_edit.setText(self._defaults["xlabel"])
         self.xmin_spin.setValue(float(self._defaults["x_min"]))
         self.xmax_spin.setValue(float(self._defaults["x_max"]))
@@ -682,6 +942,10 @@ class PlotGeneratorWindow(QWidget):
         else:
             title = self.title_edit.text()
 
+        compare_groups = self.mode_combo.currentData() == "groups"
+        group_a = self.group_a_combo.currentText() if compare_groups else None
+        group_b = self.group_b_combo.currentText() if compare_groups else None
+
         self._thread = QThread()
         self._worker = _Worker(
             folder,
@@ -697,10 +961,14 @@ class PlotGeneratorWindow(QWidget):
             y_max,
             str(cond_out),
             self.stem_color,
+            compare_groups=compare_groups,
+            group_a=group_a,
+            group_b=group_b,
         )
         self._worker.moveToThread(self._thread)
         self._thread.started.connect(self._worker.run)
         self._worker.progress.connect(self._on_progress)
+        self._worker.error.connect(self._append_log)
         self._worker.finished.connect(self._thread.quit)
         self._worker.finished.connect(self._worker.deleteLater)
         self._thread.finished.connect(self._thread.deleteLater)
@@ -769,8 +1037,17 @@ class PlotGeneratorWindow(QWidget):
         self.log.clear()
         self._animate_progress_to(0)
 
+        self.plot_mgr.set(*PLOT_MODE_KEY, value=self.mode_combo.currentData())
+        self.plot_mgr.set(*PLOT_GROUP_A_KEY, value=self.group_a_combo.currentText())
+        self.plot_mgr.set(*PLOT_GROUP_B_KEY, value=self.group_b_combo.currentText())
+        self.plot_mgr.save()
+
+        mode = self.mode_combo.currentData()
+        overlay_mode = mode == "overlay"
+        compare_groups = mode == "groups"
+
         # Overlay mode: run a single worker with A vs B
-        if self.overlay_check.isChecked():
+        if overlay_mode:
             cond_a = self.condition_combo.currentText()
             cond_b = self.condition_b_combo.currentText()
             if cond_a == cond_b:
@@ -801,12 +1078,21 @@ class PlotGeneratorWindow(QWidget):
             self._worker.moveToThread(self._thread)
             self._thread.started.connect(self._worker.run)
             self._worker.progress.connect(self._on_progress)
+            self._worker.error.connect(self._append_log)
             self._worker.finished.connect(self._thread.quit)
             self._worker.finished.connect(self._worker.deleteLater)
             self._thread.finished.connect(self._thread.deleteLater)
             self._thread.finished.connect(self._finish_all)
             self._thread.start()
             return
+
+        if compare_groups:
+            err = self._validate_groups()
+            if err:
+                QMessageBox.critical(self, "Group Comparison", err)
+                self.gen_btn.setEnabled(True)
+                self.cancel_btn.setEnabled(False)
+                return
 
         # Non-overlay: possibly iterate all conditions
         self._all_conditions = self.condition_combo.currentText() == ALL_CONDITIONS_OPTION
@@ -842,15 +1128,93 @@ class PlotGeneratorWindow(QWidget):
             subprocess.call(["xdg-open", folder])
 
     def _check_required(self) -> None:
-        required = bool(self.folder_edit.text() and self.out_edit.text() and self.condition_combo.currentText())
-        if self.overlay_check.isChecked():
+        required = bool(
+            self.folder_edit.text()
+            and self.out_edit.text()
+            and self.condition_combo.currentText()
+        )
+        mode = self.mode_combo.currentData()
+        if mode == "overlay":
             required = required and bool(self.condition_b_combo.currentText())
+        elif mode == "groups":
+            required = (
+                required
+                and bool(self._group_map)
+                and bool(self.group_a_combo.currentText())
+                and bool(self.group_b_combo.currentText())
+            )
         self.gen_btn.setEnabled(required)
+
+    def _validate_groups(self) -> Optional[str]:
+        if not self._project_json_path or not self._project_json_path.is_file():
+            return "project.json not found. Group compare requires project.json."
+        if not self._group_map:
+            return "No valid groups in project.json."
+
+        ga = self.group_a_combo.currentText()
+        gb = self.group_b_combo.currentText()
+        if not ga or not gb:
+            return "Select Group A and Group B."
+        if ga == gb:
+            return "Group A and Group B must be different."
+
+        cond = self.condition_combo.currentText()
+        if cond == ALL_CONDITIONS_OPTION:
+            return None
+
+        cdir = Path(self.folder_edit.text()) / cond
+        excels = _list_condition_excels(cdir)
+        if not excels:
+            return "No Excel files found for condition."
+
+        set_pids: Set[str] = set()
+        for p in excels:
+            pid = _extract_pid(p)
+            if not pid:
+                self._append_log(
+                    f"Skipping file (no PID token like 'P#' or 'SCP#'): {p.name}"
+                )
+                continue
+            set_pids.add(pid)
+
+        ga_any = bool(set_pids & self._group_map.get(ga, set()))
+        gb_any = bool(set_pids & self._group_map.get(gb, set()))
+        if not ga_any or not gb_any:
+            return f"No Excel files match one or both groups in condition '{cond}'."
+        return None
 
     def _generation_finished(self) -> None:
         self._thread = None
         self._worker = None
+
         if self._conditions_queue:
-            self._start_next_condition()
-            return
+            if self.mode_combo.currentData() == "groups":
+                while self._conditions_queue:
+                    next_cond = self._conditions_queue[0]
+                    cdir = Path(self.folder_edit.text()) / next_cond
+                    excels = _list_condition_excels(cdir)
+                    set_pids: Set[str] = set()
+                    for p in excels:
+                        pid = _extract_pid(p)
+                        if not pid:
+                            self._append_log(
+                                f"Skipping file (no PID token like 'P#' or 'SCP#'): {p.name}"
+                            )
+                            continue
+                        set_pids.add(pid)
+                    ga = self.group_a_combo.currentText()
+                    gb = self.group_b_combo.currentText()
+                    has_a = bool(set_pids & self._group_map.get(ga, set()))
+                    has_b = bool(set_pids & self._group_map.get(gb, set()))
+                    if not has_a or not has_b:
+                        self._append_log(
+                            f"No Excel files for one or both groups in condition '{next_cond}'. Skipping."
+                        )
+                        self._conditions_queue.pop(0)
+                        continue
+                    break
+            if self._conditions_queue:
+                self._start_next_condition()
+                return
+
         self._finish_all()

@@ -31,15 +31,115 @@ plt.rcParams.update(
     }
 )
 
-# Subject ID pattern used across the toolbox
-_PID_RE = re.compile(r"(?:[A-Za-z]*)?(P\d+)", re.IGNORECASE)
+# Accept "P7" and "SCP7" and canonicalize to P{digits}
+_PID_RE = re.compile(r"(?i)\b(?:P|SCP)0*(\d{1,4})\b")
+
+
+def _pid_from_filename(path: Path) -> Optional[str]:
+    m = _PID_RE.search(path.name)
+    if not m:
+        return None
+    return f"P{int(m.group(1))}"
+
+
+def _parse_groups_manifest(project_json: Path) -> Tuple[Dict[str, Set[str]], Optional[str]]:
+    """Parse groups from project.json using tolerant rules."""
+
+    def _canon_pid_token(txt: str) -> Optional[str]:
+        m = _PID_RE.search(txt or "")
+        return f"P{int(m.group(1))}" if m else None
+
+    try:
+        with open(project_json, "r", encoding="utf-8") as f:
+            cfg = json.load(f)
+    except Exception as e:
+        return {}, f"Failed to read project.json: {e}"
+
+    key_variants = {
+        "group_members",
+        "groups",
+        "experimental_groups",
+        "GroupMembers",
+        "Group_Members",
+        "groupNames",
+        "group_names",
+    }
+
+    def _collect(val) -> Dict[str, Set[str]]:
+        out: Dict[str, Set[str]] = {}
+        if isinstance(val, dict):
+            for name, lst in val.items():
+                if not isinstance(name, str):
+                    continue
+                if isinstance(lst, list):
+                    s: Set[str] = set()
+                    for pid in lst:
+                        tok = _canon_pid_token(str(pid))
+                        if tok:
+                            s.add(tok)
+                    out[name] = s
+                else:
+                    out[name] = set()
+        elif isinstance(val, list):
+            names_only = [v for v in val if isinstance(v, str)]
+            if names_only and len(names_only) == len(val):
+                for name in names_only:
+                    out[name] = set()
+            else:
+                for obj in val:
+                    if not isinstance(obj, dict):
+                        continue
+                    name = (
+                        str(
+                            obj.get("name")
+                            or obj.get("label")
+                            or obj.get("group")
+                            or ""
+                        ).strip()
+                    )
+                    if not name:
+                        continue
+                    pids = obj.get("pids") or obj.get("members") or obj.get("ids") or []
+                    s: Set[str] = set()
+                    if isinstance(pids, list):
+                        for pid in pids:
+                            tok = _canon_pid_token(str(pid))
+                            if tok:
+                                s.add(tok)
+                    out[name] = s
+        return out
+
+    def _find_groups(node) -> Optional[Dict[str, Set[str]]]:
+        if isinstance(node, dict):
+            for k, v in node.items():
+                if k in key_variants:
+                    gm = _collect(v)
+                    if gm:
+                        return gm
+            for v in node.values():
+                gm = _find_groups(v)
+                if gm:
+                    return gm
+        elif isinstance(node, list):
+            for v in node:
+                gm = _find_groups(v)
+                if gm:
+                    return gm
+        return None
+
+    group_map = _find_groups(cfg) or {}
+    if not group_map:
+        return {}, "No valid 'group_members' or 'groups' found."
+    return {str(name): set(pids) for name, pids in group_map.items()}, None
 
 
 class _Worker(QObject):
     """Worker to process Excel files and generate plots."""
 
     progress = Signal(str, int, int)
+    error = Signal(str)
     finished = Signal()
+    finished_payload = Signal(object)
 
     def __init__(
         self,
@@ -104,8 +204,11 @@ class _Worker(QObject):
 
     def run(self) -> None:
         try:
-            self._run()
-        finally:
+            payload = self._run()
+            self.finished_payload.emit(payload)
+            self.finished.emit()
+        except Exception as e:
+            self.error.emit(f"Worker failed: {type(e).__name__}: {e}")
             self.finished.emit()
 
     def stop(self) -> None:
@@ -129,48 +232,18 @@ class _Worker(QObject):
         return None
 
     def _load_group_members(self) -> None:
-        """Load group membership from project.json.
-
-        Accepts either:
-          - {"group_members": {"GroupA": ["P01","P02"], "GroupB": ["P03"]}}
-          - {"groups": {"GroupA": ["P01",...], "GroupB": [...]}}
-
-        Values are normalized to uppercase PIDs.
-        """
+        """Load group membership from project.json using tolerant parser."""
         root = self._find_project_root()
         if not root:
             return
-        try:
-            with open(root / "project.json", "r", encoding="utf-8") as f:
-                cfg = json.load(f)
-        except Exception:
-            return
-
-        members: Dict[str, Set[str]] = {}
-        # Prefer explicit group_members
-        src = None
-        if isinstance(cfg.get("group_members"), dict):
-            src = cfg["group_members"]
-        elif isinstance(cfg.get("groups"), dict):
-            # only use if dict; ignore if list
-            src = cfg["groups"]
-        if isinstance(src, dict):
-            for gname, ids in src.items():
-                if not isinstance(ids, (list, tuple)):
-                    continue
-                norm = {s.upper() for s in ids if isinstance(s, str)}
-                members[str(gname)] = norm
-        self._group_members = members
+        project_json = root / "project.json"
+        group_map, _ = _parse_groups_manifest(project_json)
+        self._group_members = group_map
 
     def _subjects_for_group(self, group_name: str) -> Set[str]:
         if not self._group_members:
             self._load_group_members()
         return self._group_members.get(group_name, set())
-
-    @staticmethod
-    def _pid_from_filename(path: Path) -> Optional[str]:
-        m = _PID_RE.search(path.name)
-        return m.group(1).upper() if m else None
 
     # ---------- discovery ----------
 
@@ -184,7 +257,7 @@ class _Worker(QObject):
                 if not f.lower().endswith(".xlsx"):
                     continue
                 if include_subjects is not None:
-                    pid = self._pid_from_filename(Path(root) / f)
+                    pid = _pid_from_filename(Path(root) / f)
                     if not pid or pid not in include_subjects:
                         continue
                 n += 1
@@ -214,7 +287,7 @@ class _Worker(QObject):
                     continue
                 p = Path(root) / f
                 if include_subjects is not None:
-                    pid = self._pid_from_filename(p)
+                    pid = _pid_from_filename(p)
                     if not pid or pid not in include_subjects:
                         continue
                 excel_files.append(p)
