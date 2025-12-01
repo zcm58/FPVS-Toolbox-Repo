@@ -1,0 +1,1108 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../statistical-analysis/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Processing Pipeline - FPVS Toolbox</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#processing-pipeline" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FPVS Toolbox" class="md-header__button md-logo" aria-label="FPVS Toolbox" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FPVS Toolbox
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Processing Pipeline
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FPVS Toolbox" class="md-nav__button md-logo" aria-label="FPVS Toolbox" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FPVS Toolbox
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Processing Pipeline
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Processing Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-loading-recordings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Loading recordings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-preprocessing-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Preprocessing pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Preprocessing pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-initial-referencing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Initial referencing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-drop-reference-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Drop reference channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-optional-channel-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Optional channel limit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-downsampling-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Downsampling (optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-fir-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 FIR filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-kurtosis-based-artifact-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Kurtosis-based artifact handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-final-average-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Final average reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-event-extraction-and-epoching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Event extraction and epoching
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Event extraction and epoching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-event-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Event detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-epoch-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Epoch creation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-frequency-domain-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Frequency-domain analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-fpvs-metrics-snr-baseline-corrected-amplitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. FPVS metrics (SNR, baseline-corrected amplitude)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-roi-aggregation-and-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. ROI aggregation and exports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes-and-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes and best practices
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistical-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Statistical Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relevant-publications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Relevant Publications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-loading-recordings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Loading recordings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-preprocessing-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Preprocessing pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Preprocessing pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-initial-referencing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Initial referencing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-drop-reference-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Drop reference channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-optional-channel-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Optional channel limit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-downsampling-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Downsampling (optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-fir-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 FIR filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-kurtosis-based-artifact-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Kurtosis-based artifact handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-final-average-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Final average reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-event-extraction-and-epoching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Event extraction and epoching
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Event extraction and epoching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-event-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Event detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-epoch-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Epoch creation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-frequency-domain-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Frequency-domain analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-fpvs-metrics-snr-baseline-corrected-amplitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. FPVS metrics (SNR, baseline-corrected amplitude)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-roi-aggregation-and-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. ROI aggregation and exports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes-and-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes and best practices
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="processing-pipeline">Processing Pipeline</h1>
+<p>This page describes how the FPVS Toolbox processes EEG data from raw
+recordings to frequency-domain metrics and ROI-level summaries.</p>
+<p>The pipeline is designed to mirror standard processing pipeline using MATLAB and EEGLab. Please see the relevant 
+publications for more information on this methodology. </p>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>At a high level, the FPVS Toolbox:</p>
+<ol>
+<li>Loads a raw FPVS recording (BioSemi <code>.bdf</code>) using
+   a disk-backed memory map.</li>
+<li>Applies a standardized preprocessing pipeline (referencing, filtering,
+   artifact handling, final average reference).</li>
+<li>Extracts events for user-defined conditions and creates epochs around
+   each stimulus type.</li>
+<li>Computes frequency-domain spectra and FPVS metrics (e.g., SNR, baseline-
+   corrected amplitudes) at the tag frequency and harmonics.</li>
+<li>Aggregates results within user-defined ROIs and exports per-condition,
+   per-ROI summaries to Excel for downstream statistics.</li>
+</ol>
+<p>Each step is logged to the FPVS Toolbox log window and log file so users
+can reconstruct the full processing history for a given project.</p>
+<hr />
+<h2 id="1-loading-recordings">1. Loading recordings</h2>
+<p>When you select a single file or a batch folder, the loader:</p>
+<ul>
+<li>
+<p>Resolves the <strong>stimulus channel</strong><br />
+  The toolbox chooses the stim channel specified in project settings
+  (default: <code>Status</code>) and assigns it the MNE <code>stim</code> type.</p>
+</li>
+<li>
+<p>Resolves the <strong>initial reference pair</strong><br />
+  A pair of EXG channels (default: <code>EXG1</code> / <code>EXG2</code>) is treated as the
+  initial EEG reference. These channels are kept as EEG during loading.</p>
+</li>
+<li>
+<p>Reads the recording with MNE  </p>
+</li>
+<li>BioSemi recordings are loaded with <code>mne.io.read_raw_bdf</code>.</li>
+<li>
+<p>EEGLAB files are loaded via MNE’s EEGLAB reader.<br />
+  In both cases, a disk-backed memory map is used when possible to limit
+  RAM usage on large datasets.</p>
+</li>
+<li>
+<p>Applies a standard montage<br />
+  After loading, a standard 10–20 montage is applied to EEG channels so
+  channel locations are available for interpolation and ROI aggregation.
+  Any non-EEG auxiliary channels are typed appropriately (e.g., EXG → <code>misc</code>
+  after referencing, stim → <code>stim</code>).</p>
+</li>
+</ul>
+<hr />
+<h2 id="2-preprocessing-pipeline">2. Preprocessing pipeline</h2>
+<p>The preprocessing pipeline is applied in a fixed order to keep behavior
+consistent across projects.</p>
+<h3 id="21-initial-referencing">2.1 Initial referencing</h3>
+<ul>
+<li>The user-selected reference pair (by default, <code>EXG1</code> / <code>EXG2</code>) is
+  coerced to EEG type if needed.</li>
+<li>MNE’s <code>set_eeg_reference</code> is used to subtract the average of these two
+  reference channels from all EEG channels.</li>
+<li>Audit flags are recorded so that the log reflects whether referencing
+  succeeded and which channels were used.</li>
+</ul>
+<h3 id="22-drop-reference-channels">2.2 Drop reference channels</h3>
+<p>After re-referencing:</p>
+<ul>
+<li>The two reference channels are removed from the dataset, so they do not
+  contribute to later average-reference and ROI computations.</li>
+</ul>
+<h3 id="23-optional-channel-limit">2.3 Optional channel limit</h3>
+<p>If a maximum EEG channel count is configured in project settings:</p>
+<ul>
+<li>Channels beyond that index are dropped to keep a consistent subset of
+  sensors across recordings.</li>
+<li>The stim channel is preserved even if it would otherwise be outside
+  the limit.</li>
+</ul>
+<h3 id="24-downsampling-optional">2.4 Downsampling (optional)</h3>
+<p>If downsampling is enabled and the original sampling rate is higher than
+the chosen target:</p>
+<ul>
+<li>Data are resampled using MNE’s resampling routines with a Hann window.</li>
+<li>Downsampling occurs <strong>before</strong> filtering to reduce computation and
+  keep filter design consistent.</li>
+</ul>
+<h3 id="25-fir-filtering">2.5 FIR filtering</h3>
+<p>A zero-phase FIR filter is applied to the (possibly downsampled) data:</p>
+<ul>
+<li>Legacy parameters are mirrored:</li>
+<li>The GUI “high-pass” setting maps to the filter’s <code>l_freq</code>.</li>
+<li>The GUI “low-pass” setting maps to <code>h_freq</code>.</li>
+<li>Fixed transition bandwidths and filter lengths are chosen to match
+    the original toolbox behavior as closely as possible.</li>
+<li>Filtering is applied in a way that avoids phase distortion
+  (forward-and-backward filtering).</li>
+</ul>
+<h3 id="26-kurtosis-based-artifact-handling">2.6 Kurtosis-based artifact handling</h3>
+<p>To identify noisy channels:</p>
+<ul>
+<li>EEG channels (excluding previously marked bads and non-EEG/stim
+  channels) are scored using a kurtosis-based metric.</li>
+<li>Channels whose kurtosis exceeds a configurable Z-score threshold are:</li>
+<li>Marked as bad (added to <code>raw.info["bads"]</code>).</li>
+<li>Interpolated when a montage is available, using neighboring
+    electrodes to estimate the signal.</li>
+</ul>
+<h3 id="27-final-average-reference">2.7 Final average reference</h3>
+<p>After bad-channel handling:</p>
+<ul>
+<li>Remaining good EEG channels are re-referenced to the average.</li>
+<li>Any pending projections are applied.</li>
+<li>Preprocessing completes with logging of:</li>
+<li>Final channel count (total and bads).</li>
+<li>Final sampling rate.</li>
+<li>Filter settings, artifact thresholds, and reference choices.</li>
+</ul>
+<hr />
+<h2 id="3-event-extraction-and-epoching">3. Event extraction and epoching</h2>
+<p>The event and epoching step mirrors the legacy flow but is configured via
+the PySide6 GUI.</p>
+<h3 id="31-event-detection">3.1 Event detection</h3>
+<p>Events are derived in one of two ways:</p>
+<ol>
+<li>
+<p><strong>From annotations</strong><br />
+   If the recording contains MNE annotations that correspond to your
+   condition IDs, they are mapped directly using the IDs and labels you
+   configure in the Event Map.</p>
+</li>
+<li>
+<p><strong>From the stim channel</strong><br />
+   If annotations are not available, events are detected from the stim
+   channel (e.g., <code>Status</code>) using <code>mne.find_events</code>.  </p>
+</li>
+<li>The IDs you configure in the Event Map (e.g., <code>21</code> for
+     “Positive Valence”) are matched to codes on the stim channel.</li>
+<li>Empty event sets (no events found for a given ID) are logged as
+     warnings.</li>
+</ol>
+<h3 id="32-epoch-creation">3.2 Epoch creation</h3>
+<p>For each label/ID pair defined in the Event Map:</p>
+<ul>
+<li>MNE <code>Epochs</code> objects are created with user-specified start and end
+  times relative to each event (e.g., from −0.5 s to +5.0 s).</li>
+<li>Epochs inherit the preprocessed, average-referenced data, so later
+  frequency-domain analysis operates on cleaned signals.</li>
+<li>Successful epoch sets are stored per condition label and used for
+  downstream spectral analysis and metric computation.</li>
+</ul>
+<hr />
+<h2 id="4-frequency-domain-analysis">4. Frequency-domain analysis</h2>
+<p>Once epochs are defined, the FPVS Toolbox computes frequency-domain
+responses for each condition.</p>
+<p>In brief:</p>
+<ol>
+<li><strong>FFT per epoch and channel</strong>  </li>
+<li>
+<p>A Fourier transform is applied to each epoch to obtain amplitude
+     spectra at frequencies of interest.</p>
+</li>
+<li>
+<p><strong>Tag frequency and harmonics</strong>  </p>
+</li>
+<li>
+<p>The fundamental FPVS stimulation frequency and a configurable number
+     of harmonics are selected for metric computation.</p>
+</li>
+<li>
+<p><strong>Baseline regions</strong>  </p>
+</li>
+<li>Surrounding “noise” frequency bins (excluding the signal bin and
+     its immediate neighbors) define a baseline used for SNR and
+     baseline-corrected measures.</li>
+</ol>
+<hr />
+<h2 id="5-fpvs-metrics-snr-baseline-corrected-amplitude">5. FPVS metrics (SNR, baseline-corrected amplitude)</h2>
+<p>For each channel, condition, and harmonic, the toolbox computes:</p>
+<ul>
+<li>
+<p><strong>SNR (Signal-to-Noise Ratio)</strong><br />
+  Amplitude at the target bin divided by the mean (or median) amplitude
+  in the surrounding baseline bins.</p>
+</li>
+<li>
+<p><strong>Baseline-corrected amplitude (BCA)</strong><br />
+  Amplitude at the target bin minus the baseline estimate.</p>
+</li>
+</ul>
+<p>These metrics are then aggregated:</p>
+<ul>
+<li>Across epochs for each subject and condition.</li>
+<li>Across channels belonging to each user-defined ROI.</li>
+</ul>
+<p>The resulting ROI-level SNR and BCA values form the basis of the
+statistical analyses run in the Stats tool.</p>
+<hr />
+<h2 id="6-roi-aggregation-and-exports">6. ROI aggregation and exports</h2>
+<p>The final steps of the processing pipeline are:</p>
+<ol>
+<li><strong>ROI aggregation</strong>  </li>
+<li>Channels are grouped into ROIs defined in project settings
+     (e.g., left occipital, right occipital, frontal, parietal).</li>
+<li>
+<p>Metrics are averaged within each ROI for each subject, condition,
+     and harmonic.</p>
+</li>
+<li>
+<p><strong>Excel exports</strong>  </p>
+</li>
+<li>Per-subject, per-condition, and per-ROI summaries are written to
+     Excel files in the project’s Results folder.</li>
+<li>
+<p>These Excel outputs are used directly by the <strong>Statistical Analysis</strong>
+     module for single-group and between-group models.</p>
+</li>
+<li>
+<p><strong>Logging and audit trail</strong>  </p>
+</li>
+<li>Each successfully processed file contributes to a batch summary
+     (number of files, rejected channels, etc.).</li>
+<li>The logs provide a full audit trail of the processing settings used
+     for a given project and batch.</li>
+</ol>
+<hr />
+<h2 id="notes-and-best-practices">Notes and best practices</h2>
+<ul>
+<li>Keep preprocessing settings consistent within a project so that metrics
+  are comparable across subjects and sessions.</li>
+<li>Verify event IDs and epoch time windows before running large batch
+  jobs; incorrect event mappings can silently produce empty conditions.</li>
+<li>When publishing results, include key pipeline settings (reference,
+  filter bands, artifact thresholds, and epoch windows) in the Methods
+  section, ideally referencing this documentation for additional detail.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>
