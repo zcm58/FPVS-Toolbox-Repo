@@ -473,37 +473,81 @@ def _run_backup_2x2(df: pd.DataFrame, logger: logging.Logger) -> Dict[str, objec
     logger.info("Backup 2x2: computed %d tests.", len(tests))
     return result
 
-def _build_fixed_effects_table(result) -> List[Dict[str, object]]:
+def _build_fixed_effects_table(
+    result,
+    *,
+    expected_terms: List[str],
+    missing_reasons: Dict[str, str] | None = None,
+) -> List[Dict[str, object]]:
     fe = getattr(result, "fe_params", None)
     bse = getattr(result, "bse_fe", None)
-    if fe is None or bse is None:
-        return []
+    exog_names: List[str] = []
+    if getattr(result, "model", None) is not None:
+        exog_names = list(getattr(result.model, "exog_names", []) or [])
 
-    effects = list(fe.index)
-    estimates = np.asarray(fe)
-    ses = np.asarray(bse)
-    zvals = estimates / ses
+    table: List[Dict[str, object]] = []
+    missing_reasons = missing_reasons or {}
+
+    effects = list(fe.index) if fe is not None else []
+    estimates = np.asarray(fe) if fe is not None else np.asarray([])
+    ses = np.asarray(bse) if bse is not None else np.asarray([])
+    zvals = estimates / ses if estimates.size and ses.size else np.asarray([])
     try:
         from scipy.stats import norm  # type: ignore
 
-        pvals = 2 * (1 - norm.cdf(np.abs(zvals)))
+        pvals = 2 * (1 - norm.cdf(np.abs(zvals))) if zvals.size else np.asarray([])
     except Exception:
         from math import erf, sqrt
 
-        pvals = [2 * (1 - 0.5 * (1 + erf(abs(z) / sqrt(2)))) for z in zvals]
-
-    table = []
-    for eff, est, se, z, p in zip(effects, estimates, ses, zvals, pvals):
-        table.append(
-            {
-                "effect": eff,
-                "estimate": float(est),
-                "se": float(se),
-                "stat": float(z),
-                "p": float(p),
-            }
+        pvals = (
+            [2 * (1 - 0.5 * (1 + erf(abs(z) / sqrt(2)))) for z in zvals]
+            if zvals.size
+            else []
         )
+
+    estimate_map = dict(zip(effects, estimates))
+    se_map = dict(zip(effects, ses))
+    stat_map = dict(zip(effects, zvals))
+    pval_map = dict(zip(effects, pvals))
+
+    for term in expected_terms:
+        reason = missing_reasons.get(term)
+        has_term = term in estimate_map and term in se_map and term in stat_map and term in pval_map
+        if not has_term:
+            reason = reason or "term_not_in_fe_params"
+
+        row: Dict[str, object] = {
+            "effect": term,
+            "estimate": float("nan"),
+            "se": float("nan"),
+            "stat": float("nan"),
+            "p": float("nan"),
+            "term_missing": bool(reason or not has_term),
+            "missing_reason": reason,
+            "exog_names": ",".join(exog_names) if exog_names else None,
+        }
+
+        if has_term and not reason:
+            row.update(
+                {
+                    "estimate": float(estimate_map[term]),
+                    "se": float(se_map[term]),
+                    "stat": float(stat_map[term]),
+                    "p": float(pval_map[term]),
+                    "term_missing": False,
+                }
+            )
+
+        table.append(row)
+
     return table
+
+
+class _MissingExogColumns(Exception):
+    def __init__(self, missing_cols: List[str], exog_names: List[str]):
+        super().__init__("missing_exog_columns")
+        self.missing_cols = missing_cols
+        self.exog_names = exog_names
 
 
 def _design_matrix_for_scenario(
@@ -515,10 +559,9 @@ def _design_matrix_for_scenario(
         raise ImportError("patsy is required for contrast computation.") from e
 
     dm = patsy.dmatrix(design_formula, scenario_df, return_type="dataframe")
-    # Align to the model's column order; missing columns are filled with zeros
-    for col in columns:
-        if col not in dm.columns:
-            dm[col] = 0.0
+    missing_cols = [col for col in columns if col not in dm.columns]
+    if missing_cols:
+        raise _MissingExogColumns(missing_cols, list(dm.columns))
     dm = dm[columns]
     return dm
 
@@ -536,7 +579,7 @@ def _build_contrast(
     contrasts: List[Dict[str, object]] = []
     if len(group_levels) < 2:
         logger.warning("Need at least two groups for contrasts; found: %s", group_levels)
-        return contrasts
+        return contrasts, {"missing_reason": "single_group_level"}
 
     cov_fe = result.cov_params()
     fe_params = result.fe_params
@@ -551,7 +594,42 @@ def _build_contrast(
         "roi": [roi if roi is not None else ""] * 4,
     }
     scenario_df = pd.DataFrame(base_data)
-    scenario_dm = _design_matrix_for_scenario(design_formula, exog_columns, scenario_df)
+    try:
+        scenario_dm = _design_matrix_for_scenario(
+            design_formula, exog_columns, scenario_df
+        )
+    except _MissingExogColumns as exc:
+        logger.warning(
+            "lela_contrast_missing_columns",
+            extra={
+                "roi": roi,
+                "condition": condition,
+                "missing_cols": exc.missing_cols,
+                "exog_names": exog_columns,
+            },
+        )
+        missing_cols_str = ",".join(exc.missing_cols)
+        exog_names_str = ",".join(exog_columns)
+        labels = [
+            f"group_effect_phase={phase_labels[0]}",
+            f"group_effect_phase={phase_labels[1]}",
+            "group_x_phase_interaction",
+        ]
+        for label in labels:
+            contrasts.append(
+                {
+                    "label": label,
+                    "estimate": float("nan"),
+                    "se": float("nan"),
+                    "stat": float("nan"),
+                    "p": float("nan"),
+                    "term_missing": True,
+                    "missing_reason": "missing_exog_columns",
+                    "missing_cols": missing_cols_str,
+                    "exog_names": exog_names_str,
+                }
+            )
+        return contrasts, {"missing_reason": "missing_exog_columns", "missing_cols": exc.missing_cols}
 
     # Rows: [g0-phaseA, g1-phaseA, g0-phaseB, g1-phaseB]
     g0_pa, g1_pa, g0_pb, g1_pb = scenario_dm.to_numpy()
@@ -569,7 +647,16 @@ def _build_contrast(
 
             p = float(2 * (1 - 0.5 * (1 + erf(abs(stat) / sqrt(2)))))
         contrasts.append(
-            {"label": label, "estimate": est, "se": se, "stat": float(stat), "p": p}
+            {
+                "label": label,
+                "estimate": est,
+                "se": se,
+                "stat": float(stat),
+                "p": p,
+                "term_missing": False,
+                "missing_reason": None,
+                "exog_names": ",".join(exog_columns),
+            }
         )
 
     # group effect at phase A: group1 - group0
@@ -579,7 +666,7 @@ def _build_contrast(
     # interaction: (group diff at B) - (group diff at A)
     _add_contrast("group_x_phase_interaction", (g1_pb - g0_pb) - (g1_pa - g0_pa))
 
-    return contrasts
+    return contrasts, {"missing_reason": None}
 
 
 def run_cross_phase_lmm(
@@ -679,16 +766,25 @@ def run_cross_phase_lmm(
 
     result_obj = None
     backup_2x2: Dict[str, object] | None = None
+    expected_terms: List[str] = []
     with single_threaded_blas():
         try:
             model = smf.mixedlm(model_formula, df, groups=df["subject"])
             result_obj = model.fit(reml=True, method="lbfgs", maxiter=1000, full_output=True)
+            expected_terms = list(getattr(result_obj.model, "exog_names", []) or [])
         except Exception as exc:  # pragma: no cover - defensive
             logger.error("Cross-phase MixedLM failed: %s", exc)
             meta_warnings.append(f"MixedLM failed to converge: {exc}")
             backup_2x2 = _run_backup_2x2(df, logger)
 
-    fixed_effects = _build_fixed_effects_table(result_obj) if result_obj is not None else None
+    if result_obj is not None and not expected_terms:
+        expected_terms = list(getattr(result_obj, "fe_params", []))
+
+    fixed_effects = (
+        _build_fixed_effects_table(result_obj, expected_terms=expected_terms)
+        if result_obj is not None
+        else None
+    )
 
     effects_of_interest = None
     if focal_condition and result_obj is not None:
@@ -703,7 +799,7 @@ def run_cross_phase_lmm(
             if roi_level not in available_rois:
                 raise ValueError(f"Focal ROI '{roi_level}' not present in data.")
 
-            contrasts = _build_contrast(
+            contrasts, _contrast_meta = _build_contrast(
                 design_formula,
                 result_obj.model.exog_names,
                 groups,
