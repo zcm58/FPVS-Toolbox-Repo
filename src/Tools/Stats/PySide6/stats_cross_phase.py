@@ -133,19 +133,21 @@ def _run_roi_condition_lmm(
     result_obj = None
     backup_2x2 = None
     exog_names: list[str] = []
-    estimable = len(groups_present) >= 2 and len(phases_present) >= 2
-    if estimable:
-        with single_threaded_blas():
-            try:
-                model = smf.mixedlm(model_formula, df, groups=df["subject"])
-                result_obj = model.fit(reml=True, method="lbfgs", maxiter=1000, full_output=True)
-                exog_names = list(getattr(result_obj.model, "exog_names", []) or [])
-            except Exception as exc:  # noqa: BLE001
-                logger.error(
-                    "Cross-phase MixedLM failed for ROI '%s', condition '%s': %s",
-                    roi,
-                    condition,
-                    exc,
+    with single_threaded_blas():
+        try:
+            model = smf.mixedlm(model_formula, df, groups=df["subject"])
+            result_obj = model.fit(reml=True, method="lbfgs", maxiter=1000, full_output=True)
+            exog_names = list(getattr(result_obj.model, "exog_names", []) or [])
+        except Exception as exc:  # noqa: BLE001
+            logger.error(
+                "Cross-phase MixedLM failed for ROI '%s', condition '%s': %s",
+                roi,
+                condition,
+                exc,
+            )
+            if message_cb:
+                message_cb(
+                    f"Cross-phase MixedLM failed for ROI '{roi}', condition '{condition}': {exc}; using backup 2x2."
                 )
                 if message_cb:
                     message_cb(
