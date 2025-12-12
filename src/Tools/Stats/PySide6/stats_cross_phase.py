@@ -29,6 +29,23 @@ from Tools.Stats.Legacy.blas_limits import single_threaded_blas
 logger = logging.getLogger(__name__)
 
 
+def _expected_terms(groups: Sequence[str], phases: Sequence[str]) -> list[str]:
+    group_levels = list(groups)
+    phase_levels = list(phases)
+    group_ref = group_levels[0] if group_levels else ""
+    phase_ref = phase_levels[0] if phase_levels else ""
+    group_level = group_levels[1] if len(group_levels) > 1 else group_ref
+    phase_level = phase_levels[1] if len(phase_levels) > 1 else phase_ref
+    return [
+        "Intercept",
+        f"group[T.{group_level}]" if group_level else "group[T.group]",
+        f"phase[T.{phase_level}]" if phase_level else "phase[T.phase]",
+        f"group[T.{group_level}]:phase[T.{phase_level}]"
+        if group_level and phase_level
+        else "group[T.group]:phase[T.phase]",
+    ]
+
+
 def _condition_intersection_with_order(
     phase_specs: Dict[str, dict],
 ) -> tuple[list[str], dict[str, set[str]]]:
@@ -91,6 +108,21 @@ def _run_roi_condition_lmm(
     if df.empty:
         raise ValueError("No data remaining after cleaning and focal filters.")
 
+    groups_present = sorted(df["group"].dropna().unique().tolist())
+    phases_present = sorted(df["phase"].dropna().unique().tolist())
+
+    expected_terms = _expected_terms(groups_present, phases_present)
+    missing_reasons: dict[str, str] = {}
+
+    if len(groups_present) < 2:
+        for term in expected_terms:
+            if term.startswith("group[") or ":" in term:
+                missing_reasons.setdefault(term, "single_group_level")
+    if len(phases_present) < 2:
+        for term in expected_terms:
+            if term.startswith("phase[") or ":phase" in term:
+                missing_reasons.setdefault(term, "single_phase_level")
+
     model_formula = "bca ~ group * phase"
 
     try:
@@ -100,37 +132,78 @@ def _run_roi_condition_lmm(
 
     result_obj = None
     backup_2x2 = None
-    with single_threaded_blas():
-        try:
-            model = smf.mixedlm(model_formula, df, groups=df["subject"])
-            result_obj = model.fit(reml=True, method="lbfgs", maxiter=1000, full_output=True)
-        except Exception as exc:  # noqa: BLE001
-            logger.error(
-                "Cross-phase MixedLM failed for ROI '%s', condition '%s': %s",
-                roi,
-                condition,
-                exc,
-            )
-            if message_cb:
-                message_cb(
-                    f"Cross-phase MixedLM failed for ROI '{roi}', condition '{condition}': {exc}; using backup 2x2."
+    exog_names: list[str] = []
+    estimable = len(groups_present) >= 2 and len(phases_present) >= 2
+    if estimable:
+        with single_threaded_blas():
+            try:
+                model = smf.mixedlm(model_formula, df, groups=df["subject"])
+                result_obj = model.fit(reml=True, method="lbfgs", maxiter=1000, full_output=True)
+                exog_names = list(getattr(result_obj.model, "exog_names", []) or [])
+            except Exception as exc:  # noqa: BLE001
+                logger.error(
+                    "Cross-phase MixedLM failed for ROI '%s', condition '%s': %s",
+                    roi,
+                    condition,
+                    exc,
                 )
-            meta_warnings.append(f"MixedLM failed to converge: {exc}")
-            backup_2x2 = _run_backup_2x2(df.rename(columns={"bca": "value"}), logger)
+                if message_cb:
+                    message_cb(
+                        f"Cross-phase MixedLM failed for ROI '{roi}', condition '{condition}': {exc}; using backup 2x2."
+                    )
+                meta_warnings.append(f"MixedLM failed to converge: {exc}")
+                backup_2x2 = _run_backup_2x2(df.rename(columns={"bca": "value"}), logger)
+    else:
+        meta_warnings.append(
+            "MixedLM skipped: insufficient group/phase levels for estimable fixed effects."
+        )
 
     fixed_effects = (
-        _build_fixed_effects_table(result_obj) if result_obj is not None else None
+        _build_fixed_effects_table(
+            result_obj,
+            expected_terms=expected_terms,
+            missing_reasons=missing_reasons,
+        )
+        if result_obj is not None
+        else [
+            {
+                "effect": term,
+                "estimate": float("nan"),
+                "se": float("nan"),
+                "stat": float("nan"),
+                "p": float("nan"),
+                "term_missing": True,
+                "missing_reason": missing_reasons.get(term, "term_not_in_fe_params"),
+                "exog_names": None,
+            }
+            for term in expected_terms
+        ]
     )
 
-    contrasts = []
-    if result_obj is not None:
+    for row in fixed_effects:
+        if row.get("term_missing"):
+            logger.warning(
+                "lela_term_missing",
+                extra={
+                    "roi": roi,
+                    "condition": condition,
+                    "term": row.get("effect"),
+                    "exog_names": row.get("exog_names"),
+                    "groups": groups_present,
+                    "phases": phases_present,
+                },
+            )
+
+    contrasts: list[dict] = []
+    contrast_meta: dict[str, object] = {}
+    if result_obj is not None and len(groups_present) >= 2 and len(phases_present) >= 2:
         try:
             groups = sorted(df["group"].unique().tolist())
             phases = tuple(phase_labels) if len(phase_labels) >= 2 else tuple(df["phase"].unique())
             if len(phases) < 2:
                 raise ValueError("Need at least two phases to compute contrasts.")
 
-            contrasts = _build_contrast(
+            contrasts, contrast_meta = _build_contrast(
                 "group * phase",
                 result_obj.model.exog_names,
                 groups,
@@ -148,8 +221,13 @@ def _run_roi_condition_lmm(
                 exc,
             )
             meta_warnings.append(f"Failed to compute contrasts: {exc}")
+    else:
+        if len(groups_present) < 2:
+            contrast_meta["missing_reason"] = "single_group_level"
+        elif len(phases_present) < 2:
+            contrast_meta["missing_reason"] = "single_phase_level"
 
-    if result_obj is None or not getattr(result_obj, "converged", False):
+    if estimable and (result_obj is None or not getattr(result_obj, "converged", False)):
         if "MixedLM failed to converge" not in meta_warnings:
             meta_warnings.append("MixedLM did not converge.")
         if backup_2x2 is None:
@@ -159,7 +237,7 @@ def _run_roi_condition_lmm(
                 f"Cross-phase MixedLM did not converge for ROI '{roi}', condition '{condition}'; backup 2x2 results recorded."
             )
 
-    if result_obj is None and backup_2x2 is None:
+    if estimable and result_obj is None and backup_2x2 is None:
         backup_2x2 = _run_backup_2x2(df.rename(columns={"bca": "value"}), logger)
 
     def _append_backup_rows(backup: dict | None) -> None:
@@ -208,12 +286,28 @@ def _run_roi_condition_lmm(
 
     _append_backup_rows(backup_2x2)
 
+    cell_counts = {
+        f"{group}|{phase}": int(len(sub_df))
+        for (group, phase), sub_df in df.groupby(["group", "phase"], dropna=False)
+    }
+
     meta = {
         "n_subjects": int(df["subject"].nunique()),
         "phase_labels": sorted(df["phase"].unique().tolist()),
         "roi_included": True,
         "warnings": meta_warnings,
         "backup_2x2_used": bool(backup_rows),
+        "groups_present": groups_present,
+        "phases_present": phases_present,
+        "cell_counts": cell_counts,
+        "missing_terms": [row.get("effect") for row in fixed_effects if row.get("term_missing")],
+        "missing_term_reasons": {
+            row.get("effect"): row.get("missing_reason")
+            for row in fixed_effects
+            if row.get("term_missing")
+        },
+        "contrast_meta": contrast_meta,
+        "exog_names": ",".join(exog_names) if exog_names else None,
     }
 
     return {
@@ -226,24 +320,41 @@ def _run_roi_condition_lmm(
 
 def _format_results_excel(results: dict, excel_path: Path) -> None:
     fixed_effects_df = pd.DataFrame(results.get("fixed_effects") or [])
+    fixed_effects_columns = [
+        "roi",
+        "condition",
+        "effect",
+        "estimate",
+        "se",
+        "stat",
+        "p",
+        "term_missing",
+        "missing_reason",
+        "exog_names",
+    ]
     if fixed_effects_df.empty:
-        fixed_effects_df = pd.DataFrame(
-            columns=["roi", "condition", "effect", "estimate", "se", "stat", "p"]
-        )
+        fixed_effects_df = pd.DataFrame(columns=fixed_effects_columns)
     else:
-        fixed_effects_df = fixed_effects_df.reindex(
-            columns=["roi", "condition", "effect", "estimate", "se", "stat", "p"],
-        )
+        fixed_effects_df = fixed_effects_df.reindex(columns=fixed_effects_columns)
 
     contrasts_df = pd.DataFrame(results.get("effects_of_interest", {}).get("contrasts") or [])
+    contrasts_columns = [
+        "roi",
+        "condition",
+        "label",
+        "estimate",
+        "se",
+        "stat",
+        "p",
+        "term_missing",
+        "missing_reason",
+        "missing_cols",
+        "exog_names",
+    ]
     if contrasts_df.empty:
-        contrasts_df = pd.DataFrame(
-            columns=["roi", "condition", "label", "estimate", "se", "stat", "p"]
-        )
+        contrasts_df = pd.DataFrame(columns=contrasts_columns)
     else:
-        contrasts_df = contrasts_df.reindex(
-            columns=["roi", "condition", "label", "estimate", "se", "stat", "p"],
-        )
+        contrasts_df = contrasts_df.reindex(columns=contrasts_columns)
 
     backup_rows_df = pd.DataFrame(results.get("backup_2x2_results") or [])
     if backup_rows_df.empty:
@@ -255,10 +366,28 @@ def _format_results_excel(results: dict, excel_path: Path) -> None:
             columns=["roi", "condition", "effect", "estimate", "se", "stat", "p", "df"],
         )
 
+    diagnostics_df = pd.DataFrame(results.get("diagnostics") or [])
+    diagnostics_columns = [
+        "roi",
+        "condition",
+        "groups_present",
+        "phases_present",
+        "cell_counts",
+        "missing_terms",
+        "missing_term_reasons",
+        "contrast_missing_reason",
+        "contrast_missing_cols",
+    ]
+    if diagnostics_df.empty:
+        diagnostics_df = pd.DataFrame(columns=diagnostics_columns)
+    else:
+        diagnostics_df = diagnostics_df.reindex(columns=diagnostics_columns)
+
     with pd.ExcelWriter(excel_path, engine="xlsxwriter") as writer:
         _auto_format_and_write_excel(writer, fixed_effects_df, "Fixed Effects", logger.info)
         _auto_format_and_write_excel(writer, contrasts_df, "Contrasts", logger.info)
         _auto_format_and_write_excel(writer, backup_rows_df, "Backup 2x2", logger.info)
+        _auto_format_and_write_excel(writer, diagnostics_df, "Diagnostics", logger.info)
 
 
 def run_cross_phase_lmm_job(progress_cb, message_cb, *, job_spec_path: str):
@@ -401,6 +530,7 @@ def run_cross_phase_lmm_job(progress_cb, message_cb, *, job_spec_path: str):
     fixed_rows: list[dict] = []
     contrast_rows: list[dict] = []
     backup_rows: list[dict] = []
+    diagnostics_rows: list[dict] = []
     per_roi_meta: dict[str, dict] = {}
     aggregated_warnings: list[str] = []
 
@@ -466,6 +596,26 @@ def run_cross_phase_lmm_job(progress_cb, message_cb, *, job_spec_path: str):
             if results.get("meta", {}).get("backup_2x2_used"):
                 backup_used = True
 
+            meta_info = results.get("meta", {})
+            contrast_meta = meta_info.get("contrast_meta") or {}
+            diagnostics_rows.append(
+                {
+                    "roi": roi_name,
+                    "condition": condition,
+                    "groups_present": ",".join(meta_info.get("groups_present", [])),
+                    "phases_present": ",".join(meta_info.get("phases_present", [])),
+                    "cell_counts": json.dumps(meta_info.get("cell_counts", {})),
+                    "missing_terms": ",".join(meta_info.get("missing_terms", []) or []),
+                    "missing_term_reasons": json.dumps(meta_info.get("missing_term_reasons", {})),
+                    "contrast_missing_reason": contrast_meta.get("missing_reason"),
+                    "contrast_missing_cols": ",".join(
+                        contrast_meta.get("missing_cols") or []
+                    )
+                    if isinstance(contrast_meta.get("missing_cols"), list)
+                    else contrast_meta.get("missing_cols"),
+                }
+            )
+
             warning_list: Iterable[str] = results.get("meta", {}).get("warnings", []) or []
             for warning in warning_list:
                 aggregated_warnings.append(f"{roi_name}/{condition}: {warning}")
@@ -502,6 +652,7 @@ def run_cross_phase_lmm_job(progress_cb, message_cb, *, job_spec_path: str):
             "contrasts": contrast_rows,
         },
         "backup_2x2_results": backup_rows,
+        "diagnostics": diagnostics_rows,
         "meta": combined_meta,
     }
 
