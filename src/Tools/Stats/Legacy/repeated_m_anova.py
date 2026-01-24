@@ -41,14 +41,36 @@ from typing import Optional, List
 import numpy as np
 import pandas as pd
 
+DEBUG_UNBALANCED = True
+
 
 # ----------------------------- helpers --------------------------------- #
+
+def _dbg(log_func, msg: str) -> None:
+    try:
+        if log_func:
+            log_func(msg)
+        else:
+            print(msg)
+    except Exception:
+        print(msg)
+
+
+def _preview_labels(values: List[object], max_items: int = 50, head_items: int = 30) -> str:
+    values_repr = sorted((repr(v) for v in values))
+    if len(values_repr) <= max_items:
+        return f"[{', '.join(values_repr)}]"
+    preview = ", ".join(values_repr[:head_items])
+    return f"[{preview}, ... ({len(values_repr)} total)]"
+
 
 def _check_balance(
     df: pd.DataFrame,
     subject_col: str,
     within_cols: List[str],
     dv_col: Optional[str] = None,
+    raw_df: Optional[pd.DataFrame] = None,
+    log_func=None,
 ) -> None:
     """
     Validate that each subject has exactly one observation per within-factor combo.
@@ -70,6 +92,7 @@ def _check_balance(
     )
 
     # Build a lookup: for each subject, the set of combos present and any duplicates
+    missing_logged = 0
     for subject, grp in counts.groupby(subject_col, dropna=False):
         present = [tuple(row[within_cols].tolist()) for _, row in grp.iterrows()]
         dup_mask = grp["_one"] > 1
@@ -80,6 +103,58 @@ def _check_balance(
             if combo not in present:
                 cond_str = " ".join(f"{col} {val}" for col, val in zip(within_cols, combo))
                 issues.append(f"Subject {subject} missing {cond_str}")
+                if DEBUG_UNBALANCED and missing_logged < 10:
+                    # RM_ANOVA DEBUG: unbalanced diagnostics
+                    base_df = raw_df if raw_df is not None else df
+                    mask_raw = pd.Series(True, index=base_df.index)
+                    mask_raw = mask_raw & (base_df[subject_col] == subject)
+                    for col, val in zip(within_cols, combo):
+                        mask_raw = mask_raw & (base_df[col] == val)
+                    raw_count = int(mask_raw.sum())
+                    valid_count = raw_count
+                    if dv_col and dv_col in base_df.columns:
+                        dv = base_df[dv_col]
+                        mask_valid = mask_raw & dv.notna()
+                        try:
+                            mask_valid = mask_valid & np.isfinite(dv.astype(float))
+                        except Exception:
+                            pass
+                        valid_count = int(mask_valid.sum())
+                    combo_repr = " ".join(
+                        f"{col} {repr(val)}" for col, val in zip(within_cols, combo)
+                    )
+                    _dbg(
+                        log_func,
+                        "[RM_ANOVA DEBUG] missing cell check: "
+                        f"subject={repr(subject)} {combo_repr} raw_rows={raw_count} valid_rows={valid_count}",
+                    )
+                    if raw_count > 0 and valid_count == 0 and dv_col and dv_col in base_df.columns:
+                        dv_vals = base_df.loc[mask_raw, dv_col].head(5).tolist()
+                        _dbg(
+                            log_func,
+                            "[RM_ANOVA DEBUG] missing cell check: "
+                            f"dv sample (first 5)={dv_vals!r}",
+                        )
+                    if raw_count == 0:
+                        subj_present = subject in df[subject_col].unique()
+                        cond_presence = {
+                            col: (val in df[col].unique())
+                            for col, val in zip(within_cols, combo)
+                        }
+                        _dbg(
+                            log_func,
+                            "[RM_ANOVA DEBUG] missing cell hint: "
+                            f"subject_present={subj_present} "
+                            f"condition_present={cond_presence}",
+                        )
+                        if not subj_present:
+                            subj_preview = _preview_labels(df[subject_col].unique().tolist())
+                            _dbg(log_func, f"[RM_ANOVA DEBUG] subjects preview={subj_preview}")
+                        for col, val in zip(within_cols, combo):
+                            if val not in df[col].unique():
+                                col_preview = _preview_labels(df[col].unique().tolist())
+                                _dbg(log_func, f"[RM_ANOVA DEBUG] {col} preview={col_preview}")
+                    missing_logged += 1
 
         # Duplicate combos
         for combo in dups:
@@ -225,7 +300,38 @@ def run_repeated_measures_anova(
         raise ValueError("After dropping missing values, no data remain for ANOVA.")
 
     # Ensure balanced design
-    _check_balance(df, subject_col=subject_col, within_cols=list(within_cols), dv_col=dv_col)
+    if DEBUG_UNBALANCED:
+        # RM_ANOVA DEBUG: unbalanced diagnostics
+        subjects = df[subject_col].unique().tolist()
+        within_levels = {
+            col: df[col].dropna().unique().tolist() for col in within_cols
+        }
+        _dbg(None, f"[RM_ANOVA DEBUG] df_long shape={df.shape}")
+        _dbg(None, f"[RM_ANOVA DEBUG] subjects({len(subjects)}): {_preview_labels(subjects)}")
+        for col, vals in within_levels.items():
+            _dbg(None, f"[RM_ANOVA DEBUG] {col}({len(vals)}): {_preview_labels(vals)}")
+        expected_subjects = sorted(df[subject_col].dropna().unique().tolist())
+        _dbg(
+            None,
+            f"[RM_ANOVA DEBUG] expected subjects({len(expected_subjects)}): "
+            f"{_preview_labels(expected_subjects)}",
+        )
+        for col in within_cols:
+            expected_vals = sorted(df[col].dropna().unique().tolist())
+            _dbg(
+                None,
+                f"[RM_ANOVA DEBUG] expected {col}({len(expected_vals)}): "
+                f"{_preview_labels(expected_vals)}",
+            )
+
+    _check_balance(
+        df,
+        subject_col=subject_col,
+        within_cols=list(within_cols),
+        dv_col=dv_col,
+        raw_df=data,
+        log_func=None,
+    )
 
     # ----- primary path: Pingouin (if available) -----
     try:
