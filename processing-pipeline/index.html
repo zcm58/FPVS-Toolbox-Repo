@@ -283,10 +283,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#manuscript-ready-summary-copypaste" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        Manuscript-ready summary (copy/paste)
       
     </span>
   </a>
@@ -294,33 +294,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-loading-recordings" class="md-nav__link">
+  <a href="#single-file-pipeline-verified-order" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Loading recordings
+        Single-file pipeline (verified order)
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-preprocessing-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Preprocessing pipeline
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Preprocessing pipeline">
+    <nav class="md-nav" aria-label="Single-file pipeline (verified order)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-initial-referencing" class="md-nav__link">
+  <a href="#1-data-import-file-loading" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.1 Initial referencing
+        1) Data import / file loading
       
     </span>
   </a>
@@ -328,10 +317,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-drop-reference-channels" class="md-nav__link">
+  <a href="#2-preprocessing-fixed-order" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2 Drop reference channels
+        2) Preprocessing (fixed order)
       
     </span>
   </a>
@@ -339,10 +328,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#23-optional-channel-limit" class="md-nav__link">
+  <a href="#3-event-detection-and-condition-mapping" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.3 Optional channel limit
+        3) Event detection and condition mapping
       
     </span>
   </a>
@@ -350,10 +339,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#24-downsampling-optional" class="md-nav__link">
+  <a href="#4-epoching" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.4 Downsampling (optional)
+        4) Epoching
       
     </span>
   </a>
@@ -361,10 +350,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#25-fir-filtering" class="md-nav__link">
+  <a href="#5-frequency-domain-analysis-fft" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.5 FIR filtering
+        5) Frequency-domain analysis (FFT)
       
     </span>
   </a>
@@ -372,10 +361,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#26-kurtosis-based-artifact-handling" class="md-nav__link">
+  <a href="#6-metric-computation-snr-bca-z-score" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.6 Kurtosis-based artifact handling
+        6) Metric computation (SNR, BCA, Z-score)
       
     </span>
   </a>
@@ -383,10 +372,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#27-final-average-reference" class="md-nav__link">
+  <a href="#7-roi-aggregation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.7 Final average reference
+        7) ROI aggregation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8) Exports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-logging-reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9) Logging / reproducibility
       
     </span>
   </a>
@@ -399,49 +410,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-event-extraction-and-epoching" class="md-nav__link">
+  <a href="#what-to-report-in-your-manuscript-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Event extraction and epoching
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Event extraction and epoching">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-event-detection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 Event detection
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-epoch-creation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 Epoch creation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-frequency-domain-analysis" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Frequency-domain analysis
+        What to report in your manuscript (checklist)
       
     </span>
   </a>
@@ -449,32 +421,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-fpvs-metrics-snr-baseline-corrected-amplitude" class="md-nav__link">
+  <a href="#implementation-details-not-found-in-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. FPVS metrics (SNR, baseline-corrected amplitude)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-roi-aggregation-and-exports" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. ROI aggregation and exports
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#notes-and-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Notes and best practices
+        Implementation details not found in code
       
     </span>
   </a>
@@ -792,10 +742,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#manuscript-ready-summary-copypaste" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        Manuscript-ready summary (copy/paste)
       
     </span>
   </a>
@@ -803,33 +753,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-loading-recordings" class="md-nav__link">
+  <a href="#single-file-pipeline-verified-order" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Loading recordings
+        Single-file pipeline (verified order)
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-preprocessing-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Preprocessing pipeline
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Preprocessing pipeline">
+    <nav class="md-nav" aria-label="Single-file pipeline (verified order)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-initial-referencing" class="md-nav__link">
+  <a href="#1-data-import-file-loading" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.1 Initial referencing
+        1) Data import / file loading
       
     </span>
   </a>
@@ -837,10 +776,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-drop-reference-channels" class="md-nav__link">
+  <a href="#2-preprocessing-fixed-order" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2 Drop reference channels
+        2) Preprocessing (fixed order)
       
     </span>
   </a>
@@ -848,10 +787,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#23-optional-channel-limit" class="md-nav__link">
+  <a href="#3-event-detection-and-condition-mapping" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.3 Optional channel limit
+        3) Event detection and condition mapping
       
     </span>
   </a>
@@ -859,10 +798,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#24-downsampling-optional" class="md-nav__link">
+  <a href="#4-epoching" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.4 Downsampling (optional)
+        4) Epoching
       
     </span>
   </a>
@@ -870,10 +809,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#25-fir-filtering" class="md-nav__link">
+  <a href="#5-frequency-domain-analysis-fft" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.5 FIR filtering
+        5) Frequency-domain analysis (FFT)
       
     </span>
   </a>
@@ -881,10 +820,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#26-kurtosis-based-artifact-handling" class="md-nav__link">
+  <a href="#6-metric-computation-snr-bca-z-score" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.6 Kurtosis-based artifact handling
+        6) Metric computation (SNR, BCA, Z-score)
       
     </span>
   </a>
@@ -892,10 +831,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#27-final-average-reference" class="md-nav__link">
+  <a href="#7-roi-aggregation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.7 Final average reference
+        7) ROI aggregation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8) Exports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-logging-reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9) Logging / reproducibility
       
     </span>
   </a>
@@ -908,49 +869,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-event-extraction-and-epoching" class="md-nav__link">
+  <a href="#what-to-report-in-your-manuscript-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Event extraction and epoching
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Event extraction and epoching">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-event-detection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 Event detection
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-epoch-creation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 Epoch creation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-frequency-domain-analysis" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Frequency-domain analysis
+        What to report in your manuscript (checklist)
       
     </span>
   </a>
@@ -958,32 +880,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-fpvs-metrics-snr-baseline-corrected-amplitude" class="md-nav__link">
+  <a href="#implementation-details-not-found-in-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. FPVS metrics (SNR, baseline-corrected amplitude)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-roi-aggregation-and-exports" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. ROI aggregation and exports
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#notes-and-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Notes and best practices
+        Implementation details not found in code
       
     </span>
   </a>
@@ -1008,259 +908,386 @@
 
 
 <h1 id="processing-pipeline">Processing Pipeline</h1>
-<p>This page describes how the FPVS Toolbox processes EEG data from raw
-recordings to frequency-domain metrics and ROI-level summaries.</p>
-<p>The pipeline is designed to mirror a standard processing pipeline using MATLAB and EEGLab. Please see the relevant 
-publications for more information on this methodology. </p>
+<p>This page describes the <strong>single-file processing pipeline</strong> used by FPVS Toolbox.
+It is written for end users who need manuscript-ready Methods text and verified
+implementation details.</p>
 <hr />
-<h2 id="overview">Overview</h2>
-<p>At a high level, the FPVS Toolbox:</p>
+<h2 id="manuscript-ready-summary-copypaste">Manuscript-ready summary (copy/paste)</h2>
+<p>The FPVS Toolbox processes EEG recordings stored as BioSemi .bdf
+files using MNE-Python for loading, channel typing, and preprocessing.
+For each recording, the toolbox loads data with disk-backed memory mapping when
+available, assigns channel types (including a configured stimulus/trigger channel),
+and applies a standard 10–10 montage. Preprocessing follows a fixed sequence:
+initial re-reference to a user-specified pair of electrodes (default EXG1 and EXG2), 
+removal of those EXG channels, optional channel-count limiting, optional downsampling, 
+zero-phase FIR bandpass filtering, kurtosis-based bad-channel detection with interpolation, 
+and a final average re-reference. Events are extracted from the stim channel then epochs are created 
+for each user-defined condition label using a configured time window without baseline 
+correction. The time-domain data are averaged across epochs per condition, 
+transformed with an FFT, and  frequency-domain metrics are computed at the target oddball 
+harmonics (SNR, baseline-corrected amplitude, and Z-score). Results are exported to 
+per-condition Excel files (electrode-level metrics and a full-spectrum SNR sheet), which 
+serve as inputs for ROI aggregation and statistical analyses in the Stats tool.</p>
+<p><strong>Parameter placeholders:</strong> Use the processing log and project settings/manifest
+(exported from the UI) to fill in your actual values for reference channels,
+filters, epoch window, and oddball frequency settings.</p>
+<hr />
+<h2 id="single-file-pipeline-verified-order">Single-file pipeline (verified order)</h2>
+<p>The steps below reflect the linear processing order for <strong>one recording file</strong>
+as implemented in the current codebase. “Implementation verified in:” notes point
+you to the exact modules that define each step.</p>
+<h3 id="1-data-import-file-loading">1) Data import / file loading</h3>
+<p><strong>What happens</strong></p>
+<ul>
+<li><strong>Supported input types:</strong> <code>.bdf</code> (BioSemi). Other formats
+  are rejected. (Implementation verified in: <code>src/Main_App/PySide6_App/Backend/loader.py</code>.)</li>
+<li><strong>Disk-backed memory mapping:</strong> the loader requests a disk-backed <code>preload</code> path
+  for <code>.bdf</code> and (when supported) <code>.set</code> files, then materializes the memmap with
+  <code>raw.load_data()</code> to keep RAM use bounded. (Implementation verified in:
+  <code>src/Main_App/PySide6_App/Backend/loader.py</code>.)</li>
+<li><strong>Channel typing policy:</strong></li>
+<li>The <strong>stimulus/trigger channel</strong> is explicitly typed as <code>stim</code>.</li>
+<li>The <strong>reference pair</strong> (e.g., EXG1/EXG2) is preserved as <code>eeg</code> so it can be
+    used for re-referencing.</li>
+<li>Other EXG channels (EXG1–EXG8 not in the reference pair) are demoted to
+    <code>misc</code>.
+  (Implementation verified in: <code>src/Main_App/PySide6_App/Backend/loader.py</code>.)</li>
+<li><strong>Montage:</strong> a standard 10–20 montage (<code>standard_1020</code>) is applied with
+  <code>on_missing="warn"</code> and case-insensitive matching. (Implementation verified in:
+  <code>src/Main_App/PySide6_App/Backend/loader.py</code>.)</li>
+</ul>
+<p><strong>Key parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th style="text-align: right;">Default</th>
+<th>Source</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stim_channel</code></td>
+<td style="text-align: right;"><code>Status</code></td>
+<td>Project settings / global settings</td>
+<td>Used for event detection and typed as <code>stim</code>.</td>
+</tr>
+<tr>
+<td><code>ref_channel1</code>, <code>ref_channel2</code></td>
+<td style="text-align: right;"><code>EXG1</code>, <code>EXG2</code></td>
+<td>Project settings / global settings</td>
+<td>Kept as <code>eeg</code> during loading.</td>
+</tr>
+</tbody>
+</table>
+<p>(Defaults verified in: <code>src/Main_App/PySide6_App/Backend/loader.py</code>,
+<code>src/Main_App/PySide6_App/Backend/preprocessing_settings.py</code>.)</p>
+<hr />
+<h3 id="2-preprocessing-fixed-order">2) Preprocessing (fixed order)</h3>
+<p>Preprocessing is applied in a fixed sequence. Each operation is optional only if
+its parameter is unset/disabled.</p>
+<p><strong>Fixed order</strong> (implementation verified in
+<code>src/Main_App/PySide6_App/Backend/preprocess.py</code>):</p>
 <ol>
-<li>Loads a raw FPVS recording (BioSemi <code>.bdf</code>) using
-   a disk-backed memory map.</li>
-<li>Applies a standardized preprocessing pipeline (referencing, filtering,
-   artifact handling, final average reference).</li>
-<li>Extracts events for user-defined conditions and creates epochs around
-   each stimulus type.</li>
-<li>Computes frequency-domain spectra and FPVS metrics (e.g., SNR, baseline-
-   corrected amplitudes) at the tag frequency and harmonics.</li>
-<li>Aggregates results within user-defined ROIs and exports per-condition,
-   per-ROI summaries to Excel for downstream statistics.</li>
+<li><strong>Initial re-reference</strong> to the user-selected EXG pair (if both channels are
+   present). The reference pair is applied using <code>raw.set_eeg_reference(...)</code>.</li>
+<li><strong>Drop reference channels</strong>: the two reference channels are removed from the
+   data after re-referencing.</li>
+<li><strong>Optional channel limit</strong>: if <code>max_idx_keep</code> is set and smaller than the
+   current channel count, only the first N channels are retained <strong>plus</strong> the
+   stim channel (if present).</li>
+<li><strong>Optional downsampling</strong>: if <code>downsample_rate</code> is set and lower than the
+   current sampling rate, the data are resampled with a Hann window.</li>
+<li><strong>FIR bandpass filter</strong> (zero-phase, forward/backward):</li>
+<li>Method: <code>fir</code> with <code>firwin</code> design, <code>hamming</code> window, <code>phase="zero-double"</code>.</li>
+<li>Transition bandwidths: 0.1 Hz (low and high).</li>
+<li>Fixed filter length: 8449 points.</li>
+<li><strong>Kurtosis-based bad-channel detection &amp; interpolation</strong>:</li>
+<li>Kurtosis (Fisher, <code>bias=False</code>) is computed per EEG channel.</li>
+<li>A <strong>trimmed mean/std</strong> is computed by removing 10% of the highest and lowest
+     kurtosis values.</li>
+<li>Channels with <code>|z| &gt; rejection_z</code> are marked bad.</li>
+<li>If a montage is present, bad channels are interpolated
+     (<code>reset_bads=True</code>, <code>mode="accurate"</code>).</li>
+<li><strong>Final average reference</strong>: average reference is applied via projection and
+   immediately applied (<code>apply_proj</code>).</li>
 </ol>
-<p>Each step is logged to the FPVS Toolbox log window and log file so users
-can reconstruct the full processing history for a given project.</p>
+<p><strong>Key parameters (defaults)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th style="text-align: right;">Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>high_pass</code></td>
+<td style="text-align: right;">0.1 Hz</td>
+<td>High-pass cutoff (HPF)</td>
+</tr>
+<tr>
+<td><code>low_pass</code></td>
+<td style="text-align: right;">50.0 Hz</td>
+<td>Low-pass cutoff (LPF)</td>
+</tr>
+<tr>
+<td><code>downsample</code> / <code>downsample_rate</code></td>
+<td style="text-align: right;">256 Hz</td>
+<td>Target sampling rate</td>
+</tr>
+<tr>
+<td><code>rejection_z</code> / <code>reject_thresh</code></td>
+<td style="text-align: right;">5.0</td>
+<td>Kurtosis Z threshold</td>
+</tr>
+<tr>
+<td><code>max_idx_keep</code></td>
+<td style="text-align: right;">64</td>
+<td>Max channel index to keep</td>
+</tr>
+<tr>
+<td><code>ref_channel1</code>, <code>ref_channel2</code></td>
+<td style="text-align: right;">EXG1 / EXG2</td>
+<td>Initial reference pair</td>
+</tr>
+</tbody>
+</table>
+<p>(Defaults verified in: <code>src/Main_App/PySide6_App/Backend/preprocessing_settings.py</code>.)</p>
+<p><strong>Logged/audited items</strong></p>
+<ul>
+<li>A preprocessing fingerprint string (HP/LP/downsample/reject/ref/stim).</li>
+<li>Filter snapshot (computed cutoffs and sampling rate).</li>
+<li>Number of bad channels rejected by kurtosis.</li>
+<li>Final sampling rate and channel count.</li>
+</ul>
+<p>(Logging verified in: <code>src/Main_App/PySide6_App/Backend/preprocess.py</code>.)</p>
 <hr />
-<h2 id="1-loading-recordings">1. Loading recordings</h2>
-<p>When you select a single file or a batch folder, the loader:</p>
+<h3 id="3-event-detection-and-condition-mapping">3) Event detection and condition mapping</h3>
+<p><strong>Event detection (single-file pipeline)</strong></p>
 <ul>
-<li>
-<p>Resolves the <strong>stimulus channel</strong><br />
-  The toolbox chooses the stim channel specified in project settings
-  (default: <code>Status</code>) and assigns it the MNE <code>stim</code> type.</p>
-</li>
-<li>
-<p>Resolves the <strong>initial reference pair</strong><br />
-  A pair of EXG channels (default: <code>EXG1</code> / <code>EXG2</code>) is treated as the
-  initial EEG reference. These channels are kept as EEG during loading.</p>
-</li>
-<li>
-<p>Reads the recording with MNE  </p>
-</li>
-<li>BioSemi recordings are loaded with <code>mne.io.read_raw_bdf</code>.</li>
-<li>
-<p>EEGLAB files are loaded via MNE’s EEGLAB reader.<br />
-  In both cases, a disk-backed memory map is used when possible to limit
-  RAM usage on large datasets.</p>
-</li>
-<li>
-<p>Applies a standard montage<br />
-  After loading, a standard 10–20 montage is applied to EEG channels so
-  channel locations are available for interpolation and ROI aggregation.
-  Any non-EEG auxiliary channels are typed appropriately (e.g., EXG → <code>misc</code>
-  after referencing, stim → <code>stim</code>).</p>
-</li>
+<li>The toolbox attempts to read events from the configured <strong>stim channel</strong> using
+  <code>mne.find_events(...)</code>.</li>
+<li>If stim-based extraction fails, it falls back to
+  <code>mne.events_from_annotations(...)</code>.</li>
 </ul>
+<p>(Implementation verified in: <code>src/Main_App/Performance/process_runner.py</code>.)</p>
+<p><strong>Condition mapping</strong></p>
+<ul>
+<li>Your <strong>Event Map</strong> supplies <code>label → integer code</code> pairs.</li>
+<li>For each label, events are included only if that integer code is present in
+  the extracted events.</li>
+<li>If a label has zero matching events, the pipeline logs a warning and skips
+  that label for the file.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Performance/process_runner.py</code>.)</p>
 <hr />
-<h2 id="2-preprocessing-pipeline">2. Preprocessing pipeline</h2>
-<p>The preprocessing pipeline is applied in a fixed order to keep behavior
-consistent across projects.</p>
-<h3 id="21-initial-referencing">2.1 Initial referencing</h3>
+<h3 id="4-epoching">4) Epoching</h3>
 <ul>
-<li>The user-selected reference pair (by default, <code>EXG1</code> / <code>EXG2</code>) is
-  coerced to EEG type if needed.</li>
-<li>MNE’s <code>set_eeg_reference</code> is used to subtract the average of these two
-  reference channels from all EEG channels.</li>
-<li>Audit flags are recorded so that the log reflects whether referencing
-  succeeded and which channels were used.</li>
+<li>Epochs are created per label with:</li>
+<li><code>tmin = epoch_start</code> and <code>tmax = epoch_end</code> (seconds)</li>
+<li><code>baseline = None</code> (no baseline correction at epoch stage)</li>
+<li><code>preload = False</code></li>
+<li><code>decim = 1</code></li>
+<li>After creation, <code>epochs.drop_bad()</code> is called.</li>
 </ul>
-<h3 id="22-drop-reference-channels">2.2 Drop reference channels</h3>
-<p>After re-referencing:</p>
+<p>(Implementation verified in: <code>src/Main_App/Performance/process_runner.py</code>.)</p>
+<p><strong>Not found in code; user-configurable / unknown</strong></p>
 <ul>
-<li>The two reference channels are removed from the dataset, so they do not
-  contribute to later average-reference and ROI computations.</li>
-</ul>
-<h3 id="23-optional-channel-limit">2.3 Optional channel limit</h3>
-<p>If a maximum EEG channel count is configured in project settings:</p>
-<ul>
-<li>Channels beyond that index are dropped to keep a consistent subset of
-  sensors across recordings.</li>
-<li>The stim channel is preserved even if it would otherwise be outside
-  the limit.</li>
-</ul>
-<h3 id="24-downsampling-optional">2.4 Downsampling (optional)</h3>
-<p>If downsampling is enabled and the original sampling rate is higher than
-the chosen target:</p>
-<ul>
-<li>Data are resampled using MNE’s resampling routines with a Hann window.</li>
-<li>Downsampling occurs <strong>before</strong> filtering to reduce computation and
-  keep filter design consistent.</li>
-</ul>
-<h3 id="25-fir-filtering">2.5 FIR filtering</h3>
-<p>A zero-phase FIR filter is applied to the (possibly downsampled) data:</p>
-<ul>
-<li>Legacy parameters are mirrored:</li>
-<li>The GUI “high-pass” setting maps to the filter’s <code>l_freq</code>.</li>
-<li>The GUI “low-pass” setting maps to <code>h_freq</code>.</li>
-<li>Fixed transition bandwidths and filter lengths are chosen to match
-    the original toolbox behavior as closely as possible.</li>
-<li>Filtering is applied in a way that avoids phase distortion
-  (forward-and-backward filtering).</li>
-</ul>
-<h3 id="26-kurtosis-based-artifact-handling">2.6 Kurtosis-based artifact handling</h3>
-<p>To identify noisy channels:</p>
-<ul>
-<li>EEG channels (excluding previously marked bads and non-EEG/stim
-  channels) are scored using a kurtosis-based metric.</li>
-<li>Channels whose kurtosis exceeds a configurable Z-score threshold are:</li>
-<li>Marked as bad (added to <code>raw.info["bads"]</code>).</li>
-<li>Interpolated when a montage is available, using neighboring
-    electrodes to estimate the signal.</li>
-</ul>
-<h3 id="27-final-average-reference">2.7 Final average reference</h3>
-<p>After bad-channel handling:</p>
-<ul>
-<li>Remaining good EEG channels are re-referenced to the average.</li>
-<li>Any pending projections are applied.</li>
-<li>Preprocessing completes with logging of:</li>
-<li>Final channel count (total and bads).</li>
-<li>Final sampling rate.</li>
-<li>Filter settings, artifact thresholds, and reference choices.</li>
+<li><strong>Epoch rejection thresholds (e.g., voltage limits):</strong> no explicit <code>reject</code>
+  or <code>flat</code> criteria are passed to <code>mne.Epochs</code>. Search locations:</li>
+<li><code>src/Main_App/Performance/process_runner.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
+<li><code>src/Main_App/Legacy_App/processing_utils.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
 </ul>
 <hr />
-<h2 id="3-event-extraction-and-epoching">3. Event extraction and epoching</h2>
-<p>The event and epoching step mirrors the legacy flow but is configured via
-the PySide6 GUI.</p>
-<h3 id="31-event-detection">3.1 Event detection</h3>
-<p>Events are derived in one of two ways:</p>
-<ol>
-<li>
-<p><strong>From annotations</strong><br />
-   If the recording contains MNE annotations that correspond to your
-   condition IDs, they are mapped directly using the IDs and labels you
-   configure in the Event Map. </p>
-</li>
-<li>
-<p><strong>From the stim channel</strong><br />
-   If annotations are not available, events are detected from the stim
-   channel (e.g., <code>Status</code>) using <code>mne.find_events</code>.  </p>
-</li>
-<li>The IDs you configure in the Event Map (e.g., '21' for
-     “Condition ABC”) are matched to codes on the stim channel.</li>
-<li>Empty event sets (no events found for a given ID) are logged as
-     warnings.</li>
-</ol>
-<h3 id="32-epoch-creation">3.2 Epoch creation</h3>
-<p>For each label/ID pair defined in the Event Map:</p>
+<h3 id="5-frequency-domain-analysis-fft">5) Frequency-domain analysis (FFT)</h3>
 <ul>
-<li>
-<p>MNE <code>Epochs</code> objects are created with user-specified start and end
-  times relative to each event (e.g., from −0.5 s to +5.0 s). In FPVS Experiments, <code>Epochs</code> refer to one 
-experimental condition. Each condition must be analyzed separately. </p>
-</li>
-<li>
-<p>Successful epoch sets are stored per condition label and used for
-  downstream spectral analysis and metric computation.</p>
-</li>
+<li>For each condition, epochs are <strong>averaged in the time domain</strong> and the FFT is
+  computed on the averaged signal (not per-epoch).</li>
+<li>FFT uses <code>np.fft.fft</code> with no explicit windowing, detrending, or zero-padding.</li>
+<li>The amplitude spectrum is computed as:
+  <code>abs(FFT) / N * 2</code> for bins from 0 to Nyquist.</li>
+<li>Frequency bins are linearly spaced from 0 to <code>sfreq / 2</code>.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
+<hr />
+<h3 id="6-metric-computation-snr-bca-z-score">6) Metric computation (SNR, BCA, Z-score)</h3>
+<p><strong>Target frequencies</strong></p>
+<ul>
+<li>The toolbox computes metrics at <strong>oddball harmonics</strong> defined by
+  <code>TARGET_FREQUENCIES</code>.</li>
+<li>These are calculated as: <code>oddball_freq × 1..K</code>, where
+  <code>K = round(bca_upper_limit / oddball_freq)</code>.</li>
+<li><code>oddball_freq</code> and <code>bca_upper_limit</code> come from project settings.</li>
+</ul>
+<p>(Implementation verified in: <code>src/config.py</code>.)</p>
+<p><strong>Noise window and baseline definition (used by SNR, BCA, Z)</strong></p>
+<p>For each target frequency, the toolbox finds the <strong>nearest FFT bin</strong> and defines
+noise bins as follows:</p>
+<ul>
+<li>Window: ±10 bins around the target bin.</li>
+<li>Exclusions: target bin and its immediate neighbors (−1 and +1) are excluded.</li>
+<li>Minimum bins: if fewer than 4 candidate bins remain, noise mean/std are set
+  to 0.0.</li>
+<li>Trimming: one maximum and one minimum value are removed before computing the
+  mean and standard deviation.</li>
+<li>Standard deviation uses population variance (<code>ddof=0</code>).</li>
+</ul>
+<p>(Implementation verified in: <code>src/Tools/Stats/Legacy/noise_utils.py</code> and
+<code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
+<p><strong>Formulas (applied per channel × harmonic)</strong></p>
+<p>Let:
+- <code>A</code> = amplitude at the target FFT bin (µV)
+- <code>noise_mean</code> = mean of the noise bins
+- <code>noise_std</code> = standard deviation of the noise bins</p>
+<p>Then:</p>
+<ul>
+<li><strong>SNR</strong> = <code>A / noise_mean</code> (set to 0 when <code>noise_mean &lt;= 1e-12</code>)</li>
+<li><strong>BCA</strong> = <code>A - noise_mean</code></li>
+<li><strong>Z-score</strong> = <code>(A - noise_mean) / noise_std</code> (set to 0 when <code>noise_std &lt;= 1e-12</code>)</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
+<p><strong>Full-spectrum SNR</strong></p>
+<p>A separate full-spectrum SNR matrix is computed for <strong>all FFT bins</strong> using the
+same noise-bin logic and is exported as the <code>FullSNR</code> sheet.</p>
+<p>(Implementation verified in: <code>src/Tools/Stats/Legacy/full_snr.py</code> and
+<code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
+<p><strong>Background (not necessarily the toolbox implementation)</strong></p>
+<p>FPVS studies often describe SNR based on a local noise window around each target
+frequency; always report the <strong>implementation actually used by the toolbox</strong>
+above.</p>
+<hr />
+<h3 id="7-roi-aggregation">7) ROI aggregation</h3>
+<p><strong>Important:</strong> The core processing/export step writes <strong>electrode-level</strong>
+metrics. ROI aggregation happens later (e.g., in the Stats tool) by reading the
+exported Excel files.</p>
+<p><strong>Verified ROI aggregation behavior (Stats tool)</strong></p>
+<ul>
+<li>ROI definitions are stored in settings as <code>roi_name → list of electrodes</code>,
+  with electrode names uppercased and trimmed for matching.</li>
+<li>For Summed BCA analyses, the toolbox:</li>
+<li>Reads the <code>BCA (uV)</code> sheet.</li>
+<li>Sums BCA across selected harmonics per electrode.</li>
+<li>Averages the summed values across electrodes in the ROI.</li>
+<li>Ignores ROI electrodes that are missing from the Excel file.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Legacy_App/settings_manager.py</code>,
+<code>src/Tools/Stats/PySide6/dv_policies.py</code>.)</p>
+<p>If you perform ROI aggregation outside the Stats tool (e.g., in a custom script),
+report the exact aggregation rule you used.</p>
+<hr />
+<h3 id="8-exports">8) Exports</h3>
+<p><strong>Output location</strong></p>
+<ul>
+<li>The export root is the project’s <strong>Excel results folder</strong> (default:
+  <code>1 - Excel Data Files</code> under the project’s results directory).</li>
+<li>A subfolder is created per condition label (label is sanitized for filenames).</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/PySide6_App/Backend/project.py</code>,
+<code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
+<p><strong>Excel file names</strong></p>
+<ul>
+<li><strong>Single-file processing:</strong> <code>PID_&lt;Condition&gt;_Results.xlsx</code></li>
+<li><code>PID</code> is extracted from the raw filename using <code>P\d+</code>, <code>Sub\d+</code>, or <code>S\d+</code>
+  patterns; otherwise a cleaned filename stem is used.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
+<p><strong>Excel sheet names and contents</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sheet name</th>
+<th>Contents</th>
+<th>Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FFT Amplitude (uV)</code></td>
+<td>Amplitude spectrum at target harmonics</td>
+<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+</tr>
+<tr>
+<td><code>SNR</code></td>
+<td>Signal-to-noise ratio at target harmonics</td>
+<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+</tr>
+<tr>
+<td><code>Z Score</code></td>
+<td>Z-scores at target harmonics</td>
+<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+</tr>
+<tr>
+<td><code>BCA (uV)</code></td>
+<td>Baseline-corrected amplitudes at target harmonics</td>
+<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+</tr>
+<tr>
+<td><code>FullSNR</code></td>
+<td>Full-spectrum SNR (interpolated)</td>
+<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+</tr>
+</tbody>
+</table>
+<p>Target-harmonic columns are formatted as <code>"{freq:.4f}_Hz"</code>.
+The <code>FullSNR</code> sheet is interpolated from 0.5 Hz up to the configured
+<code>bca_upper_limit</code> in 0.01 Hz steps.</p>
+<p>(Implementation verified in: <code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
+<hr />
+<h3 id="9-logging-reproducibility">9) Logging / reproducibility</h3>
+<p>The pipeline writes structured log messages during preprocessing and processing.
+Key log entries you can cite for reproducibility include:</p>
+<ul>
+<li>Preprocessing fingerprint and filter snapshot (cutoffs, sampling rate).</li>
+<li>Number of channels rejected by kurtosis.</li>
+<li>Event source (stim vs. annotations) and number of events.</li>
+<li>Warnings for labels with zero events or zero epochs.</li>
+<li>Confirmation of Excel export completion.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/PySide6_App/Backend/preprocess.py</code>,
+<code>src/Main_App/Performance/process_runner.py</code>,
+<code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
+<p>For manuscript archiving, keep:
+- The project settings/manifest (event map, preprocessing settings, ROI list).
+- The per-condition Excel outputs.
+- The processing log file or log window export.</p>
+<hr />
+<h2 id="what-to-report-in-your-manuscript-checklist">What to report in your manuscript (checklist)</h2>
+<p>Fill in the values in brackets with your project’s actual settings.</p>
+<ul>
+<li><strong>Recording format and sampling rate:</strong> [e.g., BioSemi .bdf, 512 Hz]</li>
+<li><strong>Stim/trigger channel:</strong> [e.g., Status]</li>
+<li><strong>Initial reference:</strong> [e.g., EXG1/EXG2]</li>
+<li><strong>Final reference:</strong> [average reference]</li>
+<li><strong>Filter settings:</strong> [HPF = __ Hz, LPF = __ Hz]</li>
+<li><strong>Downsampling:</strong> [target Hz or “not applied”]</li>
+<li><strong>Bad-channel handling:</strong> [kurtosis Z threshold __; interpolation on/off]</li>
+<li><strong>Epoch window:</strong> [tmin = __ s, tmax = __ s; baseline = none]</li>
+<li><strong>Event mapping:</strong> [list labels and integer codes]</li>
+<li><strong>FFT method:</strong> [FFT of averaged epochs; amplitude = abs(FFT)/N*2]</li>
+<li><strong>Frequency resolution:</strong> [N = samples per epoch → resolution = sfreq/N]</li>
+<li><strong>Noise window for SNR/Z/BCA:</strong> [±10 bins; exclude target ±1; drop max/min]</li>
+<li><strong>Oddball harmonics analyzed:</strong> [oddball_freq, upper limit, resulting list]</li>
+<li><strong>ROI definitions:</strong> [ROI name → electrode list; uppercased channel matching]</li>
+<li><strong>Exported metrics and units:</strong> [SNR, Z, BCA (µV), FFT amplitude (µV)]</li>
 </ul>
 <hr />
-<h2 id="4-frequency-domain-analysis">4. Frequency-domain analysis</h2>
-<p>Once epochs are defined, the FPVS Toolbox computes frequency-domain
-responses for each condition.</p>
-<p>In brief:</p>
-<ol>
-<li><strong>FFT per epoch and channel</strong>  </li>
-<li>
-<p>A Fourier transform is applied to each epoch to obtain amplitude
-     spectra at frequencies of interest.</p>
-</li>
-<li>
-<p><strong>Tag frequency and harmonics</strong>  </p>
-</li>
-<li>
-<p>The fundamental FPVS stimulation frequency and a configurable number
-     of harmonics are selected for metric computation.</p>
-</li>
-<li>
-<p><strong>Baseline regions</strong>  </p>
-</li>
-<li>Surrounding “noise” frequency bins (excluding the signal bin and
-     its immediate neighbors) define a baseline used for SNR and
-     baseline-corrected measures.</li>
-</ol>
-<hr />
-<h2 id="5-fpvs-metrics-snr-baseline-corrected-amplitude">5. FPVS metrics (SNR, baseline-corrected amplitude)</h2>
-<p>For each channel, condition, and harmonic, the toolbox computes the following metrics: </p>
-<hr />
+<h2 id="implementation-details-not-found-in-code">Implementation details not found in code</h2>
+<p>If you need any of the following details for your manuscript, they are <strong>not
+verified in code</strong> and should be reported explicitly as user-configurable or
+unknown:</p>
 <ul>
-<li><strong>SNR (Signal-to-Noise Ratio)</strong>  </li>
+<li><strong>Epoch rejection thresholds (amplitude/flat criteria)</strong></li>
+<li>Searched in:<ul>
+<li><code>src/Main_App/Performance/process_runner.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
+<li><code>src/Main_App/Legacy_App/processing_utils.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
 </ul>
-<p>In frequency-domain analyses of fast periodic visual stimulation (FPVS) with electroencephalography (EEG), signal-to-noise ratio (SNR) is a core metric for quantifying neural responses at stimulation frequencies. Within oddball paradigms where deviant stimuli are periodically included among a stream of base images, SNR provides a robust, objective estimate of response strength at the oddball frequency and its harmonics. The standard method for calculating SNR involves dividing the amplitude at the frequency of interest by the mean amplitude of surrounding frequency bins, assumed to reflect background noise (Rossion et al., 2015; Zimmermann et al., 2019).
-A methodological consensus has emerged around the use of a 20-bin local noise window—10 bins on either side of the target frequency—with specific exclusions to ensure a clean estimate. First, the immediately adjacent frequency bins are systematically excluded to mitigate contamination from spectral leakage of the target response (Stothart et al., 2017; Georges et al., 2020). Second, many studies further discard the two most extreme amplitude values among the noise bins (i.e., the highest and lowest), which can otherwise inflate or deflate the average due to unrelated spectral artifacts or narrowband EEG noise (Dzhelyova &amp; Rossion, 2014a; Poncet et al., 2019).
-For example, Georges et al. (2020) and Zimmermann et al. (2019) both implemented this 20-bin ±10 approach, excluding the neighboring bins as well as the extreme values to derive a robust noise floor. This practice, introduced in foundational studies (e.g., Liu-Shuang et al., 2014), ensures the SNR reflects genuine periodic neural responses rather than local noise fluctuations or harmonics from unrelated sources.
-The resulting SNR values are used not only for individual participant-level inference but also for generating z-scores and evaluating signal strength across scalp topographies. Because the frequency bins used for noise estimation are drawn from the same power spectrum and close in frequency to the signal bin, this method yields a locally normalized, frequency-specific measure that is highly sensitive to subtle categorical effects in the EEG signal (Rossion et al., 2015; Poncet et al., 2019).</p>
-<p><strong>References</strong></p>
-<ul>
-<li>Dzhelyova, M., &amp; Rossion, B. (2014a). The effect of parametric stimulus variation on individual face discrimination indexed by fast periodic visual stimulation. Journal of Vision, 14(12), 1–18. https://doi.org/10.1167/14.12.22</li>
-<li>Georges, C., Retter, T. L., &amp; Rossion, B. (2020). Face-selective responses in the human brain: A periodic stimulation approach. NeuroImage, 214, 116703. https://doi.org/10.1016/j.neuroimage.2020.116703</li>
-<li>Liu-Shuang, J., Norcia, A. M., &amp; Rossion, B. (2014). An objective index of individual face discrimination in the right occipito-temporal cortex by means of fast periodic oddball stimulation. Neuropsychologia, 52, 57–72. https://doi.org/10.1016/j.neuropsychologia.2013.10.022</li>
-<li>Poncet, F., Rossion, B., &amp; Jacques, C. (2019). Evidence for the existence of a face-selective neural response in the human brain with fast periodic visual stimulation. NeuroImage, 189, 150–162. https://doi.org/10.1016/j.neuroimage.2019.01.021</li>
-<li>Rossion, B., Torfs, K., Jacques, C., &amp; Liu-Shuang, J. (2015). Fast periodic presentation of natural images reveals a robust face-selective electrophysiological response in the human brain. Journal of Vision, 15(1), 1–18. https://doi.org/10.1167/15.1.15</li>
-<li>Stothart, G., Quadflieg, S., &amp; Kazanina, N. (2017). Semantic processing in the human brain: Electrophysiological evidence from fast periodic visual stimulation. Neuropsychologia, 100, 57–63. https://doi.org/10.1016/j.neuropsychologia.2017.03.006</li>
-<li>Zimmermann, J. F., Groh-Bordin, C., &amp; Roesler, F. (2019). Familiarity and identity-specificity of face representations in fast periodic visual stimulation. NeuroImage, 193, 162–171. https://doi.org/10.1016/j.neuroimage.2019.03.026</li>
+</li>
 </ul>
-<hr />
-<p><strong>Baseline-corrected amplitude (BCA)</strong>  </p>
-<p>Amplitude at the target bin minus the baseline estimate.</p>
-<hr />
-<p><strong>Z-Scores (placeholder)</strong></p>
-<p>Need to include some information regarding Z-Scores here. </p>
-<hr />
-<p>These metrics are then aggregated:</p>
-<ul>
-<li>Across epochs for each subject and condition.</li>
-<li>Across channels belonging to each user-defined ROI.</li>
-</ul>
-<p>The resulting ROI-level SNR and BCA values form the basis of the
-statistical analyses run in the Stats tool.</p>
-<hr />
-<h2 id="6-roi-aggregation-and-exports">6. ROI aggregation and exports</h2>
-<p>The final steps of the processing pipeline are:</p>
-<ol>
-<li><strong>ROI aggregation</strong>  </li>
-<li>Channels are grouped into ROIs defined in project settings
-     (e.g., left occipital, right occipital, frontal, parietal).</li>
-<li>
-<p>Metrics are averaged within each ROI for each subject, condition,
-     and harmonic.</p>
-</li>
-<li>
-<p><strong>Excel exports</strong>  </p>
-</li>
-<li>Per-subject, per-condition, and per-ROI summaries are written to
-     Excel files in the project’s Results folder.</li>
-<li>
-<p>These Excel outputs are used directly by the <strong>Statistical Analysis</strong>
-     module for single-group and between-group models.</p>
-</li>
-<li>
-<p><strong>Logging and audit trail</strong>  </p>
-</li>
-<li>Each successfully processed file contributes to a batch summary
-     (number of files, rejected channels, etc.).</li>
-<li>The logs provide a full audit trail of the processing settings used
-     for a given project and batch.</li>
-</ol>
-<hr />
-<h2 id="notes-and-best-practices">Notes and best practices</h2>
-<ul>
-<li>Keep preprocessing settings consistent within a project so that metrics
-  are comparable across subjects and sessions.</li>
-<li>Verify event IDs and epoch time windows before running large batch
-  jobs; incorrect event mappings can silently produce empty conditions.</li>
-<li>When publishing results, include key pipeline settings (reference,
-  filter bands, artifact thresholds, and epoch windows) in the Methods
-  section, ideally referencing this documentation for additional detail.</li>
-</ul>
+<p>If you know where these are configured in your local deployment, add them to
+this documentation and cite the exact configuration source.</p>
 
 
 
