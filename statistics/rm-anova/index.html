@@ -415,10 +415,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#implementation" class="md-nav__link">
+  <a href="#plain-language-overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Implementation
+        Plain-language overview
       
     </span>
   </a>
@@ -426,21 +426,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-read-the-table" class="md-nav__link">
+  <a href="#manuscript-ready-description" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to read the table
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#notes-for-end-users" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Notes for end users
+        Manuscript-ready description
       
     </span>
   </a>
@@ -721,10 +710,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#implementation" class="md-nav__link">
+  <a href="#plain-language-overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Implementation
+        Plain-language overview
       
     </span>
   </a>
@@ -732,21 +721,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-read-the-table" class="md-nav__link">
+  <a href="#manuscript-ready-description" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to read the table
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#notes-for-end-users" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Notes for end users
+        Manuscript-ready description
       
     </span>
   </a>
@@ -782,55 +760,54 @@
 
 
 <h1 id="rm-anova-details-summed-bca">RM-ANOVA details (Summed BCA)</h1>
-<p>The FPVS Toolbox uses repeated-measures ANOVA (RM-ANOVA) to test
-within-subject effects of <strong>Condition</strong>, <strong>ROI</strong>, and their interaction on
-Summed BCA.</p>
-<hr />
-<h2 id="implementation">Implementation</h2>
+<h2 id="plain-language-overview">Plain-language overview</h2>
+<p>Repeated-measures ANOVA (RM-ANOVA) is a standard way to test whether an
+outcome changes across <strong>multiple conditions</strong> and/or <strong>multiple ROIs</strong>
+when the <strong>same participants</strong> contribute data in every cell.</p>
+<p>In FPVS terms, RM-ANOVA asks questions like:</p>
 <ul>
-<li><strong>Primary library:</strong> Pingouin <code>rm_anova</code> (when installed).</li>
-<li><strong>Fallback library:</strong> statsmodels <code>AnovaRM</code> (when Pingouin is not
-  available).</li>
+<li>Do Summed BCA values differ across <strong>conditions</strong> (on average)?</li>
+<li>Do Summed BCA values differ across <strong>ROIs</strong> (on average)?</li>
+<li>Does the size of the condition effect <strong>depend on ROI</strong>
+  (Condition × ROI interaction)?</li>
 </ul>
-<p>The output is normalized into a consistent table that includes:</p>
+<p>RM-ANOVA is useful when your dataset is <strong>complete and balanced</strong>:
+every participant must have a Summed BCA value for every required
+condition × ROI combination. If that’s true, RM-ANOVA provides a clean,
+familiar summary test of within-subject effects.</p>
+<p>Important practical notes:</p>
 <ul>
-<li><strong>Effect</strong> (Condition, ROI, Condition × ROI)</li>
-<li><strong>F Value</strong> (F statistic)</li>
-<li><strong>Num DF / Den DF</strong> (degrees of freedom)</li>
-<li><strong>Pr &gt; F</strong> (p-value)</li>
-<li><strong>partial eta squared</strong> (effect size)</li>
-<li><strong>Pr &gt; F (GG)</strong> and <strong>Pr &gt; F (HF)</strong> when Pingouin provides sphericity
-  corrections</li>
-</ul>
-<hr />
-<h2 id="how-to-read-the-table">How to read the table</h2>
-<ul>
-<li><strong>F statistic:</strong> ratio of explained variance to residual variance. A
-  larger F indicates stronger evidence for an effect.</li>
-<li><strong>Num DF / Den DF:</strong> degrees of freedom for the effect and error.</li>
-<li><strong>p-values:</strong> use the GG/HF corrected columns when available (they
-  adjust for sphericity violations).</li>
-<li><strong>partial eta squared:</strong> effect size, computed from F and dfs when not
-  provided by the library.</li>
+<li>RM-ANOVA tests <strong>differences among factor levels</strong> (condition/ROI).
+  It does <strong>not</strong> directly test whether Summed BCA is different from zero.</li>
+<li>RM-ANOVA relies on assumptions about the covariance structure of
+  repeated measures (often discussed as “sphericity”). When correction
+  options are available, the toolbox reports corrected p-values to
+  reduce false positives if those assumptions are violated.</li>
 </ul>
 <hr />
-<h2 id="notes-for-end-users">Notes for end users</h2>
-<ul>
-<li>RM-ANOVA requires a <strong>balanced design</strong> (each subject must have all
-  required condition × ROI combinations). If the data are unbalanced, the
-  analysis reports an error and lists missing combinations.</li>
-<li>RM-ANOVA focuses on <strong>differences among conditions and ROIs</strong>; it does
-  not directly test whether Summed BCA is different from zero.</li>
-</ul>
+<h2 id="manuscript-ready-description">Manuscript-ready description</h2>
+<p>ROI-averaged Summed BCA values were analyzed using repeated-measures
+ANOVA to evaluate within-subject effects of Condition, ROI, and their
+interaction (Condition × ROI). RM-ANOVA was implemented using
+Pingouin. Results were normalized into a
+consistent reporting table containing the F statistic, numerator and
+denominator degrees of freedom, and p-values for each effect. When
+available from the underlying library, Greenhouse–Geisser and
+Huynh–Feldt corrected p-values were additionally reported to address
+potential violations of repeated-measures assumptions. Effect sizes were
+reported as partial eta squared; when not provided directly by the
+library, partial eta squared was computed from the F statistic and its
+associated degrees of freedom. Because RM-ANOVA requires a balanced
+within-subject table, analyses were only performed when each participant
+contributed observations for all required condition × ROI combinations;
+otherwise, the analysis halted and reported the missing cells.</p>
 <hr />
 <h2 id="not-found-in-code-documentation-transparency">Not found in code (documentation transparency)</h2>
-<p>The following details were <strong>not found in code</strong> while preparing this
-page:</p>
+<p>The following detail was not found in the current workflow:</p>
 <ul>
-<li>A user-facing setting that toggles sphericity correction methods
-  (Pingouin decides this internally). (Searched in
-  <code>src/Tools/Stats/Legacy/repeated_m_anova.py</code> and
-  <code>src/Tools/Stats/PySide6/stats_main_window.py</code>.)</li>
+<li>A user-facing option to manually select which sphericity correction
+  method to report (corrected columns are reported only when provided by
+  the library).</li>
 </ul>
 
 

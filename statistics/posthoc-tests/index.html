@@ -443,10 +443,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-tested" class="md-nav__link">
+  <a href="#plain-language-overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What is tested
+        Plain-language overview
       
     </span>
   </a>
@@ -454,32 +454,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#multiple-comparison-correction" class="md-nav__link">
+  <a href="#manuscript-ready-description" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Multiple-comparison correction
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#effect-sizes-and-outputs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Effect sizes and outputs
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#not-found-in-code-documentation-transparency" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Not found in code (documentation transparency)
+        Manuscript-ready description
       
     </span>
   </a>
@@ -721,10 +699,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-tested" class="md-nav__link">
+  <a href="#plain-language-overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What is tested
+        Plain-language overview
       
     </span>
   </a>
@@ -732,32 +710,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#multiple-comparison-correction" class="md-nav__link">
+  <a href="#manuscript-ready-description" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Multiple-comparison correction
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#effect-sizes-and-outputs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Effect sizes and outputs
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#not-found-in-code-documentation-transparency" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Not found in code (documentation transparency)
+        Manuscript-ready description
       
     </span>
   </a>
@@ -782,50 +738,50 @@
 
 
 <h1 id="post-hoc-tests-interaction-breakdown">Post-hoc tests (interaction breakdown)</h1>
-<p>Post-hoc tests are run <strong>after</strong> an interaction is found in RM-ANOVA.
-They explain <strong>which condition pairs</strong> differ <strong>within each ROI</strong>.</p>
-<hr />
-<h2 id="what-is-tested">What is tested</h2>
+<h2 id="plain-language-overview">Plain-language overview</h2>
+<p>Sometimes the main statistics tell you that an effect exists, but not
+<strong>where</strong> it comes from.</p>
+<p>If the repeated-measures ANOVA finds a <strong>Condition × ROI interaction</strong>,
+that means the size (or even the direction) of condition differences
+depends on which ROI you’re looking at.</p>
+<p>This post-hoc module answers the practical follow-up question:</p>
 <ul>
-<li><strong>Within each ROI</strong>, the tool runs <strong>paired t-tests</strong> for every pair of
-  conditions.</li>
-<li>The analysis is <strong>within-subject</strong>, so each test uses subject-wise
-  differences between the two conditions.</li>
+<li>“Within a given ROI, <strong>which specific condition pairs</strong> are different?”</li>
+</ul>
+<p>It does this in a way that matches the repeated-measures structure of
+FPVS data (the same participants contribute all conditions).</p>
+<p>Why this is useful in FPVS-EEG research:</p>
+<ul>
+<li>It turns an interaction result into an interpretable set of
+  ROI-specific comparisons you can report in Results.</li>
+<li>It keeps the comparisons <strong>within-subject</strong>, which is usually the
+  appropriate design for FPVS condition contrasts.</li>
+<li>It produces a standardized export so post-hoc reporting is consistent
+  across projects.</li>
 </ul>
 <hr />
-<h2 id="multiple-comparison-correction">Multiple-comparison correction</h2>
-<ul>
-<li><strong>Correction method:</strong> Benjamini–Hochberg FDR (<code>fdr_bh</code>).</li>
-<li><strong>Correction family:</strong> applied <strong>within each ROI</strong> (all condition-pair
-  tests for that ROI are corrected together).</li>
-</ul>
-<hr />
-<h2 id="effect-sizes-and-outputs">Effect sizes and outputs</h2>
-<p>Each pairwise result includes:</p>
-<ul>
-<li><strong>t statistic</strong> and <strong>p-value</strong> (raw and FDR-adjusted).</li>
-<li><strong>Cohen’s dz</strong> (paired-samples effect size), computed as mean difference
-  divided by the standard deviation of paired differences.</li>
-<li><strong>Mean difference</strong> (Condition A − Condition B) and 95% CI.</li>
-<li><strong>Shapiro p-value</strong> for paired differences (informational only).</li>
-</ul>
-<p>Interpretation tips:</p>
-<ul>
-<li><strong>Direction:</strong> a positive mean difference means Condition A &gt; Condition
-  B for Summed BCA.</li>
-<li><strong>Effect size (dz):</strong> larger absolute values indicate stronger
-  condition differences within the ROI.</li>
-</ul>
-<hr />
-<h2 id="not-found-in-code-documentation-transparency">Not found in code (documentation transparency)</h2>
-<p>The following details were <strong>not found in code</strong> while preparing this
-page:</p>
-<ul>
-<li>A user-facing setting to change the post-hoc correction method from
-  Benjamini–Hochberg FDR to another option. (Searched in
-  <code>src/Tools/Stats/Legacy/posthoc_tests.py</code> and
-  <code>src/Tools/Stats/PySide6/stats_workers.py</code>.)</li>
-</ul>
+<h2 id="manuscript-ready-description">Manuscript-ready description</h2>
+<p>Following detection of a significant Condition × ROI interaction in the
+repeated-measures ANOVA, ROI-stratified post-hoc testing was performed to
+identify which condition pairs differed within each ROI. For each ROI,
+all pairwise comparisons between conditions were evaluated using
+<strong>paired-samples t-tests</strong>, computed on subject-wise differences so that
+each participant served as their own control. Multiple comparisons were
+controlled using the <strong>Benjamini–Hochberg false discovery rate (FDR)</strong>
+procedure (<code>fdr_bh</code>), applied <strong>separately within each ROI</strong> such that
+the family of tests consisted of all condition-pair comparisons for that
+ROI.</p>
+<p>For each condition pair, results included the t statistic and associated
+p-value (both raw and FDR-adjusted), the mean paired difference
+(Condition A − Condition B) with a 95% confidence interval, and the
+paired-samples effect size <strong>Cohen’s dz</strong>, computed as the mean of the
+paired differences divided by the standard deviation of the paired
+differences. As an informational diagnostic, a Shapiro–Wilk normality
+test was applied to the paired differences; this value was reported but
+did not alter the inferential procedure. Positive mean differences
+indicate larger Summed BCA values in Condition A than Condition B within
+the ROI, and larger absolute dz values indicate stronger condition
+separation.</p>
 
 
 
