@@ -4,7 +4,7 @@ import pytest
 
 pytest.importorskip("PySide6")
 from PySide6.QtCore import Qt  # noqa: E402
-from PySide6.QtWidgets import QGroupBox, QHBoxLayout, QPushButton, QSplitter, QTabWidget  # noqa: E402
+from PySide6.QtWidgets import QGroupBox, QSplitter, QTabWidget  # noqa: E402
 
 from Tools.Stats.PySide6.stats_ui_pyside6 import StatsWindow  # noqa: E402
 
@@ -20,41 +20,27 @@ def test_stats_window_layout_smoke(qtbot, tmp_path, app):
     window = StatsWindow(project_dir=str(tmp_path))
     qtbot.addWidget(window)
     window.show()
+    qtbot.waitExposed(window)
 
-    layout = window.centralWidget().layout()
-    splitter = None
-    for idx in range(layout.count()):
-        item = layout.itemAt(idx)
-        if item is None:
-            continue
-        widget = item.widget()
-        if isinstance(widget, QSplitter):
-            splitter = widget
-            break
-    assert splitter is not None
+    splitter = window.main_horizontal_splitter
+    assert isinstance(splitter, QSplitter)
     assert splitter.orientation() == Qt.Horizontal
+    assert splitter.count() == 3
 
-    buttons = window.findChildren(QPushButton)
-    texts = {btn.text() for btn in buttons}
-    assert "Analyze Single Group" in texts
-    assert "Analyze Group Differences" in texts
+    group_boxes = {box.title(): box for box in window.findChildren(QGroupBox)}
+    assert group_boxes["Included Conditions"].isVisible()
+    assert group_boxes["Summed BCA definition"].isVisible()
+    assert group_boxes["Multi-Group Scan Summary"].isVisible()
+    assert group_boxes["Analysis Controls"].isVisible()
 
-    tab_widget = window.findChild(QTabWidget)
-    assert tab_widget is not None
-    assert tab_widget.isVisible()
+    assert splitter.widget(0).isAncestorOf(window.conditions_group)
+    assert splitter.widget(1).isAncestorOf(window.dv_group)
+    assert splitter.widget(2).isAncestorOf(window.output_tabs)
 
-    left_pane = splitter.widget(0)
-    right_pane = splitter.widget(1)
-    assert left_pane is not None
-    assert right_pane is not None
-    assert left_pane.isAncestorOf(window.conditions_group)
-    assert right_pane.isAncestorOf(window.output_text)
+    output_tabs = window.findChild(QTabWidget)
+    assert output_tabs is not None
+    assert output_tabs.isVisible()
+    assert output_tabs.height() > 80
 
-    group_boxes = window.findChildren(QGroupBox)
-    analysis_box = next(box for box in group_boxes if box.title() == "Analysis Controls")
-    single_group_box = next(box for box in group_boxes if box.title() == "Single Group Analysis")
-    between_group_box = next(box for box in group_boxes if box.title() == "Between-Group Analysis")
-    analysis_layout = analysis_box.layout()
-    assert isinstance(analysis_layout, QHBoxLayout)
-    assert analysis_layout.indexOf(single_group_box) != -1
-    assert analysis_layout.indexOf(between_group_box) != -1
+    assert isinstance(window.right_vertical_splitter, QSplitter)
+    assert window.right_vertical_splitter.orientation() == Qt.Vertical
