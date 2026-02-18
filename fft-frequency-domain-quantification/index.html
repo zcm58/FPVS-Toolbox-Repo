@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../fft-frequency-domain-quantification/">
+        <link rel="prev" href="../processing-pipeline/">
       
       
-        <link rel="next" href="../statistics/rossion-harmonic-selection/">
+        <link rel="next" href="../statistical-analysis/">
       
       
         
@@ -23,7 +23,7 @@
     
     
       
-        <title>Overview - FPVS Toolbox</title>
+        <title>FFT and Frequency-Domain Quantification (FPVS) - FPVS Toolbox</title>
       
     
     
@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#statistical-analysis" class="md-skip">
+        <a href="#fft-and-frequency-domain-quantification-fpvs" class="md-skip">
           Skip to content
         </a>
       
@@ -100,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              FFT and Frequency-Domain Quantification (FPVS)
             
           </span>
         </div>
@@ -220,18 +220,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -252,7 +254,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -295,90 +297,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../fft-frequency-domain-quantification/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FFT and Frequency-Domain Quantification (FPVS)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Statistical Analysis
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Statistical Analysis
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
     
   
   
@@ -398,7 +316,7 @@
   <span class="md-ellipsis">
     
   
-    Overview
+    FFT and Frequency-Domain Quantification (FPVS)
   
 
     
@@ -416,7 +334,7 @@
   <span class="md-ellipsis">
     
   
-    Overview
+    FFT and Frequency-Domain Quantification (FPVS)
   
 
     
@@ -442,10 +360,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-the-methods-work-together-high-level" class="md-nav__link">
+  <a href="#what-is-an-fft-bin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How the methods work together (high-level)
+        What is an FFT “bin”?
       
     </span>
   </a>
@@ -453,10 +371,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#summed-bca-dv-and-harmonic-selection" class="md-nav__link">
+  <a href="#why-fpvs-needs-bin-locked-segment-lengths-integer-cycle-cropping" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Summed BCA DV and harmonic selection
+        Why FPVS needs “bin-locked” segment lengths (integer-cycle cropping)
       
     </span>
   </a>
@@ -464,44 +382,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#single-group-analyses" class="md-nav__link">
+  <a href="#how-the-toolbox-defines-the-fft-segment-using-oddball-triggers-55" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Single-group analyses
+        How the Toolbox defines the FFT segment using oddball triggers (“55”)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Single-group analyses">
+    <nav class="md-nav" aria-label="How the Toolbox defines the FFT segment using oddball triggers (“55”)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#repeated-measures-anova-rm-anova" class="md-nav__link">
+  <a href="#why-n55-1-matters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Repeated-measures ANOVA (RM-ANOVA)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#post-hoc-tests-interaction-breakdown" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Post-hoc tests (interaction breakdown)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#linear-mixed-effects-model-single-group" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Linear mixed-effects model (single group)
+        Why “n55 − 1” matters
       
     </span>
   </a>
@@ -514,44 +410,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#multi-group-analyses" class="md-nav__link">
+  <a href="#enforcing-an-on-bin-sample-count-works-across-sampling-rates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Multi-group analyses
+        Enforcing an on-bin sample count (works across sampling rates)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Multi-group analyses">
+    <nav class="md-nav" aria-label="Enforcing an on-bin sample count (works across sampling rates)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#between-group-anova-mixed-anova" class="md-nav__link">
+  <a href="#common-n-across-repetitions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Between-group ANOVA (mixed ANOVA)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#between-group-mixed-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Between-group mixed model
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#group-contrasts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Group contrasts
+        Common N across repetitions
       
     </span>
   </a>
@@ -564,10 +438,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#outliers-qc-flags-and-manual-exclusions" class="md-nav__link">
+  <a href="#what-the-fft-and-neighbors-sheet-means" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Outliers, QC flags, and manual exclusions
+        What the “FFT and neighbors” sheet means
       
     </span>
   </a>
@@ -575,10 +449,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#output-files" class="md-nav__link">
+  <a href="#notes-about-snr-noise-estimation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output files
+        Notes about SNR / noise estimation
       
     </span>
   </a>
@@ -586,10 +460,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#not-found-in-code-documentation-transparency" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Not found in code (documentation transparency)
+        Summary
       
     </span>
   </a>
@@ -600,6 +474,88 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Statistical Analysis
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Statistical Analysis
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistical-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -915,10 +871,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-the-methods-work-together-high-level" class="md-nav__link">
+  <a href="#what-is-an-fft-bin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How the methods work together (high-level)
+        What is an FFT “bin”?
       
     </span>
   </a>
@@ -926,10 +882,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#summed-bca-dv-and-harmonic-selection" class="md-nav__link">
+  <a href="#why-fpvs-needs-bin-locked-segment-lengths-integer-cycle-cropping" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Summed BCA DV and harmonic selection
+        Why FPVS needs “bin-locked” segment lengths (integer-cycle cropping)
       
     </span>
   </a>
@@ -937,44 +893,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#single-group-analyses" class="md-nav__link">
+  <a href="#how-the-toolbox-defines-the-fft-segment-using-oddball-triggers-55" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Single-group analyses
+        How the Toolbox defines the FFT segment using oddball triggers (“55”)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Single-group analyses">
+    <nav class="md-nav" aria-label="How the Toolbox defines the FFT segment using oddball triggers (“55”)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#repeated-measures-anova-rm-anova" class="md-nav__link">
+  <a href="#why-n55-1-matters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Repeated-measures ANOVA (RM-ANOVA)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#post-hoc-tests-interaction-breakdown" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Post-hoc tests (interaction breakdown)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#linear-mixed-effects-model-single-group" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Linear mixed-effects model (single group)
+        Why “n55 − 1” matters
       
     </span>
   </a>
@@ -987,44 +921,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#multi-group-analyses" class="md-nav__link">
+  <a href="#enforcing-an-on-bin-sample-count-works-across-sampling-rates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Multi-group analyses
+        Enforcing an on-bin sample count (works across sampling rates)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Multi-group analyses">
+    <nav class="md-nav" aria-label="Enforcing an on-bin sample count (works across sampling rates)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#between-group-anova-mixed-anova" class="md-nav__link">
+  <a href="#common-n-across-repetitions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Between-group ANOVA (mixed ANOVA)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#between-group-mixed-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Between-group mixed model
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#group-contrasts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Group contrasts
+        Common N across repetitions
       
     </span>
   </a>
@@ -1037,10 +949,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#outliers-qc-flags-and-manual-exclusions" class="md-nav__link">
+  <a href="#what-the-fft-and-neighbors-sheet-means" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Outliers, QC flags, and manual exclusions
+        What the “FFT and neighbors” sheet means
       
     </span>
   </a>
@@ -1048,10 +960,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#output-files" class="md-nav__link">
+  <a href="#notes-about-snr-noise-estimation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output files
+        Notes about SNR / noise estimation
       
     </span>
   </a>
@@ -1059,10 +971,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#not-found-in-code-documentation-transparency" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Not found in code (documentation transparency)
+        Summary
       
     </span>
   </a>
@@ -1086,151 +998,111 @@
 
 
 
-<h1 id="statistical-analysis">Statistical Analysis</h1>
-<p>This page summarizes the statistical methods used by the FPVS Toolbox
-<strong>Statistical Analysis</strong> module for end users. It focuses on the primary
-output measure (<strong>Summed BCA</strong>) and how to interpret results in the
-single-group and multi-group workflows.</p>
-<hr />
-<h2 id="how-the-methods-work-together-high-level">How the methods work together (high-level)</h2>
-<ol>
-<li><strong>Summed BCA DV is defined</strong> from the ROI-aggregated spectral outputs.</li>
-<li><strong>Harmonics are selected</strong> (e.g., Rossion method) to decide which
-   oddball harmonics contribute to the DV.</li>
-<li>A <strong>subject × condition × ROI table</strong> of Summed BCA values is built.</li>
-<li><strong>RM-ANOVA</strong> and/or a <strong>linear mixed-effects model</strong> summarize
-   condition, ROI, and interaction effects.</li>
-<li><strong>Post-hoc paired t-tests</strong> (within each ROI) follow a significant
-   interaction to explain which condition pairs differ.</li>
-</ol>
-<p>Interpretation guide (single-group):</p>
+<h1 id="fft-and-frequency-domain-quantification-fpvs">FFT and Frequency-Domain Quantification (FPVS)</h1>
+<p>This Toolbox quantifies Fast Periodic Visual Stimulation (FPVS) responses in the <strong>frequency domain</strong>. In FPVS, images are presented at a fixed “base” rate (for example, 6 Hz). Every Nth image is an “oddball,” so the oddball events occur at a lower fixed rate (for example, <strong>1.2 Hz</strong> when every 5th image is an oddball). If the brain is tracking these periodic events, the EEG spectrum shows peaks at the stimulation frequencies and their harmonics.</p>
+<h2 id="what-is-an-fft-bin">What is an FFT “bin”?</h2>
+<p>When we compute a Fast Fourier Transform (FFT) on a finite time segment, the spectrum is evaluated at a discrete set of frequencies called <strong>bins</strong>. The spacing between bins is the <strong>frequency resolution</strong>:</p>
 <ul>
-<li><strong>Overall response present:</strong> Summed BCA values are consistently above
-  zero and/or the mixed-model intercept is positive. Note that RM-ANOVA
-  tests differences among conditions and ROIs; it does not directly test
-  DV vs 0 (Not found in code: an explicit one-sample test on Summed BCA
-  within the main RM-ANOVA pipeline). See “Not found in code” notes below.</li>
-<li><strong>Condition main effect:</strong> responses differ across experimental
-  conditions (averaged across ROIs).</li>
-<li><strong>ROI main effect:</strong> responses differ across ROIs (averaged across
-  conditions).</li>
-<li><strong>Condition × ROI interaction:</strong> the condition effect depends on which
-  ROI is considered.</li>
+<li><strong>T</strong> = length of the analyzed time segment (seconds)  </li>
+<li><strong>fs</strong> = sampling rate (Hz)  </li>
+<li><strong>N</strong> = number of samples in the analyzed segment  </li>
+<li><strong>T = N / fs</strong>  </li>
+<li><strong>df = 1 / T = fs / N</strong> (Hz per bin)</li>
 </ul>
-<p>Cautions:</p>
+<p>Each FFT bin corresponds to a frequency:
+- bin k corresponds to frequency <strong>f(k) = k * df</strong>.</p>
+<p>So if df is 0.00833 Hz, then bin k=144 corresponds exactly to 144 × 0.00833 ≈ <strong>1.2 Hz</strong>.</p>
+<h2 id="why-fpvs-needs-bin-locked-segment-lengths-integer-cycle-cropping">Why FPVS needs “bin-locked” segment lengths (integer-cycle cropping)</h2>
+<p>FPVS analysis often focuses on the amplitude at the <strong>oddball frequency</strong> (e.g., 1.2 Hz) and its harmonics (2.4 Hz, 3.6 Hz, …). This works best when the oddball frequency lands <strong>exactly on an FFT bin</strong>.</p>
+<p>If the analyzed segment length does <em>not</em> contain an integer number of oddball cycles, the oddball energy does not fall cleanly into a single bin. Instead, it spreads into neighboring bins. This is commonly called <strong>spectral leakage</strong>. Leakage makes the “target bin amplitude” smaller than it should be and can inflate or distort noise estimates around that bin.</p>
+<p>The key requirement for bin-locking is:</p>
 <ul>
-<li><strong>Multiple comparisons:</strong> post-hoc tests are corrected for false
-  discovery rate; still interpret effect sizes and confidence intervals.</li>
-<li><strong>Harmonic sets can differ by ROI</strong> (Rossion method). This can make ROI
-  differences partly reflect different harmonic selections.</li>
-<li><strong>Assumptions:</strong> check normality and sphericity (RM-ANOVA) and residual
-  diagnostics (mixed model) as part of reporting.</li>
+<li>The segment must contain an <strong>integer number of oddball cycles</strong>.</li>
 </ul>
-<hr />
-<h2 id="summed-bca-dv-and-harmonic-selection">Summed BCA DV and harmonic selection</h2>
-<p>The DV used for statistical analysis is the <strong>Summed baseline-corrected
-oddball amplitude (Summed BCA)</strong>. It is computed per
-<strong>subject × condition × ROI</strong> by summing BCA across selected oddball
-harmonics and then averaging across ROI channels.</p>
+<p>Equivalently:
+- <strong>f_oddball × T</strong> must be an integer<br />
+- or <strong>f_oddball = k × df</strong> for some integer bin k</p>
+<p>This Toolbox enforces this rule by cropping the segment used for FFT to a sample count <strong>N</strong> that guarantees oddball bin alignment.</p>
+<h2 id="how-the-toolbox-defines-the-fft-segment-using-oddball-triggers-55">How the Toolbox defines the FFT segment using oddball triggers (“55”)</h2>
+<p>During acquisition, the start of a condition is marked by a condition code (e.g., 1, 2, 3, …). Every time an oddball stimulus is shown, an event code <strong>55</strong> is emitted. This creates a structure like:</p>
 <ul>
-<li><strong>Source data:</strong> The DV is computed from the <strong>“BCA (uV)”</strong> sheet in the
-  spectral/ROI output file; Z-score information used for harmonic
-  selection comes from the <strong>“Z Score”</strong> sheet.</li>
-<li><strong>ROI aggregation:</strong> The ROI mean is computed after summing selected
-  harmonics for each channel within the ROI.</li>
+<li>condition start trigger (e.g., “1”)  </li>
+<li>short blank / lead-in  </li>
+<li>55, 55, 55, 55, … (one per oddball at 1.2 Hz)  </li>
+<li>condition ends (no special “last oddball” trigger; the last 55 in the series is effectively the last oddball)</li>
 </ul>
-<p>For detailed harmonic selection rules (Rossion method), see:
-<strong><a href="../statistics/rossion-harmonic-selection/">Rossion harmonic selection</a></strong>.</p>
-<hr />
-<h2 id="single-group-analyses">Single-group analyses</h2>
-<h3 id="repeated-measures-anova-rm-anova">Repeated-measures ANOVA (RM-ANOVA)</h3>
+<p>To define a “steady stimulation” analysis window, the Toolbox can use the first and last 55 triggers for each condition repetition:</p>
+<p>1) Find all 55 events that occur within the condition repetition.
+2) Identify the <strong>first 55</strong> and the <strong>last 55</strong>.
+3) Use this region as the basis for selecting the FFT segment.</p>
+<p>This avoids relying on a fixed “tmin/tmax in seconds” window that might include non-steady periods (e.g., lead-in blank screens) and it naturally adapts across sampling rates because everything is based on sample indices and event timing.</p>
+<h3 id="why-n55-1-matters">Why “n55 − 1” matters</h3>
+<p>If there are <strong>n55</strong> oddball triggers in a repetition, there are <strong>n55 − 1 intervals</strong> between them. Those intervals represent complete oddball periods. Using the intervals between the first and last oddball events is the most conservative way to guarantee an integer number of oddball cycles without needing to assume extra time after the last oddball trigger.</p>
+<p>In plain terms:
+- <strong>n55</strong> = number of oddballs observed
+- <strong>n55 − 1</strong> = number of full oddball cycles between the first and last oddball</p>
+<p>This is a safe choice when you want the FFT segment to be based on confirmed, fully observed cycles.</p>
+<h2 id="enforcing-an-on-bin-sample-count-works-across-sampling-rates">Enforcing an on-bin sample count (works across sampling rates)</h2>
+<p>The oddball rate in this project is currently <strong>1.2 Hz</strong>, which equals <strong>6/5 Hz</strong>. To be exactly on-bin, we need a sample count <strong>N</strong> such that:</p>
 <ul>
-<li><strong>Within-subject factors:</strong> Condition and ROI (plus their interaction).</li>
-<li><strong>Implementation:</strong></li>
-<li>Primary path: <strong>Pingouin</strong> <code>rm_anova</code> (detailed table when available,
-    including Greenhouse–Geisser and Huynh–Feldt corrections).</li>
-<li>Fallback: <strong>statsmodels</strong> <code>AnovaRM</code> if Pingouin is not available.</li>
-<li><strong>Outputs:</strong> F statistic, numerator/denominator degrees of freedom,
-  p-values, and <strong>partial eta-squared</strong> effect sizes.</li>
+<li>oddball cycles in the segment = <strong>f_oddball × (N/fs)</strong> is an integer</li>
 </ul>
-<p>Interpretation:</p>
+<p>For f_oddball = 6/5, that means we need:</p>
 <ul>
-<li><strong>F statistic:</strong> ratio of variance explained by the effect to residual
-  variance (larger F → stronger evidence for an effect).</li>
-<li><strong>df1/df2:</strong> numerator/denominator degrees of freedom for the effect.</li>
-<li><strong>GG/HF corrections:</strong> appear when Pingouin can compute sphericity
-  corrections.</li>
+<li>(6 × N) / (5 × fs) is an integer</li>
 </ul>
-<p>For more details, see: <strong><a href="../statistics/rm-anova/">RM-ANOVA details</a></strong>.</p>
-<h3 id="post-hoc-tests-interaction-breakdown">Post-hoc tests (interaction breakdown)</h3>
+<p>In practice, the Toolbox computes an “on-bin step size” in samples for the current sampling rate (fs). For example:
+- If fs = 256 Hz, a valid on-bin step is <strong>640 samples</strong> (2.5 seconds).<br />
+  That guarantees that 1.2 Hz aligns to an FFT bin (because df = fs/N becomes a divisor that places 1.2 exactly on a bin).</p>
+<p>Then the Toolbox snaps the usable sample length down to the largest multiple of this step:</p>
 <ul>
-<li><strong>Paired t-tests</strong> between <strong>all condition pairs</strong>, run <strong>separately
-  within each ROI</strong>.</li>
-<li><strong>Correction:</strong> Benjamini–Hochberg FDR <strong>within each ROI</strong> (i.e., each
-  ROI’s condition-pair family is corrected independently).</li>
-<li><strong>Effect size:</strong> <strong>Cohen’s dz</strong> for paired samples, based on the
-  subject-wise condition differences.</li>
+<li><strong>N = floor(available_samples / step) × step</strong></li>
 </ul>
-<p>For more details, see: <strong><a href="../statistics/posthoc-tests/">Post-hoc tests</a></strong>.</p>
-<h3 id="linear-mixed-effects-model-single-group">Linear mixed-effects model (single group)</h3>
+<p>This guarantees:
+- N is a clean multiple of the on-bin step
+- df = fs / N yields a bin exactly at 1.2 Hz (and therefore also at integer harmonics of 1.2)</p>
+<h3 id="common-n-across-repetitions">Common N across repetitions</h3>
+<p>When a condition has multiple repetitions, each repetition may have slightly different available lengths (missing triggers, dropped samples, etc.). To avoid mixing spectra with different df values, the Toolbox enforces a <strong>common N per condition</strong>, chosen as:</p>
 <ul>
-<li><strong>Library:</strong> statsmodels <code>MixedLM</code>.</li>
-<li><strong>Fixed effects:</strong> condition, ROI, and condition × ROI interaction.</li>
-<li><strong>Random effects:</strong> <strong>random intercept for subject</strong>.</li>
-<li><strong>Coding:</strong> condition and ROI are <strong>sum-coded</strong> by default when present
-  (no explicit coding is set for other factors).</li>
+<li>take the minimum usable N across repetitions</li>
+<li>snap it down to the nearest on-bin multiple</li>
 </ul>
-<p>For more details, see: <strong><a href="../statistics/mixed-model/">Mixed model details</a></strong>.</p>
-<hr />
-<h2 id="multi-group-analyses">Multi-group analyses</h2>
-<p>Multi-group mode compares two or more groups (e.g., clinical vs control).</p>
-<h3 id="between-group-anova-mixed-anova">Between-group ANOVA (mixed ANOVA)</h3>
+<p>This ensures that within a condition, all repetitions share the same:
+- sampling rate fs
+- FFT length N
+- frequency resolution df
+- bin index for the oddball frequency (k0)</p>
+<h2 id="what-the-fft-and-neighbors-sheet-means">What the “FFT and neighbors” sheet means</h2>
+<p>Some exports include a sheet (for example, “FFT and neighbors”) that stores amplitudes not only at the target bin, but also at neighboring bins around the target. These columns help diagnose leakage, noise floor structure, and whether the peak is cleanly centered.</p>
+<p>Key columns:</p>
 <ul>
-<li><strong>Factors:</strong> Group (between-subjects) × Condition (within-subjects).</li>
-<li><strong>DV:</strong> Summed BCA, typically <strong>collapsed across ROI</strong> for this test.</li>
-<li><strong>Implementation:</strong> Pingouin <code>mixed_anova</code> is required; the fallback
-  does not support a between-group factor.</li>
+<li><strong>fs</strong>: sampling rate (Hz)</li>
+<li><strong>N</strong>: number of samples in the FFT segment</li>
+<li><strong>T_sec</strong>: segment duration in seconds (N / fs)</li>
+<li><strong>df_hz</strong>: frequency resolution (fs / N)</li>
+<li><strong>k0</strong>: bin index used for the target (nearest or exact)</li>
+<li><strong>f_bin_hz</strong>: actual bin frequency at k0 (k0 × df)</li>
+<li><strong>crop_mode</strong>:</li>
+<li><strong>55_onbin</strong> means the segment was derived from oddball triggers and snapped to an on-bin N</li>
+<li><strong>fixed_epoch_fallback</strong> means the system could not apply 55-based cropping and used the legacy fixed window (tmin/tmax) instead</li>
+<li><strong>n55</strong>, <strong>first55_samp</strong>, <strong>last55_samp</strong>: oddball trigger count and indices used to define the crop region</li>
+<li><strong>N_step</strong>: the on-bin step size in samples for this fs</li>
+<li><strong>N_mod_step</strong>: N % N_step (should be 0 in on-bin mode)</li>
+<li><strong>fallback_reason</strong>: why 55-based cropping was not used (e.g., missing triggers)</li>
 </ul>
-<h3 id="between-group-mixed-model">Between-group mixed model</h3>
+<p>Neighbor amplitude columns:
+- <strong>amp_m11 ... amp_m1</strong> are the amplitudes at bins below the target (k0−11 … k0−1)
+- <strong>amp_p1 ... amp_p11</strong> are the amplitudes at bins above the target (k0+1 … k0+11)</p>
+<p>If the segment is perfectly bin-locked and the signal is stable, you typically expect a strong peak at the target bin with relatively smaller neighbors (though real EEG and harmonics can complicate this). If the target energy spreads across multiple bins, that suggests leakage or non-stationarity.</p>
+<h2 id="notes-about-snr-noise-estimation">Notes about SNR / noise estimation</h2>
+<p>Many FPVS pipelines estimate a local noise floor using bins around the target frequency while excluding the immediately adjacent bins. This reduces contamination from leakage into neighboring bins. The Toolbox follows this same general idea: a target bin is compared against nearby bins to estimate noise, and then SNR- or z-like metrics can be computed from that local baseline.</p>
+<h2 id="summary">Summary</h2>
 <ul>
-<li><strong>Fixed effects:</strong> group, condition, ROI, and all interactions.</li>
-<li><strong>Random effects:</strong> random intercept for subject.</li>
-</ul>
-<h3 id="group-contrasts">Group contrasts</h3>
-<ul>
-<li><strong>Welch’s t-tests</strong> (unequal variances) for each
-  <strong>condition × ROI</strong> combination.</li>
-<li><strong>Correction:</strong> Benjamini–Hochberg FDR across all contrasts in the
-  output table.</li>
-<li><strong>Effect size:</strong> Cohen’s d for independent groups.</li>
-</ul>
-<hr />
-<h2 id="outliers-qc-flags-and-manual-exclusions">Outliers, QC flags, and manual exclusions</h2>
-<p>The Stats tool can generate <strong>QC and DV flags</strong> and separate them from
-<strong>manual exclusions</strong>. See
-<strong><a href="../statistics/outliers-and-qc/">Outliers and QC</a></strong> for details.</p>
-<hr />
-<h2 id="output-files">Output files</h2>
-<ul>
-<li>Results are written to the project’s <strong>“3 - Statistical Analysis
-  Results”</strong> folder.</li>
-<li>Common exports include:</li>
-<li>RM-ANOVA tables.</li>
-<li>Mixed-model fixed-effects tables.</li>
-<li>Post-hoc tables with raw and FDR-adjusted p-values plus effect sizes.</li>
-<li>Rossion DV definition export (when using Rossion selection).</li>
-<li>Flagged and excluded participant reports (if QC/outlier checks are
-    enabled).</li>
-</ul>
-<hr />
-<h2 id="not-found-in-code-documentation-transparency">Not found in code (documentation transparency)</h2>
-<p>The following details were <strong>not found in code</strong> while preparing this
-page:</p>
-<ul>
-<li>An explicit one-sample test against zero as part of the RM-ANOVA
-  pipeline. (Searched in <code>src/Tools/Stats/PySide6/stats_workers.py</code>,
-  <code>src/Tools/Stats/Legacy/stats_analysis.py</code>, and
-  <code>src/Tools/Stats/Legacy/repeated_m_anova.py</code>.)</li>
+<li>FFT bins are spaced by df = fs/N.</li>
+<li>FPVS amplitude estimates at 1.2 Hz work best when 1.2 Hz lands exactly on a bin.</li>
+<li>If the segment does not contain an integer number of oddball cycles, energy leaks into neighboring bins (spectral leakage).</li>
+<li>The Toolbox avoids this by using oddball triggers (55) to define the stimulation segment and snapping N to an on-bin multiple for the current sampling rate.</li>
+<li>The “FFT and neighbors” export is a diagnostic view that shows amplitudes around the target bin to confirm bin-locking and evaluate leakage/noise.</li>
 </ul>
 
 
