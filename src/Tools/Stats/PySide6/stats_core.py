@@ -37,6 +37,7 @@ ANOVA_BETWEEN_XLS: Final[str] = "Mixed ANOVA Between Groups.xlsx"
 LMM_BETWEEN_XLS: Final[str] = "Mixed Model Between Groups.xlsx"
 GROUP_CONTRAST_XLS: Final[str] = "Group Contrasts.xlsx"
 BASELINE_VS_ZERO_XLS: Final[str] = "Baseline vs Zero Tests.xlsx"
+SUMMARY_TABLE_XLS: Final[str] = "Summary Table.xlsx"
 
 
 @dataclass
@@ -61,5 +62,6 @@ __all__ = [
     "LMM_BETWEEN_XLS",
     "GROUP_CONTRAST_XLS",
     "BASELINE_VS_ZERO_XLS",
+    "SUMMARY_TABLE_XLS",
     "PipelineStep",
 ]

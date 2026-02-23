@@ -70,6 +70,7 @@ from Tools.Stats.PySide6.stats_core import (
     ANOVA_BETWEEN_XLS,
     ANOVA_XLS,
     BASELINE_VS_ZERO_XLS,
+    SUMMARY_TABLE_XLS,
     GROUP_CONTRAST_XLS,
     HARMONIC_XLS,
     LMM_BETWEEN_XLS,
@@ -103,6 +104,7 @@ from Tools.Stats.PySide6.stats_export_formatting import (
 )
 from Tools.Stats.PySide6.stats_qc_reports import export_qc_context_workbook
 from Tools.Stats.PySide6.stats_workers import StatsWorker
+from Tools.Stats.PySide6.summary_table_export import generate_summary_table_export
 from Tools.Stats.PySide6 import stats_workers as stats_worker_funcs
 from Tools.Stats.PySide6.dv_policies import (
     EMPTY_LIST_ERROR,
@@ -238,6 +240,7 @@ class StatsWindow(QMainWindow):
         self.group_contrasts_results_data: Optional[pd.DataFrame] = None
         self.posthoc_results_data: Optional[pd.DataFrame] = None
         self.baseline_vs_zero_results_payload: Optional[dict] = None
+        self._single_model_long_df: Optional[pd.DataFrame] = None
         self.harmonic_check_results_data: List[dict] = []
         self._harmonic_results: dict[PipelineId, list[dict]] = {
             PipelineId.SINGLE: [],
@@ -2829,6 +2832,10 @@ class StatsWindow(QMainWindow):
 
                 paths.extend(result_paths)
 
+            summary_path = self._export_summary_table_single(out_dir)
+            if summary_path is not None:
+                paths.append(summary_path)
+
             dv_variant_paths = self._export_dv_variants(PipelineId.SINGLE, out_dir)
             if dv_variant_paths:
                 paths.extend(dv_variant_paths)
@@ -2848,6 +2855,35 @@ class StatsWindow(QMainWindow):
         except Exception as exc:  # noqa: BLE001
             self.append_log(section, f"  • Export failed: {exc}", level="error")
             return False
+
+    def _export_summary_table_single(self, out_dir: str) -> Path | None:
+        """Export Summary Table workbook for the single-group pipeline."""
+        if self._active_pipeline is PipelineId.BETWEEN:
+            raise NotImplementedError("Summary Table export currently supports single-group runs only.")
+
+        if not isinstance(self._single_model_long_df, pd.DataFrame) or self._single_model_long_df.empty:
+            raise ValueError("Summary Table export requires non-empty single-group model long-format data.")
+        if not isinstance(self.baseline_vs_zero_results_payload, dict):
+            raise ValueError("Summary Table export requires baseline-vs-zero payload data.")
+
+        baseline_df = self.baseline_vs_zero_results_payload.get("results_df")
+        if not isinstance(baseline_df, pd.DataFrame) or baseline_df.empty:
+            raise ValueError("Summary Table export requires baseline-vs-zero results_df.")
+
+        conditions = self._get_selected_conditions()
+        rois = list(self.rois.keys())
+        save_path = Path(out_dir) / SUMMARY_TABLE_XLS
+        return generate_summary_table_export(
+            save_path=save_path,
+            long_df=self._single_model_long_df,
+            baseline_results_df=baseline_df,
+            conditions=conditions,
+            rois=rois,
+            log_func=self._set_status,
+            project_name=self.project_title,
+            run_identifier=self._phase_label,
+            is_between_group=False,
+        )
 
     def _export_dv_variants(self, pipeline_id: PipelineId, out_dir: str) -> list[Path]:
         """Handle the export dv variants step for the Stats PySide6 workflow."""
@@ -3128,6 +3164,7 @@ class StatsWindow(QMainWindow):
     def _apply_rm_anova_results(self, payload: dict, *, update_text: bool = True) -> str:
         """Handle the apply rm anova results step for the Stats PySide6 workflow."""
         self.rm_anova_results_data = payload.get("anova_df_results")
+        self._single_model_long_df = payload.get("model_long_df")
         self._store_dv_metadata(PipelineId.SINGLE, payload)
         self._store_run_report(PipelineId.SINGLE, payload)
         alpha = getattr(self, "_current_alpha", 0.05)
@@ -4097,6 +4134,7 @@ class StatsWindow(QMainWindow):
         """Handle the on run rm anova step for the Stats PySide6 workflow."""
         self._clear_output_views()
         self.rm_anova_results_data = None
+        self._single_model_long_df = None
         self._update_export_buttons()
         self._controller.run_single_group_rm_anova_only()
 

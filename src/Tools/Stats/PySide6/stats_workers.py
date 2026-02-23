@@ -1056,6 +1056,7 @@ def run_rm_anova(
 
     return {
         "anova_df_results": anova_df_results,
+        "model_long_df": _long_format_from_bca(all_subject_bca_data),
         "output_text": output_text,
         "dv_metadata": dv_metadata,
         "dv_variants": _serialize_dv_variants_payload(dv_variants_payload),
