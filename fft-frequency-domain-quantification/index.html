@@ -76,9 +76,7 @@
     
       
 
-  
-
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="FPVS Toolbox" class="md-header__button md-logo" aria-label="FPVS Toolbox" data-md-component="logo">
       
@@ -137,6 +135,8 @@
         </button>
       </nav>
       
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
@@ -162,6 +162,136 @@
       
         
           
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../getting-started/" class="md-tabs__link">
+          
+  
+  
+  Start Here
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../processing-pipeline/" class="md-tabs__link">
+          
+  
+  
+  Analysis Workflow
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tools/individual-level-detectability/" class="md-tabs__link">
+          
+  
+  
+  Tools
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tutorial/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../outputs-reference/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
         
       
       <main class="md-main" data-md-component="main">
@@ -175,8 +305,12 @@
                     
 
 
+  
 
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="FPVS Toolbox" class="md-nav__button md-logo" aria-label="FPVS Toolbox" data-md-component="logo">
       
@@ -220,20 +354,25 @@
       
   
   
-    
   
   
-  
     
     
     
     
+      
+      
+        
+      
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -243,7 +382,7 @@
   <span class="md-ellipsis">
     
   
-    Processing Pipeline
+    Start Here
   
 
     
@@ -254,12 +393,188 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Processing Pipeline
+    Start Here
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fpvs-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPVS Concepts for Non-Experts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature-tour/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feature Tour
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analysis Workflow
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Analysis Workflow
   
 
           </label>
@@ -279,7 +594,7 @@
   <span class="md-ellipsis">
     
   
-    Overview
+    Processing Pipeline Overview
   
 
     
@@ -479,60 +794,6 @@
 
               
             
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Statistical Analysis
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Statistical Analysis
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
               
                 
   
@@ -547,7 +808,7 @@
   <span class="md-ellipsis">
     
   
-    Overview
+    Statistical Analysis Overview
   
 
     
@@ -575,7 +836,7 @@
   <span class="md-ellipsis">
     
   
-    Rossion harmonic selection
+    Rossion Harmonic Selection
   
 
     
@@ -631,7 +892,7 @@
   <span class="md-ellipsis">
     
   
-    Post-hoc tests
+    Post-hoc Tests
   
 
     
@@ -659,7 +920,7 @@
   <span class="md-ellipsis">
     
   
-    Mixed model
+    Mixed Model
   
 
     
@@ -715,7 +976,7 @@
   <span class="md-ellipsis">
     
   
-    Baseline vs Zero tests
+    Baseline vs Zero Tests
   
 
     
@@ -742,46 +1003,26 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../relevant-publications/" class="md-nav__link">
+    
+    
+    
+    
+      
+      
         
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Relevant Publications
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
       
-      
-  
-  
-  
-  
-    
-    
-    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -799,8 +1040,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -851,9 +1092,27 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../tutorials.md" class="md-nav__link">
+    
+    
+    
+    
+      
+      
         
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -867,7 +1126,224 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First End-to-End Walkthrough
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../outputs-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Output Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relevant-publications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Relevant Publications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -879,143 +1355,6 @@
               </div>
             
             
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-an-fft-bin" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is an FFT “bin”?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-fpvs-needs-bin-locked-segment-lengths-integer-cycle-cropping" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why FPVS needs “bin-locked” segment lengths (integer-cycle cropping)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-the-toolbox-defines-the-fft-segment-using-oddball-triggers-55" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How the Toolbox defines the FFT segment using oddball triggers (“55”)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How the Toolbox defines the FFT segment using oddball triggers (“55”)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-n55-1-matters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why “n55 − 1” matters
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#enforcing-an-on-bin-sample-count-works-across-sampling-rates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enforcing an on-bin sample count (works across sampling rates)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Enforcing an on-bin sample count (works across sampling rates)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#common-n-across-repetitions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common N across repetitions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-the-fft-and-neighbors-sheet-means" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What the “FFT and neighbors” sheet means
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#notes-about-snr-noise-estimation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Notes about SNR / noise estimation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Summary
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           
             <div class="md-content" data-md-component="content">
@@ -1026,9 +1365,9 @@
 
 
 
-<h1 id="fft-and-frequency-domain-quantification-fpvs">FFT and Frequency-Domain Quantification (FPVS)</h1>
+<h1 id="fft-and-frequency-domain-quantification-fpvs">FFT and Frequency-Domain Quantification (FPVS)<a class="headerlink" href="#fft-and-frequency-domain-quantification-fpvs" title="Permanent link">&para;</a></h1>
 <p>This Toolbox quantifies Fast Periodic Visual Stimulation (FPVS) responses in the <strong>frequency domain</strong>. In FPVS, images are presented at a fixed “base” rate (for example, 6 Hz). Every Nth image is an “oddball,” so the oddball events occur at a lower fixed rate (for example, <strong>1.2 Hz</strong> when every 5th image is an oddball). If the brain is tracking these periodic events, the EEG spectrum shows peaks at the stimulation frequencies and their harmonics.</p>
-<h2 id="what-is-an-fft-bin">What is an FFT “bin”?</h2>
+<h2 id="what-is-an-fft-bin">What is an FFT “bin”?<a class="headerlink" href="#what-is-an-fft-bin" title="Permanent link">&para;</a></h2>
 <p>When we compute a Fast Fourier Transform (FFT) on a finite time segment, the spectrum is evaluated at a discrete set of frequencies called <strong>bins</strong>. The spacing between bins is the <strong>frequency resolution</strong>:</p>
 <ul>
 <li><strong>T</strong> = length of the analyzed time segment (seconds)  </li>
@@ -1040,7 +1379,7 @@
 <p>Each FFT bin corresponds to a frequency:
 - bin k corresponds to frequency <strong>f(k) = k * df</strong>.</p>
 <p>So if df is 0.00833 Hz, then bin k=144 corresponds exactly to 144 × 0.00833 ≈ <strong>1.2 Hz</strong>.</p>
-<h2 id="why-fpvs-needs-bin-locked-segment-lengths-integer-cycle-cropping">Why FPVS needs “bin-locked” segment lengths (integer-cycle cropping)</h2>
+<h2 id="why-fpvs-needs-bin-locked-segment-lengths-integer-cycle-cropping">Why FPVS needs “bin-locked” segment lengths (integer-cycle cropping)<a class="headerlink" href="#why-fpvs-needs-bin-locked-segment-lengths-integer-cycle-cropping" title="Permanent link">&para;</a></h2>
 <p>FPVS analysis often focuses on the amplitude at the <strong>oddball frequency</strong> (e.g., 1.2 Hz) and its harmonics (2.4 Hz, 3.6 Hz, …). This works best when the oddball frequency lands <strong>exactly on an FFT bin</strong>.</p>
 <p>If the analyzed segment length does <em>not</em> contain an integer number of oddball cycles, the oddball energy does not fall cleanly into a single bin. Instead, it spreads into neighboring bins. This is commonly called <strong>spectral leakage</strong>. Leakage makes the “target bin amplitude” smaller than it should be and can inflate or distort noise estimates around that bin.</p>
 <p>The key requirement for bin-locking is:</p>
@@ -1051,7 +1390,7 @@
 - <strong>f_oddball × T</strong> must be an integer<br />
 - or <strong>f_oddball = k × df</strong> for some integer bin k</p>
 <p>This Toolbox enforces this rule by cropping the segment used for FFT to a sample count <strong>N</strong> that guarantees oddball bin alignment.</p>
-<h2 id="how-the-toolbox-defines-the-fft-segment-using-oddball-triggers-55">How the Toolbox defines the FFT segment using oddball triggers (“55”)</h2>
+<h2 id="how-the-toolbox-defines-the-fft-segment-using-oddball-triggers-55">How the Toolbox defines the FFT segment using oddball triggers (“55”)<a class="headerlink" href="#how-the-toolbox-defines-the-fft-segment-using-oddball-triggers-55" title="Permanent link">&para;</a></h2>
 <p>During acquisition, the start of a condition is marked by a condition code (e.g., 1, 2, 3, …). Every time an oddball stimulus is shown, an event code <strong>55</strong> is emitted. This creates a structure like:</p>
 <ul>
 <li>condition start trigger (e.g., “1”)  </li>
@@ -1064,13 +1403,13 @@
 2) Identify the <strong>first 55</strong> and the <strong>last 55</strong>.
 3) Use this region as the basis for selecting the FFT segment.</p>
 <p>This avoids relying on a fixed “tmin/tmax in seconds” window that might include non-steady periods (e.g., lead-in blank screens) and it naturally adapts across sampling rates because everything is based on sample indices and event timing.</p>
-<h3 id="why-n55-1-matters">Why “n55 − 1” matters</h3>
+<h3 id="why-n55-1-matters">Why “n55 − 1” matters<a class="headerlink" href="#why-n55-1-matters" title="Permanent link">&para;</a></h3>
 <p>If there are <strong>n55</strong> oddball triggers in a repetition, there are <strong>n55 − 1 intervals</strong> between them. Those intervals represent complete oddball periods. Using the intervals between the first and last oddball events is the most conservative way to guarantee an integer number of oddball cycles without needing to assume extra time after the last oddball trigger.</p>
 <p>In plain terms:
 - <strong>n55</strong> = number of oddballs observed
 - <strong>n55 − 1</strong> = number of full oddball cycles between the first and last oddball</p>
 <p>This is a safe choice when you want the FFT segment to be based on confirmed, fully observed cycles.</p>
-<h2 id="enforcing-an-on-bin-sample-count-works-across-sampling-rates">Enforcing an on-bin sample count (works across sampling rates)</h2>
+<h2 id="enforcing-an-on-bin-sample-count-works-across-sampling-rates">Enforcing an on-bin sample count (works across sampling rates)<a class="headerlink" href="#enforcing-an-on-bin-sample-count-works-across-sampling-rates" title="Permanent link">&para;</a></h2>
 <p>The oddball rate in this project is currently <strong>1.2 Hz</strong>, which equals <strong>6/5 Hz</strong>. To be exactly on-bin, we need a sample count <strong>N</strong> such that:</p>
 <ul>
 <li>oddball cycles in the segment = <strong>f_oddball × (N/fs)</strong> is an integer</li>
@@ -1089,7 +1428,7 @@
 <p>This guarantees:
 - N is a clean multiple of the on-bin step
 - df = fs / N yields a bin exactly at 1.2 Hz (and therefore also at integer harmonics of 1.2)</p>
-<h3 id="common-n-across-repetitions">Common N across repetitions</h3>
+<h3 id="common-n-across-repetitions">Common N across repetitions<a class="headerlink" href="#common-n-across-repetitions" title="Permanent link">&para;</a></h3>
 <p>When a condition has multiple repetitions, each repetition may have slightly different available lengths (missing triggers, dropped samples, etc.). To avoid mixing spectra with different df values, the Toolbox enforces a <strong>common N per condition</strong>, chosen as:</p>
 <ul>
 <li>take the minimum usable N across repetitions</li>
@@ -1100,7 +1439,7 @@
 - FFT length N
 - frequency resolution df
 - bin index for the oddball frequency (k0)</p>
-<h2 id="what-the-fft-and-neighbors-sheet-means">What the “FFT and neighbors” sheet means</h2>
+<h2 id="what-the-fft-and-neighbors-sheet-means">What the “FFT and neighbors” sheet means<a class="headerlink" href="#what-the-fft-and-neighbors-sheet-means" title="Permanent link">&para;</a></h2>
 <p>Some exports include a sheet (for example, “FFT and neighbors”) that stores amplitudes not only at the target bin, but also at neighboring bins around the target. These columns help diagnose leakage, noise floor structure, and whether the peak is cleanly centered.</p>
 <p>Key columns:</p>
 <ul>
@@ -1122,9 +1461,9 @@
 - <strong>amp_m11 ... amp_m1</strong> are the amplitudes at bins below the target (k0−11 … k0−1)
 - <strong>amp_p1 ... amp_p11</strong> are the amplitudes at bins above the target (k0+1 … k0+11)</p>
 <p>If the segment is perfectly bin-locked and the signal is stable, you typically expect a strong peak at the target bin with relatively smaller neighbors (though real EEG and harmonics can complicate this). If the target energy spreads across multiple bins, that suggests leakage or non-stationarity.</p>
-<h2 id="notes-about-snr-noise-estimation">Notes about SNR / noise estimation</h2>
+<h2 id="notes-about-snr-noise-estimation">Notes about SNR / noise estimation<a class="headerlink" href="#notes-about-snr-noise-estimation" title="Permanent link">&para;</a></h2>
 <p>Many FPVS pipelines estimate a local noise floor using bins around the target frequency while excluding the immediately adjacent bins. This reduces contamination from leakage into neighboring bins. The Toolbox follows this same general idea: a target bin is compared against nearby bins to estimate noise, and then SNR- or z-like metrics can be computed from that local baseline.</p>
-<h2 id="summary">Summary</h2>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
 <ul>
 <li>FFT bins are spaced by df = fs/N.</li>
 <li>FPVS amplitude estimates at 1.2 Hz work best when 1.2 Hz lands exactly on a bin.</li>
@@ -1152,9 +1491,55 @@
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
       </main>
       
         <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../processing-pipeline/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Processing Pipeline Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Processing Pipeline Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../statistical-analysis/" class="md-footer__link md-footer__link--next" aria-label="Next: Statistical Analysis Overview">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Statistical Analysis Overview
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -1181,7 +1566,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.footer", "navigation.expand", "toc.integrate", "content.code.copy", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
