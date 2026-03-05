@@ -1360,29 +1360,75 @@
 
 
 <h1 id="fpvs-concepts-for-non-experts">FPVS Concepts for Non-Experts<a class="headerlink" href="#fpvs-concepts-for-non-experts" title="Permanent link">&para;</a></h1>
-<p>This page explains the main FPVS terms used in the app and docs.</p>
+<p>This page explains the main FPVS terms used in the app and docs. It is written for readers who are comfortable with basic data analysis but are new to EEG.</p>
 <h2 id="fpvs-in-one-sentence">FPVS in one sentence<a class="headerlink" href="#fpvs-in-one-sentence" title="Permanent link">&para;</a></h2>
-<p>FPVS presents images at a steady rate, and EEG is analyzed at that same rhythm to detect stimulus-locked brain responses.</p>
+<p>FPVS presents images at a fixed rhythm and uses EEG to test whether the brain locks onto that same rhythm — and onto any slower rhythm created by periodic "oddball" images.</p>
+<blockquote>
+<p><strong>Mental model:</strong> show the visual system a rhythm, then look for that rhythm in the EEG.</p>
+</blockquote>
 <h2 id="core-ideas">Core ideas<a class="headerlink" href="#core-ideas" title="Permanent link">&para;</a></h2>
 <h3 id="base-frequency">Base frequency<a class="headerlink" href="#base-frequency" title="Permanent link">&para;</a></h3>
-<p>The base frequency is the main image presentation rate (for example, 6 Hz).</p>
+<p>The <strong>base frequency</strong> is the overall image presentation rate.</p>
+<ul>
+<li><strong>Example:</strong> 6 Hz means 6 images are shown each second.</li>
+<li><strong>What it captures:</strong> the brain's general response to the visual stream.</li>
+</ul>
+<p>In FPVS, this is the fast repeating rhythm that structures the whole sequence.</p>
 <h3 id="oddball-frequency">Oddball frequency<a class="headerlink" href="#oddball-frequency" title="Permanent link">&para;</a></h3>
-<p>An oddball appears every N images, so its frequency is lower than the base rate. Example: 6 Hz base and every 5th image oddball gives 1.2 Hz oddball.</p>
+<p>An <strong>oddball</strong> is the item that breaks the repeating pattern. The <strong>oddball frequency</strong> is the rate at which that special item appears.</p>
+<ul>
+<li><strong>Example:</strong> if images are shown at 6 Hz and every 5th image is an oddball, the oddball frequency is <strong>6/5 = 1.2 Hz</strong>.</li>
+<li><strong>What it captures:</strong> whether the brain is responding differently to the oddball than to the base stream.</li>
+</ul>
+<p>A peak at the oddball frequency means there is a <strong>stimulus-locked difference</strong> between base and oddball processing. By itself, it does <strong>not</strong> tell you exactly <em>why</em> the difference happened — only that it happened. This is why careful design of the experiment is important.</p>
 <h3 id="harmonics">Harmonics<a class="headerlink" href="#harmonics" title="Permanent link">&para;</a></h3>
-<p>If a response exists at 1.2 Hz, it often also appears at multiples of that frequency (2.4, 3.6, 4.8 Hz, and so on).</p>
+<p>A <strong>harmonic</strong> is an integer multiple of a frequency.</p>
+<ul>
+<li><strong>Fundamental frequency:</strong> the main frequency itself</li>
+<li><strong>Harmonics:</strong> 2×, 3×, 4×, and so on</li>
+</ul>
+<p><strong>Example:</strong> if the oddball frequency is 1.2 Hz, its harmonics are 2.4 Hz, 3.6 Hz, 4.8 Hz, and so on.</p>
+<p>Why do harmonics appear? Because brain responses are usually <strong>not perfect sine waves</strong>. When the response has a more complex shape, some of its energy spreads into multiples of the main frequency.</p>
+<p>In practice, FPVS analyses often look at the oddball frequency <strong>plus several harmonics</strong>, because the clearest evidence is often spread across them. If one of those harmonics overlaps with the base frequency, it is often excluded from the oddball measurement.</p>
 <h3 id="fft">FFT<a class="headerlink" href="#fft" title="Permanent link">&para;</a></h3>
-<p>The Fast Fourier Transform converts EEG from time-domain signals into a frequency spectrum so peaks at oddball and harmonic frequencies can be measured.</p>
+<p>The <strong>Fast Fourier Transform (FFT)</strong> converts EEG from the <strong>time domain</strong> to the <strong>frequency domain</strong>.</p>
+<ul>
+<li><strong>Time domain:</strong> voltage changing over time</li>
+<li><strong>Frequency domain:</strong> how strongly each frequency is present in the signal</li>
+</ul>
+<p>In FPVS, the FFT is what turns a long EEG trace into a spectrum with peaks at expected frequencies.</p>
+<p>A useful way to think about it: the FFT does not decide what the brain "means." It reorganizes the data so stimulus-locked rhythms are easy to measure.</p>
 <h3 id="bca-snr-and-z-score">BCA, SNR, and Z score<a class="headerlink" href="#bca-snr-and-z-score" title="Permanent link">&para;</a></h3>
+<p>These are three common ways to describe the same frequency-domain peak.</p>
 <ul>
-<li><strong>BCA</strong>: baseline-corrected amplitude at a target frequency.</li>
-<li><strong>SNR</strong>: signal amplitude relative to local surrounding noise.</li>
-<li><strong>Z score</strong>: standardized distance from local noise.</li>
+<li><strong>BCA (baseline-corrected amplitude):</strong> the peak amplitude after subtracting nearby background activity. Usually reported in <strong>microvolts (µV)</strong>.</li>
+<li><strong>SNR (signal-to-noise ratio):</strong> the peak amplitude relative to nearby noise.</li>
+<li><strong>Z score:</strong> how unusual the peak is compared with nearby noise bins.</li>
 </ul>
+<p><strong>What "nearby noise" means:</strong> in FPVS, researchers usually estimate background EEG noise from frequencies just to the left and right of the frequency of interest.</p>
+<p>A useful shorthand is:</p>
+<ul>
+<li><strong>BCA</strong> = <em>What is the net amplitude of the response after removing the noise?</em></li>
+<li><strong>SNR</strong> = <em>How clearly does the response stand out from nearby noise?</em></li>
+<li><strong>Z score</strong> = <em>How statistically unusual is the response compared with nearby noise?</em></li>
+</ul>
+<p>These measures are related, but they answer slightly different questions. BCA is useful for <strong>effect size</strong>, SNR is useful for <strong>signal clarity</strong>, and Z score is useful for <strong>detectability</strong>.</p>
 <h2 id="why-this-matters-for-analysis">Why this matters for analysis<a class="headerlink" href="#why-this-matters-for-analysis" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Processing converts raw EEG into stable frequency-domain metrics.</li>
-<li>Statistical analysis then tests whether those metrics differ across conditions, ROIs, or groups.</li>
-</ul>
+<p>FPVS is useful because it turns a broad question —</p>
+<p><strong>"Did the brain respond differently?"</strong></p>
+<p>into a more concrete question —</p>
+<p><strong>"Is there a measurable peak at a frequency where we expected one?"</strong></p>
+<p>That makes the analysis pipeline easier to follow:</p>
+<ol>
+<li>Present images at a known base rate.</li>
+<li>Insert oddballs at a known slower rate.</li>
+<li>Use the FFT to convert EEG into a frequency spectrum.</li>
+<li>Measure peaks at the base frequency, oddball frequency, and selected harmonics.</li>
+<li>Compare those measurements across conditions, ROIs, or groups.</li>
+</ol>
+<blockquote>
+<p><strong>ROI</strong> stands for <strong>region of interest</strong>. In EEG, this usually means a small set of electrodes grouped together because a response is expected there.</p>
+</blockquote>
 <h2 id="continue-learning">Continue learning<a class="headerlink" href="#continue-learning" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../feature-tour/">Feature Tour</a></li>
