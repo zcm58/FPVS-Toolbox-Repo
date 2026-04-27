@@ -509,10 +509,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#before-you-begin" class="md-nav__link">
+  <a href="#what-fpvs-toolbox-does" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Before you begin
+        What FPVS Toolbox does
       
     </span>
   </a>
@@ -520,10 +520,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-1-install-the-app" class="md-nav__link">
+  <a href="#what-you-need-before-opening-the-app" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1: Install the app
+        What you need before opening the app
       
     </span>
   </a>
@@ -531,10 +531,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-create-a-project" class="md-nav__link">
+  <a href="#recommended-folder-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: Create a project
+        Recommended folder setup
       
     </span>
   </a>
@@ -542,10 +542,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-process-eeg-files" class="md-nav__link">
+  <a href="#install-and-open-the-app" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: Process EEG files
+        Install and open the app
       
     </span>
   </a>
@@ -553,10 +553,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-run-statistics" class="md-nav__link">
+  <a href="#create-your-first-project" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4: Run statistics
+        Create your first project
       
     </span>
   </a>
@@ -564,10 +564,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-5-verify-outputs" class="md-nav__link">
+  <a href="#run-one-file-first" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 5: Verify outputs
+        Run one file first
       
     </span>
   </a>
@@ -575,10 +575,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-pages" class="md-nav__link">
+  <a href="#run-the-full-project" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next pages
+        Run the full project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-read-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What to read next
       
     </span>
   </a>
@@ -1370,54 +1381,103 @@
 
 
 <h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
-<p>This page is for first-time users who want a clear path from installation to first results.</p>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">&para;</a></h2>
+<p>This page is for first-time users. It explains what FPVS Toolbox needs, what it
+creates, and how to get through your first run without needing to write code.</p>
+<h2 id="what-fpvs-toolbox-does">What FPVS Toolbox does<a class="headerlink" href="#what-fpvs-toolbox-does" title="Permanent link">&para;</a></h2>
+<p>FPVS Toolbox helps you process fast periodic visual stimulation EEG data. In a
+typical workflow, it:</p>
+<ol>
+<li>Reads BioSemi <code>.bdf</code> EEG files.</li>
+<li>Detects task events from trigger codes.</li>
+<li>Preprocesses and averages the EEG.</li>
+<li>Converts the averaged response into frequency-domain measures.</li>
+<li>Exports Excel files for each participant and condition.</li>
+<li>Runs statistical analyses on those exported values.</li>
+</ol>
+<p>The app is meant to make the analysis workflow easier to run and easier to
+document.</p>
+<h2 id="what-you-need-before-opening-the-app">What you need before opening the app<a class="headerlink" href="#what-you-need-before-opening-the-app" title="Permanent link">&para;</a></h2>
+<p>Prepare these items first:</p>
 <ul>
-<li>OS: Windows.</li>
-<li>Input data: BioSemi <code>.bdf</code> recordings.</li>
-<li>Experiment support: FPVS paradigms run with PsychoPy event codes.</li>
+<li>Your raw BioSemi <code>.bdf</code> files.</li>
+<li>A list of condition names, such as <code>Faces</code>, <code>Objects</code>, or <code>Semantic</code>.</li>
+<li>The numeric trigger codes for each condition.</li>
+<li>A local folder where the Toolbox can create project files and outputs.</li>
 </ul>
 <div class="admonition warning">
-<p class="admonition-title">Recommended project folder</p>
-<p>Use a local folder path (for example <code>C:\EEG\FPVS_Projects</code>) instead of cloud-synced folders like OneDrive.</p>
+<p class="admonition-title">Use a local folder</p>
+<p>Avoid OneDrive, Dropbox, Google Drive, and network folders for active
+processing. Sync tools can lock files while the Toolbox is trying to write
+Excel outputs.</p>
 </div>
-<h2 id="step-1-install-the-app">Step 1: Install the app<a class="headerlink" href="#step-1-install-the-app" title="Permanent link">&para;</a></h2>
+<h2 id="recommended-folder-setup">Recommended folder setup<a class="headerlink" href="#recommended-folder-setup" title="Permanent link">&para;</a></h2>
+<p>Create a simple project root before you start, for example:</p>
+<pre><code class="language-text">C:\EEG\FPVS_Projects
+</code></pre>
+<p>Inside the app, each project will create or use its own folders for input files,
+Excel outputs, logs, and statistics results.</p>
+<p>Keep folder and condition names simple:</p>
+<ul>
+<li>Use letters, numbers, spaces, hyphens, or underscores.</li>
+<li>Avoid symbols like <code>/</code>, <code>\</code>, <code>:</code>, <code>*</code>, <code>?</code>, and quotes.</li>
+<li>Avoid very long folder paths.</li>
+</ul>
+<h2 id="install-and-open-the-app">Install and open the app<a class="headerlink" href="#install-and-open-the-app" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Download the latest installer from the GitHub Releases page.</li>
+<li>Download the installer from the project release page.</li>
 <li>Run the installer.</li>
 <li>Open FPVS Toolbox.</li>
-<li>Select a <strong>Project Root</strong> folder when prompted.</li>
+<li>Choose a project root when prompted.</li>
 </ol>
-<h2 id="step-2-create-a-project">Step 2: Create a project<a class="headerlink" href="#step-2-create-a-project" title="Permanent link">&para;</a></h2>
+<p>If Windows or antivirus software warns you about the installer, confirm that it
+came from the official project release page and follow your institution's
+security policy.</p>
+<h2 id="create-your-first-project">Create your first project<a class="headerlink" href="#create-your-first-project" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Click <strong>Create New Project</strong>.</li>
 <li>Enter a project name.</li>
-<li>Set the number of groups and group names.</li>
-<li>Select each group's input folder containing <code>.bdf</code> files.</li>
-<li>Enter condition names and matching trigger codes from your PsychoPy task.</li>
+<li>Add group names if your study has groups.</li>
+<li>Select the input folder containing <code>.bdf</code> files.</li>
+<li>Enter each condition name and trigger code.</li>
+<li>Save the project.</li>
 </ol>
-<h2 id="step-3-process-eeg-files">Step 3: Process EEG files<a class="headerlink" href="#step-3-process-eeg-files" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Open the processing view.</li>
-<li>Select one file (or a batch folder).</li>
-<li>Confirm preprocessing settings (reference, filters, downsample rate, rejection settings).</li>
-<li>Start processing.</li>
-</ol>
-<p>After processing, results are exported to Excel files for each condition.</p>
-<h2 id="step-4-run-statistics">Step 4: Run statistics<a class="headerlink" href="#step-4-run-statistics" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Open <strong>Statistical Analysis</strong>.</li>
-<li>Select your dependent variable workflow (typically Summed BCA).</li>
-<li>Run RM-ANOVA, mixed model, and post-hoc tests as needed.</li>
-<li>Export tables for reporting.</li>
-</ol>
-<h2 id="step-5-verify-outputs">Step 5: Verify outputs<a class="headerlink" href="#step-5-verify-outputs" title="Permanent link">&para;</a></h2>
-<p>Use <a href="../outputs-reference/">Output Files</a> to check the expected folders and files.</p>
-<h2 id="next-pages">Next pages<a class="headerlink" href="#next-pages" title="Permanent link">&para;</a></h2>
+<p>For a single-group study, use one group. For a group comparison study, create a
+separate group for each participant group and point each group to the correct
+input folder.</p>
+<h2 id="run-one-file-first">Run one file first<a class="headerlink" href="#run-one-file-first" title="Permanent link">&para;</a></h2>
+<p>Before processing every participant, run one file as a pilot.</p>
+<p>Check that:</p>
 <ul>
-<li><a href="../fpvs-concepts/">FPVS Concepts for Non-Experts</a></li>
-<li><a href="../feature-tour/">Feature Tour</a></li>
-<li><a href="../tutorial/">First End-to-End Walkthrough</a></li>
+<li>Events are found.</li>
+<li>The log does not show a critical error.</li>
+<li>Excel files are created.</li>
+<li>The Excel files contain sheets such as <code>SNR</code>, <code>Z Score</code>, <code>BCA (uV)</code>, and
+  <code>FullSNR</code>.</li>
+</ul>
+<p>If the one-file run works, move on to the full batch. If it does not, fix the
+event map, folder paths, or preprocessing settings before running more files.</p>
+<h2 id="run-the-full-project">Run the full project<a class="headerlink" href="#run-the-full-project" title="Permanent link">&para;</a></h2>
+<p>After the pilot file succeeds:</p>
+<ol>
+<li>Run processing for the full set of files.</li>
+<li>Watch the log for skipped files or missing conditions.</li>
+<li>Confirm that each condition folder contains participant Excel files.</li>
+<li>Open the Statistics tool.</li>
+<li>Select the processed data folder.</li>
+<li>Run the statistics workflow that matches your study design.</li>
+</ol>
+<h2 id="what-to-read-next">What to read next<a class="headerlink" href="#what-to-read-next" title="Permanent link">&para;</a></h2>
+<p>If you are new to FPVS:</p>
+<ul>
+<li>Read <a href="../fpvs-concepts/">FPVS Concepts for Non-Experts</a>.</li>
+<li>Follow <a href="../tutorial/">First End-to-End Walkthrough</a>.</li>
+</ul>
+<p>If you already processed files:</p>
+<ul>
+<li>Use <a href="../outputs-reference/">Output Files</a> to understand what was exported.</li>
+<li>Use <a href="../statistical-analysis/">Statistical Analysis Overview</a> to decide which
+  stats to run.</li>
+<li>Use <a href="../troubleshooting/">Troubleshooting</a> if a file or condition is missing.</li>
 </ul>
 
 

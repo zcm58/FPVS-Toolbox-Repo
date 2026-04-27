@@ -1229,6 +1229,39 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#bdf-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .bdf file
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#amplitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amplitude
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Baseline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bca-baseline-corrected-amplitude" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1262,10 +1295,65 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Epoch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#fft" class="md-nav__link">
     <span class="md-ellipsis">
       
         FFT
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frequency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fullsnr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FullSNR
       
     </span>
   </a>
@@ -1284,10 +1372,65 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mixed-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mixed model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#oddball-frequency" class="md-nav__link">
     <span class="md-ellipsis">
       
         Oddball frequency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#participant-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Participant ID
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-hoc-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-hoc test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project root
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#qc-quality-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QC (Quality Control)
       
     </span>
   </a>
@@ -1328,10 +1471,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#stim-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stim channel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#summed-bca" class="md-nav__link">
     <span class="md-ellipsis">
       
         Summed BCA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trigger-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trigger code
       
     </span>
   </a>
@@ -1414,28 +1579,98 @@
 
 
 <h1 id="glossary">Glossary<a class="headerlink" href="#glossary" title="Permanent link">&para;</a></h1>
+<p>This glossary explains common FPVS Toolbox terms in plain language.</p>
+<h2 id="bdf-file"><code>.bdf</code> file<a class="headerlink" href="#bdf-file" title="Permanent link">&para;</a></h2>
+<p>A BioSemi EEG recording file. This is the main raw data format used by the FPVS
+Toolbox processing pipeline.</p>
+<h2 id="amplitude">Amplitude<a class="headerlink" href="#amplitude" title="Permanent link">&para;</a></h2>
+<p>The size of the EEG response at a frequency. Larger amplitude means a stronger
+measured response at that frequency.</p>
+<h2 id="baseline">Baseline<a class="headerlink" href="#baseline" title="Permanent link">&para;</a></h2>
+<p>A comparison level used to decide whether a response is above nearby noise or
+above a no-response reference point.</p>
 <h2 id="bca-baseline-corrected-amplitude">BCA (Baseline-Corrected Amplitude)<a class="headerlink" href="#bca-baseline-corrected-amplitude" title="Permanent link">&para;</a></h2>
-<p>Amplitude at a target frequency minus a local surrounding noise estimate.</p>
+<p>Amplitude at a target frequency after subtracting a local noise estimate. BCA is
+useful because it focuses on the part of the response that rises above nearby
+background activity.</p>
 <h2 id="base-frequency">Base frequency<a class="headerlink" href="#base-frequency" title="Permanent link">&para;</a></h2>
-<p>Main visual stimulation rate (Hz), such as 6 Hz.</p>
+<p>The main visual stimulation rate. For example, if images appear 6 times per
+second, the base frequency is 6 Hz.</p>
 <h2 id="condition">Condition<a class="headerlink" href="#condition" title="Permanent link">&para;</a></h2>
-<p>Experimental label mapped to a trigger code in your task.</p>
+<p>An experimental category or task event, such as <code>Faces</code>, <code>Objects</code>, <code>Semantic</code>,
+or <code>Color</code>. In the Toolbox, each condition is linked to one or more trigger
+codes.</p>
+<h2 id="epoch">Epoch<a class="headerlink" href="#epoch" title="Permanent link">&para;</a></h2>
+<p>A time window cut out of the continuous EEG recording around an event. Epochs
+are averaged together to estimate the response for a condition.</p>
+<h2 id="event">Event<a class="headerlink" href="#event" title="Permanent link">&para;</a></h2>
+<p>A marker in the EEG file showing when something happened in the task, such as a
+stimulus appearing. Events are usually identified by trigger codes.</p>
+<h2 id="event-map">Event map<a class="headerlink" href="#event-map" title="Permanent link">&para;</a></h2>
+<p>The table that connects condition names to trigger codes. If the event map is
+wrong, the Toolbox may not find the expected condition data.</p>
 <h2 id="fft">FFT<a class="headerlink" href="#fft" title="Permanent link">&para;</a></h2>
-<p>Fast Fourier Transform. Converts time-domain EEG into frequency-domain values.</p>
+<p>Fast Fourier Transform. A mathematical step that converts EEG from a time-based
+signal into frequency-based values.</p>
+<p>In plain language, FFT answers: "How much response is present at each
+frequency?"</p>
+<h2 id="frequency">Frequency<a class="headerlink" href="#frequency" title="Permanent link">&para;</a></h2>
+<p>How often something repeats per second, measured in Hertz (Hz). A 6 Hz response
+repeats 6 times per second.</p>
+<h2 id="fullsnr">FullSNR<a class="headerlink" href="#fullsnr" title="Permanent link">&para;</a></h2>
+<p>An exported Excel sheet that stores SNR values across a wider frequency range,
+not only the selected target frequencies. It is useful for plotting and checking
+the surrounding spectrum.</p>
 <h2 id="harmonic">Harmonic<a class="headerlink" href="#harmonic" title="Permanent link">&para;</a></h2>
-<p>Integer multiple of a base frequency (for oddball analysis: 1.2, 2.4, 3.6 Hz, etc.).</p>
+<p>A whole-number multiple of a frequency. If the oddball frequency is 1.2 Hz, then
+2.4 Hz, 3.6 Hz, and 4.8 Hz are harmonics.</p>
+<h2 id="mixed-model">Mixed model<a class="headerlink" href="#mixed-model" title="Permanent link">&para;</a></h2>
+<p>A statistical model that can handle repeated measurements and some missing data
+more flexibly than RM-ANOVA. In FPVS Toolbox, mixed models are often used to
+test condition and ROI effects while accounting for repeated observations from
+the same participant.</p>
 <h2 id="oddball-frequency">Oddball frequency<a class="headerlink" href="#oddball-frequency" title="Permanent link">&para;</a></h2>
-<p>Frequency of rare target events embedded in the stimulation stream.</p>
+<p>The frequency of the important repeating event in an FPVS design. For example,
+if every fifth image is a target and images appear at 6 Hz, the oddball
+frequency is 1.2 Hz.</p>
+<h2 id="participant-id">Participant ID<a class="headerlink" href="#participant-id" title="Permanent link">&para;</a></h2>
+<p>The label used to identify one participant in exported files and statistics.
+Consistent participant IDs are important for grouping data correctly.</p>
+<h2 id="post-hoc-test">Post-hoc test<a class="headerlink" href="#post-hoc-test" title="Permanent link">&para;</a></h2>
+<p>A follow-up test used after a larger statistical test suggests an effect. It
+helps answer questions such as: "Which condition pair is different within this
+ROI?"</p>
+<h2 id="project-root">Project root<a class="headerlink" href="#project-root" title="Permanent link">&para;</a></h2>
+<p>The main folder where FPVS Toolbox stores project settings and outputs. Use a
+local folder rather than a cloud-synced folder while processing.</p>
+<h2 id="qc-quality-control">QC (Quality Control)<a class="headerlink" href="#qc-quality-control" title="Permanent link">&para;</a></h2>
+<p>Checks used to find unusual values, missing data, or participants that may need
+review before final reporting.</p>
 <h2 id="roi-region-of-interest">ROI (Region of Interest)<a class="headerlink" href="#roi-region-of-interest" title="Permanent link">&para;</a></h2>
-<p>Named electrode group used for aggregation and statistical testing.</p>
+<p>A named group of electrodes used for averaging and statistics. For example, an
+occipito-temporal ROI might include electrodes near the back and side of the
+head.</p>
 <h2 id="rm-anova">RM-ANOVA<a class="headerlink" href="#rm-anova" title="Permanent link">&para;</a></h2>
-<p>Repeated-measures ANOVA for testing within-subject effects.</p>
+<p>Repeated-measures ANOVA. A statistical test for within-participant designs. It
+works best when every included participant has data for all required conditions
+and ROIs.</p>
 <h2 id="snr-signal-to-noise-ratio">SNR (Signal-to-Noise Ratio)<a class="headerlink" href="#snr-signal-to-noise-ratio" title="Permanent link">&para;</a></h2>
-<p>Target-bin amplitude divided by local surrounding noise estimate.</p>
+<p>The response at a target frequency divided by nearby noise. Higher SNR means the
+response stands out more clearly from the local background.</p>
+<h2 id="stim-channel">Stim channel<a class="headerlink" href="#stim-channel" title="Permanent link">&para;</a></h2>
+<p>The EEG channel that stores trigger/event information. If the stim channel is
+set incorrectly, events may not be detected.</p>
 <h2 id="summed-bca">Summed BCA<a class="headerlink" href="#summed-bca" title="Permanent link">&para;</a></h2>
-<p>Primary dependent variable in the stats workflow: BCA summed across selected harmonics and averaged across ROI electrodes.</p>
+<p>The primary response value used in many FPVS Toolbox statistics workflows. It is
+computed by summing BCA across selected oddball harmonics and averaging across
+the electrodes in an ROI.</p>
+<h2 id="trigger-code">Trigger code<a class="headerlink" href="#trigger-code" title="Permanent link">&para;</a></h2>
+<p>A number sent by the experiment software and saved in the EEG file. The Toolbox
+uses trigger codes to identify conditions.</p>
 <h2 id="z-score">Z score<a class="headerlink" href="#z-score" title="Permanent link">&para;</a></h2>
-<p>Standardized measure of how far target amplitude is above local noise in standard deviation units.</p>
+<p>A standardized measure of how far the target-frequency response is above local
+noise. Larger positive Z scores indicate stronger evidence that the response is
+above nearby noise.</p>
 
 
 

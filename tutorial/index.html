@@ -1084,10 +1084,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#goal" class="md-nav__link">
+  <a href="#before-you-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Goal
+        Before you start
       
     </span>
   </a>
@@ -1095,10 +1095,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-1-create-a-project" class="md-nav__link">
+  <a href="#step-1-choose-a-project-root" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1: Create a project
+        Step 1: Choose a project root
       
     </span>
   </a>
@@ -1106,10 +1106,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-configure-preprocessing" class="md-nav__link">
+  <a href="#step-2-create-a-project" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: Configure preprocessing
+        Step 2: Create a project
       
     </span>
   </a>
@@ -1117,10 +1117,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-run-processing" class="md-nav__link">
+  <a href="#step-3-confirm-event-codes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: Run processing
+        Step 3: Confirm event codes
       
     </span>
   </a>
@@ -1128,10 +1128,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-check-exported-spectral-sheets" class="md-nav__link">
+  <a href="#step-4-review-preprocessing-settings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4: Check exported spectral sheets
+        Step 4: Review preprocessing settings
       
     </span>
   </a>
@@ -1139,10 +1139,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-5-run-statistics" class="md-nav__link">
+  <a href="#step-5-process-one-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 5: Run statistics
+        Step 5: Process one file
       
     </span>
   </a>
@@ -1150,10 +1150,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-6-export-and-archive" class="md-nav__link">
+  <a href="#step-6-process-the-full-batch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 6: Export and archive
+        Step 6: Process the full batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-open-the-statistics-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Open the Statistics tool
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-8-review-statistics-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8: Review statistics outputs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-9-archive-the-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 9: Archive the run
       
     </span>
   </a>
@@ -1172,10 +1205,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-pages" class="md-nav__link">
+  <a href="#if-something-fails" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next pages
+        If something fails
       
     </span>
   </a>
@@ -1392,33 +1425,95 @@
 
 
 <h1 id="first-end-to-end-walkthrough">First End-to-End Walkthrough<a class="headerlink" href="#first-end-to-end-walkthrough" title="Permanent link">&para;</a></h1>
-<p>This walkthrough is designed for a first successful run.</p>
-<h2 id="goal">Goal<a class="headerlink" href="#goal" title="Permanent link">&para;</a></h2>
-<p>Take one FPVS project from raw <code>.bdf</code> files to exported statistical tables.</p>
-<h2 id="step-1-create-a-project">Step 1: Create a project<a class="headerlink" href="#step-1-create-a-project" title="Permanent link">&para;</a></h2>
+<p>This walkthrough is for a first successful FPVS Toolbox run. It assumes you are
+not an EEG analysis expert and want a practical path from raw files to results
+you can inspect.</p>
+<p>The goal is not to make every final analysis decision on the first pass. The
+goal is to confirm that the project is set up correctly, events are detected,
+Excel outputs are created, and the Statistics tool can read those outputs.</p>
+<h2 id="before-you-start">Before you start<a class="headerlink" href="#before-you-start" title="Permanent link">&para;</a></h2>
+<p>You need:</p>
+<ul>
+<li>A folder of BioSemi <code>.bdf</code> files.</li>
+<li>The condition names from your experiment.</li>
+<li>The trigger/event codes used by your PsychoPy task.</li>
+<li>A local project folder, preferably outside OneDrive or other sync folders.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Start with one participant</p>
+<p>Run one file first. A single-file pilot is the fastest way to catch event
+code mistakes, bad folder choices, or preprocessing settings that need
+adjustment.</p>
+</div>
+<h2 id="step-1-choose-a-project-root">Step 1: Choose a project root<a class="headerlink" href="#step-1-choose-a-project-root" title="Permanent link">&para;</a></h2>
+<p>When FPVS Toolbox asks for a project root, choose a local folder where the app
+can create and update project files.</p>
+<p>Good examples:</p>
+<ul>
+<li><code>C:\EEG\FPVS_Projects</code></li>
+<li><code>D:\FPVS_Projects</code></li>
+</ul>
+<p>Avoid:</p>
+<ul>
+<li>OneDrive, Dropbox, Google Drive, or network sync folders.</li>
+<li>Folders where you do not have write permission.</li>
+<li>Deep folder paths with many special characters.</li>
+</ul>
+<p>The project root is the main place where the Toolbox will store project
+settings and organize output folders.</p>
+<h2 id="step-2-create-a-project">Step 2: Create a project<a class="headerlink" href="#step-2-create-a-project" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Open FPVS Toolbox.</li>
-<li>Select or create your Project Root.</li>
 <li>Click <strong>Create New Project</strong>.</li>
-<li>Add group names and input folders.</li>
-<li>Add condition names and trigger codes.</li>
+<li>Enter a short project name.</li>
+<li>Add the group names for your study.</li>
+<li>Select each group's input folder containing <code>.bdf</code> files.</li>
+<li>Enter condition labels and their trigger codes.</li>
+<li>Save the project.</li>
 </ol>
-<h2 id="step-2-configure-preprocessing">Step 2: Configure preprocessing<a class="headerlink" href="#step-2-configure-preprocessing" title="Permanent link">&para;</a></h2>
+<p>Use condition names that are easy to read later, such as <code>Faces</code>, <code>Objects</code>, or
+<code>Semantic</code>. Avoid symbols that Windows does not allow in folder names, such as
+<code>/</code>, <code>\</code>, <code>:</code>, <code>*</code>, <code>?</code>, and quotes.</p>
+<h2 id="step-3-confirm-event-codes">Step 3: Confirm event codes<a class="headerlink" href="#step-3-confirm-event-codes" title="Permanent link">&para;</a></h2>
+<p>Before processing the full dataset, make sure the event map matches the task.</p>
+<p>Check:</p>
+<ul>
+<li>Each condition has the correct numeric trigger code.</li>
+<li>Trigger codes are unique unless your experiment intentionally reuses them.</li>
+<li>The stimulus channel matches the channel used in the recording.</li>
+<li>The condition labels are spelled the way you want them to appear in output
+  folders and Excel files.</li>
+</ul>
+<p>If the Toolbox later says "No events found," the most common cause is a mismatch
+between the trigger code in the project and the trigger code in the <code>.bdf</code> file.</p>
+<h2 id="step-4-review-preprocessing-settings">Step 4: Review preprocessing settings<a class="headerlink" href="#step-4-review-preprocessing-settings" title="Permanent link">&para;</a></h2>
+<p>Open the processing settings and confirm the values before running.</p>
+<p>Important settings:</p>
+<ul>
+<li>Reference channels: the electrodes used for the initial reference.</li>
+<li>Stim channel: the channel that contains event triggers.</li>
+<li>Filter settings: high-pass and low-pass values.</li>
+<li>Downsampling: optional, used to reduce file size and processing time.</li>
+<li>Epoch window: the time window around each event that will be averaged.</li>
+<li>Bad-channel handling: thresholds for detecting unstable channels.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Do not optimize everything on the first run</p>
+<p>For the first pass, use sensible default settings and check whether the
+pipeline completes. Fine-tune thresholds only after you know the project and
+event map are correct.</p>
+</div>
+<h2 id="step-5-process-one-file">Step 5: Process one file<a class="headerlink" href="#step-5-process-one-file" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Open processing settings.</li>
-<li>Confirm reference channels, stim channel, and filter values.</li>
-<li>Confirm epoch timing values.</li>
-<li>Save settings.</li>
+<li>Select one participant <code>.bdf</code> file.</li>
+<li>Start processing.</li>
+<li>Watch the log for warnings or errors.</li>
+<li>Wait for the run to finish.</li>
+<li>Open the output folder and confirm that Excel files were created.</li>
 </ol>
-<h2 id="step-3-run-processing">Step 3: Run processing<a class="headerlink" href="#step-3-run-processing" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Select one participant file first.</li>
-<li>Start processing and inspect logs.</li>
-<li>Confirm a condition export workbook is created.</li>
-<li>Repeat on full batch after pilot success.</li>
-</ol>
-<h2 id="step-4-check-exported-spectral-sheets">Step 4: Check exported spectral sheets<a class="headerlink" href="#step-4-check-exported-spectral-sheets" title="Permanent link">&para;</a></h2>
-<p>For one participant workbook, confirm these sheets exist:</p>
+<p>For each condition, you should see a participant results workbook. The exact
+file name depends on the participant and condition label.</p>
+<p>Open one workbook and confirm these sheets exist:</p>
 <ul>
 <li><code>FFT Amplitude (uV)</code></li>
 <li><code>SNR</code></li>
@@ -1426,32 +1521,118 @@
 <li><code>BCA (uV)</code></li>
 <li><code>FullSNR</code></li>
 </ul>
-<h2 id="step-5-run-statistics">Step 5: Run statistics<a class="headerlink" href="#step-5-run-statistics" title="Permanent link">&para;</a></h2>
+<p>If those sheets are present, the main processing path is working.</p>
+<h2 id="step-6-process-the-full-batch">Step 6: Process the full batch<a class="headerlink" href="#step-6-process-the-full-batch" title="Permanent link">&para;</a></h2>
+<p>After the one-file pilot succeeds:</p>
 <ol>
-<li>Open <strong>Statistical Analysis</strong>.</li>
-<li>Build or confirm ROI definitions.</li>
-<li>Run harmonic selection workflow (if using Rossion method).</li>
-<li>Run RM-ANOVA and mixed model.</li>
-<li>Run post-hoc and baseline-vs-zero tests if needed.</li>
+<li>Select the batch or project processing option.</li>
+<li>Run the remaining files.</li>
+<li>Keep the app open until processing finishes.</li>
+<li>Review the log for skipped files, missing events, or files with no valid
+   epochs.</li>
+<li>Confirm each expected condition has participant Excel outputs.</li>
 </ol>
-<h2 id="step-6-export-and-archive">Step 6: Export and archive<a class="headerlink" href="#step-6-export-and-archive" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Save all statistics tables.</li>
-<li>Save flagged/excluded participant reports.</li>
-<li>Archive settings and logs with outputs.</li>
-</ol>
-<h2 id="done-checklist">Done checklist<a class="headerlink" href="#done-checklist" title="Permanent link">&para;</a></h2>
+<p>If a participant is missing for one condition, check the log before rerunning.
+The usual causes are missing triggers, too few valid epochs, or an unreadable
+input file.</p>
+<h2 id="step-7-open-the-statistics-tool">Step 7: Open the Statistics tool<a class="headerlink" href="#step-7-open-the-statistics-tool" title="Permanent link">&para;</a></h2>
+<p>After processing, open <strong>Statistical Analysis</strong>.</p>
+<p>Start with these checks:</p>
 <ul>
-<li>Processing completed for all intended participants.</li>
-<li>Expected Excel sheets exist per condition.</li>
-<li>Statistical output files were generated without critical errors.</li>
-<li>Final reports are archived with analysis settings.</li>
+<li>The data folder points to the Excel output folder.</li>
+<li>ROI definitions are present.</li>
+<li>Conditions are detected correctly.</li>
+<li>Participant IDs look correct.</li>
 </ul>
-<h2 id="next-pages">Next pages<a class="headerlink" href="#next-pages" title="Permanent link">&para;</a></h2>
+<p>For a first pass, run analyses in this order:</p>
+<ol>
+<li>Harmonic selection, if you are using the Rossion-style summed harmonic
+   workflow.</li>
+<li>RM-ANOVA, if your dataset is balanced across participants, conditions, and
+   ROIs.</li>
+<li>Mixed model, especially if some cells are missing.</li>
+<li>Post-hoc tests, when you need specific pairwise comparisons.</li>
+<li>Baseline vs Zero tests, when you want to ask whether a condition response is
+   detectably above local noise.</li>
+</ol>
+<h2 id="step-8-review-statistics-outputs">Step 8: Review statistics outputs<a class="headerlink" href="#step-8-review-statistics-outputs" title="Permanent link">&para;</a></h2>
+<p>Statistics results are saved in the statistical analysis results folder.</p>
+<p>Look for:</p>
 <ul>
-<li><a href="../feature-tour/">Feature Tour</a></li>
+<li>RM-ANOVA tables.</li>
+<li>Mixed model results.</li>
+<li>Post-hoc comparison tables.</li>
+<li>Baseline vs Zero workbooks.</li>
+<li>Flagged participant reports.</li>
+<li>Excluded participant reports.</li>
+<li>Logs or summary text explaining significant effects.</li>
+</ul>
+<p>Do not rely only on whether a p-value is significant. Also check which
+participants and conditions were included, whether any values were flagged, and
+whether the result matches the pattern you expected from the data.</p>
+<h2 id="step-9-archive-the-run">Step 9: Archive the run<a class="headerlink" href="#step-9-archive-the-run" title="Permanent link">&para;</a></h2>
+<p>For reproducibility, save these together:</p>
+<ul>
+<li>The project folder.</li>
+<li>The processing logs.</li>
+<li>The project settings.</li>
+<li>The Excel outputs.</li>
+<li>The statistics outputs.</li>
+<li>Any notes about excluded participants or changed settings.</li>
+</ul>
+<p>This makes it much easier to explain exactly what was done later in a thesis,
+manuscript, or lab meeting.</p>
+<h2 id="done-checklist">Done checklist<a class="headerlink" href="#done-checklist" title="Permanent link">&para;</a></h2>
+<p>Your first complete run is successful when:</p>
+<ul>
+<li>At least one <code>.bdf</code> file processed without a critical error.</li>
+<li>Condition-specific Excel files were created.</li>
+<li>Expected Excel sheets are present.</li>
+<li>The Statistics tool detects the processed data.</li>
+<li>At least one statistical export is created.</li>
+<li>Logs and settings are saved with the outputs.</li>
+</ul>
+<h2 id="if-something-fails">If something fails<a class="headerlink" href="#if-something-fails" title="Permanent link">&para;</a></h2>
+<p>Use this quick triage:</p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>First thing to check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No events found</td>
+<td>Trigger codes and stim channel</td>
+</tr>
+<tr>
+<td>No Excel file created</td>
+<td>Processing log and output folder permissions</td>
+</tr>
+<tr>
+<td>Missing condition</td>
+<td>Event code for that condition</td>
+</tr>
+<tr>
+<td>Statistics tool cannot find data</td>
+<td>Selected data folder</td>
+</tr>
+<tr>
+<td>RM-ANOVA fails</td>
+<td>Missing participant x condition x ROI cells</td>
+</tr>
+<tr>
+<td>Results look surprising</td>
+<td>ROI definitions, exclusions, and included participants</td>
+</tr>
+</tbody>
+</table>
+<p>Next pages:</p>
+<ul>
 <li><a href="../outputs-reference/">Output Files</a></li>
 <li><a href="../troubleshooting/">Troubleshooting</a></li>
+<li><a href="../statistical-analysis/">Statistical Analysis Overview</a></li>
 </ul>
 
 
