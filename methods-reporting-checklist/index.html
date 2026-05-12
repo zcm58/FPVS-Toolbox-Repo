@@ -1,0 +1,2236 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for processing FPVS EEG data and running publication-oriented analyses with FPVS Toolbox.">
+      
+      
+      
+        <link rel="canonical" href="https://zcm58.github.io/FPVS-Toolbox-Repo/methods-reporting-checklist/">
+      
+      
+        <link rel="prev" href="../tools/individual-level-detectability/">
+      
+      
+        <link rel="next" href="../glossary/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Methods Reporting Checklist - FPVS Toolbox</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#methods-reporting-checklist" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FPVS Toolbox" class="md-header__button md-logo" aria-label="FPVS Toolbox" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FPVS Toolbox
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Methods Reporting Checklist
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zcm58/FPVS-Toolbox-Repo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zcm58/FPVS-Toolbox-Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../getting-started/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Start Here
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../run-a-study/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Run a Study
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../understand-results/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Understand Results
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../statistics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Statistics Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../feature-tour/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tools
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FPVS Toolbox" class="md-nav__button md-logo" aria-label="FPVS Toolbox" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FPVS Toolbox
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zcm58/FPVS-Toolbox-Repo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zcm58/FPVS-Toolbox-Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Start Here
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Start Here
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fpvs-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPVS Concepts for Non-Experts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First End-to-End Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run a Study
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Run a Study
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../run-a-study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../processing-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Processing Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../outputs-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Output Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Understand Results
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Understand Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../understand-results/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fft-frequency-domain-quantification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FFT and Frequency-Domain Quantification (FPVS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistical-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Statistical Analysis Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/which-test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Which Statistical Test Should I Use?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/outliers-and-qc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Outliers and QC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../statistics/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Statistics Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Statistics Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/rossion-harmonic-selection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rossion Harmonic Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/rm-anova/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RM-ANOVA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/posthoc-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post-hoc Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/mixed-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mixed Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/baseline-vs-zero/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Baseline vs Zero Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature-tour/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feature Tour
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/individual-level-detectability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Individual-level Detectability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methods Reporting Checklist
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methods Reporting Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#manuscript-ready-summary-copypaste" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manuscript-ready summary (copy/paste)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#single-file-pipeline-verified-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-file pipeline (verified order)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Single-file pipeline (verified order)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-data-import-file-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1) Data import / file loading
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-preprocessing-fixed-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2) Preprocessing (fixed order)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-event-detection-and-condition-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3) Event detection and condition mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-epoching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4) Epoching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-frequency-domain-analysis-fft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5) Frequency-domain analysis (FFT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-metric-computation-snr-bca-z-score" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6) Metric computation (SNR, BCA, Z-score)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-roi-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7) ROI aggregation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8) Exports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-logging-reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9) Logging / reproducibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-report-in-your-manuscript-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What to report in your manuscript (checklist)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-details-not-found-in-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation details not found in code
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relevant-publications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Relevant Publications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="methods-reporting-checklist">Methods Reporting Checklist<a class="headerlink" href="#methods-reporting-checklist" title="Permanent link">&para;</a></h1>
+<p>Use this page when you need manuscript-ready Methods wording or a checklist of processing details to report.</p>
+<p>This page keeps the detailed processing information separate from the beginner-friendly <a href="../processing-pipeline/">Processing Pipeline</a> overview. Fill in the placeholders with values from your project settings, manifest, and processing logs.</p>
+<hr />
+<h2 id="manuscript-ready-summary-copypaste">Manuscript-ready summary (copy/paste)<a class="headerlink" href="#manuscript-ready-summary-copypaste" title="Permanent link">&para;</a></h2>
+<p>The FPVS Toolbox processes EEG recordings stored as BioSemi .bdf
+files using MNE-Python for loading, channel typing, and preprocessing.
+For each recording, the toolbox loads data with disk-backed memory mapping when
+available, assigns channel types (including a configured stimulus/trigger channel),
+and applies a standard 10-10 montage. Preprocessing follows a fixed sequence:
+initial re-reference to a user-specified pair of electrodes (default EXG1 and EXG2),
+removal of those EXG channels, optional channel-count limiting, optional downsampling,
+zero-phase FIR bandpass filtering, kurtosis-based bad-channel detection with interpolation,
+and a final average re-reference. Events are extracted from the stim channel then epochs are created
+for each user-defined condition label using a configured time window without baseline
+correction. The time-domain data are averaged across epochs per condition,
+transformed with an FFT, and  frequency-domain metrics are computed at the target oddball
+harmonics (SNR, baseline-corrected amplitude, and Z-score). Results are exported to
+per-condition Excel files (electrode-level metrics and a full-spectrum SNR sheet), which
+serve as inputs for ROI aggregation and statistical analyses in the Stats tool.</p>
+<p><strong>Parameter placeholders:</strong> Use the processing log and project settings/manifest
+(exported from the UI) to fill in your actual values for reference channels,
+filters, epoch window, and oddball frequency settings.</p>
+<hr />
+<h2 id="single-file-pipeline-verified-order">Single-file pipeline (verified order)<a class="headerlink" href="#single-file-pipeline-verified-order" title="Permanent link">&para;</a></h2>
+<p>The steps below reflect the linear processing order for <strong>one recording file</strong>
+as implemented in the current codebase. "Implementation verified in:" notes point
+you to the exact modules that define each step.</p>
+<h3 id="1-data-import-file-loading">1) Data import / file loading<a class="headerlink" href="#1-data-import-file-loading" title="Permanent link">&para;</a></h3>
+<p><strong>What happens</strong></p>
+<ul>
+<li><strong>Supported input types:</strong> <code>.bdf</code> (BioSemi). Other formats
+  are rejected. (Implementation verified in: <code>src/Main_App/Shared/load_utils.py</code>.)</li>
+<li><strong>Disk-backed memory mapping:</strong> the loader requests a disk-backed <code>preload</code> path
+  for <code>.bdf</code> files, then materializes the memmap with
+  <code>raw.load_data()</code> to keep RAM use bounded. (Implementation verified in:
+  <code>src/Main_App/Shared/load_utils.py</code>.)</li>
+<li><strong>Channel typing policy:</strong></li>
+<li>The <strong>stimulus/trigger channel</strong> is explicitly typed as <code>stim</code>.</li>
+<li>The <strong>reference pair</strong> (e.g., EXG1/EXG2) is preserved as <code>eeg</code> so it can be
+    used for re-referencing.</li>
+<li>Other EXG channels (EXG1-EXG8 not in the reference pair) are demoted to
+    <code>misc</code>.
+  (Implementation verified in: <code>src/Main_App/Shared/load_utils.py</code>.)</li>
+<li><strong>Montage:</strong> BioSemi ActiveTwo 64-channel BDF recordings are treated as
+  10-10-positioned recordings. BioSemi's own cap table labels standard
+  64-channel caps as <code>1020</code>, while Brainstorm documents a one-to-one mapping
+  from BioSemi 16/32/64 cap labels to standard 10-10 labels. The loader applies
+  MNE's <code>standard_1005</code> montage, which includes the needed 10-10 positions, with
+  <code>on_missing="warn"</code> and case-insensitive matching. (Implementation verified in:
+  <code>src/Main_App/Shared/load_utils.py</code>.)</li>
+</ul>
+<p><strong>Key parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th style="text-align: right;">Default</th>
+<th>Source</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stim_channel</code></td>
+<td style="text-align: right;"><code>Status</code></td>
+<td>Project settings / global settings</td>
+<td>Used for event detection and typed as <code>stim</code>.</td>
+</tr>
+<tr>
+<td><code>ref_channel1</code>, <code>ref_channel2</code></td>
+<td style="text-align: right;"><code>EXG1</code>, <code>EXG2</code></td>
+<td>Project settings / global settings</td>
+<td>Kept as <code>eeg</code> during loading.</td>
+</tr>
+</tbody>
+</table>
+<p>(Defaults verified in: <code>src/Main_App/Shared/load_utils.py</code>,
+<code>src/Main_App/projects/preprocessing_settings.py</code>.)</p>
+<hr />
+<h3 id="2-preprocessing-fixed-order">2) Preprocessing (fixed order)<a class="headerlink" href="#2-preprocessing-fixed-order" title="Permanent link">&para;</a></h3>
+<p>Preprocessing is applied in a fixed sequence. Each operation is optional only if
+its parameter is unset/disabled.</p>
+<p><strong>Fixed order</strong> (implementation verified in
+<code>src/Main_App/processing/preprocess.py</code>):</p>
+<ol>
+<li><strong>Initial re-reference</strong> to the user-selected EXG pair (if both channels are
+   present). The reference pair is applied using <code>raw.set_eeg_reference(...)</code>.</li>
+<li><strong>Drop reference channels</strong>: the two reference channels are removed from the
+   data after re-referencing.</li>
+<li><strong>Optional channel limit</strong>: if <code>max_idx_keep</code> is set and smaller than the
+   current channel count, only the first N channels are retained <strong>plus</strong> the
+   stim channel (if present).</li>
+<li><strong>Optional downsampling</strong>: if <code>downsample_rate</code> is set and lower than the
+   current sampling rate, the data are resampled with a Hann window.</li>
+<li><strong>FIR bandpass filter</strong> (zero-phase, forward/backward):</li>
+<li>Method: <code>fir</code> with <code>firwin</code> design, <code>hamming</code> window, <code>phase="zero-double"</code>.</li>
+<li>Transition bandwidths: 0.1 Hz (low and high).</li>
+<li>Fixed filter length: 8449 points.</li>
+<li><strong>Kurtosis-based bad-channel detection &amp; interpolation</strong>:</li>
+<li>Kurtosis (Fisher, <code>bias=False</code>) is computed per EEG channel.</li>
+<li>A <strong>trimmed mean/std</strong> is computed by removing 10% of the highest and lowest
+     kurtosis values.</li>
+<li>Channels with <code>|z| &gt; rejection_z</code> are marked bad.</li>
+<li>If a montage is present, bad channels are interpolated
+     (<code>reset_bads=True</code>, <code>mode="accurate"</code>).</li>
+<li><strong>Final average reference</strong>: average reference is applied via projection and
+   immediately applied (<code>apply_proj</code>).</li>
+</ol>
+<p><strong>Key parameters (defaults)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th style="text-align: right;">Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>high_pass</code></td>
+<td style="text-align: right;">0.1 Hz</td>
+<td>High-pass cutoff (HPF)</td>
+</tr>
+<tr>
+<td><code>low_pass</code></td>
+<td style="text-align: right;">50.0 Hz</td>
+<td>Low-pass cutoff (LPF)</td>
+</tr>
+<tr>
+<td><code>downsample</code> / <code>downsample_rate</code></td>
+<td style="text-align: right;">256 Hz</td>
+<td>Target sampling rate</td>
+</tr>
+<tr>
+<td><code>rejection_z</code> / <code>reject_thresh</code></td>
+<td style="text-align: right;">5.0</td>
+<td>Kurtosis Z threshold</td>
+</tr>
+<tr>
+<td><code>max_idx_keep</code></td>
+<td style="text-align: right;">64</td>
+<td>Max channel index to keep</td>
+</tr>
+<tr>
+<td><code>ref_channel1</code>, <code>ref_channel2</code></td>
+<td style="text-align: right;">EXG1 / EXG2</td>
+<td>Initial reference pair</td>
+</tr>
+</tbody>
+</table>
+<p>(Defaults verified in: <code>src/Main_App/projects/preprocessing_settings.py</code>.)</p>
+<p><strong>Logged/audited items</strong></p>
+<ul>
+<li>A preprocessing fingerprint string (HP/LP/downsample/reject/ref/stim).</li>
+<li>Filter snapshot (computed cutoffs and sampling rate).</li>
+<li>Number of bad channels rejected by kurtosis.</li>
+<li>Final sampling rate and channel count.</li>
+</ul>
+<p>(Logging verified in: <code>src/Main_App/processing/preprocess.py</code>.)</p>
+<hr />
+<h3 id="3-event-detection-and-condition-mapping">3) Event detection and condition mapping<a class="headerlink" href="#3-event-detection-and-condition-mapping" title="Permanent link">&para;</a></h3>
+<p><strong>Event detection (single-file pipeline)</strong></p>
+<ul>
+<li>The toolbox attempts to read events from the configured <strong>stim channel</strong> using
+  <code>mne.find_events(...)</code>.</li>
+<li>If stim-based extraction fails, it falls back to
+  <code>mne.events_from_annotations(...)</code>.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Performance/process_runner.py</code>.)</p>
+<p><strong>Condition mapping</strong></p>
+<ul>
+<li>Your <strong>Event Map</strong> supplies <code>label -&gt; integer code</code> pairs.</li>
+<li>For each label, events are included only if that integer code is present in
+  the extracted events.</li>
+<li>If a label has zero matching events, the pipeline logs a warning and skips
+  that label for the file.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Performance/process_runner.py</code>.)</p>
+<hr />
+<h3 id="4-epoching">4) Epoching<a class="headerlink" href="#4-epoching" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Epochs are created per label with:</li>
+<li><code>tmin = epoch_start</code> and <code>tmax = epoch_end</code> (seconds)</li>
+<li><code>baseline = None</code> (no baseline correction at epoch stage)</li>
+<li><code>preload = False</code></li>
+<li><code>decim = 1</code></li>
+<li>After creation, <code>epochs.drop_bad()</code> is called.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Performance/process_runner.py</code>.)</p>
+<p><strong>Not found in code; user-configurable / unknown</strong></p>
+<ul>
+<li><strong>Epoch rejection thresholds (e.g., voltage limits):</strong> no explicit <code>reject</code>
+  or <code>flat</code> criteria are passed to <code>mne.Epochs</code>. Search locations:</li>
+<li><code>src/Main_App/Performance/process_runner.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
+<li><code>src/Main_App/Shared/processing_mixin.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
+</ul>
+<hr />
+<h3 id="5-frequency-domain-analysis-fft">5) Frequency-domain analysis (FFT)<a class="headerlink" href="#5-frequency-domain-analysis-fft" title="Permanent link">&para;</a></h3>
+<ul>
+<li>For each condition, epochs are <strong>averaged in the time domain</strong> and the FFT is
+  computed on the averaged signal (not per-epoch).</li>
+<li>FFT uses <code>np.fft.fft</code> with no explicit windowing, detrending, or zero-padding.</li>
+<li>The amplitude spectrum is computed as:
+  <code>abs(FFT) / N * 2</code> for bins from 0 to Nyquist.</li>
+<li>Frequency bins are linearly spaced from 0 to <code>sfreq / 2</code>.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Shared/post_process.py</code>.)</p>
+<hr />
+<h3 id="6-metric-computation-snr-bca-z-score">6) Metric computation (SNR, BCA, Z-score)<a class="headerlink" href="#6-metric-computation-snr-bca-z-score" title="Permanent link">&para;</a></h3>
+<p><strong>Target frequencies</strong></p>
+<ul>
+<li>The toolbox computes metrics at <strong>oddball harmonics</strong> defined by
+  <code>TARGET_FREQUENCIES</code>.</li>
+<li>These are calculated as: <code>oddball_freq x 1..K</code>, where
+  <code>K = round(bca_upper_limit / oddball_freq)</code>.</li>
+<li><code>oddball_freq</code> and <code>bca_upper_limit</code> come from project settings.</li>
+</ul>
+<p>(Implementation verified in: <code>src/config.py</code>.)</p>
+<p><strong>Noise window and baseline definition (used by SNR, BCA, Z)</strong></p>
+<p>For each target frequency, the toolbox finds the <strong>nearest FFT bin</strong> and defines
+noise bins as follows:</p>
+<ul>
+<li>Window: +/-10 bins around the target bin.</li>
+<li>Exclusions: target bin and its immediate neighbors (-1 and +1) are excluded.</li>
+<li>Minimum bins: if fewer than 4 candidate bins remain, noise mean/std are set
+  to 0.0.</li>
+<li>Trimming: one maximum and one minimum value are removed before computing the
+  mean and standard deviation.</li>
+<li>Standard deviation uses population variance (<code>ddof=0</code>).</li>
+</ul>
+<p>(Implementation verified in: <code>src/Tools/Stats/analysis/noise_utils.py</code> and
+<code>src/Main_App/Shared/post_process.py</code>.)</p>
+<p><strong>Formulas (applied per channel x harmonic)</strong></p>
+<p>Let:
+- <code>A</code> = amplitude at the target FFT bin (uV)
+- <code>noise_mean</code> = mean of the noise bins
+- <code>noise_std</code> = standard deviation of the noise bins</p>
+<p>Then:</p>
+<ul>
+<li><strong>SNR</strong> = <code>A / noise_mean</code> (set to 0 when <code>noise_mean &lt;= 1e-12</code>)</li>
+<li><strong>BCA</strong> = <code>A - noise_mean</code></li>
+<li><strong>Z-score</strong> = <code>(A - noise_mean) / noise_std</code> (set to 0 when <code>noise_std &lt;= 1e-12</code>)</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Shared/post_process.py</code>.)</p>
+<p><strong>Full-spectrum SNR</strong></p>
+<p>A separate full-spectrum SNR matrix is computed for <strong>all FFT bins</strong> using the
+same noise-bin logic and is exported as the <code>FullSNR</code> sheet.</p>
+<p>(Implementation verified in: <code>src/Tools/Stats/analysis/full_snr.py</code> and
+<code>src/Main_App/Shared/post_process.py</code>.)</p>
+<p><strong>Background (not necessarily the toolbox implementation)</strong></p>
+<p>FPVS studies often describe SNR based on a local noise window around each target
+frequency; always report the <strong>implementation actually used by the toolbox</strong>
+above.</p>
+<hr />
+<h3 id="7-roi-aggregation">7) ROI aggregation<a class="headerlink" href="#7-roi-aggregation" title="Permanent link">&para;</a></h3>
+<p><strong>Important:</strong> The core processing/export step writes <strong>electrode-level</strong>
+metrics. ROI aggregation happens later (e.g., in the Stats tool) by reading the
+exported Excel files.</p>
+<p><strong>Verified ROI aggregation behavior (Stats tool)</strong></p>
+<ul>
+<li>ROI definitions are stored in settings as <code>roi_name -&gt; list of electrodes</code>,
+  with electrode names uppercased and trimmed for matching.</li>
+<li>For Summed BCA analyses, the toolbox:</li>
+<li>Reads the <code>BCA (uV)</code> sheet.</li>
+<li>Sums BCA across selected harmonics per electrode.</li>
+<li>Averages the summed values across electrodes in the ROI.</li>
+<li>Ignores ROI electrodes that are missing from the Excel file.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Shared/settings_manager.py</code>,
+<code>src/Tools/Stats/analysis/dv_policies.py</code>.)</p>
+<p>If you perform ROI aggregation outside the Stats tool (e.g., in a custom script),
+report the exact aggregation rule you used.</p>
+<hr />
+<h3 id="8-exports">8) Exports<a class="headerlink" href="#8-exports" title="Permanent link">&para;</a></h3>
+<p><strong>Output location</strong></p>
+<ul>
+<li>The export root is the project's <strong>Excel results folder</strong> (default:
+  <code>1 - Excel Data Files</code> under the project's results directory).</li>
+<li>A subfolder is created per condition label (label is sanitized for filenames).</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/projects/project.py</code>,
+<code>src/Main_App/Shared/post_process.py</code>.)</p>
+<p><strong>Excel file names</strong></p>
+<ul>
+<li><strong>Single-file processing:</strong> <code>PID_&lt;Condition&gt;_Results.xlsx</code></li>
+<li><code>PID</code> is extracted from the raw filename using <code>P\d+</code>, <code>Sub\d+</code>, or <code>S\d+</code>
+  patterns; otherwise a cleaned filename stem is used.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/Shared/post_process.py</code>.)</p>
+<p><strong>Excel sheet names and contents</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sheet name</th>
+<th>Contents</th>
+<th>Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FFT Amplitude (uV)</code></td>
+<td>Amplitude spectrum at target harmonics</td>
+<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+</tr>
+<tr>
+<td><code>SNR</code></td>
+<td>Signal-to-noise ratio at target harmonics</td>
+<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+</tr>
+<tr>
+<td><code>Z Score</code></td>
+<td>Z-scores at target harmonics</td>
+<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+</tr>
+<tr>
+<td><code>BCA (uV)</code></td>
+<td>Baseline-corrected amplitudes at target harmonics</td>
+<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+</tr>
+<tr>
+<td><code>FullSNR</code></td>
+<td>Full-spectrum SNR (interpolated)</td>
+<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+</tr>
+</tbody>
+</table>
+<p>Target-harmonic columns are formatted as <code>"{freq:.4f}_Hz"</code>.
+The <code>FullSNR</code> sheet is interpolated from 0.5 Hz up to the configured
+<code>bca_upper_limit</code> in 0.01 Hz steps.</p>
+<p>(Implementation verified in: <code>src/Main_App/Shared/post_process.py</code>.)</p>
+<hr />
+<h3 id="9-logging-reproducibility">9) Logging / reproducibility<a class="headerlink" href="#9-logging-reproducibility" title="Permanent link">&para;</a></h3>
+<p>The pipeline writes structured log messages during preprocessing and processing.
+Key log entries you can cite for reproducibility include:</p>
+<ul>
+<li>Preprocessing fingerprint and filter snapshot (cutoffs, sampling rate).</li>
+<li>Number of channels rejected by kurtosis.</li>
+<li>Event source (stim vs. annotations) and number of events.</li>
+<li>Warnings for labels with zero events or zero epochs.</li>
+<li>Confirmation of Excel export completion.</li>
+</ul>
+<p>(Implementation verified in: <code>src/Main_App/processing/preprocess.py</code>,
+<code>src/Main_App/Performance/process_runner.py</code>,
+<code>src/Main_App/Shared/post_process.py</code>.)</p>
+<p>For manuscript archiving, keep:
+- The project settings/manifest (event map, preprocessing settings, ROI list).
+- The per-condition Excel outputs.
+- The processing log file or log window export.</p>
+<hr />
+<h2 id="what-to-report-in-your-manuscript-checklist">What to report in your manuscript (checklist)<a class="headerlink" href="#what-to-report-in-your-manuscript-checklist" title="Permanent link">&para;</a></h2>
+<p>Fill in the values in brackets with your project's actual settings.</p>
+<ul>
+<li><strong>Recording format and sampling rate:</strong> [e.g., BioSemi .bdf, 512 Hz]</li>
+<li><strong>Stim/trigger channel:</strong> [e.g., Status]</li>
+<li><strong>Initial reference:</strong> [e.g., EXG1/EXG2]</li>
+<li><strong>Final reference:</strong> [average reference]</li>
+<li><strong>Filter settings:</strong> [HPF = __ Hz, LPF = __ Hz]</li>
+<li><strong>Downsampling:</strong> [target Hz or "not applied"]</li>
+<li><strong>Bad-channel handling:</strong> [kurtosis Z threshold __; interpolation on/off]</li>
+<li><strong>Epoch window:</strong> [tmin = __ s, tmax = __ s; baseline = none]</li>
+<li><strong>Event mapping:</strong> [list labels and integer codes]</li>
+<li><strong>FFT method:</strong> [FFT of averaged epochs; amplitude = abs(FFT)/N*2]</li>
+<li><strong>Frequency resolution:</strong> [N = samples per epoch -&gt; resolution = sfreq/N]</li>
+<li><strong>Noise window for SNR/Z/BCA:</strong> [+/-10 bins; exclude target +/-1; drop max/min]</li>
+<li><strong>Oddball harmonics analyzed:</strong> [oddball_freq, upper limit, resulting list]</li>
+<li><strong>ROI definitions:</strong> [ROI name -&gt; electrode list; uppercased channel matching]</li>
+<li><strong>Exported metrics and units:</strong> [SNR, Z, BCA (uV), FFT amplitude (uV)]</li>
+</ul>
+<hr />
+<h2 id="implementation-details-not-found-in-code">Implementation details not found in code<a class="headerlink" href="#implementation-details-not-found-in-code" title="Permanent link">&para;</a></h2>
+<p>If you need any of the following details for your manuscript, they are <strong>not
+verified in code</strong> and should be reported explicitly as user-configurable or
+unknown:</p>
+<ul>
+<li><strong>Epoch rejection thresholds (amplitude/flat criteria)</strong></li>
+<li>Searched in:<ul>
+<li><code>src/Main_App/Performance/process_runner.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
+<li><code>src/Main_App/Shared/processing_mixin.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
+</ul>
+</li>
+</ul>
+<p>If you know where these are configured in your local deployment, add them to
+this documentation and cite the exact configuration source.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../tools/individual-level-detectability/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Individual-level Detectability">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Individual-level Detectability
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../glossary/" class="md-footer__link md-footer__link--next" aria-label="Next: Glossary">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Glossary
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.expand", "navigation.indexes", "toc.integrate", "toc.follow", "content.code.copy", "search.suggest", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

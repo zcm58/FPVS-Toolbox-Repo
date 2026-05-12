@@ -13,10 +13,10 @@
         <link rel="canonical" href="https://zcm58.github.io/FPVS-Toolbox-Repo/processing-pipeline/">
       
       
-        <link rel="prev" href="../faq/">
+        <link rel="prev" href="../project-setup/">
       
       
-        <link rel="next" href="../fft-frequency-domain-quantification/">
+        <link rel="next" href="../outputs-reference/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Processing Pipeline Overview - FPVS Toolbox</title>
+        <title>Processing Pipeline - FPVS Toolbox</title>
       
     
     
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Processing Pipeline Overview
+              Processing Pipeline
             
           </span>
         </div>
@@ -215,6 +215,8 @@
           
   
   
+    
+  
   Start Here
 
         </a>
@@ -233,11 +235,13 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+        <a href="../run-a-study/" class="md-tabs__link">
           
   
   
-  Analysis Workflow
+    
+  
+  Run a Study
 
         </a>
       </li>
@@ -253,9 +257,55 @@
     
     
       <li class="md-tabs__item">
-        <a href="../tools/individual-level-detectability/" class="md-tabs__link">
+        <a href="../understand-results/" class="md-tabs__link">
           
   
+  
+    
+  
+  Understand Results
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../statistics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Statistics Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../feature-tour/" class="md-tabs__link">
+          
+  
+  
+    
   
   Tools
 
@@ -273,29 +323,11 @@
     
     
       <li class="md-tabs__item">
-        <a href="../tutorial/" class="md-tabs__link">
+        <a href="../methods-reporting-checklist/" class="md-tabs__link">
           
   
   
-  Tutorials
-
-        </a>
-      </li>
     
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../outputs-reference/" class="md-tabs__link">
-          
-  
   
   Reference
 
@@ -392,6 +424,16 @@
   
   
     
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -502,14 +544,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../feature-tour/" class="md-nav__link">
+      <a href="../tutorial/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Feature Tour
+    First End-to-End Walkthrough
   
 
     
@@ -568,6 +610,18 @@
   
     
     
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
       
@@ -593,7 +647,7 @@
   <span class="md-ellipsis">
     
   
-    Analysis Workflow
+    Run a Study
   
 
     
@@ -609,11 +663,67 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Analysis Workflow
+    Run a Study
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../run-a-study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -638,7 +748,7 @@
   <span class="md-ellipsis">
     
   
-    Processing Pipeline Overview
+    Processing Pipeline
   
 
     
@@ -656,7 +766,7 @@
   <span class="md-ellipsis">
     
   
-    Processing Pipeline Overview
+    Processing Pipeline
   
 
     
@@ -682,10 +792,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#manuscript-ready-summary-copypaste" class="md-nav__link">
+  <a href="#pipeline-at-a-glance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Manuscript-ready summary (copy/paste)
+        Pipeline at a glance
       
     </span>
   </a>
@@ -693,126 +803,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#single-file-pipeline-verified-order" class="md-nav__link">
+  <a href="#what-happens-during-processing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Single-file pipeline (verified order)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Single-file pipeline (verified order)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-data-import-file-loading" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1) Data import / file loading
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-preprocessing-fixed-order" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2) Preprocessing (fixed order)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-event-detection-and-condition-mapping" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3) Event detection and condition mapping
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-epoching" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4) Epoching
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-frequency-domain-analysis-fft" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5) Frequency-domain analysis (FFT)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-metric-computation-snr-bca-z-score" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6) Metric computation (SNR, BCA, Z-score)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-roi-aggregation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7) ROI aggregation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#8-exports" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8) Exports
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#9-logging-reproducibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9) Logging / reproducibility
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-to-report-in-your-manuscript-checklist" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What to report in your manuscript (checklist)
+        What happens during processing
       
     </span>
   </a>
@@ -820,10 +814,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#implementation-details-not-found-in-code" class="md-nav__link">
+  <a href="#project-folder-diagram" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Implementation details not found in code
+        Project folder diagram
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs-created-by-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs created by processing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-do-after-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What to do after processing
       
     </span>
   </a>
@@ -834,6 +850,163 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../outputs-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Output Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Understand Results
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Understand Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../understand-results/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -893,6 +1066,148 @@
     </li>
   
 
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/which-test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Which Statistical Test Should I Use?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/outliers-and-qc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Outliers and QC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../statistics/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Statistics Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Statistics Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
             
               
@@ -1014,34 +1329,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../statistics/outliers-and-qc/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Outliers and QC
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../statistics/baseline-vs-zero/" class="md-nav__link">
         
   
@@ -1078,6 +1365,12 @@
   
     
     
+      
+        
+      
+        
+      
+    
     
     
       
@@ -1092,10 +1385,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1113,8 +1406,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1123,6 +1416,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature-tour/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feature Tour
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -1167,94 +1488,13 @@
   
     
     
-    
-    
-      
       
         
       
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
+        
       
         
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Tutorials
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Tutorials
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../tutorial/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    First End-to-End Walkthrough
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
     
     
     
@@ -1270,10 +1510,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   
@@ -1291,8 +1531,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1309,42 +1549,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../outputs-reference/" class="md-nav__link">
+      <a href="../methods-reporting-checklist/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Output Files
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../troubleshooting/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Troubleshooting
+    Methods Reporting Checklist
   
 
     
@@ -1442,386 +1654,120 @@
 
 
 <h1 id="processing-pipeline">Processing Pipeline<a class="headerlink" href="#processing-pipeline" title="Permanent link">&para;</a></h1>
-<p>This page describes the <strong>single-file processing pipeline</strong> used by FPVS Toolbox.
-It is written for end users who need manuscript-ready Methods text and verified
-implementation details.</p>
-<hr />
-<h2 id="manuscript-ready-summary-copypaste">Manuscript-ready summary (copy/paste)<a class="headerlink" href="#manuscript-ready-summary-copypaste" title="Permanent link">&para;</a></h2>
-<p>The FPVS Toolbox processes EEG recordings stored as BioSemi .bdf
-files using MNE-Python for loading, channel typing, and preprocessing.
-For each recording, the toolbox loads data with disk-backed memory mapping when
-available, assigns channel types (including a configured stimulus/trigger channel),
-and applies a standard 10–10 montage. Preprocessing follows a fixed sequence:
-initial re-reference to a user-specified pair of electrodes (default EXG1 and EXG2), 
-removal of those EXG channels, optional channel-count limiting, optional downsampling, 
-zero-phase FIR bandpass filtering, kurtosis-based bad-channel detection with interpolation, 
-and a final average re-reference. Events are extracted from the stim channel then epochs are created 
-for each user-defined condition label using a configured time window without baseline 
-correction. The time-domain data are averaged across epochs per condition, 
-transformed with an FFT, and  frequency-domain metrics are computed at the target oddball 
-harmonics (SNR, baseline-corrected amplitude, and Z-score). Results are exported to 
-per-condition Excel files (electrode-level metrics and a full-spectrum SNR sheet), which 
-serve as inputs for ROI aggregation and statistical analyses in the Stats tool.</p>
-<p><strong>Parameter placeholders:</strong> Use the processing log and project settings/manifest
-(exported from the UI) to fill in your actual values for reference channels,
-filters, epoch window, and oddball frequency settings.</p>
-<hr />
-<h2 id="single-file-pipeline-verified-order">Single-file pipeline (verified order)<a class="headerlink" href="#single-file-pipeline-verified-order" title="Permanent link">&para;</a></h2>
-<p>The steps below reflect the linear processing order for <strong>one recording file</strong>
-as implemented in the current codebase. “Implementation verified in:” notes point
-you to the exact modules that define each step.</p>
-<h3 id="1-data-import-file-loading">1) Data import / file loading<a class="headerlink" href="#1-data-import-file-loading" title="Permanent link">&para;</a></h3>
-<p><strong>What happens</strong></p>
-<ul>
-<li><strong>Supported input types:</strong> <code>.bdf</code> (BioSemi). Other formats
-  are rejected. (Implementation verified in: <code>src/Main_App/PySide6_App/Backend/loader.py</code>.)</li>
-<li><strong>Disk-backed memory mapping:</strong> the loader requests a disk-backed <code>preload</code> path
-  for <code>.bdf</code> and (when supported) <code>.set</code> files, then materializes the memmap with
-  <code>raw.load_data()</code> to keep RAM use bounded. (Implementation verified in:
-  <code>src/Main_App/PySide6_App/Backend/loader.py</code>.)</li>
-<li><strong>Channel typing policy:</strong></li>
-<li>The <strong>stimulus/trigger channel</strong> is explicitly typed as <code>stim</code>.</li>
-<li>The <strong>reference pair</strong> (e.g., EXG1/EXG2) is preserved as <code>eeg</code> so it can be
-    used for re-referencing.</li>
-<li>Other EXG channels (EXG1–EXG8 not in the reference pair) are demoted to
-    <code>misc</code>.
-  (Implementation verified in: <code>src/Main_App/PySide6_App/Backend/loader.py</code>.)</li>
-<li><strong>Montage:</strong> a standard 10–20 montage (<code>standard_1020</code>) is applied with
-  <code>on_missing="warn"</code> and case-insensitive matching. (Implementation verified in:
-  <code>src/Main_App/PySide6_App/Backend/loader.py</code>.)</li>
-</ul>
-<p><strong>Key parameters</strong></p>
+<p>Use this page when you want a practical overview of what FPVS Toolbox does after you start processing a <code>.bdf</code> file.</p>
+<p>FPVS Toolbox turns raw BioSemi EEG recordings into Excel files that can be used by the Statistics tool. The pipeline is designed to keep the same processing order for each file so that results are reproducible across participants and conditions.</p>
+<h2 id="pipeline-at-a-glance">Pipeline at a glance<a class="headerlink" href="#pipeline-at-a-glance" title="Permanent link">&para;</a></h2>
+<pre><code class="language-text">.bdf file
+  -&gt; load EEG and trigger channel
+  -&gt; apply preprocessing settings
+  -&gt; find events from trigger codes
+  -&gt; create epochs for each condition
+  -&gt; average epochs
+  -&gt; run FFT
+  -&gt; export Excel results
+  -&gt; run statistics
+</code></pre>
+<p>Alt text: A linear workflow from a raw BDF file through preprocessing, event detection, epoching, FFT, Excel export, and statistical analysis.</p>
+<h2 id="what-happens-during-processing">What happens during processing<a class="headerlink" href="#what-happens-during-processing" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Parameter</th>
-<th style="text-align: right;">Default</th>
-<th>Source</th>
-<th>Notes</th>
+<th>Step</th>
+<th>What FPVS Toolbox does</th>
+<th>What you should check</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>stim_channel</code></td>
-<td style="text-align: right;"><code>Status</code></td>
-<td>Project settings / global settings</td>
-<td>Used for event detection and typed as <code>stim</code>.</td>
+<td>Load data</td>
+<td>Opens BioSemi <code>.bdf</code> files and reads the configured trigger channel.</td>
+<td>The file is readable and the stim channel is correct.</td>
 </tr>
 <tr>
-<td><code>ref_channel1</code>, <code>ref_channel2</code></td>
-<td style="text-align: right;"><code>EXG1</code>, <code>EXG2</code></td>
-<td>Project settings / global settings</td>
-<td>Kept as <code>eeg</code> during loading.</td>
-</tr>
-</tbody>
-</table>
-<p>(Defaults verified in: <code>src/Main_App/PySide6_App/Backend/loader.py</code>,
-<code>src/Main_App/PySide6_App/Backend/preprocessing_settings.py</code>.)</p>
-<hr />
-<h3 id="2-preprocessing-fixed-order">2) Preprocessing (fixed order)<a class="headerlink" href="#2-preprocessing-fixed-order" title="Permanent link">&para;</a></h3>
-<p>Preprocessing is applied in a fixed sequence. Each operation is optional only if
-its parameter is unset/disabled.</p>
-<p><strong>Fixed order</strong> (implementation verified in
-<code>src/Main_App/PySide6_App/Backend/preprocess.py</code>):</p>
-<ol>
-<li><strong>Initial re-reference</strong> to the user-selected EXG pair (if both channels are
-   present). The reference pair is applied using <code>raw.set_eeg_reference(...)</code>.</li>
-<li><strong>Drop reference channels</strong>: the two reference channels are removed from the
-   data after re-referencing.</li>
-<li><strong>Optional channel limit</strong>: if <code>max_idx_keep</code> is set and smaller than the
-   current channel count, only the first N channels are retained <strong>plus</strong> the
-   stim channel (if present).</li>
-<li><strong>Optional downsampling</strong>: if <code>downsample_rate</code> is set and lower than the
-   current sampling rate, the data are resampled with a Hann window.</li>
-<li><strong>FIR bandpass filter</strong> (zero-phase, forward/backward):</li>
-<li>Method: <code>fir</code> with <code>firwin</code> design, <code>hamming</code> window, <code>phase="zero-double"</code>.</li>
-<li>Transition bandwidths: 0.1 Hz (low and high).</li>
-<li>Fixed filter length: 8449 points.</li>
-<li><strong>Kurtosis-based bad-channel detection &amp; interpolation</strong>:</li>
-<li>Kurtosis (Fisher, <code>bias=False</code>) is computed per EEG channel.</li>
-<li>A <strong>trimmed mean/std</strong> is computed by removing 10% of the highest and lowest
-     kurtosis values.</li>
-<li>Channels with <code>|z| &gt; rejection_z</code> are marked bad.</li>
-<li>If a montage is present, bad channels are interpolated
-     (<code>reset_bads=True</code>, <code>mode="accurate"</code>).</li>
-<li><strong>Final average reference</strong>: average reference is applied via projection and
-   immediately applied (<code>apply_proj</code>).</li>
-</ol>
-<p><strong>Key parameters (defaults)</strong></p>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th style="text-align: right;">Default</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>high_pass</code></td>
-<td style="text-align: right;">0.1 Hz</td>
-<td>High-pass cutoff (HPF)</td>
+<td>Preprocess</td>
+<td>Applies reference, filtering, downsampling, and bad-channel handling from project settings.</td>
+<td>Settings match the method you intend to report.</td>
 </tr>
 <tr>
-<td><code>low_pass</code></td>
-<td style="text-align: right;">50.0 Hz</td>
-<td>Low-pass cutoff (LPF)</td>
+<td>Find events</td>
+<td>Matches trigger codes to your condition labels.</td>
+<td>Every expected condition has events.</td>
 </tr>
 <tr>
-<td><code>downsample</code> / <code>downsample_rate</code></td>
-<td style="text-align: right;">256 Hz</td>
-<td>Target sampling rate</td>
+<td>Create epochs</td>
+<td>Cuts the recording into time windows around events.</td>
+<td>Warnings do not show zero usable epochs.</td>
 </tr>
 <tr>
-<td><code>rejection_z</code> / <code>reject_thresh</code></td>
-<td style="text-align: right;">5.0</td>
-<td>Kurtosis Z threshold</td>
+<td>Average and FFT</td>
+<td>Averages epochs, converts the response to frequency-domain values, and computes metrics.</td>
+<td>Excel sheets are created for each condition.</td>
 </tr>
 <tr>
-<td><code>max_idx_keep</code></td>
-<td style="text-align: right;">64</td>
-<td>Max channel index to keep</td>
-</tr>
-<tr>
-<td><code>ref_channel1</code>, <code>ref_channel2</code></td>
-<td style="text-align: right;">EXG1 / EXG2</td>
-<td>Initial reference pair</td>
+<td>Export results</td>
+<td>Saves participant-by-condition workbooks for later statistics.</td>
+<td>Output folders and filenames look correct.</td>
 </tr>
 </tbody>
 </table>
-<p>(Defaults verified in: <code>src/Main_App/PySide6_App/Backend/preprocessing_settings.py</code>.)</p>
-<p><strong>Logged/audited items</strong></p>
-<ul>
-<li>A preprocessing fingerprint string (HP/LP/downsample/reject/ref/stim).</li>
-<li>Filter snapshot (computed cutoffs and sampling rate).</li>
-<li>Number of bad channels rejected by kurtosis.</li>
-<li>Final sampling rate and channel count.</li>
-</ul>
-<p>(Logging verified in: <code>src/Main_App/PySide6_App/Backend/preprocess.py</code>.)</p>
-<hr />
-<h3 id="3-event-detection-and-condition-mapping">3) Event detection and condition mapping<a class="headerlink" href="#3-event-detection-and-condition-mapping" title="Permanent link">&para;</a></h3>
-<p><strong>Event detection (single-file pipeline)</strong></p>
-<ul>
-<li>The toolbox attempts to read events from the configured <strong>stim channel</strong> using
-  <code>mne.find_events(...)</code>.</li>
-<li>If stim-based extraction fails, it falls back to
-  <code>mne.events_from_annotations(...)</code>.</li>
-</ul>
-<p>(Implementation verified in: <code>src/Main_App/Performance/process_runner.py</code>.)</p>
-<p><strong>Condition mapping</strong></p>
-<ul>
-<li>Your <strong>Event Map</strong> supplies <code>label → integer code</code> pairs.</li>
-<li>For each label, events are included only if that integer code is present in
-  the extracted events.</li>
-<li>If a label has zero matching events, the pipeline logs a warning and skips
-  that label for the file.</li>
-</ul>
-<p>(Implementation verified in: <code>src/Main_App/Performance/process_runner.py</code>.)</p>
-<hr />
-<h3 id="4-epoching">4) Epoching<a class="headerlink" href="#4-epoching" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Epochs are created per label with:</li>
-<li><code>tmin = epoch_start</code> and <code>tmax = epoch_end</code> (seconds)</li>
-<li><code>baseline = None</code> (no baseline correction at epoch stage)</li>
-<li><code>preload = False</code></li>
-<li><code>decim = 1</code></li>
-<li>After creation, <code>epochs.drop_bad()</code> is called.</li>
-</ul>
-<p>(Implementation verified in: <code>src/Main_App/Performance/process_runner.py</code>.)</p>
-<p><strong>Not found in code; user-configurable / unknown</strong></p>
-<ul>
-<li><strong>Epoch rejection thresholds (e.g., voltage limits):</strong> no explicit <code>reject</code>
-  or <code>flat</code> criteria are passed to <code>mne.Epochs</code>. Search locations:</li>
-<li><code>src/Main_App/Performance/process_runner.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
-<li><code>src/Main_App/Legacy_App/processing_utils.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
-</ul>
-<hr />
-<h3 id="5-frequency-domain-analysis-fft">5) Frequency-domain analysis (FFT)<a class="headerlink" href="#5-frequency-domain-analysis-fft" title="Permanent link">&para;</a></h3>
-<ul>
-<li>For each condition, epochs are <strong>averaged in the time domain</strong> and the FFT is
-  computed on the averaged signal (not per-epoch).</li>
-<li>FFT uses <code>np.fft.fft</code> with no explicit windowing, detrending, or zero-padding.</li>
-<li>The amplitude spectrum is computed as:
-  <code>abs(FFT) / N * 2</code> for bins from 0 to Nyquist.</li>
-<li>Frequency bins are linearly spaced from 0 to <code>sfreq / 2</code>.</li>
-</ul>
-<p>(Implementation verified in: <code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
-<hr />
-<h3 id="6-metric-computation-snr-bca-z-score">6) Metric computation (SNR, BCA, Z-score)<a class="headerlink" href="#6-metric-computation-snr-bca-z-score" title="Permanent link">&para;</a></h3>
-<p><strong>Target frequencies</strong></p>
-<ul>
-<li>The toolbox computes metrics at <strong>oddball harmonics</strong> defined by
-  <code>TARGET_FREQUENCIES</code>.</li>
-<li>These are calculated as: <code>oddball_freq × 1..K</code>, where
-  <code>K = round(bca_upper_limit / oddball_freq)</code>.</li>
-<li><code>oddball_freq</code> and <code>bca_upper_limit</code> come from project settings.</li>
-</ul>
-<p>(Implementation verified in: <code>src/config.py</code>.)</p>
-<p><strong>Noise window and baseline definition (used by SNR, BCA, Z)</strong></p>
-<p>For each target frequency, the toolbox finds the <strong>nearest FFT bin</strong> and defines
-noise bins as follows:</p>
-<ul>
-<li>Window: ±10 bins around the target bin.</li>
-<li>Exclusions: target bin and its immediate neighbors (−1 and +1) are excluded.</li>
-<li>Minimum bins: if fewer than 4 candidate bins remain, noise mean/std are set
-  to 0.0.</li>
-<li>Trimming: one maximum and one minimum value are removed before computing the
-  mean and standard deviation.</li>
-<li>Standard deviation uses population variance (<code>ddof=0</code>).</li>
-</ul>
-<p>(Implementation verified in: <code>src/Tools/Stats/Legacy/noise_utils.py</code> and
-<code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
-<p><strong>Formulas (applied per channel × harmonic)</strong></p>
-<p>Let:
-- <code>A</code> = amplitude at the target FFT bin (µV)
-- <code>noise_mean</code> = mean of the noise bins
-- <code>noise_std</code> = standard deviation of the noise bins</p>
-<p>Then:</p>
-<ul>
-<li><strong>SNR</strong> = <code>A / noise_mean</code> (set to 0 when <code>noise_mean &lt;= 1e-12</code>)</li>
-<li><strong>BCA</strong> = <code>A - noise_mean</code></li>
-<li><strong>Z-score</strong> = <code>(A - noise_mean) / noise_std</code> (set to 0 when <code>noise_std &lt;= 1e-12</code>)</li>
-</ul>
-<p>(Implementation verified in: <code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
-<p><strong>Full-spectrum SNR</strong></p>
-<p>A separate full-spectrum SNR matrix is computed for <strong>all FFT bins</strong> using the
-same noise-bin logic and is exported as the <code>FullSNR</code> sheet.</p>
-<p>(Implementation verified in: <code>src/Tools/Stats/Legacy/full_snr.py</code> and
-<code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
-<p><strong>Background (not necessarily the toolbox implementation)</strong></p>
-<p>FPVS studies often describe SNR based on a local noise window around each target
-frequency; always report the <strong>implementation actually used by the toolbox</strong>
-above.</p>
-<hr />
-<h3 id="7-roi-aggregation">7) ROI aggregation<a class="headerlink" href="#7-roi-aggregation" title="Permanent link">&para;</a></h3>
-<p><strong>Important:</strong> The core processing/export step writes <strong>electrode-level</strong>
-metrics. ROI aggregation happens later (e.g., in the Stats tool) by reading the
-exported Excel files.</p>
-<p><strong>Verified ROI aggregation behavior (Stats tool)</strong></p>
-<ul>
-<li>ROI definitions are stored in settings as <code>roi_name → list of electrodes</code>,
-  with electrode names uppercased and trimmed for matching.</li>
-<li>For Summed BCA analyses, the toolbox:</li>
-<li>Reads the <code>BCA (uV)</code> sheet.</li>
-<li>Sums BCA across selected harmonics per electrode.</li>
-<li>Averages the summed values across electrodes in the ROI.</li>
-<li>Ignores ROI electrodes that are missing from the Excel file.</li>
-</ul>
-<p>(Implementation verified in: <code>src/Main_App/Legacy_App/settings_manager.py</code>,
-<code>src/Tools/Stats/PySide6/dv_policies.py</code>.)</p>
-<p>If you perform ROI aggregation outside the Stats tool (e.g., in a custom script),
-report the exact aggregation rule you used.</p>
-<hr />
-<h3 id="8-exports">8) Exports<a class="headerlink" href="#8-exports" title="Permanent link">&para;</a></h3>
-<p><strong>Output location</strong></p>
-<ul>
-<li>The export root is the project’s <strong>Excel results folder</strong> (default:
-  <code>1 - Excel Data Files</code> under the project’s results directory).</li>
-<li>A subfolder is created per condition label (label is sanitized for filenames).</li>
-</ul>
-<p>(Implementation verified in: <code>src/Main_App/PySide6_App/Backend/project.py</code>,
-<code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
-<p><strong>Excel file names</strong></p>
-<ul>
-<li><strong>Single-file processing:</strong> <code>PID_&lt;Condition&gt;_Results.xlsx</code></li>
-<li><code>PID</code> is extracted from the raw filename using <code>P\d+</code>, <code>Sub\d+</code>, or <code>S\d+</code>
-  patterns; otherwise a cleaned filename stem is used.</li>
-</ul>
-<p>(Implementation verified in: <code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
-<p><strong>Excel sheet names and contents</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Most processing problems start with event codes</p>
+<p>If a condition is missing, check the trigger code and stim channel before changing preprocessing settings.</p>
+</div>
+<h2 id="project-folder-diagram">Project folder diagram<a class="headerlink" href="#project-folder-diagram" title="Permanent link">&para;</a></h2>
+<pre><code class="language-text">Project root
+  -&gt; Project settings and logs
+  -&gt; 1 - Excel Data Files
+       -&gt; Condition A
+            -&gt; P1_Condition A_Results.xlsx
+            -&gt; P2_Condition A_Results.xlsx
+       -&gt; Condition B
+            -&gt; P1_Condition B_Results.xlsx
+  -&gt; 3 - Statistical Analysis Results
+</code></pre>
+<p>Alt text: A project root folder containing settings, logs, Excel data files organized by condition, and statistical analysis results.</p>
+<h2 id="outputs-created-by-processing">Outputs created by processing<a class="headerlink" href="#outputs-created-by-processing" title="Permanent link">&para;</a></h2>
+<p>Each participant-condition workbook usually contains these sheets:</p>
 <table>
 <thead>
 <tr>
-<th>Sheet name</th>
-<th>Contents</th>
-<th>Columns</th>
+<th>Sheet</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>FFT Amplitude (uV)</code></td>
-<td>Amplitude spectrum at target harmonics</td>
-<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+<td>Frequency-domain amplitude at target harmonics.</td>
 </tr>
 <tr>
 <td><code>SNR</code></td>
-<td>Signal-to-noise ratio at target harmonics</td>
-<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+<td>Signal-to-noise ratio around the target harmonic.</td>
 </tr>
 <tr>
 <td><code>Z Score</code></td>
-<td>Z-scores at target harmonics</td>
-<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+<td>Standardized response relative to local noise.</td>
 </tr>
 <tr>
 <td><code>BCA (uV)</code></td>
-<td>Baseline-corrected amplitudes at target harmonics</td>
-<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+<td>Baseline-corrected amplitude.</td>
 </tr>
 <tr>
 <td><code>FullSNR</code></td>
-<td>Full-spectrum SNR (interpolated)</td>
-<td><code>Electrode</code>, <code>&lt;freq&gt;_Hz</code></td>
+<td>Full-spectrum SNR for plotting and inspection.</td>
 </tr>
 </tbody>
 </table>
-<p>Target-harmonic columns are formatted as <code>"{freq:.4f}_Hz"</code>.
-The <code>FullSNR</code> sheet is interpolated from 0.5 Hz up to the configured
-<code>bca_upper_limit</code> in 0.01 Hz steps.</p>
-<p>(Implementation verified in: <code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
-<hr />
-<h3 id="9-logging-reproducibility">9) Logging / reproducibility<a class="headerlink" href="#9-logging-reproducibility" title="Permanent link">&para;</a></h3>
-<p>The pipeline writes structured log messages during preprocessing and processing.
-Key log entries you can cite for reproducibility include:</p>
-<ul>
-<li>Preprocessing fingerprint and filter snapshot (cutoffs, sampling rate).</li>
-<li>Number of channels rejected by kurtosis.</li>
-<li>Event source (stim vs. annotations) and number of events.</li>
-<li>Warnings for labels with zero events or zero epochs.</li>
-<li>Confirmation of Excel export completion.</li>
-</ul>
-<p>(Implementation verified in: <code>src/Main_App/PySide6_App/Backend/preprocess.py</code>,
-<code>src/Main_App/Performance/process_runner.py</code>,
-<code>src/Main_App/Legacy_App/post_process.py</code>.)</p>
-<p>For manuscript archiving, keep:
-- The project settings/manifest (event map, preprocessing settings, ROI list).
-- The per-condition Excel outputs.
-- The processing log file or log window export.</p>
-<hr />
-<h2 id="what-to-report-in-your-manuscript-checklist">What to report in your manuscript (checklist)<a class="headerlink" href="#what-to-report-in-your-manuscript-checklist" title="Permanent link">&para;</a></h2>
-<p>Fill in the values in brackets with your project’s actual settings.</p>
-<ul>
-<li><strong>Recording format and sampling rate:</strong> [e.g., BioSemi .bdf, 512 Hz]</li>
-<li><strong>Stim/trigger channel:</strong> [e.g., Status]</li>
-<li><strong>Initial reference:</strong> [e.g., EXG1/EXG2]</li>
-<li><strong>Final reference:</strong> [average reference]</li>
-<li><strong>Filter settings:</strong> [HPF = __ Hz, LPF = __ Hz]</li>
-<li><strong>Downsampling:</strong> [target Hz or “not applied”]</li>
-<li><strong>Bad-channel handling:</strong> [kurtosis Z threshold __; interpolation on/off]</li>
-<li><strong>Epoch window:</strong> [tmin = __ s, tmax = __ s; baseline = none]</li>
-<li><strong>Event mapping:</strong> [list labels and integer codes]</li>
-<li><strong>FFT method:</strong> [FFT of averaged epochs; amplitude = abs(FFT)/N*2]</li>
-<li><strong>Frequency resolution:</strong> [N = samples per epoch → resolution = sfreq/N]</li>
-<li><strong>Noise window for SNR/Z/BCA:</strong> [±10 bins; exclude target ±1; drop max/min]</li>
-<li><strong>Oddball harmonics analyzed:</strong> [oddball_freq, upper limit, resulting list]</li>
-<li><strong>ROI definitions:</strong> [ROI name → electrode list; uppercased channel matching]</li>
-<li><strong>Exported metrics and units:</strong> [SNR, Z, BCA (µV), FFT amplitude (µV)]</li>
-</ul>
-<hr />
-<h2 id="implementation-details-not-found-in-code">Implementation details not found in code<a class="headerlink" href="#implementation-details-not-found-in-code" title="Permanent link">&para;</a></h2>
-<p>If you need any of the following details for your manuscript, they are <strong>not
-verified in code</strong> and should be reported explicitly as user-configurable or
-unknown:</p>
-<ul>
-<li><strong>Epoch rejection thresholds (amplitude/flat criteria)</strong></li>
-<li>Searched in:<ul>
-<li><code>src/Main_App/Performance/process_runner.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
-<li><code>src/Main_App/Legacy_App/processing_utils.py</code> (keywords: <code>Epochs</code>, <code>reject</code>, <code>flat</code>)</li>
-</ul>
-</li>
-</ul>
-<p>If you know where these are configured in your local deployment, add them to
-this documentation and cite the exact configuration source.</p>
+<p>See <a href="../outputs-reference/">Output Files</a> for a fuller map of exported files.</p>
+<h2 id="what-to-do-after-processing">What to do after processing<a class="headerlink" href="#what-to-do-after-processing" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Confirm each expected condition has participant Excel files.</li>
+<li>Open one workbook and check that the expected sheets exist.</li>
+<li>Review logs for skipped files, missing events, or zero epochs.</li>
+<li>Open <a href="../statistical-analysis/">Statistical Analysis Overview</a> to choose the next analysis step.</li>
+<li>Use <a href="../statistics/which-test/">Which Statistical Test Should I Use?</a> if you are unsure which test fits your dataset.</li>
+</ol>
+<p>For manuscript wording and detailed reporting values, use <a href="../methods-reporting-checklist/">Methods Reporting Checklist</a>.</p>
 
 
 
@@ -1857,7 +1803,7 @@ this documentation and cite the exact configuration source.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../faq/" class="md-footer__link md-footer__link--prev" aria-label="Previous: FAQ">
+          <a href="../project-setup/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Project Setup">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1867,20 +1813,20 @@ this documentation and cite the exact configuration source.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                FAQ
+                Project Setup
               </div>
             </div>
           </a>
         
         
           
-          <a href="../fft-frequency-domain-quantification/" class="md-footer__link md-footer__link--next" aria-label="Next: FFT and Frequency-Domain Quantification (FPVS)">
+          <a href="../outputs-reference/" class="md-footer__link md-footer__link--next" aria-label="Next: Output Files">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                FFT and Frequency-Domain Quantification (FPVS)
+                Output Files
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1917,7 +1863,7 @@ this documentation and cite the exact configuration source.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.expand", "toc.integrate", "content.code.copy", "search.suggest", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.expand", "navigation.indexes", "toc.integrate", "toc.follow", "content.code.copy", "search.suggest", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
