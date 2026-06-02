@@ -853,6 +853,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#scalp-map-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalp map outputs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#quick-checks-when-reviewing-outputs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1215,7 +1226,7 @@
   <span class="md-ellipsis">
     
   
-    Rossion Harmonic Selection
+    Harmonic Selection
   
 
     
@@ -1397,6 +1408,8 @@
       
         
       
+        
+      
     
     
     
@@ -1487,6 +1500,34 @@
     
   
     SNR Plot Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/scalp-maps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scalp Maps
   
 
     
@@ -1800,6 +1841,7 @@
 <li><code>1 - Excel Data Files</code>: per-condition, per-participant spectral exports from processing.</li>
 <li><code>2 - SNR Plots</code>: generated plot outputs from the SNR Plot Generator.</li>
 <li><code>3 - Statistical Analysis Results</code>: inferential tables, QC flags, and exclusion reports.</li>
+<li><code>4 - Scalp Maps</code>: BCA scalp-map figures and source data from the Scalp Maps tool.</li>
 </ul>
 <p>Your exact folder names may vary by project setup, but the file types below are expected.</p>
 <h2 id="processing-outputs-excel">Processing outputs (Excel)<a class="headerlink" href="#processing-outputs-excel" title="Permanent link">&para;</a></h2>
@@ -1821,11 +1863,23 @@
 <li>Summed BCA DV definition workbook (Rossion workflow)</li>
 <li>Flagged participants and excluded participants reports</li>
 </ul>
+<h2 id="scalp-map-outputs">Scalp map outputs<a class="headerlink" href="#scalp-map-outputs" title="Permanent link">&para;</a></h2>
+<p>The Scalp Maps tool saves publication figures and
+<code>Publication_Scalp_Maps_Source_Data.xlsx</code>.</p>
+<p>Common figure exports include:</p>
+<ul>
+<li>condition-level BCA scalp-map <code>.png</code> files;</li>
+<li>transparent <code>.svg</code> files for PowerPoint or vector editing;</li>
+<li>paired-condition figures when the paired export option is enabled.</li>
+</ul>
+<p>The source workbook records the selected significant harmonics, plotted BCA
+values, grand-average values, diagnostics, and export parameters.</p>
 <h2 id="quick-checks-when-reviewing-outputs">Quick checks when reviewing outputs<a class="headerlink" href="#quick-checks-when-reviewing-outputs" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Confirm each expected condition has a folder and participant files.</li>
 <li>Confirm sheet names exist in each Excel file.</li>
 <li>Confirm statistical tables include effect, df, test statistic, p-value, and corrected p-value where relevant.</li>
+<li>For scalp maps, confirm the source workbook lists the expected selected harmonics and conditions.</li>
 <li>Archive the project settings and logs with exported files for reproducibility.</li>
 </ol>
 

@@ -27,7 +27,7 @@
     
     
       
-        <title>Rossion Harmonic Selection - FPVS Toolbox</title>
+        <title>Harmonic Selection - FPVS Toolbox</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rossion-harmonic-selection-summed-bca" class="md-skip">
+        <a href="#harmonic-selection-for-summed-bca" class="md-skip">
           Skip to content
         </a>
       
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Rossion Harmonic Selection
+              Harmonic Selection
             
           </span>
         </div>
@@ -1133,7 +1133,7 @@
   <span class="md-ellipsis">
     
   
-    Rossion Harmonic Selection
+    Harmonic Selection
   
 
     
@@ -1151,7 +1151,7 @@
   <span class="md-ellipsis">
     
   
-    Rossion Harmonic Selection
+    Harmonic Selection
   
 
     
@@ -1177,10 +1177,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#plain-language-overview" class="md-nav__link">
+  <a href="#current-options" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Plain-language overview
+        Current options
       
     </span>
   </a>
@@ -1188,10 +1188,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#manuscript-ready-description" class="md-nav__link">
+  <a href="#group-level-significant-harmonics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Manuscript-ready description
+        Group-level significant harmonics
       
     </span>
   </a>
@@ -1199,10 +1199,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#not-found-in-code-documentation-transparency" class="md-nav__link">
+  <a href="#reporting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Not found in code (documentation transparency)
+        Reporting
       
     </span>
   </a>
@@ -1386,6 +1386,8 @@
       
         
       
+        
+      
     
     
     
@@ -1476,6 +1478,34 @@
     
   
     SNR Plot Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/scalp-maps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scalp Maps
   
 
     
@@ -1781,77 +1811,72 @@
   
 
 
-<h1 id="rossion-harmonic-selection-summed-bca">Rossion harmonic selection (Summed BCA)<a class="headerlink" href="#rossion-harmonic-selection-summed-bca" title="Permanent link">&para;</a></h1>
-<p>Use this page when you need to understand or report Rossion-style harmonic selection.</p>
-<h2 id="plain-language-overview">Plain-language overview<a class="headerlink" href="#plain-language-overview" title="Permanent link">&para;</a></h2>
-<p>In FPVS, the oddball response is not limited to a single frequency.
-If the brain is truly responding to the oddball stream, you often see a
-response at the oddball frequency (e.g., 1.2 Hz) <strong>and</strong> at several
-higher harmonics (2.4, 3.6, 4.8, ...).</p>
-<p>This module decides <strong>which oddball harmonics count</strong> toward the outcome
-used for statistics: <strong>Summed BCA</strong>.</p>
-<p>The key idea (the "Rossion method") is simple:</p>
-<ul>
-<li>Look at the <strong>group-level Z-scores</strong> at each oddball harmonic.</li>
-<li>For each ROI, include the harmonics that show a reliable group
-  response, and stop when the response clearly dies off.</li>
-</ul>
-<p>Why this is useful in FPVS-EEG research:</p>
-<ul>
-<li>It produces an outcome measure that reflects the <strong>total oddball
-  response</strong> across the harmonics that actually carry signal.</li>
-<li>It is <strong>ROI-specific</strong>, which matters because different scalp regions
-  can show different harmonic profiles.</li>
-<li>It creates a single, interpretable number per
-  <strong>participant x condition x ROI</strong> that can be used in RM-ANOVA, mixed
-  models, and post-hoc tests.</li>
-</ul>
-<hr />
-<h2 id="manuscript-ready-description">Manuscript-ready description<a class="headerlink" href="#manuscript-ready-description" title="Permanent link">&para;</a></h2>
-<p>Summed BCA was defined using an ROI-specific harmonic selection procedure
-based on the approach commonly attributed to work done by the Rossion Group.
-Harmonic selection was performed at the group level using ROI-averaged
-Z-scores derived from the spectral "Z Score" sheets in the per-subject,
-per-condition output files. Candidate frequencies were restricted to
-oddball harmonics present in the spectral exports, identified as
-multiples of the oddball rate (base frequency divided by <code>every_n</code>,
-default <code>every_n = 5</code>) within a tolerance, and excluding base-rate
-harmonics (exact multiples of the base frequency). An optional setting
-allowed exclusion of the first oddball harmonic (harmonic 1).</p>
-<p>For each candidate harmonic, Z-scores were first averaged across the
-channels belonging to each ROI, yielding ROI-mean Z values for each
-subject and condition. These ROI-mean Z values were then pooled across
-subjects and across the set of selected conditions and averaged to yield
-a group mean Z for each ROI x harmonic. Within each ROI, harmonics were
-scanned in ascending frequency order and evaluated against a user-defined
-Z threshold (default 1.64). Non-significant harmonics were ignored until
-the first significant harmonic was observed ("arming" step). After
-arming, the selection terminated when two consecutive harmonics failed to
-exceed threshold. The selected harmonic set for each ROI consisted of all
-significant harmonics encountered prior to the stop criterion.</p>
-<p>Summed BCA values were then computed for each subject x condition x ROI
-by extracting baseline-corrected amplitude (BCA; uV) at the selected
-harmonics from the "BCA (uV)" sheets, summing BCA across the selected
-harmonics within each channel, and then averaging across channels within
-the ROI. This yielded a single ROI-level Summed BCA outcome per condition
-and participant, which served as the dependent variable for inferential
-analyses.</p>
-<p>If no harmonics were selected for a given ROI, an empty-list policy was
-applied. Depending on user settings, the toolbox either (a) fell back to
-a Fixed-K harmonic set (default K = 5) drawn from the same oddball
-harmonic domain, (b) set Summed BCA to zero for that ROI, or (c) halted
-with an error to prompt adjustment of selection settings. The toolbox
-exports a dedicated report ("Summed BCA DV Definition.xlsx") documenting
-the harmonic domain, group mean Z values, ROI-specific selected harmonic
-lists, and any fallback behavior.</p>
-<hr />
-<h2 id="not-found-in-code-documentation-transparency">Not found in code (documentation transparency)<a class="headerlink" href="#not-found-in-code-documentation-transparency" title="Permanent link">&para;</a></h2>
-<p>The following detail was not found in the current workflow:</p>
-<ul>
-<li>A more specific UI label/description for the Z-threshold setting beyond
-  the functional meaning "minimum group-mean Z value for a harmonic to
-  count as significant."</li>
-</ul>
+<h1 id="harmonic-selection-for-summed-bca">Harmonic selection for Summed BCA<a class="headerlink" href="#harmonic-selection-for-summed-bca" title="Permanent link">&para;</a></h1>
+<p>Use this page when you need to understand or report which oddball
+harmonics contributed to the Stats tool's Summed BCA dependent variable.</p>
+<h2 id="current-options">Current options<a class="headerlink" href="#current-options" title="Permanent link">&para;</a></h2>
+<p>The default and primary policy is <strong>Group-level significant harmonics
+(Volfart/Retter/Rossion style)</strong>. This option selects one common harmonic
+list at the group level, then applies that same list to every participant,
+selected condition, and ROI.</p>
+<p>The alternate policy is <strong>Fixed / predefined harmonic list</strong>. By default it
+uses 1.2, 2.4, 3.6, 4.8, and 7.2 Hz. Base-rate overlaps such as 6, 12, and
+18 Hz are excluded by default. The same fixed list is applied to every
+participant, selected condition, and ROI. The source <code>BCA (uV)</code> sheets must
+contain those exact harmonic columns.</p>
+<h2 id="group-level-significant-harmonics">Group-level significant harmonics<a class="headerlink" href="#group-level-significant-harmonics" title="Permanent link">&para;</a></h2>
+<p>This default policy follows the common FPVS idea that the oddball
+response can appear at the oddball frequency and its harmonics. For a
+6 Hz base rate with every fifth image as the oddball, candidate oddball
+harmonics are 1.2, 2.4, 3.6, 4.8, 6.0, 7.2 Hz, and so on. Harmonics that
+overlap the base rate, such as 6, 12, and 18 Hz, are excluded from the
+oddball sum.</p>
+<p>The oddball frequency is locked at 1.2 Hz. The BCA harmonic upper limit
+only sets where the 1.2 Hz harmonic list stops. For example, an upper
+limit of 30 Hz tests 1.2, 2.4, 3.6, ... through 30.0 Hz; it does not
+change the oddball frequency to 30 Hz, 6 Hz, or any other spacing.</p>
+<p>Selection is performed from the <code>FullFFT Amplitude (uV)</code> sheets:</p>
+<ol>
+<li>The tool builds a grand-averaged raw amplitude spectrum across the
+   final included participants and selected conditions. Within each workbook,
+   the FullFFT amplitudes are averaged across scalp electrodes before entering
+   the group average.</li>
+<li>Z-scores are computed at candidate oddball harmonics from that
+   grand-averaged amplitude spectrum using neighboring-bin noise.</li>
+<li>Non-base oddball harmonics above the group-level z threshold are
+   selected.</li>
+<li>Participant-level Summed BCA is computed from the <code>BCA (uV)</code> sheets
+   using the selected common harmonic list.</li>
+</ol>
+<p>The neighboring-bin noise calculation is fixed for this policy. For each
+candidate harmonic, the tool uses the 10 FFT bins below and 10 FFT bins above
+the target, excludes the immediately adjacent bins and the target bin itself,
+then removes the single lowest and single highest finite amplitude values from
+the remaining noise bins. The noise mean and population standard deviation are
+computed from the remaining values, and the candidate harmonic is selected only
+when <code>(target amplitude - noise mean) / noise SD</code> is greater than 1.64.</p>
+<p>The policy requires exact nominal oddball-harmonic columns in the
+<code>FullFFT Amplitude (uV)</code> sheet, such as <code>1.2000_Hz</code>, <code>2.4000_Hz</code>,
+and <code>3.6000_Hz</code>. If the FullFFT frequency grid is off-bin, the tool
+stops before reading amplitude rows or aggregating BCA values so the
+workbooks can be regenerated with locked FFT crop output.</p>
+<p>The selected participant-level <code>BCA (uV)</code> columns must also match exactly.
+The group-level policy does not use nearest frequency columns or silent
+fallback harmonics.</p>
+<p>The output remains Summed BCA in microvolts. SNR is not used as the
+dependent variable for the Stats models.</p>
+<h2 id="reporting">Reporting<a class="headerlink" href="#reporting" title="Permanent link">&para;</a></h2>
+<p>For fixed/predefined harmonic lists, report the selected frequencies and
+whether base-rate overlaps were excluded.</p>
+<p>For group-level significant harmonics, report that harmonics were
+selected from the grand-averaged <code>FullFFT Amplitude (uV)</code> spectrum,
+state the z threshold, list the selected harmonics, list excluded
+base-rate overlaps, and note that the same harmonic list was applied to
+all participants, selected conditions, and ROIs.</p>
+<p>The Stats-ready workbook includes a <code>Harmonic_Selection</code> sheet with the
+selected harmonics, z-scores, base-overlap exclusions, selection scope,
+matched FullFFT columns, grand-average candidate amplitudes, and local
+noise bins used for the group-level z-score calculation.</p>
 
 
 

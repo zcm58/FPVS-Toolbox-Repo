@@ -1124,7 +1124,7 @@
   <span class="md-ellipsis">
     
   
-    Rossion Harmonic Selection
+    Harmonic Selection
   
 
     
@@ -1552,6 +1552,8 @@
       
         
       
+        
+      
     
     
     
@@ -1642,6 +1644,34 @@
     
   
     SNR Plot Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/scalp-maps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scalp Maps
   
 
     
@@ -1981,8 +2011,8 @@ harmonic summation have already happened.</p>
 <li>Select the conditions you want to analyze.</li>
 <li>Confirm the ROIs in Settings.</li>
 <li>Confirm the Summed BCA policy:</li>
-<li>Rossion harmonic selection, or</li>
-<li>Fixed-K harmonic summation.</li>
+<li>Group-level significant harmonics (default), or</li>
+<li>Fixed / predefined harmonic list.</li>
 <li>Click <strong>Export Stats-Ready Workbook</strong> in the Comparison Exports section.</li>
 <li>Use the Last Export path to open or copy the workbook location.</li>
 </ol>
@@ -2000,40 +2030,24 @@ Manual participant exclusions are applied before the workbook is written.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>RStudio_Long</code></td>
-<td>R/RStudio ANOVA, mixed models, post-hoc tests, and FDR correction</td>
+<td><code>Long_Format</code></td>
+<td>R/RStudio, SAS, and JASP mixed-model workflows</td>
 <td>One row per subject x condition x ROI</td>
 </tr>
 <tr>
-<td><code>SAS_Long</code></td>
-<td>SAS <code>PROC MIXED</code> and SAS import workflows</td>
-<td>Same records as <code>RStudio_Long</code>, with SAS-friendly column names</td>
-</tr>
-<tr>
-<td><code>JASP_RM_ANOVA</code></td>
-<td>JASP repeated-measures ANOVA</td>
+<td><code>Wide_Format</code></td>
+<td>JASP repeated-measures ANOVA and other wide-format workflows</td>
 <td>One row per subject, one numeric column per condition x ROI cell</td>
 </tr>
 <tr>
-<td><code>JASP_Long_Mixed</code></td>
-<td>JASP mixed models</td>
-<td>Same shape as <code>RStudio_Long</code></td>
-</tr>
-<tr>
-<td><code>Data_Dictionary</code></td>
-<td>Column definitions and wide-column mapping</td>
-<td>Reference sheet</td>
-</tr>
-<tr>
-<td><code>Analysis_Recipes</code></td>
-<td>Short software-specific analysis reminders</td>
-<td>Reference sheet</td>
+<td><code>Harmonic_Selection</code></td>
+<td>Harmonic policy and selected-harmonic metadata</td>
+<td>One row per candidate harmonic</td>
 </tr>
 </tbody>
 </table>
-<p>The R/RStudio, SAS, and JASP long sheets contain the same Summed BCA values.
-They are separate only to make import easier. They do not calculate different
-dependent variables.</p>
+<p>The long-format sheet uses software-friendly lowercase column names and can be
+used directly in R/RStudio, SAS, and JASP mixed-model workflows.</p>
 <h2 id="important-columns">Important columns<a class="headerlink" href="#important-columns" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2044,12 +2058,8 @@ dependent variables.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>subject_uid</code></td>
-<td>Unique participant key for analysis. Use this as the subject or participant ID in models.</td>
-</tr>
-<tr>
 <td><code>subject_id</code></td>
-<td>Original participant label.</td>
+<td>Participant label. Use this as the subject or participant ID in models.</td>
 </tr>
 <tr>
 <td><code>group_id</code></td>
@@ -2067,37 +2077,20 @@ dependent variables.</p>
 <td><code>summed_bca_uv</code></td>
 <td>Dependent variable for analysis, in microvolts.</td>
 </tr>
-<tr>
-<td><code>selected_harmonics_hz</code></td>
-<td>Harmonic frequencies used for that ROI, separated by semicolons.</td>
-</tr>
-<tr>
-<td><code>harmonic_count</code></td>
-<td>Number of harmonics included in the Summed BCA value.</td>
-</tr>
-<tr>
-<td><code>dv_policy</code></td>
-<td>Harmonic selection policy used for the export.</td>
-</tr>
-<tr>
-<td><code>fallback_used</code></td>
-<td>Whether the policy used an explicit empty-harmonic fallback for that ROI.</td>
-</tr>
-<tr>
-<td><code>source_workbook</code> or <code>source_file</code></td>
-<td>Source participant workbook used for that row.</td>
-</tr>
 </tbody>
 </table>
+<p>Harmonic-policy details, selected harmonics, z-scores, base-rate exclusions,
+and method notes are kept in the <code>Harmonic_Selection</code> sheet instead of being
+repeated on every analysis row.</p>
 <p>For multi-group projects, keep <code>group_id</code> in the analysis. Do not average
 across groups before importing the data into external software.</p>
 <h2 id="jasp-repeated-measures-anova">JASP: repeated-measures ANOVA<a class="headerlink" href="#jasp-repeated-measures-anova" title="Permanent link">&para;</a></h2>
-<p>Use <code>JASP_RM_ANOVA</code> when you want the regular JASP repeated-measures ANOVA
+<p>Use <code>Wide_Format</code> when you want the regular JASP repeated-measures ANOVA
 interface.</p>
 <ol>
 <li>Open JASP.</li>
 <li>Open <code>Stats_Ready_Summed_BCA.xlsx</code>.</li>
-<li>Choose the <code>JASP_RM_ANOVA</code> sheet if JASP asks which sheet to load.</li>
+<li>Choose the <code>Wide_Format</code> sheet if JASP asks which sheet to load.</li>
 <li>Confirm that the condition x ROI columns are numeric scale variables.</li>
 <li>Go to <strong>ANOVA</strong> &gt; <strong>Repeated Measures ANOVA</strong>.</li>
 <li>Create the repeated-measures factors:</li>
@@ -2119,14 +2112,14 @@ factor for condition (<code>Face</code>, <code>Object</code>) and one factor for
 is blank. Standard repeated-measures ANOVA usually requires complete data.
 If you have missing cells, use a mixed model instead.</p>
 <h2 id="jasp-linear-mixed-model">JASP: linear mixed model<a class="headerlink" href="#jasp-linear-mixed-model" title="Permanent link">&para;</a></h2>
-<p>Use <code>JASP_Long_Mixed</code> when you need a mixed model or when the dataset has
+<p>Use <code>Long_Format</code> when you need a mixed model or when the dataset has
 minor missing condition x ROI cells.</p>
 <ol>
 <li>Open <code>Stats_Ready_Summed_BCA.xlsx</code> in JASP.</li>
-<li>Choose the <code>JASP_Long_Mixed</code> sheet.</li>
+<li>Choose the <code>Long_Format</code> sheet.</li>
 <li>Confirm variable types:</li>
 <li><code>summed_bca_uv</code> should be numeric or scale.</li>
-<li><code>subject_uid</code>, <code>condition</code>, <code>roi</code>, and <code>group_id</code> should be categorical.</li>
+<li><code>subject_id</code>, <code>condition</code>, <code>roi</code>, and <code>group_id</code> should be categorical.</li>
 <li>Open the Linear Mixed Models analysis.</li>
 <li>Set <code>summed_bca_uv</code> as the dependent variable.</li>
 <li>Add <code>condition</code> and <code>roi</code> as fixed factors.</li>
@@ -2134,7 +2127,7 @@ minor missing condition x ROI cells.</p>
 <li>Add the interactions required by the study design, usually
    <code>condition x roi</code> for a single group or <code>group_id x condition x roi</code> for
    a multi-group project.</li>
-<li>Add <code>subject_uid</code> as the participant random effect, usually as a random
+<li>Add <code>subject_id</code> as the participant random effect, usually as a random
    intercept.</li>
 <li>Use post-hoc or estimated marginal means options to compare specific
     conditions or ROIs.</li>
@@ -2142,7 +2135,7 @@ minor missing condition x ROI cells.</p>
 <p>If the project has only one group, do not force <code>group_id</code> into the model as
 a predictor. A factor with only one level cannot explain differences.</p>
 <h2 id="rrstudio">R/RStudio<a class="headerlink" href="#rrstudio" title="Permanent link">&para;</a></h2>
-<p>Use <code>RStudio_Long</code>. This is the most flexible sheet and is the recommended
+<p>Use <code>Long_Format</code>. This is the most flexible sheet and is the recommended
 starting point for scripted analyses.</p>
 <p>Install packages once:</p>
 <pre><code class="language-r">install.packages(c(&quot;readxl&quot;, &quot;dplyr&quot;, &quot;afex&quot;, &quot;emmeans&quot;, &quot;lme4&quot;, &quot;lmerTest&quot;))
@@ -2153,9 +2146,8 @@ library(dplyr)
 
 path &lt;- &quot;C:/path/to/Stats_Ready_Summed_BCA.xlsx&quot;
 
-df &lt;- read_excel(path, sheet = &quot;RStudio_Long&quot;) |&gt;
+df &lt;- read_excel(path, sheet = &quot;Long_Format&quot;) |&gt;
   mutate(
-    subject_uid = factor(subject_uid),
     subject_id = factor(subject_id),
     group_id = factor(group_id),
     condition = factor(condition),
@@ -2167,7 +2159,7 @@ df &lt;- read_excel(path, sheet = &quot;RStudio_Long&quot;) |&gt;
 <pre><code class="language-r">library(afex)
 
 anova_single &lt;- aov_ez(
-  id = &quot;subject_uid&quot;,
+  id = &quot;subject_id&quot;,
   dv = &quot;summed_bca_uv&quot;,
   within = c(&quot;condition&quot;, &quot;roi&quot;),
   data = df
@@ -2177,7 +2169,7 @@ anova_single
 </code></pre>
 <p>For a multi-group project:</p>
 <pre><code class="language-r">anova_groups &lt;- aov_ez(
-  id = &quot;subject_uid&quot;,
+  id = &quot;subject_id&quot;,
   dv = &quot;summed_bca_uv&quot;,
   within = c(&quot;condition&quot;, &quot;roi&quot;),
   between = &quot;group_id&quot;,
@@ -2193,7 +2185,7 @@ If cells are missing, use a mixed model.</p>
 <pre><code class="language-r">library(lmerTest)
 
 m_single &lt;- lmer(
-  summed_bca_uv ~ condition * roi + (1 | subject_uid),
+  summed_bca_uv ~ condition * roi + (1 | subject_id),
   data = df,
   REML = FALSE
 )
@@ -2203,7 +2195,7 @@ summary(m_single)
 </code></pre>
 <p>For a multi-group project:</p>
 <pre><code class="language-r">m_groups &lt;- lmer(
-  summed_bca_uv ~ group_id * condition * roi + (1 | subject_uid),
+  summed_bca_uv ~ group_id * condition * roi + (1 | subject_id),
   data = df,
   REML = FALSE
 )
@@ -2211,7 +2203,7 @@ summary(m_single)
 anova(m_groups)
 summary(m_groups)
 </code></pre>
-<p>The random intercept <code>(1 | subject_uid)</code> tells R that repeated rows from the
+<p>The random intercept <code>(1 | subject_id)</code> tells R that repeated rows from the
 same participant are related.</p>
 <h3 id="post-hoc-tests-and-fdr-correction-in-r">Post-hoc tests and FDR correction in R<a class="headerlink" href="#post-hoc-tests-and-fdr-correction-in-r" title="Permanent link">&para;</a></h3>
 <p>Use <code>emmeans</code> for model-based comparisons:</p>
@@ -2229,30 +2221,30 @@ p.adjust(raw_p, method = &quot;BH&quot;)
 correct condition-pair tests within each ROI if those are the planned
 families of comparisons.</p>
 <h2 id="sas">SAS<a class="headerlink" href="#sas" title="Permanent link">&para;</a></h2>
-<p>Use <code>SAS_Long</code>. It contains the same records as <code>RStudio_Long</code>, but the
-headers are kept short, lowercase, and underscore-delimited for SAS import.</p>
+<p>Use <code>Long_Format</code>. The headers are kept short, lowercase, and
+underscore-delimited for SAS import.</p>
 <p>Import the workbook:</p>
 <pre><code class="language-sas">proc import datafile=&quot;C:\path\to\Stats_Ready_Summed_BCA.xlsx&quot;
     out=fpvs_long
     dbms=xlsx
     replace;
-    sheet=&quot;SAS_Long&quot;;
+    sheet=&quot;Long_Format&quot;;
     getnames=yes;
 run;
 </code></pre>
 <h3 id="proc-mixed-for-a-single-group">PROC MIXED for a single group<a class="headerlink" href="#proc-mixed-for-a-single-group" title="Permanent link">&para;</a></h3>
 <pre><code class="language-sas">proc mixed data=fpvs_long method=reml;
-    class subject_uid condition roi;
+    class subject_id condition roi;
     model summed_bca_uv = condition|roi / ddfm=satterth solution;
-    random intercept / subject=subject_uid;
+    random intercept / subject=subject_id;
     lsmeans condition*roi / diff;
 run;
 </code></pre>
 <h3 id="proc-mixed-for-more-than-one-group">PROC MIXED for more than one group<a class="headerlink" href="#proc-mixed-for-more-than-one-group" title="Permanent link">&para;</a></h3>
 <pre><code class="language-sas">proc mixed data=fpvs_long method=reml;
-    class subject_uid group_id condition roi;
+    class subject_id group_id condition roi;
     model summed_bca_uv = group_id|condition|roi / ddfm=satterth solution;
-    random intercept / subject=subject_uid;
+    random intercept / subject=subject_id;
     lsmeans group_id*condition*roi / diff;
 run;
 </code></pre>
@@ -2274,7 +2266,7 @@ the p-value column is the family of tests you intended to correct.</p>
 manual recovery of group membership.</p>
 <p>For multi-group projects:</p>
 <ul>
-<li>Keep <code>subject_uid</code> as the participant identifier.</li>
+<li>Keep <code>subject_id</code> as the participant identifier.</li>
 <li>Keep <code>group_id</code> as the between-subject factor.</li>
 <li>Do not average participant rows before import.</li>
 <li>In JASP RM-ANOVA, use <code>group_id</code> as a between-subjects factor.</li>
@@ -2289,18 +2281,15 @@ participants can make between-group results invalid.</p>
 <h2 id="quality-checks-before-analysis">Quality checks before analysis<a class="headerlink" href="#quality-checks-before-analysis" title="Permanent link">&para;</a></h2>
 <p>Before running the final model:</p>
 <ol>
-<li>Open <code>Data_Dictionary</code>.</li>
-<li>Confirm that <code>summed_bca_uv</code> is the dependent variable.</li>
-<li>Confirm that the selected harmonics match the intended Rossion or Fixed-K
-   policy.</li>
-<li>Check <code>fallback_used</code>.</li>
+<li>Confirm that <code>summed_bca_uv</code> is the dependent variable in <code>Long_Format</code>.</li>
+<li>Open <code>Harmonic_Selection</code>.</li>
+<li>Confirm that the selected harmonics match the intended fixed/predefined
+   or group-level significant-harmonics policy.</li>
 <li>Confirm that every participant has the expected number of rows:
    <code>number of selected conditions x number of selected ROIs</code>.</li>
 <li>Confirm that <code>group_id</code> is correct for every participant in multi-group
    projects.</li>
-<li>Treat blank Summed BCA values as missing data, not as zeros, unless the
-   data dictionary shows that the selected DV policy intentionally produced a
-   zero value.</li>
+<li>Treat blank Summed BCA values as missing data, not as zeros.</li>
 </ol>
 <h2 id="useful-references">Useful references<a class="headerlink" href="#useful-references" title="Permanent link">&para;</a></h2>
 <ul>

@@ -1121,7 +1121,7 @@
   <span class="md-ellipsis">
     
   
-    Rossion Harmonic Selection
+    Harmonic Selection
   
 
     
@@ -1303,6 +1303,8 @@
       
         
       
+        
+      
     
     
     
@@ -1393,6 +1395,34 @@
     
   
     SNR Plot Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/scalp-maps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scalp Maps
   
 
     
@@ -1908,8 +1938,9 @@ For each recording, the toolbox loads data with disk-backed memory mapping when
 available, assigns channel types (including a configured stimulus/trigger channel),
 and applies a standard 10-10 montage. Preprocessing follows a fixed sequence:
 initial re-reference to a user-specified pair of electrodes (default EXG1 and EXG2),
-removal of those EXG channels, optional channel-count limiting, optional downsampling,
-zero-phase FIR bandpass filtering, kurtosis-based bad-channel detection with interpolation,
+removal of those EXG channels, optional channel-count limiting,
+zero-phase FIR bandpass filtering, optional downsampling,
+kurtosis-based bad-channel detection with interpolation,
 and a final average re-reference. Events are extracted from the stim channel then epochs are created
 for each user-defined condition label using a configured time window without baseline
 correction. The time-domain data are averaged across epochs per condition,
@@ -1990,12 +2021,15 @@ its parameter is unset/disabled.</p>
 <li><strong>Optional channel limit</strong>: if <code>max_idx_keep</code> is set and smaller than the
    current channel count, only the first N channels are retained <strong>plus</strong> the
    stim channel (if present).</li>
-<li><strong>Optional downsampling</strong>: if <code>downsample_rate</code> is set and lower than the
-   current sampling rate, the data are resampled with a Hann window.</li>
 <li><strong>FIR bandpass filter</strong> (zero-phase, forward/backward):</li>
 <li>Method: <code>fir</code> with <code>firwin</code> design, <code>hamming</code> window, <code>phase="zero-double"</code>.</li>
 <li>Transition bandwidths: 0.1 Hz (low and high).</li>
-<li>Fixed filter length: 8449 points.</li>
+<li>The historical 8449-point filter duration is preserved at the requested
+     downsample target. When the raw file is sampled above the target rate, the
+     point count is scaled before filtering so the filter runs before
+     downsampling without shortening the FIR duration.</li>
+<li><strong>Optional downsampling</strong>: if <code>downsample_rate</code> is set and lower than the
+   current sampling rate, the data are resampled with a Hann window.</li>
 <li><strong>Kurtosis-based bad-channel detection &amp; interpolation</strong>:</li>
 <li>Kurtosis (Fisher, <code>bias=False</code>) is computed per EEG channel.</li>
 <li>A <strong>trimmed mean/std</strong> is computed by removing 10% of the highest and lowest
@@ -2051,7 +2085,7 @@ its parameter is unset/disabled.</p>
 <p>(Defaults verified in: <code>src/Main_App/projects/preprocessing_settings.py</code>.)</p>
 <p><strong>Logged/audited items</strong></p>
 <ul>
-<li>A preprocessing fingerprint string (HP/LP/downsample/reject/ref/stim).</li>
+<li>A preprocessing fingerprint string (order version/HP/LP/downsample/reject/ref/stim).</li>
 <li>Filter snapshot (computed cutoffs and sampling rate).</li>
 <li>Number of bad channels rejected by kurtosis.</li>
 <li>Final sampling rate and channel count.</li>
@@ -2111,14 +2145,16 @@ its parameter is unset/disabled.</p>
 <ul>
 <li>The toolbox computes metrics at <strong>oddball harmonics</strong> defined by
   <code>TARGET_FREQUENCIES</code>.</li>
-<li>These are calculated as: <code>oddball_freq x 1..K</code>, where
-  <code>K = round(bca_upper_limit / oddball_freq)</code>.</li>
-<li><code>oddball_freq</code> and <code>bca_upper_limit</code> come from project settings.</li>
+<li>These are calculated as: <code>1.2 Hz x 1..K</code>, where
+  <code>K = round(bca_upper_limit / 1.2)</code>.</li>
+<li><code>oddball_freq</code> is locked at <strong>1.2 Hz</strong>. <code>bca_upper_limit</code> only controls
+  the highest 1.2 Hz harmonic included in the exported FFT/BCA calculations.</li>
 </ul>
 <p>(Implementation verified in: <code>src/config.py</code>.)</p>
 <p><strong>Noise window and baseline definition (used by SNR, BCA, Z)</strong></p>
-<p>For each target frequency, the toolbox finds the <strong>nearest FFT bin</strong> and defines
-noise bins as follows:</p>
+<p>For each target frequency, the toolbox requires the target to land on an
+<strong>exact FFT bin</strong> and defines noise bins as follows. If the target is off-grid,
+normal post-processing raises an error instead of using a nearest-bin fallback:</p>
 <ul>
 <li>Window: +/-10 bins around the target bin.</li>
 <li>Exclusions: target bin and its immediate neighbors (-1 and +1) are excluded.</li>

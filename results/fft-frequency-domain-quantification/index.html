@@ -999,15 +999,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-the-toolbox-defines-the-fft-segment-using-oddball-triggers-55" class="md-nav__link">
+  <a href="#how-the-toolbox-defines-the-fft-segment-using-oddball-triggers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How the Toolbox defines the FFT segment using oddball triggers ("55")
+        How the Toolbox defines the FFT segment using oddball triggers
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="How the Toolbox defines the FFT segment using oddball triggers (&#34;55&#34;)">
+    <nav class="md-nav" aria-label="How the Toolbox defines the FFT segment using oddball triggers">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1282,7 +1282,7 @@
   <span class="md-ellipsis">
     
   
-    Rossion Harmonic Selection
+    Harmonic Selection
   
 
     
@@ -1464,6 +1464,8 @@
       
         
       
+        
+      
     
     
     
@@ -1554,6 +1556,34 @@
     
   
     SNR Plot Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/scalp-maps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scalp Maps
   
 
     
@@ -1875,7 +1905,7 @@
 - bin k corresponds to frequency <strong>f(k) = k * df</strong>.</p>
 <p>So if df is 0.00833 Hz, then bin k=144 corresponds exactly to 144 x 0.00833 ~ <strong>1.2 Hz</strong>.</p>
 <h2 id="why-fpvs-needs-bin-locked-segment-lengths-integer-cycle-cropping">Why FPVS needs "bin-locked" segment lengths (integer-cycle cropping)<a class="headerlink" href="#why-fpvs-needs-bin-locked-segment-lengths-integer-cycle-cropping" title="Permanent link">&para;</a></h2>
-<p>FPVS analysis often focuses on the amplitude at the <strong>oddball frequency</strong> (e.g., 1.2 Hz) and its harmonics (2.4 Hz, 3.6 Hz, ...). This works best when the oddball frequency lands <strong>exactly on an FFT bin</strong>.</p>
+<p>FPVS analysis often focuses on the amplitude at the <strong>oddball frequency</strong> (e.g., 1.2 Hz) and its harmonics (2.4 Hz, 3.6 Hz, ...). Normal Stats-bound processing requires the oddball frequency to land <strong>exactly on an FFT bin</strong>.</p>
 <p>If the analyzed segment length does <em>not</em> contain an integer number of oddball cycles, the oddball energy does not fall cleanly into a single bin. Instead, it spreads into neighboring bins. This is commonly called <strong>spectral leakage</strong>. Leakage makes the "target bin amplitude" smaller than it should be and can inflate or distort noise estimates around that bin.</p>
 <p>The key requirement for bin-locking is:</p>
 <ul>
@@ -1885,18 +1915,25 @@
 - <strong>f_oddball x T</strong> must be an integer
 - or <strong>f_oddball = k x df</strong> for some integer bin k</p>
 <p>This Toolbox enforces this rule by cropping the segment used for FFT to a sample count <strong>N</strong> that guarantees oddball bin alignment.</p>
-<h2 id="how-the-toolbox-defines-the-fft-segment-using-oddball-triggers-55">How the Toolbox defines the FFT segment using oddball triggers ("55")<a class="headerlink" href="#how-the-toolbox-defines-the-fft-segment-using-oddball-triggers-55" title="Permanent link">&para;</a></h2>
-<p>During acquisition, the start of a condition is marked by a condition code (e.g., 1, 2, 3, ...). Every time an oddball stimulus is shown, an event code <strong>55</strong> is emitted. This creates a structure like:</p>
+<h2 id="how-the-toolbox-defines-the-fft-segment-using-oddball-triggers">How the Toolbox defines the FFT segment using oddball triggers<a class="headerlink" href="#how-the-toolbox-defines-the-fft-segment-using-oddball-triggers" title="Permanent link">&para;</a></h2>
+<p>During acquisition, the start of a condition is marked by a condition code
+(e.g., 1, 2, 3, ...). Every time an oddball stimulus is shown, an oddball event
+code is emitted. In standard projects this code is <strong>55</strong>. Some projects encode
+the oddball marker by condition, such as condition codes <strong>1, 2, 3, 4, 5</strong> with
+oddball markers <strong>51, 52, 53, 54, 55</strong>.</p>
+<p>This creates a structure like:</p>
 <ul>
 <li>condition start trigger (e.g., "1")</li>
 <li>short blank / lead-in</li>
-<li>55, 55, 55, 55, ... (one per oddball at 1.2 Hz)</li>
-<li>condition ends (no special "last oddball" trigger; the last 55 in the series is effectively the last oddball)</li>
+<li>oddball markers such as 55, or 51 for condition 1, one per oddball at 1.2 Hz</li>
+<li>condition ends (no special "last oddball" trigger; the last marker in the series is effectively the last oddball)</li>
 </ul>
-<p>To define a "steady stimulation" analysis window, the Toolbox can use the first and last 55 triggers for each condition repetition:</p>
-<p>1) Find all 55 events that occur within the condition repetition.
-2) Identify the <strong>first 55</strong> and the <strong>last 55</strong>.
-3) Use this region as the basis for selecting the FFT segment.</p>
+<p>To define a "steady stimulation" analysis window, the Toolbox can use the first
+and last oddball markers for each condition repetition:</p>
+<p>1) Resolve the oddball marker for the condition.
+2) Find all matching oddball marker events within the condition repetition.
+3) Identify the first and last matching oddball markers.
+4) Use this region as the basis for selecting the FFT segment.</p>
 <p>This avoids relying on a fixed "tmin/tmax in seconds" window that might include non-steady periods (e.g., lead-in blank screens) and it naturally adapts across sampling rates because everything is based on sample indices and event timing.</p>
 <h3 id="why-n55-1-matters">Why "n55 - 1" matters<a class="headerlink" href="#why-n55-1-matters" title="Permanent link">&para;</a></h3>
 <p>If there are <strong>n55</strong> oddball triggers in a repetition, there are <strong>n55 - 1 intervals</strong> between them. Those intervals represent complete oddball periods. Using the intervals between the first and last oddball events is the most conservative way to guarantee an integer number of oddball cycles without needing to assume extra time after the last oddball trigger.</p>
@@ -1942,15 +1979,19 @@
 <li><strong>N</strong>: number of samples in the FFT segment</li>
 <li><strong>T_sec</strong>: segment duration in seconds (N / fs)</li>
 <li><strong>df_hz</strong>: frequency resolution (fs / N)</li>
-<li><strong>k0</strong>: bin index used for the target (nearest or exact)</li>
+<li><strong>k0</strong>: exact bin index used for the target. Normal processing raises an
+  error instead of using a nearest-bin target when the target frequency is
+  off-grid.</li>
 <li><strong>f_bin_hz</strong>: actual bin frequency at k0 (k0 x df)</li>
 <li><strong>crop_mode</strong>:</li>
-<li><strong>55_onbin</strong> means the segment was derived from oddball triggers and snapped to an on-bin N</li>
-<li><strong>fixed_epoch_fallback</strong> means the system could not apply 55-based cropping and used the legacy fixed window (tmin/tmax) instead</li>
-<li><strong>n55</strong>, <strong>first55_samp</strong>, <strong>last55_samp</strong>: oddball trigger count and indices used to define the crop region</li>
+<li><strong>55_onbin</strong> means the segment was derived from oddball triggers and snapped to an on-bin N. The name is retained for compatibility even when the actual marker was condition-specific, such as 51 or 52.</li>
+<li><strong>fixed_epoch_fallback</strong> is a legacy diagnostic label for fixed-window
+    crops. Normal Stats-bound processing treats this as invalid and fails
+    before export.</li>
+<li><strong>n55</strong>, <strong>first55_samp</strong>, <strong>last55_samp</strong>: oddball trigger count and indices used to define the crop region. These field names are historical; in condition-specific projects they refer to the resolved oddball marker.</li>
 <li><strong>N_step</strong>: the on-bin step size in samples for this fs</li>
 <li><strong>N_mod_step</strong>: N % N_step (should be 0 in on-bin mode)</li>
-<li><strong>fallback_reason</strong>: why 55-based cropping was not used (e.g., missing triggers)</li>
+<li><strong>fallback_reason</strong>: why marker-based cropping was not used (e.g., missing triggers)</li>
 </ul>
 <p>Neighbor amplitude columns:
 - <strong>amp_m11 ... amp_m1</strong> are the amplitudes at bins below the target (k0-11 ... k0-1)
@@ -1961,9 +2002,10 @@
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
 <ul>
 <li>FFT bins are spaced by df = fs/N.</li>
-<li>FPVS amplitude estimates at 1.2 Hz work best when 1.2 Hz lands exactly on a bin.</li>
+<li>FPVS amplitude estimates at 1.2 Hz require 1.2 Hz to land exactly on a bin in
+  the normal Stats-bound processing path.</li>
 <li>If the segment does not contain an integer number of oddball cycles, energy leaks into neighboring bins (spectral leakage).</li>
-<li>The Toolbox avoids this by using oddball triggers (55) to define the stimulation segment and snapping N to an on-bin multiple for the current sampling rate.</li>
+<li>The Toolbox avoids this by using oddball triggers to define the stimulation segment and snapping N to an on-bin multiple for the current sampling rate.</li>
 <li>The "FFT and neighbors" export is a diagnostic view that shows amplitudes around the target bin to confirm bin-locking and evaluate leakage/noise.</li>
 </ul>
 

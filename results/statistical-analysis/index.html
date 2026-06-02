@@ -1276,7 +1276,7 @@
   <span class="md-ellipsis">
     
   
-    Rossion Harmonic Selection
+    Harmonic Selection
   
 
     
@@ -1458,6 +1458,8 @@
       
         
       
+        
+      
     
     
     
@@ -1548,6 +1550,34 @@
     
   
     SNR Plot Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/scalp-maps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scalp Maps
   
 
     
@@ -1859,12 +1889,16 @@
 <strong>Statistical Analysis</strong> module for end users. It focuses on the primary
 output measure (<strong>Summed BCA</strong>) and how to interpret results in the
 currently supported single-group workflow.</p>
+<p>For projects configured with two or more experimental groups, the built-in
+single-group analyses are disabled. Use <strong>Export Stats-Ready Workbook</strong> and run
+the between-group model in JASP, R/RStudio, SAS, or another statistics package
+with <code>group_id</code> as the between-subjects factor.</p>
 <hr />
 <h2 id="how-the-methods-work-together-high-level">How the methods work together (high-level)<a class="headerlink" href="#how-the-methods-work-together-high-level" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Summed BCA DV is defined</strong> from the ROI-aggregated spectral outputs.</li>
-<li><strong>Harmonics are selected</strong> (e.g., Rossion method) to decide which
-   oddball harmonics contribute to the DV.</li>
+<li><strong>Harmonics are selected</strong> using the default group-level
+   significant-harmonics policy or the alternate fixed/predefined list.</li>
 <li>A <strong>subject x condition x ROI table</strong> of Summed BCA values is built.</li>
 <li><strong>RM-ANOVA</strong> and/or a <strong>linear mixed-effects model</strong> summarize
    condition, ROI, and interaction effects.</li>
@@ -1889,8 +1923,10 @@ currently supported single-group workflow.</p>
 <ul>
 <li><strong>Multiple comparisons:</strong> post-hoc tests are corrected for false
   discovery rate; still interpret effect sizes and confidence intervals.</li>
-<li><strong>Harmonic sets can differ by ROI</strong> (Rossion method). This can make ROI
-  differences partly reflect different harmonic selections.</li>
+<li><strong>Harmonic policy matters:</strong> the default group-level significant-harmonics
+  policy and the alternate fixed/predefined list both apply one common harmonic
+  list across ROIs, so ROI differences are not driven by different harmonic
+  lists.</li>
 <li><strong>Assumptions:</strong> check normality and sphericity (RM-ANOVA) and residual
   diagnostics (mixed model) as part of reporting.</li>
 </ul>
@@ -1902,13 +1938,14 @@ oddball amplitude (Summed BCA)</strong>. It is computed per
 harmonics and then averaging across ROI channels.</p>
 <ul>
 <li><strong>Source data:</strong> The DV is computed from the <strong>"BCA (uV)"</strong> sheet in the
-  spectral/ROI output file; Z-score information used for harmonic
-  selection comes from the <strong>"Z Score"</strong> sheet.</li>
+  spectral/ROI output file. The default group-level policy computes
+  selection z-scores from the grand-averaged <strong>"FullFFT Amplitude (uV)"</strong>
+  spectrum.</li>
 <li><strong>ROI aggregation:</strong> The ROI mean is computed after summing selected
   harmonics for each channel within the ROI.</li>
 </ul>
-<p>For detailed harmonic selection rules (Rossion method), see:
-<strong><a href="../../statistics/rossion-harmonic-selection/">Rossion harmonic selection</a></strong>.</p>
+<p>For detailed harmonic selection rules, see:
+<strong><a href="../../statistics/rossion-harmonic-selection/">Harmonic selection</a></strong>.</p>
 <hr />
 <h2 id="single-group-analyses">Single-group analyses<a class="headerlink" href="#single-group-analyses" title="Permanent link">&para;</a></h2>
 <h3 id="repeated-measures-anova-rm-anova">Repeated-measures ANOVA (RM-ANOVA)<a class="headerlink" href="#repeated-measures-anova-rm-anova" title="Permanent link">&para;</a></h3>
@@ -1963,7 +2000,7 @@ harmonics and then averaging across ROI channels.</p>
 <li>RM-ANOVA tables (single-group workflow).</li>
 <li>Mixed-model fixed-effects tables.</li>
 <li>Post-hoc tables with raw and FDR-adjusted p-values plus effect sizes.</li>
-<li>Rossion DV definition export (when using Rossion selection).</li>
+<li>Summed BCA DV definition export.</li>
 <li>Flagged and excluded participant reports (if QC/outlier checks are
     enabled).</li>
 </ul>
