@@ -2,130 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/</loc>
-         <lastmod>2026-06-02</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/reference/fpvs-studio-config-import/</loc>
-         <lastmod>2026-06-02</lastmod>
+         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/reference/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/reference/glossary/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/reference/methods-reporting-checklist/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/results/fft-frequency-domain-quantification/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/results/statistical-analysis/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/results/understand-results/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/start/faq/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/start/fpvs-concepts/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/start/getting-started/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/start/tutorial/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/statistics/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/statistics/baseline-vs-zero/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/statistics/external-statistics-software/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/statistics/mixed-model/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/statistics/outliers-and-qc/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/statistics/posthoc-tests/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/statistics/rm-anova/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/statistics/rossion-harmonic-selection/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/statistics/which-test/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/study/outputs-reference/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/study/processing-pipeline/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/study/project-setup/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/study/run-a-study/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/study/troubleshooting/</loc>
-         <lastmod>2026-06-02</lastmod>
+         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/epoch-averaging/</loc>
-         <lastmod>2026-06-02</lastmod>
-    </url>
-    <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/feature-tour/</loc>
-         <lastmod>2026-06-02</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/image-resizer/</loc>
-         <lastmod>2026-06-02</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/individual-level-detectability/</loc>
-         <lastmod>2026-06-02</lastmod>
+         <lastmod>2026-06-25</lastmod>
+    </url>
+    <url>
+         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/loreta-visualizer/</loc>
+         <lastmod>2026-06-25</lastmod>
+    </url>
+    <url>
+         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/publication-maps/</loc>
+         <lastmod>2026-06-25</lastmod>
+    </url>
+    <url>
+         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/publication-report/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/ratio-calculator/</loc>
-         <lastmod>2026-06-02</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
-         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/scalp-maps/</loc>
-         <lastmod>2026-06-02</lastmod>
+         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/sequence-figure/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/snr-plot-generator/</loc>
-         <lastmod>2026-06-02</lastmod>
+         <lastmod>2026-06-25</lastmod>
+    </url>
+    <url>
+         <loc>https://zcm58.github.io/FPVS-Toolbox-Repo/tools/statistics/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
 </urlset>
