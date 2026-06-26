@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Mapping, Sequence
+from typing import Sequence
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
@@ -14,49 +14,43 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from Main_App.processing.removed_electrode_detection import (
-    normalize_manual_removed_electrodes_map,
-    parse_electrode_list,
+from Main_App.projects.preprocessing_settings import (
+    normalize_manual_excluded_participants,
 )
 
 
-class ManualRemovedElectrodesDialog(QDialog):
-    """Modal editor for participant-level manually removed electrode metadata."""
+class ManualParticipantExclusionsDialog(QDialog):
+    """Modal editor for participant-level manual processing exclusions."""
 
     def __init__(
         self,
         participant_ids: Sequence[str],
-        manual_removed_electrodes: Mapping[str, Sequence[str]] | None = None,
+        excluded_participants: Sequence[str] | None = None,
         parent=None,
-        *,
-        prompt_text: str | None = None,
-        accept_label: str | None = None,
     ) -> None:
         super().__init__(parent)
-        self.setWindowTitle("Manual Removed Electrodes")
-        self.setObjectName("manual_removed_electrodes_dialog")
-        self.resize(620, 420)
+        self.setWindowTitle("Manual Participant Exclusions")
+        self.setObjectName("manual_participant_exclusions_dialog")
+        self.resize(520, 420)
 
-        normalized = normalize_manual_removed_electrodes_map(
-            dict(manual_removed_electrodes or {})
-        )
-        pids = _ordered_participant_ids(participant_ids, normalized)
+        excluded = normalize_manual_excluded_participants(excluded_participants)
+        excluded_lookup = {pid.casefold() for pid in excluded}
+        pids = _ordered_participant_ids(participant_ids, excluded)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(12, 12, 12, 12)
         layout.setSpacing(10)
 
         prompt = QLabel(
-            prompt_text
-            or "Enter electrodes that were physically removed before recording.",
+            "Select participants to exclude from processing. Raw BDF files are not modified.",
             self,
         )
         prompt.setWordWrap(True)
         layout.addWidget(prompt)
 
         self.table = QTableWidget(len(pids), 2, self)
-        self.table.setObjectName("manual_removed_electrodes_table")
-        self.table.setHorizontalHeaderLabels(["PID", "Removed electrodes"])
+        self.table.setObjectName("manual_participant_exclusions_table")
+        self.table.setHorizontalHeaderLabels(["PID", "Exclude from processing"])
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.setSelectionMode(QAbstractItemView.SingleSelection)
         self.table.verticalHeader().setVisible(False)
@@ -70,8 +64,15 @@ class ManualRemovedElectrodesDialog(QDialog):
             pid_item = QTableWidgetItem(pid)
             pid_item.setFlags(pid_item.flags() & ~Qt.ItemIsEditable)
             self.table.setItem(row, 0, pid_item)
-            electrodes = normalized.get(pid) or _casefold_lookup(normalized, pid)
-            self.table.setItem(row, 1, QTableWidgetItem(", ".join(electrodes)))
+
+            exclude_item = QTableWidgetItem("")
+            exclude_item.setFlags(
+                (exclude_item.flags() | Qt.ItemIsUserCheckable) & ~Qt.ItemIsEditable
+            )
+            exclude_item.setCheckState(
+                Qt.Checked if pid.casefold() in excluded_lookup else Qt.Unchecked
+            )
+            self.table.setItem(row, 1, exclude_item)
 
         layout.addWidget(self.table, 1)
 
@@ -79,49 +80,32 @@ class ManualRemovedElectrodesDialog(QDialog):
             QDialogButtonBox.Save | QDialogButtonBox.Cancel,
             parent=self,
         )
-        buttons.setObjectName("manual_removed_electrodes_actions")
+        buttons.setObjectName("manual_participant_exclusions_actions")
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
-        if accept_label:
-            accept_button = buttons.button(QDialogButtonBox.Save)
-            if accept_button is not None:
-                accept_button.setText(accept_label)
         layout.addWidget(buttons)
 
-    def manual_removed_electrodes(self) -> dict[str, list[str]]:
-        """Return all PID entries from the editable table."""
-        values: dict[str, list[str]] = {}
+    def excluded_participants(self) -> list[str]:
+        """Return checked participant IDs from the table."""
+        values: list[str] = []
         for row in range(self.table.rowCount()):
             pid_item = self.table.item(row, 0)
-            electrodes_item = self.table.item(row, 1)
+            exclude_item = self.table.item(row, 1)
             pid = pid_item.text().strip() if pid_item else ""
-            if not pid:
+            if not pid or exclude_item is None:
                 continue
-            electrodes = parse_electrode_list(
-                electrodes_item.text() if electrodes_item else ""
-            )
-            values[pid] = electrodes
-        return values
-
-
-def _casefold_lookup(
-    values: Mapping[str, Sequence[str]],
-    key: str,
-) -> list[str]:
-    key_folded = key.casefold()
-    for candidate, electrodes in values.items():
-        if candidate.casefold() == key_folded:
-            return list(electrodes)
-    return []
+            if exclude_item.checkState() == Qt.Checked:
+                values.append(pid)
+        return normalize_manual_excluded_participants(values)
 
 
 def _ordered_participant_ids(
     participant_ids: Sequence[str],
-    manual_removed_electrodes: Mapping[str, Sequence[str]],
+    excluded_participants: Sequence[str],
 ) -> list[str]:
     seen: set[str] = set()
     ordered: list[str] = []
-    for source in (participant_ids, tuple(manual_removed_electrodes)):
+    for source in (participant_ids, excluded_participants):
         for raw_pid in source:
             pid = str(raw_pid or "").strip()
             if not pid:
@@ -141,4 +125,4 @@ def _participant_sort_key(value: str) -> tuple[str, int, str]:
     return prefix, number, value.casefold()
 
 
-__all__ = ["ManualRemovedElectrodesDialog"]
+__all__ = ["ManualParticipantExclusionsDialog"]
