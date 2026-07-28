@@ -1,0 +1,1212 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="User documentation, tool guides, and method references for FPVS Toolbox.">
+      
+      
+      
+        <link rel="canonical" href="https://zcm58.github.io/FPVS-Toolbox-Repo/reference/methods-reporting-checklist/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Source-PSD Reporting - FPVS Toolbox</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reporting-the-hauk-informed-source-psd-workflow" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FPVS Toolbox" class="md-header__button md-logo" aria-label="FPVS Toolbox" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FPVS Toolbox
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Source-PSD Reporting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zcm58/FPVS-Toolbox-Repo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zcm58/FPVS-Toolbox-Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tools
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FPVS Toolbox" class="md-nav__button md-logo" aria-label="FPVS Toolbox" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FPVS Toolbox
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zcm58/FPVS-Toolbox-Repo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zcm58/FPVS-Toolbox-Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/statistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Statistical Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/sensitivity-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensitivity Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/snr-plot-generator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SNR Plots
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/publication-maps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scalp Maps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/loreta-visualizer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LORETA Visualizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/sequence-figure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequence Figure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/ratio-calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ratio Calculator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/individual-level-detectability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Individual Detectability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/epoch-averaging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Epoch Averaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-PSD Reporting
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-PSD Reporting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#processing-time-derivative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processing-Time Derivative
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-source-calculations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Source Calculations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#toolbox-neighboring-bin-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Toolbox Neighboring-Bin Rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legacy-and-deferred-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Legacy And Deferred Paths
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manuscript-or-preregistration-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manuscript Or Preregistration Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="reporting-the-hauk-informed-source-psd-workflow">Reporting the Hauk-Informed Source-PSD Workflow<a class="headerlink" href="#reporting-the-hauk-informed-source-psd-workflow" title="Permanent link">&para;</a></h1>
+<p>This page describes the current source-localization workflow in FPVS
+Toolbox. It prepares signed time-domain EEG during normal processing and later
+uses MNE to estimate independent L2 minimum-norm cortical and eLORETA volume
+source amplitudes. The default current method identifiers are
+<code>l2_mne_hauk_source_psd_cortical_normal_v1</code> and
+<code>eloreta_volume_hauk_source_psd_vector_norm_v1</code>.</p>
+<p>The workflow is informed by the source-spectrum approach used by Hauk et al.
+(2021) and by the public
+<a href="https://github.com/olafhauk/FPVS_sweep"><code>olafhauk/FPVS_sweep</code></a> scripts. It is a
+documented FPVS Toolbox adaptation, not a claim that the Toolbox exactly
+reproduces that study's combined EEG/MEG, individual-MRI, preprocessing, or
+neighboring-bin pipeline.</p>
+<h2 id="processing-time-derivative">Processing-Time Derivative<a class="headerlink" href="#processing-time-derivative" title="Permanent link">&para;</a></h2>
+<p>After the normal condition epochs have been created and the Excel export has
+succeeded, FPVS Toolbox writes one source-ready derivative for each processed
+participant and condition. It selects EEG channels only and takes the
+sample-by-sample arithmetic mean across repetitions while the values are still
+signed volts. Thus, responses with opposite polarity can cancel; the Toolbox
+does not rectify the signal, average magnitudes, or average repetition PSDs.</p>
+<p>The derivative reuses the processed epoch's exact sample count (<code>N</code>), sampling
+frequency, <code>55_onbin</code> crop/bin provenance, montage, channel order, bad-channel
+state, and final average-reference state. It contains no FFT, source estimate,
+or neighboring-bin statistic.</p>
+<p>The generated layout is:</p>
+<pre><code class="language-text">6 - Source Localization/
+  Source-Ready Time Domain v1/
+    &lt;condition label&gt;/
+      [&lt;group&gt;/]
+        &lt;participant&gt;_&lt;condition_id&gt;_avg_raw.fif
+        &lt;participant&gt;_&lt;condition_id&gt;_avg_raw.json
+    manifests/
+      [&lt;group&gt;/]
+        &lt;participant&gt;.json
+</code></pre>
+<p>The condition folder comes first and the optional group folder comes second.
+<code>condition_id</code> is the stable project event ID. The JSON beside each FIF records
+provenance and checksums; the participant manifest is written last as the commit
+marker after every expected condition pair succeeds. Missing, stale,
+checksum-mismatched, or incompatible derivatives are rejected rather than
+silently replaced with amplitude workbooks.</p>
+<p>If derivative publication fails, the completed Excel export is preserved. The
+processing ledger records the source-readiness warning and treats the missing
+source output as work that must be rescheduled; it does not label a missing
+derivative as reusable.</p>
+<p>Source-map generation uses a complete-case source cohort. If a completed
+participant is missing any canonical condition, or its ledger explicitly says
+the source derivative is incomplete, that participant is omitted from every
+source condition rather than aborting maps for all other participants. This is
+a source-only omission: it does not alter the participant's available Excel
+outputs or automatically add the participant to the project's general
+exclusion workbook. The prepared manifest, participant sidecar, validation
+report, processing log, and LORETA status identify every omitted participant
+and reason. Files that claim to be complete but fail checksum, compatibility,
+or manifest validation still stop the source build.</p>
+<p>These signed FIF/JSON derivatives are sufficient input for the source-method
+orientation changes described below. If they are already present and valid,
+you can rebuild the source maps without reprocessing the participant EEG.</p>
+<h2 id="current-source-calculations">Current Source Calculations<a class="headerlink" href="#current-source-calculations" title="Permanent link">&para;</a></h2>
+<p>The normal source build is intentionally EEG-only and generates both current
+methods. They use the same signed FIF derivatives, complete-case source cohort,
+saved oddball harmonics, exact FPVS frequency bins, and neighboring-bin z-score
+algorithm. They do not share source values: each inverse produces and caches
+its own participant source-amplitude and z-score arrays.</p>
+<p>Both methods use the Toolbox BioSemi64 channel geometry with the <code>fsaverage</code>
+template rather than individual MRI/coregistration, MEG, or EEG/MEG fusion. The
+cortical inverse is MNE-native
+L2-MNE with <code>method="MNE"</code>, <code>loose=0.2</code>, <code>depth=None</code>, <code>fixed=False</code>, and
+<code>lambda2=1/9</code>; it does not apply dSPM, sLORETA, or eLORETA normalization. By
+default it uses <code>pick_ori="normal"</code> to select the cortical surface-normal
+component and records method identity
+<code>l2_mne_hauk_source_psd_cortical_normal_v1</code>. This is closer to the Hauk source
+estimator than the older pooled-orientation implementation. Source Map Options
+can instead select "Legacy MNE pooled orientation" to reproduce older
+<code>l2_mne_hauk_source_psd_v1</code> maps; the two results use separate method labels,
+provenance, and caches.</p>
+<p>The independent volume inverse uses <code>method="eLORETA"</code>, a 10 mm fsaverage
+volume grid, <code>loose=1.0</code>, <code>depth=None</code>, <code>fixed=False</code>, and <code>lambda2=1/9</code>. Its
+current method identity is <code>eloreta_volume_hauk_source_psd_vector_norm_v1</code>.
+It preserves complex exact-bin coefficients through a vector inverse rather
+than accepting a basis-dependent scalar pooling of free orientations.
+Because the Toolbox workflow does not require a separate resting/noise
+recording, it builds MNE's ad-hoc diagonal EEG noise covariance. This is an
+intentional Toolbox adaptation of the Hauk reference pipeline, which used a
+recorded resting covariance, and must be reported with the inverse settings.</p>
+<p>For each participant and condition, the producer:</p>
+<ol>
+<li>loads the significant oddball harmonics already selected and saved for the
+   project during post-processing. Under the default through-highest rule, an
+   isolated highest detection is excluded from the selected list when more than
+   10 eligible non-base harmonics lie strictly between it and the next-highest
+   significant detection; base-rate overlaps do not count and exactly 10 is
+   allowed;</li>
+<li>requires every selected harmonic and every required neighboring position to
+   fall on an exact FFT bin for the derivative's <code>N</code> and sampling frequency;</li>
+<li>for default L2-MNE, calls <code>mne.minimum_norm.compute_source_psd</code> on the
+   complete repetition-averaged Raw time series with <code>n_fft=N</code>, zero overlap,
+   the Hann setting, and <code>pick_ori="normal"</code>, then validates nonnegative source
+   power and takes its square root to obtain cortical-normal source amplitude;</li>
+<li>for current eLORETA, mean-removes the signed sensor time series, computes
+   complex periodic-Hann coefficients at only the exact required FFT bins,
+   calls <code>mne.minimum_norm.apply_inverse(..., pick_ori="vector")</code>, and computes
+   the rotation-invariant amplitude
+   <code>sqrt(abs(Cx)^2 + abs(Cy)^2 + abs(Cz)^2)</code> at each volume source and bin;</li>
+<li>sums corresponding target and neighboring-bin amplitudes across the selected
+   harmonics in source space; and</li>
+<li>converts that summed target to a neighboring-bin z score at each source.</li>
+</ol>
+<p>Nearest-bin substitution is forbidden. If a nominal harmonic is off-grid, a
+required bin is absent, or the complete neighboring window would cross the FFT
+range, the source build stops with a prerequisite/error message. It does not
+round the requested frequency to a nearby result.</p>
+<p>The current source calculations consume the saved harmonic-selection record
+and committed time-domain derivatives, not <code>FullFFT Amplitude (uV)</code> or the
+Stats-ready workbook. Stats-ready export and source generation are sibling
+consumers after harmonic selection, so failure of the Stats-ready export alone
+does not invalidate otherwise complete source inputs.</p>
+<p>The eLORETA calculation is a Hauk-informed extension of the published
+source-spectrum sequence, not a claim that Hauk et al. implemented this exact
+EEG-only fsaverage eLORETA volume workflow. In particular, an L2-MNE z-score
+array is never transformed or relabeled as eLORETA. The historical method ID
+<code>eloreta_volume_hauk_source_psd_v1</code> identifies older signed-FIF eLORETA maps
+whose free-orientation scalar pooling was basis-dependent; those maps remain
+loadable but are not relabeled as corrected vector-norm results.</p>
+<p>All orientation selection, inverse calculation, vector pooling, harmonic
+aggregation, and z scoring happen in source producers before the visualizer
+loads a payload. Mesh, split-hemisphere, transparent-volume, and MRI-slice
+choices change only the display of saved values.</p>
+<p>For projects with more than one canonical participant group, the Toolbox
+creates a separate source summary and cluster-inference input for each group and
+condition. It does not silently pool experimental groups into one source map.
+Single-group and ungrouped projects retain the condition labels used elsewhere
+in the project.</p>
+<p>A one-participant group can support a descriptive source-space summary but not
+the one-sample cluster-permutation inference used for the saved display mask.
+In that case the Toolbox exports the descriptive L2-MNE/eLORETA map, records
+the mask as unavailable because of insufficient participants, and treats the
+unmasked display as exploratory. Do not report that map as a group-level
+cluster-permutation result.</p>
+<h2 id="toolbox-neighboring-bin-rule">Toolbox Neighboring-Bin Rule<a class="headerlink" href="#toolbox-neighboring-bin-rule" title="Permanent link">&para;</a></h2>
+<p>For every selected harmonic, the target uses offset <code>0</code>. Noise candidates use
+offsets <code>-10..-2</code> and <code>+2..+10</code>, giving nine bins on each side and excluding
+offsets <code>-1</code>, <code>0</code>, and <code>+1</code>. Corresponding offsets are first summed across all
+selected harmonics. At each source point, the Toolbox then pools the 18 summed
+noise values, removes exactly one global minimum and one global maximum, and
+computes the mean and population standard deviation over the remaining 16
+values (<code>ddof=0</code>). The saved value is:</p>
+<pre><code class="language-text">z = (summed target amplitude - trimmed noise mean) / trimmed noise population SD
+</code></pre>
+<p>This exact offset and trimming policy is an intentional Toolbox rule. Report it
+explicitly rather than describing the output only as a generic Hauk z score.</p>
+<h2 id="legacy-and-deferred-paths">Legacy And Deferred Paths<a class="headerlink" href="#legacy-and-deferred-paths" title="Permanent link">&para;</a></h2>
+<p>Existing amplitude-derived L2-MNE Hauk z-score and eLORETA prepared manifests
+remain importable in the visualizer and are labeled legacy/exploratory. They do
+not serve as fallback inputs for either current source-PSD workflow. Normal
+manual and post-processing rebuilds create both time-domain methods. The signed-
+FIF IDs <code>l2_mne_hauk_source_psd_v1</code> and
+<code>eloreta_volume_hauk_source_psd_v1</code> are also historical: the former remains an
+explicit GUI-selectable reproduction mode, while the latter remains loadable
+but records a basis-dependent orientation result. MEG fusion, individual-MRI
+modeling, and alternative phase-sensitive estimators beyond the current
+exact-bin vector eLORETA route remain possible later additions.</p>
+<h2 id="manuscript-or-preregistration-checklist">Manuscript Or Preregistration Checklist<a class="headerlink" href="#manuscript-or-preregistration-checklist" title="Permanent link">&para;</a></h2>
+<p>Report at least:</p>
+<ul>
+<li>the FPVS Toolbox release or commit and both method identifiers,
+  normally <code>l2_mne_hauk_source_psd_cortical_normal_v1</code> and
+  <code>eloreta_volume_hauk_source_psd_vector_norm_v1</code>; if the L2 legacy toggle was
+  used, report <code>l2_mne_hauk_source_psd_v1</code> and the pooled-orientation choice;</li>
+<li>that source inputs were EEG-only, signed, sample-wise repetition averages in
+  volts, and the number of repetitions contributing to each derivative;</li>
+<li>preprocessing, reference, montage/channel, epoch crop, <code>N</code>, sampling
+  frequency, and resulting frequency resolution;</li>
+<li>that the saved project significant-harmonic selection was reused, with the
+  exact detected and selected harmonic frequencies, whether the isolated-highest
+  gap guard was applied, its eligible-gap count, and any excluded upper peak;</li>
+<li>the EEG-only <code>fsaverage</code> BioSemi64 template limitation and the absence of
+  individual MRI/coregistration, MEG, and modality fusion;</li>
+<li>the MNE version, cortical spacing, volume-grid spacing, each method's
+  independent inverse settings, ad-hoc diagonal EEG noise covariance, and
+  source settings;</li>
+<li>L2 <code>pick_ori="normal"</code> and square-root PSD amplitude conversion, plus eLORETA
+  exact-bin complex periodic-Hann coefficients, <code>pick_ori="vector"</code>, and
+  <code>sqrt(sum(abs(Cxyz)^2))</code> orientation pooling;</li>
+<li>the exact-bin/no-nearest-bin requirement;</li>
+<li>amplitude conversion, harmonic aggregation, offsets <code>-10..-2</code> and <code>+2..+10</code>,
+  one global minimum/maximum removal, and population SD (<code>ddof=0</code>);</li>
+<li>participant exclusions, flagged-participant policy, group summary, and each
+  method's source-space cluster inference, plus L2-MNE ROI/lateralization
+  settings and every source-only complete-case omission and its reason; and</li>
+<li>that cortical-normal L2 follows the Hauk estimator more closely but remains
+  Toolbox-adapted, and that vector-norm eLORETA is a Toolbox extension, citing
+  both the study and public code reference below.</li>
+</ul>
+<p>Retain the source-ready FIF/JSON pairs, participant commit manifests, harmonic
+selection record, and prepared source-output manifest with the analysis record.
+Together they provide the provenance needed to audit the source figures.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Hauk, O., Rice, G. E., Volfart, A., Magnabosco, F., Lambon Ralph, M. A., &amp;
+  Rossion, B. (2021). <a href="https://doi.org/10.1016/j.neuroimage.2021.118460">Face-selective responses in combined EEG/MEG recordings
+  with fast periodic visual stimulation
+  (FPVS)</a>. <em>NeuroImage, 242</em>,
+  118460.</li>
+<li>Hauk, O. <a href="https://github.com/olafhauk/FPVS_sweep"><code>olafhauk/FPVS_sweep</code>: Python scripts for an FPVS frequency-sweep
+  experiment</a>, including the public
+  <code>FPVS_PSD_Source_sweep.py</code> source-spectrum script.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Methods and References">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Methods and References
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.expand", "navigation.indexes", "toc.integrate", "toc.follow", "content.code.copy", "search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
