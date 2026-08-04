@@ -1,0 +1,49 @@
+{
+  "analysis_id": "Vandenheever_2025_confirmed_ROIs_2026-08-04",
+  "main_rois": [
+    "LOT",
+    "ROT",
+    "O",
+    "Frontal",
+    "PO"
+  ],
+  "roi_electrodes": {
+    "LOT": ["PO7", "P7", "P9"],
+    "ROT": ["PO8", "P8", "P10"],
+    "O": ["Oz", "O1", "O2"],
+    "Frontal": ["Fz", "FCz", "AFz"],
+    "PO": ["POz", "PO3", "PO4"],
+    "CP": ["CPz", "CP1", "CP3"]
+  },
+  "ratio_only_rois": ["CP"],
+  "ratio_definitions": {
+    "F/O": ["Frontal", "O"],
+    "F/LOT": ["Frontal", "LOT"],
+    "F/ROT": ["Frontal", "ROT"],
+    "CP/O": ["CP", "O"],
+    "CP/LOT": ["CP", "LOT"],
+    "CP/ROT": ["CP", "ROT"]
+  },
+  "allow_roi_overlap": false,
+  "source_citations": [
+    {
+      "citation": "Vandenheever, D., Davidson, H., Kemp, J., Murphy, Z., Kujawa, A., Shi, J., Nadorff, M. R., Bates-Brantley, K., & Sidwell, M. (2025). Preliminary evidence for anxiety-linked neural sensitivity to emotional faces using fast periodic visual stimulation. International Journal of Psychophysiology, 214, 113212.",
+      "doi": "10.1016/j.ijpsycho.2025.113212",
+      "publisher_url": "https://doi.org/10.1016/j.ijpsycho.2025.113212",
+      "source_locator": "Methods ROI paragraph that lists O, PO, F, CP, left LOT, and right ROT electrode sets; the article uses an article number rather than stable page ranges.",
+      "evidence_scope": "Primary source for the six electrode sets and the separate expression-specific ROI-by-anxiety-group analysis precedent."
+    },
+    {
+      "citation": "Vandenheever, D., Davidson, H., Kemp, J., Murphy, Z., Kujawa, A., Shi, J., Nadorff, M. R., Bates-Brantley, K., & Sidwell, M. (2025). Exploring facial expression processing with fast periodic visual stimulation and diverse stimuli. Brain and Cognition, 189, 106338.",
+      "doi": "10.1016/j.bandc.2025.106338",
+      "publisher_url": "https://doi.org/10.1016/j.bandc.2025.106338",
+      "source_locator": "Methods and ROI-level facial-expression analysis in the companion FPVS report; the article uses article number 106338.",
+      "evidence_scope": "Companion-method context for the facial-expression FPVS ROI framework; the anxiety paper above is the direct source for this configured analysis."
+    }
+  ],
+  "notes": [
+    "LOT, ROT, O, Frontal, and PO reproduce the Vandenheever et al. (2025) definitions used in the audited ACR follow-up.",
+    "FCz is used because the anxiety paper prints FCs, while the BioSemi64 workbooks contain FCz and no FCs; confirm this likely typographical correction before manuscript reporting.",
+    "CP is aggregated only for the configured anterior/posterior amplitude-ratio analyses and is not part of the five-ROI LMM family."
+  ]
+}
