@@ -1,8 +1,10 @@
 """Run the auditable ACR BCA20 PI follow-up statistical analyses.
 
-This developer-facing module consumes the portable ROI-level CSV produced by
-``aggregate_bca20_followup.py``.  It does not discover project workbooks and it
-does not import the historical analysis scripts from a visualization folder.
+This developer-facing module consumes either the portable ROI-level CSV
+produced by ``aggregate_bca20_followup.py`` or the expert-facing ``ROI_Long``
+sheet in an analysis-ready XLSX workbook.  It does not discover project
+workbooks and it does not import the historical analysis scripts from a
+visualization folder.
 
 The raw BCA20 outcome is primary.  Whole-scalp RMS normalization and stable
 signed-mean normalization are sensitivity outcomes.  The latter excludes a
@@ -38,7 +40,9 @@ if __package__ in {None, ""}:
         INCLUDED_HARMONIC_FREQUENCIES_HZ,
         INCLUDED_HARMONIC_ORDERS,
         ODDBALL_FREQUENCY_HZ,
+        audit_configured_roi_input,
         load_roi_config,
+        read_configured_roi_input,
         sha256_file,
         software_versions,
         write_json,
@@ -52,7 +56,9 @@ else:
         INCLUDED_HARMONIC_FREQUENCIES_HZ,
         INCLUDED_HARMONIC_ORDERS,
         ODDBALL_FREQUENCY_HZ,
+        audit_configured_roi_input,
         load_roi_config,
+        read_configured_roi_input,
         sha256_file,
         software_versions,
         write_json,
@@ -114,7 +120,10 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         "--input",
         type=Path,
         required=True,
-        help="Path to configured_roi_bca20_long.csv.",
+        help=(
+            "Path to configured_roi_bca20_long.csv or an analysis-ready .xlsx "
+            "workbook containing ROI_Long."
+        ),
     )
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument(
@@ -162,50 +171,10 @@ def load_analysis_config(
 def audit_adjacent_aggregation_manifest(
     configured_roi_path: Path,
 ) -> dict[str, Any]:
-    """Verify the source CSV against an adjacent aggregation manifest."""
+    """Verify canonical CSV or expert-workbook adjacent provenance."""
 
-    source = Path(configured_roi_path).resolve()
-    manifest_path = source.parent / "aggregation_manifest.json"
-    if not manifest_path.is_file():
-        return {
-            "path": None,
-            "sha256": None,
-            "found_adjacent": False,
-            "roi_output_checksum_verified": False,
-            "warning": (
-                "No adjacent aggregation_manifest.json was available; the "
-                "configured ROI CSV hash is still recorded directly."
-            ),
-        }
-    try:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"Adjacent aggregation manifest is invalid JSON: {manifest_path}") from exc
-    roi_output = manifest.get("outputs", {}).get("roi_data")
-    if not isinstance(roi_output, dict):
-        raise ValueError("Adjacent aggregation manifest lacks outputs.roi_data metadata")
-    expected_sha256 = str(roi_output.get("sha256") or "").upper()
-    actual_sha256 = sha256_file(source)
-    if not expected_sha256:
-        raise ValueError("Adjacent aggregation manifest lacks the ROI CSV checksum")
-    if expected_sha256 != actual_sha256:
-        raise ValueError("Configured ROI CSV checksum does not match the adjacent aggregation manifest")
-    expected_rows = roi_output.get("rows")
-    if expected_rows is not None:
-        actual_rows = len(pd.read_csv(source, usecols=["subject"]))
-        if int(expected_rows) != actual_rows:
-            raise ValueError("Configured ROI CSV row count does not match the adjacent aggregation manifest")
-    return {
-        "path": str(manifest_path.resolve()),
-        "sha256": sha256_file(manifest_path),
-        "found_adjacent": True,
-        "roi_output_checksum_verified": True,
-        "recorded_roi_output_path": roi_output.get("path"),
-        "recorded_roi_output_sha256": expected_sha256,
-        "recorded_roi_output_rows": expected_rows,
-        "recorded_aggregation_exclusions": manifest.get("exclusions", {}),
-        "warning": "",
-    }
+    data, _ = read_configured_roi_input(configured_roi_path)
+    return audit_configured_roi_input(configured_roi_path, row_count=len(data))
 
 
 def load_configured_roi_data(
@@ -216,9 +185,7 @@ def load_configured_roi_data(
     excluded_subjects: Iterable[str] = (),
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     source = Path(path).resolve()
-    if not source.is_file():
-        raise FileNotFoundError(f"Configured ROI BCA20 input not found: {source}")
-    data = pd.read_csv(source)
+    data, source_metadata = read_configured_roi_input(source)
     input_row_count = len(data)
     missing = sorted(REQUIRED_COLUMNS.difference(data.columns))
     if missing:
@@ -353,6 +320,7 @@ def load_configured_roi_data(
     metadata = {
         "source_path": str(source),
         "source_sha256": sha256_file(source),
+        **source_metadata,
         "input_rows": int(input_row_count),
         "analysis_rows": int(len(data)),
         "requested_excluded_subjects": requested,
@@ -1476,7 +1444,8 @@ def analyze_bca20_pi_followup(
         "guardrails": [
             "Raw BCA20 is primary; RMS and stable signed-mean normalization are sensitivity analyses.",
             "Stable signed-mean normalization requires abs(mean64)/RMS64 >= 0.05.",
-            "The Mixed and Caucasian-only labels are a PI-supplied working mapping and are not inferred from the CSV.",
+            "The Mixed and Caucasian-only labels are a PI-supplied working "
+            "mapping and are not inferred from the input table.",
             "Only participants contributing both paired conditions and all five main ROIs enter a race-set comparison.",
             "Race-set contrasts may reflect other stimulus or protocol differences, not only stimulus race.",
             "Separate Angry and Happy models do not establish emotion specificity without a direct cross-emotion contrast.",

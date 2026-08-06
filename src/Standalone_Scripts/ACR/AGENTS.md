@@ -97,6 +97,82 @@ checksum matches the upstream manifest.
     --output-dir "$acrOutput\03_sad_uniqueness"
 ```
 
+## External statistical-expert workbook and replication
+
+When the user asks for an analysis-ready handoff, first run the full fixed-BCA20
+pipeline into a fresh directory. Build the workbook only from
+`01_bca20_aggregation\configured_roi_bca20_long.csv` and its adjacent manifest.
+`ROI_Long` is the authoritative ROI-outcome table. `Normalization` contains one
+participant-condition row with the whole-scalp denominators and signed-mean
+stability diagnostics needed to reconstruct the canonical analysis input. Wide,
+coverage, ROI, harmonic, and exclusion sheets are derived views. Machine
+provenance remains in the adjacent JSON manifest rather than a public workbook
+sheet.
+
+Use the bundled spreadsheet runtime returned by the Codex workspace-dependency
+loader. Do not install npm packages and do not substitute `openpyxl` or
+`xlsxwriter` for workbook authoring. Create a temporary writable runtime under
+`.codex-tmp`, junction its `node_modules` to the bundled Node packages, and copy
+the checked-in `.mjs` builder there so its `@oai/artifact-tool` import resolves.
+
+```powershell
+$acrAggregation = Join-Path $acrOutput "01_bca20_aggregation"
+$acrHandoff = Join-Path $acrOutput "04_external_expert_handoff"
+$acrPayload = Join-Path $acrHandoff "workbook_payload.json"
+$acrReceipt = Join-Path $acrHandoff "workbook_receipt.json"
+$acrWorkbook = Join-Path $acrHandoff "ACR_BCA20_Analysis_Ready_Data.xlsx"
+$acrPreviews = Join-Path $acrHandoff "workbook_previews"
+
+& $acrPython src\Standalone_Scripts\ACR\prepare_bca20_analysis_workbook.py `
+    --input "$acrAggregation\configured_roi_bca20_long.csv" `
+    --payload-output $acrPayload `
+    --receipt-output $acrReceipt
+
+# Resolve these two paths with codex_app__load_workspace_dependencies.
+$acrNode = "<bundled node.exe>"
+$acrNodePackages = "<bundled node_modules>"
+$acrRuntime = ".codex-tmp\acr_workbook_runtime"
+New-Item -ItemType Directory -Force $acrRuntime | Out-Null
+New-Item -ItemType Junction `
+    -Path "$acrRuntime\node_modules" `
+    -Target $acrNodePackages | Out-Null
+Copy-Item src\Standalone_Scripts\ACR\build_bca20_analysis_workbook.mjs `
+    "$acrRuntime\build_bca20_analysis_workbook.mjs" -Force
+
+& $acrNode "$acrRuntime\build_bca20_analysis_workbook.mjs" `
+    $acrPayload $acrWorkbook $acrPreviews
+
+& $acrPython src\Standalone_Scripts\ACR\prepare_bca20_analysis_workbook.py `
+    --input "$acrAggregation\configured_roi_bca20_long.csv" `
+    --payload-output $acrPayload `
+    --receipt-output $acrReceipt `
+    --finalize-workbook $acrWorkbook
+
+& $acrPython src\Standalone_Scripts\ACR\validate_bca20_analysis_workbook.py `
+    --workbook $acrWorkbook `
+    --output "$acrHandoff\workbook_qa.json"
+
+& $acrPython src\Standalone_Scripts\ACR\run_bca20_workbook_replication.py `
+    --workbook $acrWorkbook `
+    --baseline-pipeline-dir $acrOutput `
+    --output-dir "$acrHandoff\excel_replication"
+```
+
+Visually inspect every PNG in `$acrPreviews`, not only `Read_Me`. Confirm that
+headers, wrapped notes, numeric precision, and booleans are readable, and that
+the requested gray/white styling contains no blue table fills. Public column
+headers must contain no underscores, tabular values should be centered, long
+notes should remain left-aligned, and `ROI Role` must not appear. Confirm that
+whole-scalp denominators and stability diagnostics appear only on
+`Normalization`, never as repeated columns on `ROI_Long` or `SignedMean_Wide`.
+Then inspect `analysis_ready_workbook_manifest.json` and
+`excel_replication\replication_manifest.json`. Acceptance requires exact row,
+key, attribute, missingness, sign, and p-threshold decisions; numeric data must
+match within the recorded tolerances. Optimizer names and warning text are
+diagnostic and may differ after sub-femtovolt Excel serialization, but required
+model availability and convergence may not differ. Describe this as an Excel
+transport replication, not an independent statistical validation.
+
 ## Fixed statistical rules
 
 - BCA20 includes oddball orders 1-20 except base-rate overlaps 5, 10, 15,
@@ -155,6 +231,7 @@ See [README.md](README.md) for stage-specific commands and figure outputs.
     tests\standalone_scripts\test_acr_bca20_pi_followup.py `
     tests\standalone_scripts\test_acr_bca20_sad_uniqueness.py `
     tests\standalone_scripts\test_acr_bca20_pipeline.py `
+    tests\standalone_scripts\test_acr_bca20_analysis_workbook.py `
     tests\standalone_scripts\test_acr_lateralization_pipeline.py -q
 & $acrPython .agents\skills\project-path-audit\scripts\audit_hardcoded_paths.py
 ```

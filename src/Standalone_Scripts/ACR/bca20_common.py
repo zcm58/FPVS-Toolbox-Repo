@@ -52,6 +52,88 @@ INCLUDED_HARMONIC_COLUMNS = tuple(
     f"{frequency:.4f}_Hz" for frequency in INCLUDED_HARMONIC_FREQUENCIES_HZ
 )
 
+ROI_LONG_SHEET_NAME = "ROI_Long"
+NORMALIZATION_SHEET_NAME = "Normalization"
+ANALYSIS_READY_WORKBOOK_MANIFEST_NAME = "analysis_ready_workbook_manifest.json"
+ROI_LONG_EXPERT_COLUMN_ALIASES = {
+    "PID": "subject",
+    "Group": "group",
+    "Group_ID": "group",
+    "Condition": "condition",
+    "Cohort": "cohort",
+    "ROI": "roi",
+    "ROI Electrodes": "electrodes",
+    "Raw Summed BCA": "raw",
+    "RMS Normalized BCA": "rms_norm",
+    "Signed Mean Normalized BCA": "mean_norm",
+    "Whole-Scalp Signed Mean BCA": "global_mean",
+    "Whole-Scalp RMS BCA": "global_rms",
+    "Signed Mean Stability Q": "mean_abs_over_rms",
+    "Summed_BCA20_uV": "raw",
+    "RMS_Normalized_BCA20": "rms_norm",
+    "SignedMean_Normalized_BCA20": "mean_norm",
+    "signed_mean_normalized_bca20": "mean_norm",
+    "MeanAbsOverRMS": "mean_abs_over_rms",
+    "Global_Mean_BCA20_uV": "global_mean",
+    "Global_RMS_BCA20_uV": "global_rms",
+    "cohort_id": "cohort",
+    "roi_electrodes": "electrodes",
+    "whole_scalp_signed_mean_bca20_uv": "global_mean",
+    "whole_scalp_rms_bca20_uv": "global_rms",
+    "signed_mean_stability_q": "mean_abs_over_rms",
+}
+NORMALIZATION_EXPERT_COLUMN_ALIASES = {
+    "PID": "subject",
+    "Group": "group",
+    "Group_ID": "group",
+    "Condition": "condition",
+    "Whole-Scalp Signed Mean BCA Denominator": "global_mean",
+    "Whole-Scalp RMS BCA Denominator": "global_rms",
+    "Whole-Scalp Signed Mean BCA": "global_mean",
+    "Whole-Scalp RMS BCA": "global_rms",
+    "Signed Mean Stability Q": "mean_abs_over_rms",
+    "Signed Mean Stable (Q >= 0.05)": "mean_stable_q_ge_0_05",
+    "Global_Mean_BCA20_uV": "global_mean",
+    "Global_RMS_BCA20_uV": "global_rms",
+    "MeanAbsOverRMS": "mean_abs_over_rms",
+    "whole_scalp_signed_mean_bca20_uv": "global_mean",
+    "whole_scalp_rms_bca20_uv": "global_rms",
+    "signed_mean_stability_q": "mean_abs_over_rms",
+    "signed_mean_stable_q_ge_0_05": "mean_stable_q_ge_0_05",
+}
+NORMALIZATION_REFERENCE_COLUMNS = (
+    "global_mean",
+    "global_rms",
+    "mean_abs_over_rms",
+)
+WORKBOOK_GROUP_IDS = {
+    "anxious": "anxious",
+    "anxiety": "anxious",
+    "non_anxious": "non_anxious",
+    "nonanxious": "non_anxious",
+    "non_anxiety": "non_anxious",
+}
+WORKBOOK_GROUP_LABELS = {
+    "anxious": "Anxious",
+    "non_anxious": "Non-Anxious",
+}
+CONFIGURED_ROI_MODEL_COLUMNS = (
+    "subject",
+    "group",
+    "group_label",
+    "condition",
+    "cohort",
+    "global_mean",
+    "global_rms",
+    "mean_abs_over_rms",
+    "roi",
+    "roi_role",
+    "electrodes",
+    "raw",
+    "mean_norm",
+    "rms_norm",
+)
+
 # BioSemi 64-channel order used by the source workbooks. Normalization is
 # calculated over exactly this set, even if a workbook contains extra rows.
 BIOSEMI64_ELECTRODES = (
@@ -187,6 +269,540 @@ def write_json(path: Path, payload: object) -> None:
         json.dumps(payload, indent=2, allow_nan=False),
         encoding="utf-8",
     )
+
+
+def _canonical_workbook_group(value: object) -> str:
+    """Map the workbook's single public group field to the model group ID."""
+
+    token = str(value).strip().casefold().replace("-", "_").replace(" ", "_")
+    try:
+        return WORKBOOK_GROUP_IDS[token]
+    except KeyError as exc:
+        raise ValueError(
+            f"{ROI_LONG_SHEET_NAME!r} group values must identify anxious or "
+            f"non-anxious participants; found {value!r}."
+        ) from exc
+
+
+def _map_expert_sheet_columns(
+    data: pd.DataFrame,
+    *,
+    aliases: Mapping[str, str],
+    sheet_name: str,
+) -> tuple[pd.DataFrame, list[str], dict[str, str]]:
+    """Map one expert-facing worksheet to canonical in-memory names."""
+
+    source_columns = [str(column).strip() for column in data.columns]
+    if any(not column for column in source_columns):
+        raise ValueError(f"{sheet_name!r} contains a blank column header.")
+    if len(source_columns) != len({column.casefold() for column in source_columns}):
+        raise ValueError(f"{sheet_name!r} contains duplicate column headers.")
+
+    alias_lookup = {
+        source_name.casefold(): canonical_name
+        for source_name, canonical_name in aliases.items()
+    }
+    canonical_names = set(aliases.values())
+    rename: dict[object, str] = {}
+    mapped_targets: dict[str, str] = {}
+    for original, stripped in zip(data.columns, source_columns, strict=True):
+        canonical = alias_lookup.get(stripped.casefold())
+        if canonical is None and stripped.casefold() in canonical_names:
+            canonical = stripped.casefold()
+        if canonical is None:
+            continue
+        previous = mapped_targets.get(canonical)
+        if previous is not None:
+            raise ValueError(
+                f"{sheet_name!r} maps both {previous!r} and {stripped!r} "
+                f"to required field {canonical!r}."
+            )
+        rename[original] = canonical
+        mapped_targets[canonical] = stripped
+    return data.rename(columns=rename), source_columns, mapped_targets
+
+
+def _canonical_workbook_boolean(value: object) -> bool:
+    """Parse the public yes/no stability indicator without truthy strings."""
+
+    if isinstance(value, (bool, np.bool_)):
+        return bool(value)
+    token = str(value).strip().casefold()
+    if token in {"yes", "true", "1"}:
+        return True
+    if token in {"no", "false", "0"}:
+        return False
+    raise ValueError(
+        f"{NORMALIZATION_SHEET_NAME!r} stability values must be yes/no or "
+        f"true/false; found {value!r}."
+    )
+
+
+def read_configured_roi_input(
+    path: str | Path,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Read canonical CSV or the expert-facing ``ROI_Long`` workbook sheet.
+
+    CSV inputs retain their existing canonical column names.  XLSX inputs use
+    descriptive public headers and are mapped back to the same in-memory
+    contract so that the statistical code is identical after ingestion.
+    """
+
+    source = Path(path).expanduser().resolve()
+    if not source.is_file():
+        raise FileNotFoundError(f"Configured ROI BCA20 input not found: {source}")
+    suffix = source.suffix.casefold()
+    if suffix == ".csv":
+        data = pd.read_csv(source, float_precision="round_trip")
+        return data, {
+            "input_format": "csv",
+            "sheet_name": None,
+            "source_columns": [str(column) for column in data.columns],
+            "column_mapping": {},
+        }
+    if suffix != ".xlsx":
+        raise ValueError(
+            "Configured ROI input must be a .csv file or an .xlsx workbook "
+            f"containing a {ROI_LONG_SHEET_NAME!r} sheet: {source}"
+        )
+
+    try:
+        workbook = pd.ExcelFile(source)
+        data = pd.read_excel(workbook, sheet_name=ROI_LONG_SHEET_NAME)
+    except ValueError as exc:
+        raise ValueError(
+            f"Analysis workbook must contain a {ROI_LONG_SHEET_NAME!r} sheet: "
+            f"{source}"
+        ) from exc
+    data, source_columns, mapped_targets = _map_expert_sheet_columns(
+        data,
+        aliases=ROI_LONG_EXPERT_COLUMN_ALIASES,
+        sheet_name=ROI_LONG_SHEET_NAME,
+    )
+    for column in ("subject", "condition"):
+        if column not in data:
+            continue
+        missing_values = data[column].isna()
+        data[column] = data[column].astype(str).str.strip()
+        if (missing_values | data[column].eq("")).any():
+            raise ValueError(
+                f"{ROI_LONG_SHEET_NAME!r} contains blank {column} values."
+            )
+    derived_columns: list[str] = []
+    if "group" in data:
+        data["group"] = data["group"].map(_canonical_workbook_group)
+        data["group_label"] = data["group"].map(WORKBOOK_GROUP_LABELS)
+        derived_columns.append("group_label")
+    if "subject" in data:
+        data["cohort"] = data["subject"].map(participant_cohort)
+        derived_columns.append("cohort")
+    if "roi" in data:
+        is_ratio_only = data["roi"].astype(str).str.strip().eq("CP")
+        data["roi_role"] = np.where(is_ratio_only, "ratio_only", "main")
+        derived_columns.append("roi_role")
+
+    normalization_source_columns: list[str] = []
+    normalization_mapped_targets: dict[str, str] = {}
+    present_references = {
+        column for column in NORMALIZATION_REFERENCE_COLUMNS if column in data
+    }
+    if present_references and present_references != set(NORMALIZATION_REFERENCE_COLUMNS):
+        raise ValueError(
+            f"{ROI_LONG_SHEET_NAME!r} contains only some whole-scalp "
+            "normalization reference fields. Keep all three references in "
+            f"{ROI_LONG_SHEET_NAME!r} for a legacy workbook, or move all three "
+            f"to {NORMALIZATION_SHEET_NAME!r}."
+        )
+    normalization_reference_source = ROI_LONG_SHEET_NAME
+    if not present_references:
+        if NORMALIZATION_SHEET_NAME not in workbook.sheet_names:
+            raise ValueError(
+                f"Analysis workbook must contain a {NORMALIZATION_SHEET_NAME!r} "
+                "sheet when whole-scalp normalization references are omitted "
+                f"from {ROI_LONG_SHEET_NAME!r}: {source}"
+            )
+        normalization = pd.read_excel(
+            workbook,
+            sheet_name=NORMALIZATION_SHEET_NAME,
+        )
+        (
+            normalization,
+            normalization_source_columns,
+            normalization_mapped_targets,
+        ) = _map_expert_sheet_columns(
+            normalization,
+            aliases=NORMALIZATION_EXPERT_COLUMN_ALIASES,
+            sheet_name=NORMALIZATION_SHEET_NAME,
+        )
+        required_normalization = {
+            "subject",
+            "group",
+            "condition",
+            *NORMALIZATION_REFERENCE_COLUMNS,
+        }
+        missing_normalization = sorted(
+            required_normalization.difference(normalization.columns)
+        )
+        if missing_normalization:
+            raise ValueError(
+                f"{NORMALIZATION_SHEET_NAME!r} is missing columns: "
+                f"{missing_normalization}"
+            )
+        required_roi_keys = {"subject", "group", "condition"}
+        missing_roi_keys = sorted(required_roi_keys.difference(data.columns))
+        if missing_roi_keys:
+            raise ValueError(
+                f"{ROI_LONG_SHEET_NAME!r} is missing columns required to join "
+                f"{NORMALIZATION_SHEET_NAME!r}: {missing_roi_keys}"
+            )
+
+        normalization = normalization.copy()
+        normalization["group"] = normalization["group"].map(
+            _canonical_workbook_group
+        )
+        for column in ("subject", "condition"):
+            normalization[column] = normalization[column].astype(str).str.strip()
+            if normalization[column].eq("").any():
+                raise ValueError(
+                    f"{NORMALIZATION_SHEET_NAME!r} contains blank {column} values."
+                )
+        duplicate_normalization = normalization.duplicated(
+            ["subject", "condition"],
+            keep=False,
+        )
+        if duplicate_normalization.any():
+            examples = (
+                normalization.loc[
+                    duplicate_normalization,
+                    ["subject", "condition"],
+                ]
+                .drop_duplicates()
+                .head(5)
+            )
+            raise ValueError(
+                f"{NORMALIZATION_SHEET_NAME!r} contains duplicate "
+                "participant-condition rows: "
+                f"{examples.to_dict(orient='records')}"
+            )
+        for column in NORMALIZATION_REFERENCE_COLUMNS:
+            normalization[column] = pd.to_numeric(
+                normalization[column],
+                errors="coerce",
+            )
+            if not np.isfinite(normalization[column]).all():
+                raise ValueError(
+                    f"{NORMALIZATION_SHEET_NAME!r} contains non-finite "
+                    f"{column!r} values."
+                )
+        if (normalization["global_rms"] <= 0.0).any():
+            raise ValueError(
+                f"{NORMALIZATION_SHEET_NAME!r} whole-scalp RMS values must be "
+                "greater than zero."
+            )
+        if (normalization["mean_abs_over_rms"] < 0.0).any():
+            raise ValueError(
+                f"{NORMALIZATION_SHEET_NAME!r} signed-mean stability q values "
+                "must be non-negative."
+            )
+        if "mean_stable_q_ge_0_05" in normalization:
+            declared_stable = normalization["mean_stable_q_ge_0_05"].map(
+                _canonical_workbook_boolean
+            )
+            calculated_stable = normalization["mean_abs_over_rms"].ge(0.05)
+            if not declared_stable.eq(calculated_stable).all():
+                raise ValueError(
+                    f"{NORMALIZATION_SHEET_NAME!r} stability labels do not "
+                    "match Signed Mean Stability Q >= 0.05."
+                )
+
+        join_columns = ["subject", "group", "condition"]
+        roi_keys = {
+            tuple(row)
+            for row in data[join_columns].drop_duplicates().itertuples(
+                index=False,
+                name=None,
+            )
+        }
+        normalization_keys = {
+            tuple(row)
+            for row in normalization[join_columns].itertuples(
+                index=False,
+                name=None,
+            )
+        }
+        missing_reference_keys = sorted(roi_keys.difference(normalization_keys))
+        unused_reference_keys = sorted(normalization_keys.difference(roi_keys))
+        if missing_reference_keys or unused_reference_keys:
+            raise ValueError(
+                f"{NORMALIZATION_SHEET_NAME!r} participant-condition coverage "
+                f"must exactly match {ROI_LONG_SHEET_NAME!r}; missing examples: "
+                f"{missing_reference_keys[:5]}, unused examples: "
+                f"{unused_reference_keys[:5]}."
+            )
+        data = data.merge(
+            normalization[[*join_columns, *NORMALIZATION_REFERENCE_COLUMNS]],
+            on=join_columns,
+            how="left",
+            validate="many_to_one",
+        )
+        normalization_reference_source = NORMALIZATION_SHEET_NAME
+    workbook.close()
+
+    # Keep the statistical input contract identical to the canonical CSV so
+    # presentation-only fields cannot leak into model-derived output tables.
+    data = data.loc[
+        :,
+        [column for column in CONFIGURED_ROI_MODEL_COLUMNS if column in data.columns],
+    ]
+    return data, {
+        "input_format": "xlsx",
+        "sheet_name": ROI_LONG_SHEET_NAME,
+        "source_columns": source_columns,
+        "column_mapping": {
+            source_header: canonical
+            for canonical, source_header in mapped_targets.items()
+        },
+        "normalization_sheet_name": (
+            NORMALIZATION_SHEET_NAME
+            if normalization_reference_source == NORMALIZATION_SHEET_NAME
+            else None
+        ),
+        "normalization_source_columns": normalization_source_columns,
+        "normalization_column_mapping": {
+            source_header: canonical
+            for canonical, source_header in normalization_mapped_targets.items()
+        },
+        "normalization_reference_source": normalization_reference_source,
+        "derived_columns": derived_columns,
+    }
+
+
+def _read_json_object(path: Path, *, label: str) -> dict[str, Any]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{label} is invalid JSON: {path}") from exc
+    if not isinstance(payload, dict):
+        raise ValueError(f"{label} must contain a JSON object: {path}")
+    return payload
+
+
+def _manifest_file_path(value: object, *, manifest_path: Path) -> Path | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    candidate = Path(text).expanduser()
+    if not candidate.is_absolute():
+        candidate = manifest_path.parent / candidate
+    return candidate.resolve()
+
+
+def audit_configured_roi_input(
+    path: str | Path,
+    *,
+    row_count: int | None = None,
+) -> dict[str, Any]:
+    """Verify adjacent provenance for a canonical CSV or analysis workbook."""
+
+    source = Path(path).expanduser().resolve()
+    if not source.is_file():
+        raise FileNotFoundError(f"Configured ROI BCA20 input not found: {source}")
+    suffix = source.suffix.casefold()
+    if suffix == ".csv":
+        manifest_path = source.parent / "aggregation_manifest.json"
+        if not manifest_path.is_file():
+            return {
+                "input_format": "csv",
+                "manifest_type": "aggregation_manifest",
+                "path": None,
+                "sha256": None,
+                "found_adjacent": False,
+                "input_checksum_verified": False,
+                "roi_output_checksum_verified": False,
+                "warning": (
+                    "No adjacent aggregation_manifest.json was available; the "
+                    "configured ROI CSV hash is still recorded directly."
+                ),
+            }
+        manifest = _read_json_object(
+            manifest_path,
+            label="Adjacent aggregation manifest",
+        )
+        roi_output = manifest.get("outputs", {}).get("roi_data")
+        if not isinstance(roi_output, dict):
+            raise ValueError(
+                "Adjacent aggregation manifest lacks outputs.roi_data metadata"
+            )
+        expected_sha256 = str(roi_output.get("sha256") or "").upper()
+        actual_sha256 = sha256_file(source)
+        if not expected_sha256:
+            raise ValueError("Adjacent aggregation manifest lacks the ROI CSV checksum")
+        if expected_sha256 != actual_sha256:
+            raise ValueError(
+                "Configured ROI CSV checksum does not match the adjacent "
+                "aggregation manifest"
+            )
+        expected_rows = roi_output.get("rows")
+        if expected_rows is not None:
+            actual_rows = row_count
+            if actual_rows is None:
+                actual_rows = len(read_configured_roi_input(source)[0])
+            if int(expected_rows) != actual_rows:
+                raise ValueError(
+                    "Configured ROI CSV row count does not match the adjacent "
+                    "aggregation manifest"
+                )
+        return {
+            "input_format": "csv",
+            "manifest_type": "aggregation_manifest",
+            "path": str(manifest_path.resolve()),
+            "sha256": sha256_file(manifest_path),
+            "found_adjacent": True,
+            "input_checksum_verified": True,
+            "roi_output_checksum_verified": True,
+            "recorded_roi_output_path": roi_output.get("path"),
+            "recorded_roi_output_sha256": expected_sha256,
+            "recorded_roi_output_rows": expected_rows,
+            "recorded_aggregation_exclusions": manifest.get("exclusions", {}),
+            "harmonic_definition": manifest.get("harmonic_definition"),
+            "roi_config": manifest.get("roi_config"),
+            "exclusions": manifest.get("exclusions"),
+            "aggregation_counts": manifest.get("aggregation_counts"),
+            "included_conditions": manifest.get("included_conditions"),
+            "warning": "",
+        }
+    if suffix != ".xlsx":
+        raise ValueError(
+            "Configured ROI input must be a .csv file or an .xlsx workbook "
+            f"containing a {ROI_LONG_SHEET_NAME!r} sheet: {source}"
+        )
+
+    manifest_path = source.parent / ANALYSIS_READY_WORKBOOK_MANIFEST_NAME
+    if not manifest_path.is_file():
+        return {
+            "input_format": "xlsx",
+            "manifest_type": "analysis_ready_workbook_manifest",
+            "path": None,
+            "sha256": None,
+            "found_adjacent": False,
+            "input_checksum_verified": False,
+            "workbook_checksum_verified": False,
+            "roi_output_checksum_verified": False,
+            "warning": (
+                f"No adjacent {ANALYSIS_READY_WORKBOOK_MANIFEST_NAME} was "
+                "available; the workbook hash is still recorded directly."
+            ),
+        }
+    manifest = _read_json_object(
+        manifest_path,
+        label="Adjacent analysis-ready workbook manifest",
+    )
+    workbook_output = manifest.get("outputs", {}).get("workbook")
+    if not isinstance(workbook_output, dict):
+        raise ValueError(
+            "Adjacent analysis-ready workbook manifest lacks outputs.workbook "
+            "metadata"
+        )
+    expected_sha256 = str(workbook_output.get("sha256") or "").upper()
+    if not expected_sha256:
+        raise ValueError(
+            "Adjacent analysis-ready workbook manifest lacks the workbook checksum"
+        )
+    actual_sha256 = sha256_file(source)
+    if expected_sha256 != actual_sha256:
+        raise ValueError(
+            "Analysis-ready workbook checksum does not match the adjacent manifest"
+        )
+    recorded_sheet = str(
+        workbook_output.get("sheet_name")
+        or workbook_output.get("roi_long_sheet")
+        or ROI_LONG_SHEET_NAME
+    )
+    if recorded_sheet != ROI_LONG_SHEET_NAME:
+        raise ValueError(
+            "Adjacent analysis-ready workbook manifest records an unexpected "
+            f"ROI sheet: {recorded_sheet!r}"
+        )
+    expected_rows = workbook_output.get(
+        "rows",
+        workbook_output.get("roi_long_rows"),
+    )
+    if expected_rows is not None:
+        actual_rows = row_count
+        if actual_rows is None:
+            actual_rows = len(read_configured_roi_input(source)[0])
+        if int(expected_rows) != actual_rows:
+            raise ValueError(
+                "Analysis-ready workbook ROI_Long row count does not match the "
+                "adjacent manifest"
+            )
+
+    upstream = manifest.get("upstream_aggregation", {})
+    if not isinstance(upstream, dict):
+        raise ValueError("upstream_aggregation must be a JSON object when provided")
+    upstream_snapshot = upstream.get("snapshot", {})
+    if not isinstance(upstream_snapshot, dict):
+        raise ValueError("upstream_aggregation.snapshot must be a JSON object")
+    upstream_path = _manifest_file_path(
+        upstream.get("path"),
+        manifest_path=manifest_path,
+    )
+    expected_upstream_sha256 = str(upstream.get("sha256") or "").upper()
+    upstream_checksum_verified = False
+    warnings: list[str] = []
+    if upstream_path is not None and upstream_path.is_file():
+        actual_upstream_sha256 = sha256_file(upstream_path)
+        if expected_upstream_sha256 and expected_upstream_sha256 != actual_upstream_sha256:
+            raise ValueError(
+                "Upstream aggregation manifest checksum does not match the "
+                "analysis-ready workbook manifest"
+            )
+        upstream_checksum_verified = bool(expected_upstream_sha256)
+    elif upstream_path is not None:
+        warnings.append(
+            "The recorded upstream aggregation manifest path is unavailable; "
+            "the embedded snapshot remains available for audit."
+        )
+
+    return {
+        "input_format": "xlsx",
+        "manifest_type": "analysis_ready_workbook_manifest",
+        "path": str(manifest_path.resolve()),
+        "sha256": sha256_file(manifest_path),
+        "found_adjacent": True,
+        "input_checksum_verified": True,
+        "workbook_checksum_verified": True,
+        # Retained for compatibility with existing downstream audit displays.
+        "roi_output_checksum_verified": True,
+        "recorded_workbook_path": workbook_output.get("path"),
+        "recorded_workbook_sha256": expected_sha256,
+        "recorded_roi_output_rows": expected_rows,
+        "recorded_roi_long_sheet": recorded_sheet,
+        "upstream_aggregation_manifest_path": (
+            str(upstream_path) if upstream_path is not None else None
+        ),
+        "upstream_aggregation_manifest_sha256": expected_upstream_sha256 or None,
+        "upstream_aggregation_checksum_verified": upstream_checksum_verified,
+        "harmonic_definition": upstream_snapshot.get(
+            "harmonic_definition",
+            manifest.get("harmonic_definition"),
+        ),
+        "roi_config": upstream_snapshot.get("roi_config", manifest.get("roi_config")),
+        "exclusions": upstream_snapshot.get("exclusions", manifest.get("exclusions")),
+        "recorded_aggregation_exclusions": upstream_snapshot.get(
+            "exclusions",
+            manifest.get("exclusions", {}),
+        ),
+        "aggregation_counts": upstream_snapshot.get(
+            "aggregation_counts",
+            manifest.get("aggregation_counts"),
+        ),
+        "included_conditions": upstream_snapshot.get(
+            "included_conditions",
+            manifest.get("included_conditions"),
+        ),
+        "warning": " ".join(warnings),
+    }
 
 
 def software_versions() -> dict[str, str]:
@@ -455,6 +1071,7 @@ def normalization_diagnostics(summed_bca: pd.Series) -> dict[str, Any]:
 
 
 __all__ = [
+    "ANALYSIS_READY_WORKBOOK_MANIFEST_NAME",
     "BASE_FREQUENCY_HZ",
     "BASE_OVERLAP_ORDERS",
     "BCA_SHEET_NAME",
@@ -467,10 +1084,14 @@ __all__ = [
     "INCLUDED_HARMONIC_ORDERS",
     "NORMALIZATION_EPSILON",
     "ODDBALL_FREQUENCY_HZ",
+    "ROI_LONG_EXPERT_COLUMN_ALIASES",
+    "ROI_LONG_SHEET_NAME",
     "RoiConfig",
+    "audit_configured_roi_input",
     "load_roi_config",
     "normalization_diagnostics",
     "participant_cohort",
+    "read_configured_roi_input",
     "sha256_file",
     "software_versions",
     "sum_first_twenty_nonbase_bca",

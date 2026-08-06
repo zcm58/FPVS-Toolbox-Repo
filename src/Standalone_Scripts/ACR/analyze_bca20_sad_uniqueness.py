@@ -1,8 +1,9 @@
 """Test whether Neutral Sad ROT-minus-LOT lateralization is condition-specific.
 
-This developer-facing analysis starts from a configured-ROI BCA20 long CSV.
-It treats raw summed BCA20 as primary and whole-scalp RMS-normalized BCA20 as
-a sensitivity outcome.  Positive lateralization is ROT minus LOT.
+This developer-facing analysis starts from either a configured-ROI BCA20 long
+CSV or the expert-facing ``ROI_Long`` sheet in an analysis-ready XLSX workbook.
+It treats raw summed BCA20 as primary and whole-scalp RMS-normalized BCA20 as a
+sensitivity outcome.  Positive lateralization is ROT minus LOT.
 
 The script deliberately requires explicit input and output paths.  It does not
 search for an ACR project or recalculate electrode-level BCA values.
@@ -13,7 +14,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import itertools
-import json
 import math
 from pathlib import Path
 import sys
@@ -33,6 +33,8 @@ if __package__ in {None, ""}:
         INCLUDED_HARMONIC_FREQUENCIES_HZ,
         INCLUDED_HARMONIC_ORDERS,
         ODDBALL_FREQUENCY_HZ,
+        audit_configured_roi_input,
+        read_configured_roi_input,
     )
     from Standalone_Scripts.ACR.lateralization_common import (  # noqa: E402
         holm_adjust,
@@ -47,6 +49,8 @@ else:
         INCLUDED_HARMONIC_FREQUENCIES_HZ,
         INCLUDED_HARMONIC_ORDERS,
         ODDBALL_FREQUENCY_HZ,
+        audit_configured_roi_input,
+        read_configured_roi_input,
     )
     from .lateralization_common import (
         holm_adjust,
@@ -80,7 +84,6 @@ BASE_SEED = 20260804
 def _aggregation_receipt(participant_data_path: Path) -> dict[str, object]:
     """Validate and retain the adjacent fixed-BCA20 aggregation provenance."""
 
-    manifest_path = participant_data_path.parent / "aggregation_manifest.json"
     fallback_harmonics = {
         "label": "fixed oddball orders 1-20 excluding 6-Hz base overlaps",
         "oddball_frequency_hz": ODDBALL_FREQUENCY_HZ,
@@ -91,55 +94,23 @@ def _aggregation_receipt(participant_data_path: Path) -> dict[str, object]:
             EXCLUDED_BASE_OVERLAP_FREQUENCIES_HZ
         ),
     }
-    if not manifest_path.is_file():
-        return {
-            "path": None,
-            "sha256": None,
-            "roi_output_checksum_verified": False,
-            "harmonic_definition": fallback_harmonics,
-            "roi_config": None,
-            "exclusions": None,
-            "warning": (
-                "No adjacent aggregation_manifest.json was available. The exact "
-                "fixed-BCA20 constants are recorded, but upstream ROI and exclusion "
-                "provenance could not be independently verified."
-            ),
-        }
-    try:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as error:
-        raise ValueError(
-            f"Adjacent aggregation manifest is invalid JSON: {manifest_path}"
-        ) from error
-    roi_output = manifest.get("outputs", {}).get("roi_data")
-    if not isinstance(roi_output, dict):
-        raise ValueError("Adjacent aggregation manifest lacks outputs.roi_data.")
-    expected_hash = str(roi_output.get("sha256") or "").upper()
-    actual_hash = sha256_file(participant_data_path)
-    if not expected_hash or expected_hash != actual_hash:
-        raise ValueError(
-            "Participant ROI CSV checksum does not match the adjacent aggregation manifest."
-        )
-    expected_rows = roi_output.get("rows")
-    if expected_rows is not None:
-        actual_rows = len(pd.read_csv(participant_data_path, usecols=["subject"]))
-        if int(expected_rows) != actual_rows:
-            raise ValueError(
-                "Participant ROI CSV row count does not match the adjacent aggregation manifest."
-            )
-    return {
-        "path": str(manifest_path.resolve()),
-        "sha256": sha256_file(manifest_path),
-        "roi_output_checksum_verified": True,
-        "harmonic_definition": manifest.get(
-            "harmonic_definition", fallback_harmonics
-        ),
-        "roi_config": manifest.get("roi_config"),
-        "exclusions": manifest.get("exclusions"),
-        "aggregation_counts": manifest.get("aggregation_counts"),
-        "included_conditions": manifest.get("included_conditions"),
-        "warning": "",
-    }
+    data, _ = read_configured_roi_input(participant_data_path)
+    receipt = audit_configured_roi_input(
+        participant_data_path,
+        row_count=len(data),
+    )
+    receipt["harmonic_definition"] = (
+        receipt.get("harmonic_definition") or fallback_harmonics
+    )
+    receipt.setdefault("roi_config", None)
+    receipt.setdefault("exclusions", None)
+    if not receipt.get("found_adjacent"):
+        receipt["warning"] = (
+            f"{receipt.get('warning', '')} The exact fixed-BCA20 constants are "
+            "recorded, but upstream ROI and exclusion provenance could not be "
+            "independently verified."
+        ).strip()
+    return receipt
 
 
 def _stable_rng(*parts: object) -> np.random.Generator:
@@ -426,8 +397,10 @@ def _between_test_rows(
     ]
 
 
-def _load_lateralization(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
-    data = pd.read_csv(path, float_precision="round_trip")
+def _load_lateralization(
+    path: Path,
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, object]]:
+    data, source_metadata = read_configured_roi_input(path)
     missing = sorted(REQUIRED_COLUMNS.difference(data.columns))
     if missing:
         raise RuntimeError(f"Missing required columns: {missing}")
@@ -461,7 +434,7 @@ def _load_lateralization(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
         frame["lateralization"] = frame["ROT"] - frame["LOT"]
         lateralization_rows.append(frame)
     lateralization = pd.concat(lateralization_rows, ignore_index=True)
-    return data, lateralization
+    return data, lateralization, source_metadata
 
 
 def _discover_conditions(
@@ -1334,7 +1307,9 @@ def analyze_sad_uniqueness(
         raise ValueError("Target and comparison groups must differ.")
     output_dir.mkdir(parents=True, exist_ok=True)
     aggregation_receipt = _aggregation_receipt(participant_data_path)
-    source, lateralization = _load_lateralization(participant_data_path)
+    source, lateralization, input_source = _load_lateralization(
+        participant_data_path
+    )
     groups = (target_group, comparison_group)
     observed_groups = set(lateralization["group"].astype(str))
     missing_groups = sorted(set(groups).difference(observed_groups))
@@ -1536,6 +1511,7 @@ def analyze_sad_uniqueness(
         "analysis": "ACR BCA20 Neutral Sad lateralization uniqueness follow-up",
         "participant_data": str(participant_data_path),
         "participant_data_sha256": sha256_file(participant_data_path),
+        "input_source": input_source,
         "aggregation_manifest": aggregation_receipt,
         "harmonic_definition": aggregation_receipt["harmonic_definition"],
         "roi_configuration": aggregation_receipt["roi_config"],

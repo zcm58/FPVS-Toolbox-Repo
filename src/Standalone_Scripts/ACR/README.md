@@ -107,6 +107,47 @@ Positive values mean stronger ROT than LOT. The all-eight-condition comparison
 is cohort-confounded because the newer conditions are unavailable to the older
 cohort, so it cannot establish emotion specificity by itself.
 
+### External-expert Excel handoff
+
+`prepare_bca20_analysis_workbook.py` and
+`build_bca20_analysis_workbook.mjs` create an analysis-ready `.xlsx` from the
+audited ROI aggregate. The workbook contains:
+
+- `ROI_Long`, the authoritative participant-by-condition-by-ROI table;
+- `Normalization`, one participant-condition row containing the whole-scalp
+  denominators and signed-mean stability diagnostics;
+- raw, RMS-normalized, and signed-mean-normalized wide views;
+- the PID/group crosswalk and participant/condition coverage;
+- ROI and harmonic definitions plus declared exclusions.
+
+The public workbook deliberately uses one `PID` field and one `Group` field.
+All public column headers use readable words rather than snake case. The main
+outcomes are labeled `Raw Summed BCA`, `RMS Normalized BCA`, and
+`Signed Mean Normalized BCA`; wide sheets spell out Occipital,
+Parieto-Occipital, and Centro-Parietal while retaining the familiar LOT and ROT
+labels. It omits redundant participant-number, group-label, cohort, ROI-role,
+source-file, data-dictionary, and provenance columns/sheets; full
+machine-readable provenance remains in the adjacent JSON manifest used for
+replication auditing.
+
+`Raw Summed BCA` remains the primary outcome. Missing conditions are absent
+observations, never zero-filled cells. CP remains available for declared ratio
+analyses and is documented as ratio-only in `ROI_Definitions`; the Excel loader
+restores that internal model role without exposing a redundant public column.
+
+Both BCA20 analysis scripts accept the workbook directly, read ROI outcomes from
+`ROI_Long`, and merge the participant-condition denominators from
+`Normalization`. `run_bca20_workbook_replication.py` reruns all PI follow-up and
+Neutral Sad families from those sheets, reconciles the source rows to the CSV by
+`subject + condition + roi`, and compares every emitted statistical CSV. Its
+result validates transport through Excel; it is not independent evidence for
+the statistical methods because the same analysis code is deliberately reused.
+`validate_bca20_analysis_workbook.py` separately checks workbook structure,
+formula/error cells, long-table keys, normalization-reference reconciliation,
+and all three wide-view pivots.
+See [AGENTS.md](AGENTS.md) for the complete agent-operated build, rendering,
+and replication commands.
+
 ## Fixed-BCA20 output layout
 
 ```text

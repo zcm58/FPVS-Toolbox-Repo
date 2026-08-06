@@ -94,6 +94,107 @@ def _write_adjacent_aggregation_manifest(path: Path) -> None:
     )
 
 
+def _write_expert_workbook(
+    csv_path: Path,
+    workbook_path: Path,
+    *,
+    split_normalization: bool = True,
+) -> pd.DataFrame:
+    frame = pd.read_csv(csv_path)
+    normalization = (
+        frame[
+            [
+                "subject",
+                "group",
+                "condition",
+                "global_rms",
+                "global_mean",
+                "mean_abs_over_rms",
+            ]
+        ]
+        .drop_duplicates(["subject", "condition"])
+        .rename(
+            columns={
+                "subject": "PID",
+                "group": "Group",
+                "condition": "Condition",
+                "global_rms": "Whole-Scalp RMS BCA Denominator",
+                "global_mean": "Whole-Scalp Signed Mean BCA Denominator",
+                "mean_abs_over_rms": "Signed Mean Stability Q",
+            }
+        )
+    )
+    normalization["Group"] = normalization["Group"].replace(
+        {"non_anxious": "non-anxious"}
+    )
+    normalization["Signed Mean Stable (Q >= 0.05)"] = np.where(
+        normalization["Signed Mean Stability Q"].ge(0.05),
+        "yes",
+        "no",
+    )
+    expert = frame.rename(
+        columns={
+            "subject": "PID",
+            "group": "Group",
+            "condition": "Condition",
+            "roi": "ROI",
+            "raw": "Raw Summed BCA",
+            "rms_norm": "RMS Normalized BCA",
+            "mean_norm": "Signed Mean Normalized BCA",
+            "mean_abs_over_rms": "Signed Mean Stability Q",
+            "global_mean": "Whole-Scalp Signed Mean BCA",
+            "global_rms": "Whole-Scalp RMS BCA",
+        }
+    )
+    expert["Group"] = expert["Group"].replace(
+        {"non_anxious": "non-anxious"}
+    )
+    expert = expert.drop(columns=["cohort"])
+    if split_normalization:
+        expert = expert.drop(
+            columns=[
+                "Whole-Scalp Signed Mean BCA",
+                "Whole-Scalp RMS BCA",
+                "Signed Mean Stability Q",
+            ]
+        )
+    expert["ROI Electrodes"] = "fixture electrodes"
+    with pd.ExcelWriter(workbook_path) as writer:
+        expert.to_excel(writer, sheet_name="ROI_Long", index=False)
+        if split_normalization:
+            normalization.to_excel(writer, sheet_name="Normalization", index=False)
+    return expert
+
+
+def _write_adjacent_workbook_manifest(
+    workbook_path: Path,
+    *,
+    rows: int,
+) -> None:
+    (workbook_path.parent / "analysis_ready_workbook_manifest.json").write_text(
+        json.dumps(
+            {
+                "outputs": {
+                    "workbook": {
+                        "path": str(workbook_path.resolve()),
+                        "sha256": analysis.sha256_file(workbook_path),
+                        "rows": rows,
+                        "sheet_name": "ROI_Long",
+                    }
+                },
+                "upstream_aggregation": {
+                    "snapshot": {
+                        "harmonic_definition": {"label": "test BCA20"},
+                        "roi_config": {"analysis_id": "test-rois"},
+                        "exclusions": {"project_excluded_subjects": ["P20"]},
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+
 def _fake_model_lrt(**kwargs: Any) -> dict[str, Any]:
     data = kwargs["data"]
     record = {
@@ -261,6 +362,128 @@ def test_stable_signed_mean_pair_requires_both_conditions(tmp_path: Path, monkey
     ]
     assert angry_stable["n_participants"].eq(3).all()
     assert happy_stable["n_participants"].eq(4).all()
+
+
+def test_expert_workbook_input_maps_columns_and_verifies_manifest(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    csv_path = tmp_path / "configured_roi_bca20_long.csv"
+    workbook_path = tmp_path / "ACR_BCA20_Analysis_Ready.xlsx"
+    _write_configured_roi_data(csv_path)
+    expert = _write_expert_workbook(csv_path, workbook_path)
+    _write_adjacent_workbook_manifest(workbook_path, rows=len(expert))
+
+    csv_data, _ = analysis.load_configured_roi_data(
+        csv_path,
+        main_rois=MAIN_ROIS,
+        ratio_definitions=RATIO_DEFINITIONS,
+    )
+    workbook_data, metadata = analysis.load_configured_roi_data(
+        workbook_path,
+        main_rois=MAIN_ROIS,
+        ratio_definitions=RATIO_DEFINITIONS,
+    )
+    receipt = analysis.audit_adjacent_aggregation_manifest(workbook_path)
+
+    pd.testing.assert_frame_equal(
+        csv_data[list(analysis.REQUIRED_COLUMNS)].sort_values(
+            ["subject", "condition", "roi"]
+        ).reset_index(drop=True),
+        workbook_data[list(analysis.REQUIRED_COLUMNS)].sort_values(
+            ["subject", "condition", "roi"]
+        ).reset_index(drop=True),
+    )
+    assert metadata["input_format"] == "xlsx"
+    assert metadata["sheet_name"] == "ROI_Long"
+    assert metadata["column_mapping"]["PID"] == "subject"
+    assert metadata["column_mapping"]["Group"] == "group"
+    assert metadata["column_mapping"]["Raw Summed BCA"] == "raw"
+    assert metadata["column_mapping"]["ROI Electrodes"] == "electrodes"
+    assert metadata["normalization_sheet_name"] == "Normalization"
+    assert metadata["normalization_reference_source"] == "Normalization"
+    assert metadata["normalization_column_mapping"][
+        "Whole-Scalp RMS BCA Denominator"
+    ] == "global_rms"
+    assert metadata["normalization_column_mapping"][
+        "Whole-Scalp Signed Mean BCA Denominator"
+    ] == "global_mean"
+    assert metadata["derived_columns"] == ["group_label", "cohort", "roi_role"]
+    assert set(workbook_data["group"]) == {"anxious", "non_anxious"}
+    assert set(workbook_data["group_label"]) == {"Anxious", "Non-Anxious"}
+    assert set(workbook_data["cohort"]) == {"original_P1-P13", "newer_P14+"}
+    assert set(workbook_data.loc[workbook_data["roi"].eq("CP"), "roi_role"]) == {
+        "ratio_only"
+    }
+    assert set(workbook_data.loc[workbook_data["roi"].ne("CP"), "roi_role"]) == {
+        "main"
+    }
+    assert not {
+        "participant_number",
+        "source_workbook_relative_path",
+        "source_workbook_size_bytes",
+        "source_workbook_sha256",
+    }.intersection(workbook_data.columns)
+    assert receipt["manifest_type"] == "analysis_ready_workbook_manifest"
+    assert receipt["workbook_checksum_verified"] is True
+    assert receipt["roi_output_checksum_verified"] is True
+    assert receipt["harmonic_definition"] == {"label": "test BCA20"}
+    assert receipt["roi_config"] == {"analysis_id": "test-rois"}
+
+    monkeypatch.setattr(analysis, "model_lrt", _fake_model_lrt)
+    monkeypatch.setattr(
+        analysis,
+        "ols_partial_f_record",
+        _fake_ols_partial_f_record,
+    )
+    manifest = analysis.analyze_bca20_pi_followup(
+        workbook_path,
+        tmp_path / "workbook_analysis",
+    )
+    assert manifest["input"]["input_format"] == "xlsx"
+    assert manifest["aggregation_manifest"]["workbook_checksum_verified"] is True
+
+
+def test_legacy_expert_workbook_references_in_roi_long_remain_supported(
+    tmp_path: Path,
+) -> None:
+    csv_path = tmp_path / "configured_roi_bca20_long.csv"
+    workbook_path = tmp_path / "legacy_analysis_ready.xlsx"
+    _write_configured_roi_data(csv_path)
+    expert = _write_expert_workbook(
+        csv_path,
+        workbook_path,
+        split_normalization=False,
+    )
+    _write_adjacent_workbook_manifest(workbook_path, rows=len(expert))
+
+    workbook_data, metadata = analysis.load_configured_roi_data(
+        workbook_path,
+        main_rois=MAIN_ROIS,
+        ratio_definitions=RATIO_DEFINITIONS,
+    )
+
+    assert len(workbook_data) == len(expert)
+    assert metadata["normalization_sheet_name"] is None
+    assert metadata["normalization_reference_source"] == "ROI_Long"
+    assert workbook_data[
+        ["global_mean", "global_rms", "mean_abs_over_rms"]
+    ].notna().all().all()
+
+
+def test_expert_workbook_manifest_checksum_is_enforced(tmp_path: Path) -> None:
+    csv_path = tmp_path / "configured_roi_bca20_long.csv"
+    workbook_path = tmp_path / "ACR_BCA20_Analysis_Ready.xlsx"
+    _write_configured_roi_data(csv_path)
+    expert = _write_expert_workbook(csv_path, workbook_path)
+    _write_adjacent_workbook_manifest(workbook_path, rows=len(expert))
+    manifest_path = tmp_path / "analysis_ready_workbook_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["outputs"]["workbook"]["sha256"] = "0" * 64
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="workbook checksum does not match"):
+        analysis.audit_adjacent_aggregation_manifest(workbook_path)
 
 
 def test_input_validation_rejects_duplicates_and_missing_ratio_roi(

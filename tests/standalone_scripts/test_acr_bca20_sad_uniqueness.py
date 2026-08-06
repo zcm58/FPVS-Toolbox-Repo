@@ -102,6 +102,72 @@ def _write_configured_roi_data(path: Path) -> None:
     pd.DataFrame(rows).to_csv(path, index=False)
 
 
+def _write_expert_workbook(csv_path: Path, workbook_path: Path) -> int:
+    source = pd.read_csv(csv_path)
+    normalization = source[["subject", "group", "condition"]].drop_duplicates()
+    normalization["Whole-Scalp RMS BCA Denominator"] = 1.0
+    normalization["Whole-Scalp Signed Mean BCA Denominator"] = 0.9
+    normalization["Signed Mean Stability Q"] = 0.9
+    normalization["Signed Mean Stable (Q >= 0.05)"] = "yes"
+    normalization = normalization.rename(
+        columns={
+            "subject": "PID",
+            "group": "Group",
+            "condition": "Condition",
+        }
+    )
+    normalization["Group"] = normalization["Group"].replace(
+        {"non_anxious": "non-anxious"}
+    )
+    frame = source.rename(
+        columns={
+            "subject": "PID",
+            "group": "Group",
+            "condition": "Condition",
+            "roi": "ROI",
+            "raw": "Raw Summed BCA",
+            "rms_norm": "RMS Normalized BCA",
+            "mean_norm": "Signed Mean Normalized BCA",
+        }
+    )
+    frame["Group"] = frame["Group"].replace(
+        {"non_anxious": "non-anxious"}
+    )
+    with pd.ExcelWriter(workbook_path) as writer:
+        frame.to_excel(writer, sheet_name="ROI_Long", index=False)
+        normalization.to_excel(writer, sheet_name="Normalization", index=False)
+    return len(frame)
+
+
+def _write_adjacent_workbook_manifest(
+    workbook_path: Path,
+    *,
+    rows: int,
+) -> None:
+    (workbook_path.parent / "analysis_ready_workbook_manifest.json").write_text(
+        json.dumps(
+            {
+                "outputs": {
+                    "workbook": {
+                        "path": str(workbook_path.resolve()),
+                        "sha256": _sha256(workbook_path),
+                        "roi_long_rows": rows,
+                        "roi_long_sheet": "ROI_Long",
+                    }
+                },
+                "upstream_aggregation": {
+                    "snapshot": {
+                        "harmonic_definition": {"label": "test BCA20"},
+                        "roi_config": {"analysis_id": "test-rois"},
+                        "exclusions": {"project_excluded_subjects": ["P20"]},
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+
 def test_analysis_is_paired_and_records_all_correction_families(
     tmp_path: Path,
 ) -> None:
@@ -266,6 +332,74 @@ def test_shared_condition_override_must_remain_complete(tmp_path: Path) -> None:
             ),
             influence_subjects=(),
             run_lmm=False,
+        )
+
+
+def test_analysis_replicates_when_roi_long_workbook_is_the_input(
+    tmp_path: Path,
+) -> None:
+    csv_path = tmp_path / "configured_roi_bca20_long.csv"
+    workbook_path = tmp_path / "ACR_BCA20_Analysis_Ready.xlsx"
+    csv_output = tmp_path / "csv_analysis"
+    workbook_output = tmp_path / "workbook_analysis"
+    _write_configured_roi_data(csv_path)
+    # Avoid exact synthetic ties whose rank ordering can legitimately change
+    # after the binary XLSX round trip. Real BCA values are not constructed on
+    # a perfectly regular arithmetic grid like this fixture.
+    fixture = pd.read_csv(csv_path)
+    jitter = np.sin(np.arange(len(fixture), dtype=float) + 0.5) * 1e-5
+    fixture["raw"] += jitter
+    fixture["rms_norm"] += jitter * 1.7
+    fixture.to_csv(csv_path, index=False)
+    rows = _write_expert_workbook(csv_path, workbook_path)
+    _write_adjacent_workbook_manifest(workbook_path, rows=rows)
+
+    analyze_sad_uniqueness(
+        csv_path,
+        csv_output,
+        influence_subjects=(),
+        run_lmm=False,
+    )
+    workbook_manifest = analyze_sad_uniqueness(
+        workbook_path,
+        workbook_output,
+        influence_subjects=(),
+        run_lmm=False,
+    )
+
+    assert workbook_manifest["input_source"]["input_format"] == "xlsx"
+    assert workbook_manifest["input_source"]["sheet_name"] == "ROI_Long"
+    assert workbook_manifest["input_source"]["normalization_sheet_name"] == (
+        "Normalization"
+    )
+    assert workbook_manifest["input_source"]["normalization_reference_source"] == (
+        "Normalization"
+    )
+    assert workbook_manifest["input_source"]["derived_columns"] == [
+        "group_label",
+        "cohort",
+        "roi_role",
+    ]
+    assert workbook_manifest["aggregation_manifest"][
+        "workbook_checksum_verified"
+    ] is True
+    assert workbook_manifest["harmonic_definition"] == {"label": "test BCA20"}
+    for filename in (
+        "pairwise_tests.csv",
+        "target_vs_zero_tests.csv",
+        "all_condition_lateralization_tests.csv",
+        "composite_tests.csv",
+    ):
+        expected = pd.read_csv(csv_output / filename)
+        actual = pd.read_csv(workbook_output / filename)
+        pd.testing.assert_frame_equal(
+            expected,
+            actual,
+            check_exact=False,
+            # XLSX round-tripping can perturb nearly constant synthetic
+            # Shapiro inputs at the eighth decimal place.
+            rtol=1e-6,
+            atol=1e-7,
         )
 
 
