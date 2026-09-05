@@ -83,8 +83,10 @@ metrics from averaged FullFFT or change timing, noise, harmonic, or ROI math.
 - [x] Stats, Scalp Maps, Ratio, SNR setup, QC, source identities, and cleanup.
 - [x] Exact parity, legacy/missing/corrupt/moved data, long/wide export tests,
       measured storage benchmark, docs, and focused verification.
-- [ ] After storage is complete, investigate P56/P9 missing start markers;
+- [x] After storage is complete, investigate P56/P9 missing start markers;
       do not infer or synthesize trigger timing or silently exclude data.
+- [x] Add explicit GUI recovery for missing expected conditions, preserving
+      FFT-grid calculations and requiring reprocessing after changed exclusions.
 
 Production-writer benchmark against `f356b035`: median of three writes,
 486 ms -> 185 ms (62% faster). Median of five reads of three metric sheets
@@ -105,3 +107,34 @@ Final extension checks: processing focused gate 678 passed, 1 skipped;
 combined registered non-Qt project-I/O, Stats, Plot, Scalp and Ratio targets
 811 passed. Changed-file Ruff and diff checks passed. Broad precommit remains
 blocked by the same eight unrelated, pre-existing `outputs/` path findings.
+
+Storage implementation committed/pushed as `b407cb29` before marker work.
+An additional temporary-copy check round-tripped all eight tables from the
+actual P9 Neutral Sad workbook exactly; its source file remained unchanged.
+
+Marker investigation: direct BDF Status-byte reads confirm zero samples of
+code 3 in P56 and code 12 in P9, before MNE or Toolbox processing. Both BDFs
+have consistent header/data lengths. Matching Studio logs record the first
+condition start as `serial/sent` and 146 oddballs; the BDFs retain only 126
+(P56) and 137 (P9) before the next condition. This supports late acquisition
+or an earlier missing beginning, but a software send log cannot prove hardware
+receipt. Run-start timestamps include setup and are not exact lost durations.
+The application already logged these missing outputs on June 16 (P9) and
+September 2 (P56), before the NumPy changes. Active Toolbox loading is
+read-only and writes derivatives to separate DAT/FIF files, never source BDF.
+No complete alternative BDF was found in the bounded project/Studio folders.
+
+Recovery needs an intact original BDF or an explicit user condition exclusion;
+missing samples and start markers cannot be reconstructed. Existing exclusion
+tables omitted absent outputs, leaving no condition-only GUI recovery. Add
+those expected cells as separate review rows, initially unchecked, without
+making them FFT-grid observations or changing scientific inclusion silently.
+
+Recovery verification: 704 processing tests passed, 1 skipped; GUI import,
+Ruff and compile gate passed without Qt execution. The read-only actual-project
+audit found 244 existing outputs at 144 oddball cycles and only P9 / Neutral
+Angry requiring missing-condition review; current whole-participant exclusion
+of P56 was respected. Technical empty recordings were not offered as condition
+choices. No source or project data was edited. Visible smoke remains pending:
+Settings > Harmonics > Review FFT Crop Exclusions; confirm the missing row is
+unchecked, save an explicit choice, and rerun Processing before downstream QC.
