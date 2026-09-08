@@ -1,0 +1,49 @@
+Variant,Condition,ROI,RCADS Scale,N,Partial Pearson r,Partial Pearson p,Degrees of Freedom,Covariates,Partial Pearson q (BH-FDR),Partial Pearson q (BY-FDR),Partial Pearson p (Holm)
+All 35 participants; focused post-hoc,Neutral Happy,LOT,Social Phobia,35,0.18886610225932293,0.29251081339394835,31,Age; Sex,0.7800288357171956,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,LOT,Panic Disorder,35,0.20906899540109902,0.24294386982516983,31,Age; Sex,0.7800288357171956,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,ROT,Social Phobia,35,0.239046264771302,0.1803146495360956,31,Age; Sex,0.7800288357171956,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,ROT,Panic Disorder,35,0.11742205302025574,0.5151843089185847,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,O,Social Phobia,35,0.09136451841735603,0.6130871644214348,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,O,Panic Disorder,35,0.11952708069926994,0.5076271350072042,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,Frontal,Social Phobia,35,0.10994645857226049,0.5424633157926229,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,Frontal,Panic Disorder,35,-0.026198322023964007,0.8849322777338824,31,Age; Sex,0.9280352847590161,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,PO,Social Phobia,35,0.09810850584723982,0.5870109523293663,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,PO,Panic Disorder,35,0.1594176484233292,0.3755313955631904,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,CP,Social Phobia,35,0.09442084944429514,0.6012092421419756,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Happy,CP,Panic Disorder,35,0.2264805806810099,0.2050082383479971,31,Age; Sex,0.7800288357171956,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,LOT,Social Phobia,35,-0.3318559979679306,0.05919748332195065,31,Age; Sex,0.7800288357171956,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,LOT,Panic Disorder,35,-0.24299322801535228,0.17301131922849478,31,Age; Sex,0.7800288357171956,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,ROT,Social Phobia,35,0.2734450706028428,0.12361681814838132,31,Age; Sex,0.7800288357171956,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,ROT,Panic Disorder,35,0.10311944219605641,0.5679583113985367,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,O,Social Phobia,35,-0.19044400453704188,0.2884227418216992,31,Age; Sex,0.7800288357171956,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,O,Panic Disorder,35,-0.0776126333187819,0.6676991158255605,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,Frontal,Social Phobia,35,-0.021193951481904463,0.9068057986372222,31,Age; Sex,0.9280352847590161,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,Frontal,Panic Disorder,35,0.05085162189726863,0.7786809207939076,31,Age; Sex,0.8899210523358944,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,PO,Social Phobia,35,-0.07916523974163998,0.6614421403075965,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,PO,Panic Disorder,35,-0.09338938421357795,0.6052068170890726,31,Age; Sex,0.8012389389906726,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,CP,Social Phobia,35,-0.2201147384340162,0.21837088064642587,31,Age; Sex,0.7800288357171956,1.0,1.0
+All 35 participants; focused post-hoc,Neutral Sad,CP,Panic Disorder,35,-0.016351645867879287,0.9280352847590161,31,Age; Sex,0.9280352847590161,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,LOT,Social Phobia,34,0.1309493837997635,0.47499540616625546,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,LOT,Panic Disorder,34,0.17604829515461884,0.3351394959700449,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,ROT,Social Phobia,34,0.05406572402926609,0.7688429697711257,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,ROT,Panic Disorder,34,-0.12166479930118967,0.5071200146696753,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,O,Social Phobia,34,0.0634455594248759,0.7301162704722672,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,O,Panic Disorder,34,0.10242321254456818,0.5769728094157325,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,Frontal,Social Phobia,34,0.1534050147116358,0.4018946933482145,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,Frontal,Panic Disorder,34,-0.002688508169943808,0.9883485775475229,30,Age; Sex,0.9883485775475229,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,PO,Social Phobia,34,0.058878874311539084,0.7488958757711888,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,PO,Panic Disorder,34,0.13669857932566376,0.45564877003860993,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,CP,Social Phobia,34,0.08925511556795244,0.627118438569995,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Happy,CP,Panic Disorder,34,0.2241992302517897,0.21735930409227927,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,LOT,Social Phobia,34,-0.27651374553073377,0.12551954145259986,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,LOT,Panic Disorder,34,-0.20755291519189137,0.2543486334846577,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,ROT,Social Phobia,34,0.16296629521621614,0.37283402881870586,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,ROT,Panic Disorder,34,-0.10375070333608506,0.5720188282587255,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,O,Social Phobia,34,-0.21562889816963934,0.23591580378522614,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,O,Panic Disorder,34,-0.09062273866571544,0.6218283159658553,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,Frontal,Social Phobia,34,-0.12177343171838896,0.5067379935289464,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,Frontal,Panic Disorder,34,-0.005459172766503111,0.9763435987525111,30,Age; Sex,0.9883485775475229,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,PO,Social Phobia,34,-0.07041495840862107,0.7017529110926886,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,PO,Panic Disorder,34,-0.08763659245669024,0.6334026426586733,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,CP,Social Phobia,34,-0.16609274774207503,0.36360671639361875,30,Age; Sex,0.8786776797384294,1.0,1.0
+P27 omitted; focused post-hoc,Neutral Sad,CP,Panic Disorder,34,0.026025766235186043,0.8875616542148829,30,Age; Sex,0.9682490773253268,1.0,1.0

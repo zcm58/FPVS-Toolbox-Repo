@@ -1,0 +1,13 @@
+Variant,RCADS Scale,Effect,Correction Family,N Participants,N Rows,Likelihood-Ratio Chi-Square,Degrees of Freedom,p,Converged,Warnings,Focused Amplitude LMM q (BH-FDR),Focused Amplitude LMM q (BY-FDR),Focused Amplitude LMM p (Holm)
+All 35 participants; focused post-hoc,Social Phobia,Any score-related amplitude association,Amplitude omnibus (2 scales),35,420,31.47720618749463,12,0.001665307760935339,True,,0.003330615521870678,0.0049959232828060175,0.003330615521870678
+All 35 participants; focused post-hoc,Social Phobia,Condition moderation of score slopes,Amplitude moderation (4 tests),35,420,7.093170022868435,6,0.31231682371670716,True,,0.6246336474334143,1.0,1.0
+All 35 participants; focused post-hoc,Social Phobia,Condition x ROI x score interaction,Amplitude moderation (4 tests),35,420,1.6028778870127098,5,0.9009011034050246,True,,0.9009011034050246,1.0,1.0
+All 35 participants; focused post-hoc,Panic Disorder,Any score-related amplitude association,Amplitude omnibus (2 scales),35,420,20.364185802475276,12,0.06050286606522376,True,,0.06050286606522376,0.09075429909783564,0.06050286606522376
+All 35 participants; focused post-hoc,Panic Disorder,Condition moderation of score slopes,Amplitude moderation (4 tests),35,420,7.622826605911541,6,0.26705821521454576,True,,0.6246336474334143,1.0,1.0
+All 35 participants; focused post-hoc,Panic Disorder,Condition x ROI x score interaction,Amplitude moderation (4 tests),35,420,1.6933992853878408,5,0.8897302855812872,True,,0.9009011034050246,1.0,1.0
+P27 omitted; focused post-hoc,Social Phobia,Any score-related amplitude association,Amplitude omnibus (2 scales),34,408,8.432045549969189,12,0.7505221498931783,True,,0.7505221498931783,1.0,0.7505221498931783
+P27 omitted; focused post-hoc,Social Phobia,Condition moderation of score slopes,Amplitude moderation (4 tests),34,408,7.089896684422911,6,0.31261361034370105,True,,0.6252272206874021,1.0,0.9378408310311032
+P27 omitted; focused post-hoc,Social Phobia,Condition x ROI x score interaction,Amplitude moderation (4 tests),34,408,2.5453712150433603,5,0.7696471105870493,True,,0.7696471105870493,1.0,1.0
+P27 omitted; focused post-hoc,Panic Disorder,Any score-related amplitude association,Amplitude omnibus (2 scales),34,408,16.598433471941917,12,0.16533734383449267,True,,0.33067468766898533,0.496012031503478,0.33067468766898533
+P27 omitted; focused post-hoc,Panic Disorder,Condition moderation of score slopes,Amplitude moderation (4 tests),34,408,10.124220314718059,6,0.11951736600261198,True,,0.4780694640104479,0.9959780500217663,0.4780694640104479
+P27 omitted; focused post-hoc,Panic Disorder,Condition x ROI x score interaction,Amplitude moderation (4 tests),34,408,3.083079107660069,5,0.6871790936491863,True,,0.7696471105870493,1.0,1.0

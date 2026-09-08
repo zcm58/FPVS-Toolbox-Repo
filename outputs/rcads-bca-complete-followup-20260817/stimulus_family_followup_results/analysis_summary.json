@@ -1,0 +1,130 @@
+{
+  "participants_all": 35,
+  "participants_without_p27": 34,
+  "excluded_condition": "Neutral Angry",
+  "stimulus_families": {
+    "Facial expression": [
+      "Neutral Happy",
+      "Neutral Sad"
+    ],
+    "Valence": [
+      "Negative Valence",
+      "Positive Valence"
+    ]
+  },
+  "broad_amplitude_tests_per_family": 72,
+  "condition_specific_lmm_tests_per_family": 12,
+  "focused_amplitude_tests_per_family": 24,
+  "broad_lateralization_tests_per_family": 12,
+  "focused_lateralization_tests_per_family": 4,
+  "broad_amplitude_discoveries": {
+    "Facial expression | All 35 participants": {
+      "Pearson BH": 2,
+      "Pearson Holm": 2,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    },
+    "Facial expression | P27 omitted": {
+      "Pearson BH": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    },
+    "Valence | All 35 participants": {
+      "Pearson BH": 4,
+      "Pearson Holm": 2,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    },
+    "Valence | P27 omitted": {
+      "Pearson BH": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    }
+  },
+  "condition_specific_lmm_discoveries": {
+    "Facial expression | All 35 participants": 8,
+    "Facial expression | P27 omitted": 0,
+    "Valence | All 35 participants": 5,
+    "Valence | P27 omitted": 0
+  },
+  "focused_amplitude_discoveries": {
+    "Facial expression | All 35 participants": {
+      "Pearson BH": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 1,
+      "Spearman Holm": 1
+    },
+    "Facial expression | P27 omitted": {
+      "Pearson BH": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    },
+    "Valence | All 35 participants": {
+      "Pearson BH": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    },
+    "Valence | P27 omitted": {
+      "Pearson BH": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    }
+  },
+  "broad_lateralization_discoveries": {
+    "Facial expression | All 35 participants": {
+      "Pearson BH": 6,
+      "Pearson Holm": 4,
+      "Spearman BH": 1,
+      "Spearman Holm": 1
+    },
+    "Facial expression | P27 omitted": {
+      "Pearson BH": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    },
+    "Valence | All 35 participants": {
+      "Pearson BH": 3,
+      "Pearson Holm": 3,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    },
+    "Valence | P27 omitted": {
+      "Pearson BH": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    }
+  },
+  "focused_lateralization_discoveries": {
+    "Facial expression | All 35 participants": {
+      "Pearson BH": 1,
+      "Pearson Holm": 1,
+      "Spearman BH": 1,
+      "Spearman Holm": 1
+    },
+    "Facial expression | P27 omitted": {
+      "Pearson BH": 1,
+      "Pearson Holm": 1,
+      "Spearman BH": 1,
+      "Spearman Holm": 1
+    },
+    "Valence | All 35 participants": {
+      "Pearson BH": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    },
+    "Valence | P27 omitted": {
+      "Pearson BH": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman Holm": 0
+    }
+  }
+}
