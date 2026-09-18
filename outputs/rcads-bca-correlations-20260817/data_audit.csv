@@ -1,0 +1,10 @@
+Check,Value
+ACR participants,35
+RCADS participants,40
+Matched ACR participants,35
+ACR long rows,1464
+Conditions,9
+ROIs,6
+Duplicate PID-condition-ROI keys,0
+Missing raw BCA values,0
+Group exactly reconstructed by Total Anxiety Raw >= 21,True

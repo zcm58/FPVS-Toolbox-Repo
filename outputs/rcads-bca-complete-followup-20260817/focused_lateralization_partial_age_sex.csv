@@ -1,0 +1,9 @@
+Variant,Condition,ROI,RCADS Scale,N,Partial Pearson r,Partial Pearson p,Degrees of Freedom,Covariates,Partial Pearson q (BH-FDR),Partial Pearson q (BY-FDR),Partial Pearson p (Holm)
+All 35 participants; focused lateralization,Neutral Happy,ROT minus LOT,Social Phobia,35,0.21953194629425407,0.2196232612430305,31,Age; Sex,0.4209477909565475,0.8769745644928072,0.6588697837290916
+All 35 participants; focused lateralization,Neutral Happy,ROT minus LOT,Panic Disorder,35,0.08707265428025808,0.6299306090991842,31,Age; Sex,0.6299306090991842,1.0,0.6588697837290916
+All 35 participants; focused lateralization,Neutral Sad,ROT minus LOT,Social Phobia,35,0.35993042443277545,0.03964325674708271,31,Age; Sex,0.15857302698833084,0.33036047289235587,0.15857302698833084
+All 35 participants; focused lateralization,Neutral Sad,ROT minus LOT,Panic Disorder,35,0.1801663969253751,0.3157108432174106,31,Age; Sex,0.4209477909565475,0.8769745644928072,0.6588697837290916
+P27 omitted; focused lateralization,Neutral Happy,ROT minus LOT,Social Phobia,34,-0.0529435481729787,0.7735150657558363,30,Age; Sex,0.7735150657558363,1.0,1.0
+P27 omitted; focused lateralization,Neutral Happy,ROT minus LOT,Panic Disorder,34,-0.31334654569285114,0.08075601830910309,30,Age; Sex,0.16151203661820618,0.33648340962126283,0.24226805492730927
+P27 omitted; focused lateralization,Neutral Sad,ROT minus LOT,Social Phobia,34,0.40860964780369197,0.02023971426119973,30,Age; Sex,0.08095885704479892,0.16866428550999774,0.08095885704479892
+P27 omitted; focused lateralization,Neutral Sad,ROT minus LOT,Panic Disorder,34,0.12030035600769669,0.5119304677421166,30,Age; Sex,0.6825739569894888,1.0,1.0

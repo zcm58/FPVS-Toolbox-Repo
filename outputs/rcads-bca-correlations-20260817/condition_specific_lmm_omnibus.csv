@@ -1,0 +1,109 @@
+Variant,Condition,RCADS Scale,N Participants,N Rows,Likelihood-Ratio Chi-Square,Degrees of Freedom,p,Converged,Warnings,Descriptive Only (N < 20),LMM Omnibus_q_bh,LMM Omnibus_q_by,LMM Omnibus_p_holm
+All audit data,Angry Neutral,Social Phobia,13,78,1.5023856018849528,6,0.9593359354733471,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.9999009209323119,1.0,1.0
+All audit data,Angry Neutral,Panic Disorder,13,78,4.0963476107249335,6,0.6636396763266537,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.8959135630409825,1.0,1.0
+All audit data,Angry Neutral,Major Depression,13,78,0.6621506177755236,6,0.9952717547674125,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.9999009209323119,1.0,1.0
+All audit data,Angry Neutral,Separation Anxiety,13,78,4.208739337091629,6,0.6484515940528888,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.8959135630409825,1.0,1.0
+All audit data,Angry Neutral,Generalized Anxiety,13,78,0.17180979869363,6,0.9999009209323119,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.9999009209323119,1.0,1.0
+All audit data,Angry Neutral,Obsessive Compulsive,13,78,0.6489570349174301,6,0.9955270916851626,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.9999009209323119,1.0,1.0
+All audit data,Neutral Angry,Social Phobia,35,210,5.408659105335573,6,0.4925645020528435,True,,False,0.7599566603101015,1.0,1.0
+All audit data,Neutral Angry,Panic Disorder,35,210,4.165277365686052,6,0.654321023674131,True,,False,0.8959135630409825,1.0,1.0
+All audit data,Neutral Angry,Major Depression,35,210,9.95805231857912,6,0.12642967874874925,True,,False,0.24382866615830212,1.0,1.0
+All audit data,Neutral Angry,Separation Anxiety,35,210,35.015328568112864,6,4.280133177107591e-06,True,,False,2.5680799062645548e-05,0.00011750070856686775,0.0001968861261469492
+All audit data,Neutral Angry,Generalized Anxiety,35,210,20.234024169973736,6,0.002515843078424028,True,,False,0.007991501543229265,0.0365645590525454,0.09683964296362647
+All audit data,Neutral Angry,Obsessive Compulsive,35,210,3.6235379317422485,6,0.7274675261712036,True,,False,0.9353153907915475,1.0,1.0
+All audit data,Neutral Fear,Social Phobia,12,72,1.3198682357278244,6,0.9705508517790976,True,,True,0.9999009209323119,1.0,1.0
+All audit data,Neutral Fear,Panic Disorder,12,72,1.4199324690134176,6,0.9646346816834002,True,,True,0.9999009209323119,1.0,1.0
+All audit data,Neutral Fear,Major Depression,12,72,4.541703216147766,6,0.603782826836202,True,,True,0.8959135630409825,1.0,1.0
+All audit data,Neutral Fear,Separation Anxiety,12,72,3.695744827261649,6,0.7177704493545787,True,,True,0.9353153907915475,1.0,1.0
+All audit data,Neutral Fear,Generalized Anxiety,12,72,2.2825520701175037,6,0.8919657959323019,True,,True,0.9999009209323119,1.0,1.0
+All audit data,Neutral Fear,Obsessive Compulsive,12,72,6.567239837919715,6,0.3627266682318589,True,,True,0.6121012526412619,1.0,1.0
+All audit data,Neutral Happy,Social Phobia,35,210,14.377932114413397,6,0.025687884047303062,True,,False,0.05548582954217461,0.25387155090937935,0.7706365214190919
+All audit data,Neutral Happy,Panic Disorder,35,210,9.2775654040056,6,0.15855919604815466,True,,False,0.2854065528866784,1.0,1.0
+All audit data,Neutral Happy,Major Depression,35,210,18.062169023041406,6,0.006078695360024025,True,,False,0.015630930925776065,0.07151823644031303,0.20667564224081683
+All audit data,Neutral Happy,Separation Anxiety,35,210,69.25596546708039,6,5.809685911204761e-13,True,,False,1.0457434640168572e-11,4.784726429322144e-11,3.021036673826476e-11
+All audit data,Neutral Happy,Generalized Anxiety,35,210,39.4623820305535,6,5.808720186559249e-07,True,,False,3.920886125927493e-06,1.7939741550978868e-05,2.730098487682847e-05
+All audit data,Neutral Happy,Obsessive Compulsive,35,210,1.1163274305470168,6,0.9808158004480817,True,,False,0.9999009209323119,1.0,1.0
+All audit data,Neutral Sad,Social Phobia,35,210,20.265942679279306,6,0.0024830677682981146,True,,False,0.007991501543229265,0.0365645590525454,0.09683964296362647
+All audit data,Neutral Sad,Panic Disorder,35,210,9.309161987747757,6,0.15692298705833058,True,,False,0.2854065528866784,1.0,1.0
+All audit data,Neutral Sad,Major Depression,35,210,17.07793389883318,6,0.009001053040736073,True,,False,0.021132907139119476,0.09669214563250247,0.2947759321668519
+All audit data,Neutral Sad,Separation Anxiety,35,210,59.74978576231433,6,5.0598209394436447e-11,True,,False,6.830758268248921e-10,3.1253658992866075e-09,2.580508679116259e-09
+All audit data,Neutral Sad,Generalized Anxiety,35,210,28.34533311109044,6,8.088451449137226e-05,True,,False,0.00031198312732386445,0.0014274570830929971,0.0033162650941462625
+All audit data,Neutral Sad,Obsessive Compulsive,35,210,2.6577681931366897,6,0.850409887856271,True,,False,0.9999009209323119,1.0,1.0
+All audit data,Positive Valence,Social Phobia,35,210,13.250892694773029,6,0.039220317865661415,True,,False,0.08145758325945064,0.3727035022462447,1.0
+All audit data,Positive Valence,Panic Disorder,35,210,10.289405621456808,6,0.11298174837609674,True,,False,0.2259634967521935,1.0,1.0
+All audit data,Positive Valence,Major Depression,35,210,18.17567568085724,6,0.005807847097778045,True,,False,0.015630930925776065,0.07151823644031303,0.20327464842223156
+All audit data,Positive Valence,Separation Anxiety,35,210,57.60654670960753,6,1.376841423922014e-10,True,,False,1.486988737835775e-09,6.803613466249233e-09,6.88420711961007e-09
+All audit data,Positive Valence,Generalized Anxiety,35,210,33.06887840008244,6,1.0170640568174998e-05,True,,False,5.4921459068144994e-05,0.00025128931308917234,0.0004576788255678749
+All audit data,Positive Valence,Obsessive Compulsive,35,210,1.1372875898991879,6,0.979868928346173,True,,False,0.9999009209323119,1.0,1.0
+All audit data,Negative Valence,Social Phobia,35,210,6.038610833881876,6,0.4188788067368025,True,,False,0.6789576085672606,1.0,1.0
+All audit data,Negative Valence,Panic Disorder,35,210,5.96172056265209,6,0.42749182761642335,True,,False,0.6789576085672606,1.0,1.0
+All audit data,Negative Valence,Major Depression,35,210,7.781556927662223,6,0.2545478543203662,True,,False,0.4434059397838637,1.0,1.0
+All audit data,Negative Valence,Separation Anxiety,35,210,26.331431020103082,6,0.00019311157847472013,True,,False,0.0006952016825089925,0.003180846907933797,0.007724463138988805
+All audit data,Negative Valence,Generalized Anxiety,35,210,15.837911528635459,6,0.014650914878913443,True,,False,0.03296455847755525,0.15082704277456657,0.4541783612463167
+All audit data,Negative Valence,Obsessive Compulsive,35,210,4.421184145430971,6,0.6198749419020635,True,,False,0.8959135630409825,1.0,1.0
+All audit data,Angry Caucasian,Social Phobia,22,132,29.057200454666145,6,5.933910825537608e-05,True,,False,0.0002464855265992545,0.0011277773700202904,0.0024922425467257953
+All audit data,Angry Caucasian,Panic Disorder,22,132,19.94201851954267,6,0.0028359734794763058,True,,False,0.008507920438428919,0.038927397761545725,0.10493101874062331
+All audit data,Angry Caucasian,Major Depression,22,132,29.280110402804667,6,5.3842250794449956e-05,True,,False,0.00024229012857502483,0.0011085816183863753,0.002315216784161348
+All audit data,Angry Caucasian,Separation Anxiety,22,132,125.09833950351322,6,1.3820953979722628e-24,True,,False,7.463315149050219e-23,3.4147878971056406e-22,7.463315149050219e-23
+All audit data,Angry Caucasian,Generalized Anxiety,22,132,50.944926719178056,6,3.0382794549687956e-09,True,,False,2.734451509471916e-08,1.25112925466577e-07,1.48875693293471e-07
+All audit data,Angry Caucasian,Obsessive Compulsive,22,132,0.7526952844095831,6,0.9932824706589845,True,,False,0.9999009209323119,1.0,1.0
+All audit data,Happy Caucasian,Social Phobia,22,132,19.202908159038316,6,0.003834329300147385,True,,False,0.01089756748462941,0.049861061487052674,0.13803585480530586
+All audit data,Happy Caucasian,Panic Disorder,22,132,17.097193326754677,6,0.008932604005056117,True,,False,0.021132907139119476,0.09669214563250247,0.2947759321668519
+All audit data,Happy Caucasian,Major Depression,22,132,31.353392653597894,6,2.1699319562145344e-05,True,,False,0.00010652393239598625,0.0004873928379457551,0.0009547700607343951
+All audit data,Happy Caucasian,Separation Anxiety,22,132,100.12942159220893,6,2.358037123320989e-19,True,,False,6.36670023296667e-18,2.913039375377442e-17,1.2497596753601241e-17
+All audit data,Happy Caucasian,Generalized Anxiety,22,132,40.529943184272724,6,3.5833862670039504e-07,True,,False,2.764326548831619e-06,1.2647983709758388e-05,1.7200254081618963e-05
+All audit data,Happy Caucasian,Obsessive Compulsive,22,132,1.8459024385526845,6,0.9333112228437984,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Neutral,Social Phobia,13,78,1.5023856018849528,6,0.9593359354733471,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Neutral,Panic Disorder,13,78,4.0963476107249335,6,0.6636396763266537,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Neutral,Major Depression,13,78,0.6621506177755236,6,0.9952717547674125,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Neutral,Separation Anxiety,13,78,4.208739337091629,6,0.6484515940528888,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Neutral,Generalized Anxiety,13,78,0.17180979869363,6,0.9999009209323119,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Neutral,Obsessive Compulsive,13,78,0.6489570349174301,6,0.9955270916851626,True,The Hessian matrix at the estimated parameter values is not positive definite. | The MLE may be on the boundary of the parameter space.,True,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Angry,Social Phobia,34,204,1.5785237637549017,6,0.9541089267882994,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Angry,Panic Disorder,34,204,0.7917364268819256,6,0.992293408946925,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Angry,Major Depression,34,204,2.359452720342915,6,0.8838536414709616,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Angry,Separation Anxiety,34,204,3.2533969026528666,6,0.7764364354147321,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Angry,Generalized Anxiety,34,204,3.7052275553980962,6,0.7164946561299379,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Angry,Obsessive Compulsive,34,204,5.301965377269653,6,0.5057072493467285,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Fear,Social Phobia,12,72,1.3198682357278244,6,0.9705508517790976,True,,True,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Fear,Panic Disorder,12,72,1.4199324690134176,6,0.9646346816834002,True,,True,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Fear,Major Depression,12,72,4.541703216147766,6,0.603782826836202,True,,True,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Fear,Separation Anxiety,12,72,3.695744827261649,6,0.7177704493545787,True,,True,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Fear,Generalized Anxiety,12,72,2.2825520701175037,6,0.8919657959323019,True,,True,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Fear,Obsessive Compulsive,12,72,6.567239837919715,6,0.3627266682318589,True,,True,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Happy,Social Phobia,34,204,1.9430631971351886,6,0.9248598336341586,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Happy,Panic Disorder,34,204,9.369728494963056,6,0.1538275367070899,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Happy,Major Depression,34,204,2.1409762642147143,6,0.9062869892343826,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Happy,Separation Anxiety,34,204,2.727009642637995,6,0.8422467315695517,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Happy,Generalized Anxiety,34,204,1.9913873455459452,6,0.9204889995790909,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Happy,Obsessive Compulsive,34,204,2.7307861031940774,6,0.8417976069765056,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Sad,Social Phobia,34,204,7.331486850675901,6,0.29127613564761956,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Sad,Panic Disorder,34,204,5.74833812141037,6,0.45196363119910343,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Sad,Major Depression,34,204,2.0031737387166686,6,0.9194064831504749,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Sad,Separation Anxiety,34,204,5.186989383345463,6,0.5200639221171037,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Sad,Generalized Anxiety,34,204,4.365162952037508,6,0.6273880183349556,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Neutral Sad,Obsessive Compulsive,34,204,5.096525248806074,6,0.5314940688802867,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Positive Valence,Social Phobia,34,204,3.2636314174887957,6,0.7751047280226083,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Positive Valence,Panic Disorder,34,204,5.058131271780212,6,0.536379287575613,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Positive Valence,Major Depression,34,204,2.0004972137853656,6,0.9196528685624683,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Positive Valence,Separation Anxiety,34,204,0.7872864283797298,6,0.9924102288459558,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Positive Valence,Generalized Anxiety,34,204,0.6645004959448215,6,0.9952253738122802,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Positive Valence,Obsessive Compulsive,34,204,0.9485355885249191,6,0.9874881747712599,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Negative Valence,Social Phobia,34,204,2.202556247116263,6,0.9001587494109412,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Negative Valence,Panic Disorder,34,204,3.002511282603564,6,0.8085315717655861,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Negative Valence,Major Depression,34,204,1.8108617475877509,6,0.9362458505508121,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Negative Valence,Separation Anxiety,34,204,4.717834025550019,6,0.5804781732172974,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Negative Valence,Generalized Anxiety,34,204,2.861617511287932,6,0.8260041692521889,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Negative Valence,Obsessive Compulsive,34,204,5.227372183735724,6,0.5149992067798126,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Caucasian,Social Phobia,21,126,9.357069670395845,6,0.1544700829103264,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Caucasian,Panic Disorder,21,126,9.4422302939048,6,0.15019207079603197,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Caucasian,Major Depression,21,126,3.266743338501783,6,0.7746995010551263,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Caucasian,Separation Anxiety,21,126,9.387864415384911,6,0.15291103258950986,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Caucasian,Generalized Anxiety,21,126,7.89296232002755,6,0.24605054280566396,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Angry Caucasian,Obsessive Compulsive,21,126,3.069324280876913,6,0.8000969749334973,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Happy Caucasian,Social Phobia,21,126,3.6192024420244024,6,0.7280486831083735,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Happy Caucasian,Panic Disorder,21,126,7.163699371137227,6,0.30597346745289933,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Happy Caucasian,Major Depression,21,126,17.039207142952137,6,0.009140227220974401,True,,False,0.49357226993261766,1.0,0.49357226993261766
+P27 omitted,Happy Caucasian,Separation Anxiety,21,126,14.047526087327583,6,0.029109753358998118,True,,False,0.7859633406929493,1.0,1.0
+P27 omitted,Happy Caucasian,Generalized Anxiety,21,126,4.439982881886522,6,0.617358187083233,True,,False,0.9999009209323119,1.0,1.0
+P27 omitted,Happy Caucasian,Obsessive Compulsive,21,126,2.6846985307604427,6,0.8472513095029339,True,,False,0.9999009209323119,1.0,1.0

@@ -1,0 +1,113 @@
+{
+  "participants_all": 35,
+  "participants_without_p27": 34,
+  "included_conditions": [
+    "Negative Valence",
+    "Neutral Angry",
+    "Neutral Happy",
+    "Neutral Sad",
+    "Positive Valence"
+  ],
+  "excluded_conditions": [
+    "Angry Caucasian",
+    "Angry Neutral",
+    "Happy Caucasian",
+    "Neutral Fear"
+  ],
+  "complete_condition_primary_tests": 180,
+  "complete_condition_discoveries": {
+    "All 35 participants": {
+      "Pearson BH": 7,
+      "Pearson BY": 4,
+      "Pearson Holm": 4,
+      "Spearman BH": 0,
+      "Spearman BY": 0,
+      "Spearman Holm": 0
+    },
+    "P27 omitted": {
+      "Pearson BH": 0,
+      "Pearson BY": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman BY": 0,
+      "Spearman Holm": 0
+    },
+    "Workbook QC flags honored": {
+      "Pearson BH": 9,
+      "Pearson BY": 2,
+      "Pearson Holm": 4,
+      "Spearman BH": 0,
+      "Spearman BY": 0,
+      "Spearman Holm": 0
+    },
+    "Workbook QC flags honored; P27 omitted": {
+      "Pearson BH": 0,
+      "Pearson BY": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman BY": 0,
+      "Spearman Holm": 0
+    }
+  },
+  "complete_condition_lmm_discoveries": {
+    "All 35 participants": 14,
+    "P27 omitted": 0
+  },
+  "complete_condition_lateralization_tests": 30,
+  "complete_condition_lateralization_discoveries": {
+    "All 35 participants; complete-condition lateralization": {
+      "Pearson BH": 10,
+      "Pearson BY": 9,
+      "Pearson Holm": 7,
+      "Spearman BH": 0,
+      "Spearman BY": 0,
+      "Spearman Holm": 0
+    },
+    "P27 omitted; complete-condition lateralization": {
+      "Pearson BH": 0,
+      "Pearson BY": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman BY": 0,
+      "Spearman Holm": 0
+    }
+  },
+  "focused_amplitude_tests": 24,
+  "focused_amplitude_discoveries": {
+    "All 35 participants; focused post-hoc": {
+      "Pearson BH": 0,
+      "Pearson BY": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 1,
+      "Spearman BY": 0,
+      "Spearman Holm": 1
+    },
+    "P27 omitted; focused post-hoc": {
+      "Pearson BH": 0,
+      "Pearson BY": 0,
+      "Pearson Holm": 0,
+      "Spearman BH": 0,
+      "Spearman BY": 0,
+      "Spearman Holm": 0
+    }
+  },
+  "focused_lateralization_tests": 4,
+  "focused_lateralization_discoveries": {
+    "All 35 participants; focused lateralization": {
+      "Pearson BH": 1,
+      "Pearson BY": 0,
+      "Pearson Holm": 1,
+      "Spearman BH": 1,
+      "Spearman BY": 1,
+      "Spearman Holm": 1
+    },
+    "P27 omitted; focused lateralization": {
+      "Pearson BH": 1,
+      "Pearson BY": 0,
+      "Pearson Holm": 1,
+      "Spearman BH": 1,
+      "Spearman BY": 1,
+      "Spearman Holm": 1
+    }
+  }
+}

@@ -1,0 +1,649 @@
+Variant,Condition,ROI,RCADS Scale,Score Column,N,Partial Pearson r,Partial Pearson p,Covariates,Degrees of Freedom,Descriptive Only (N < 20),Partial Pearson_q_bh,Partial Pearson_q_by,Partial Pearson_p_holm
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Social Phobia,Social Phobia Raw,13,0.24209843245010076,0.47322803934263835,Age; Sex,9,True,0.8263060567369844,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Panic Disorder,Panic Disorder Raw,13,0.5041342218447995,0.11382400463699965,Age; Sex,9,True,0.6469996053050506,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Major Depression,Major Depression Raw,13,0.3857968999676985,0.24125638616787262,Age; Sex,9,True,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Separation Anxiety,Separation Anxiety Raw,13,0.4718480461383574,0.14284474869892047,Age; Sex,9,True,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Generalized Anxiety,Generalized Anxiety Raw,13,0.5269938406154103,0.09577299881578208,Age; Sex,9,True,0.5951903629488642,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,13,0.49489726206841156,0.12169909813308898,Age; Sex,9,True,0.6788448996622974,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Social Phobia,Social Phobia Raw,13,0.6557722189244402,0.028463372232957564,Age; Sex,9,True,0.3546974078260866,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Panic Disorder,Panic Disorder Raw,13,0.5924515314834328,0.05478085919606457,Age; Sex,9,True,0.5071142394149978,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Major Depression,Major Depression Raw,13,0.3134930773381771,0.34785449011586045,Age; Sex,9,True,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Separation Anxiety,Separation Anxiety Raw,13,0.5555610791260176,0.07600079195479398,Age; Sex,9,True,0.561824277007943,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Generalized Anxiety,Generalized Anxiety Raw,13,0.5532341626205531,0.07749905386422526,Age; Sex,9,True,0.561824277007943,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,13,0.2140891029288694,0.5273078253874224,Age; Sex,9,True,0.8607708715500992,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,O,Social Phobia,Social Phobia Raw,13,-0.07702480364783168,0.8219058665402768,Age; Sex,9,True,0.9677300588940433,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,O,Panic Disorder,Panic Disorder Raw,13,0.006520616041602162,0.9848193931359609,Age; Sex,9,True,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,O,Major Depression,Major Depression Raw,13,-0.021186972297677676,0.9506981151565694,Age; Sex,9,True,0.996191975045143,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,O,Separation Anxiety,Separation Anxiety Raw,13,-0.21448970171289258,0.526516639533362,Age; Sex,9,True,0.8607708715500992,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,O,Generalized Anxiety,Generalized Anxiety Raw,13,-0.021623435335616528,0.9496835664911274,Age; Sex,9,True,0.996191975045143,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,O,Obsessive Compulsive,Obsessive Compulsive Raw,13,-0.17103911559961907,0.6150811385415634,Age; Sex,9,True,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Social Phobia,Social Phobia Raw,13,0.44216082258116013,0.17329120889323013,Age; Sex,9,True,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Panic Disorder,Panic Disorder Raw,13,0.1973021593593844,0.5609009866722106,Age; Sex,9,True,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Major Depression,Major Depression Raw,13,0.03731442606459527,0.913265176630334,Age; Sex,9,True,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Separation Anxiety,Separation Anxiety Raw,13,0.20963553126902396,0.536137044397273,Age; Sex,9,True,0.8642209073866491,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Generalized Anxiety,Generalized Anxiety Raw,13,0.2787451598807995,0.4065180024044306,Age; Sex,9,True,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,13,-0.08889380022812716,0.7949333592860857,Age; Sex,9,True,0.9646382337404186,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,PO,Social Phobia,Social Phobia Raw,13,0.1424772214992815,0.6760205107457748,Age; Sex,9,True,0.9126276895067961,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,PO,Panic Disorder,Panic Disorder Raw,13,0.17038583332969465,0.6164525466016744,Age; Sex,9,True,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,PO,Major Depression,Major Depression Raw,13,0.09058225849584726,0.791111965430617,Age; Sex,9,True,0.9636100631560899,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,PO,Separation Anxiety,Separation Anxiety Raw,13,0.3052913853181007,0.3612813772328419,Age; Sex,9,True,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,PO,Generalized Anxiety,Generalized Anxiety Raw,13,0.12483874506379264,0.7145724866049364,Age; Sex,9,True,0.9260859426399977,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,PO,Obsessive Compulsive,Obsessive Compulsive Raw,13,0.08471104098290103,0.8044172488522607,Age; Sex,9,True,0.9677300588940433,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,CP,Social Phobia,Social Phobia Raw,13,0.21886142991626967,0.5179150067659518,Age; Sex,9,True,0.8607708715500992,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,CP,Panic Disorder,Panic Disorder Raw,13,0.3626923271146843,0.272977295952511,Age; Sex,9,True,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,CP,Major Depression,Major Depression Raw,13,0.24149764209605776,0.47436088442308366,Age; Sex,9,True,0.8263060567369844,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,CP,Separation Anxiety,Separation Anxiety Raw,13,0.3557932673476384,0.28288052997120916,Age; Sex,9,True,0.7787414029185878,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,CP,Generalized Anxiety,Generalized Anxiety Raw,13,0.3410036952035945,0.3047717066339333,Age; Sex,9,True,0.796338975398342,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Neutral,CP,Obsessive Compulsive,Obsessive Compulsive Raw,13,0.44351536935841424,0.17182223976064154,Age; Sex,9,True,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Social Phobia,Social Phobia Raw,35,-0.009333308376463262,0.9588876853545727,Age; Sex,31,False,0.996191975045143,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Panic Disorder,Panic Disorder Raw,35,0.16033500141994278,0.3727542307877758,Age; Sex,31,False,0.7998170250015851,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Major Depression,Major Depression Raw,35,0.13731547902017424,0.4460466739360275,Age; Sex,31,False,0.8234279482225811,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Separation Anxiety,Separation Anxiety Raw,35,0.16597639244735815,0.35594308408448583,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Generalized Anxiety,Generalized Anxiety Raw,35,0.11834557297414405,0.5118619939730573,Age; Sex,31,False,0.8607708715500992,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.20671205323674471,0.24841723075178507,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Social Phobia,Social Phobia Raw,35,-0.2179764578818943,0.22298986337285065,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Panic Disorder,Panic Disorder Raw,35,-0.17086768233725003,0.34174175081113767,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Major Depression,Major Depression Raw,35,-0.2809804904477887,0.1131999826916377,Age; Sex,31,False,0.6469996053050506,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Separation Anxiety,Separation Anxiety Raw,35,-0.62403191538257,0.00010420384063545043,Age; Sex,31,False,0.006752408873177188,0.04294195501080439,0.033345229003344135
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Generalized Anxiety,Generalized Anxiety Raw,35,-0.42156926120167176,0.01454727736780258,Age; Sex,31,False,0.22444370796038265,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.02906060074882913,0.8724579325294277,Age; Sex,31,False,0.9815151740956062,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,O,Social Phobia,Social Phobia Raw,35,-0.05882383361729601,0.7450528692978831,Age; Sex,31,False,0.9398840636314131,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,O,Panic Disorder,Panic Disorder Raw,35,-0.11369941885761875,0.5286833439458942,Age; Sex,31,False,0.8607708715500992,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,O,Major Depression,Major Depression Raw,35,-0.13829081504990437,0.44279175750454536,Age; Sex,31,False,0.8234279482225811,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,O,Separation Anxiety,Separation Anxiety Raw,35,-0.05243100614318473,0.7719853196902842,Age; Sex,31,False,0.952050417222791,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,O,Generalized Anxiety,Generalized Anxiety Raw,35,-0.12599535090480807,0.4847569332856547,Age; Sex,31,False,0.8354321616199581,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,O,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.174857697813025,0.330416401300487,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Social Phobia,Social Phobia Raw,35,-0.12102116200236443,0.5022970775637423,Age; Sex,31,False,0.859408624627135,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Panic Disorder,Panic Disorder Raw,35,0.006550855335645138,0.9711379565812086,Age; Sex,31,False,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Major Depression,Major Depression Raw,35,0.039474011720891905,0.8273494639310185,Age; Sex,31,False,0.9677300588940433,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Separation Anxiety,Separation Anxiety Raw,35,-0.061652805240986874,0.7332264914412723,Age; Sex,31,False,0.9352967843581583,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Generalized Anxiety,Generalized Anxiety Raw,35,0.005961160934435191,0.9737351213160803,Age; Sex,31,False,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.13976464707331424,0.4378978385660399,Age; Sex,31,False,0.8206586971541666,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,PO,Social Phobia,Social Phobia Raw,35,0.2487150565356149,0.16280087975371638,Age; Sex,31,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,PO,Panic Disorder,Panic Disorder Raw,35,0.15499745849974222,0.389082329216639,Age; Sex,31,False,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,PO,Major Depression,Major Depression Raw,35,0.12749038665537296,0.4795474942932417,Age; Sex,31,False,0.8308737334278626,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,PO,Separation Anxiety,Separation Anxiety Raw,35,0.10133616143206935,0.5747064128601236,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,PO,Generalized Anxiety,Generalized Anxiety Raw,35,0.23476779239306,0.188474354221938,Age; Sex,31,False,0.7511908509759848,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,PO,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.02354212233241801,0.8965328650337174,Age; Sex,31,False,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,CP,Social Phobia,Social Phobia Raw,35,-0.14226692041347888,0.42965709323182144,Age; Sex,31,False,0.8188758718065303,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,CP,Panic Disorder,Panic Disorder Raw,35,0.16605562532740564,0.35571026055030686,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,CP,Major Depression,Major Depression Raw,35,0.27004845926157056,0.12853808551859625,Age; Sex,31,False,0.6908330056121318,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,CP,Separation Anxiety,Separation Anxiety Raw,35,0.22101128422182903,0.21645380424707972,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,CP,Generalized Anxiety,Generalized Anxiety Raw,35,0.20566876004126552,0.25086597102837144,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Angry,CP,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.20502680492252165,0.25238065212629296,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Social Phobia,Social Phobia Raw,12,-0.22290250913010745,0.5359137034307134,Age; Sex,8,True,0.8642209073866491,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Panic Disorder,Panic Disorder Raw,12,-0.2606671747613388,0.4669808030061665,Age; Sex,8,True,0.8263060567369844,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Major Depression,Major Depression Raw,12,0.07999420505803095,0.8261281403733568,Age; Sex,8,True,0.9677300588940433,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Separation Anxiety,Separation Anxiety Raw,12,-0.003932265368845831,0.9913983025120341,Age; Sex,8,True,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Generalized Anxiety,Generalized Anxiety Raw,12,-0.03875827718171929,0.9153435163759949,Age; Sex,8,True,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.4851383223159481,0.1552373159148823,Age; Sex,8,True,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Social Phobia,Social Phobia Raw,12,0.037300560403345465,0.9185184550631265,Age; Sex,8,True,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Panic Disorder,Panic Disorder Raw,12,-0.08482873389799357,0.815766683644241,Age; Sex,8,True,0.9677300588940433,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Major Depression,Major Depression Raw,12,0.6399937732786645,0.04625808415525552,Age; Sex,8,True,0.4683631020719622,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Separation Anxiety,Separation Anxiety Raw,12,0.34716127346468467,0.32568164443407815,Age; Sex,8,True,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Generalized Anxiety,Generalized Anxiety Raw,12,0.3740668596228553,0.28693373295910046,Age; Sex,8,True,0.7787414029185878,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.4656675194388353,0.1749865554431597,Age; Sex,8,True,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,O,Social Phobia,Social Phobia Raw,12,0.10013940428269479,0.7831285291135964,Age; Sex,8,True,0.9574854469162463,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,O,Panic Disorder,Panic Disorder Raw,12,0.05040672937264194,0.8900150174758739,Age; Sex,8,True,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,O,Major Depression,Major Depression Raw,12,0.2964078305378509,0.40563391835759954,Age; Sex,8,True,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,O,Separation Anxiety,Separation Anxiety Raw,12,0.3523122926779036,0.31806340542241535,Age; Sex,8,True,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,O,Generalized Anxiety,Generalized Anxiety Raw,12,0.25983357249974215,0.46845831718261977,Age; Sex,8,True,0.8263060567369844,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,O,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.27715275419632274,0.43819121792491,Age; Sex,8,True,0.8206586971541666,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Social Phobia,Social Phobia Raw,12,-0.4247041777645954,0.22117725789789214,Age; Sex,8,True,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Panic Disorder,Panic Disorder Raw,12,-0.19221872185521027,0.5947160177000648,Age; Sex,8,True,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Major Depression,Major Depression Raw,12,0.04167277587050354,0.9089989468057524,Age; Sex,8,True,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Separation Anxiety,Separation Anxiety Raw,12,-0.13520229257197516,0.709592248954988,Age; Sex,8,True,0.9260859426399977,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Generalized Anxiety,Generalized Anxiety Raw,12,-0.2869776639841772,0.4214319699228636,Age; Sex,8,True,0.8144304680298321,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.2897874166726034,0.416695117669204,Age; Sex,8,True,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,PO,Social Phobia,Social Phobia Raw,12,0.07644811098887491,0.8337436808253846,Age; Sex,8,True,0.9682535369716321,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,PO,Panic Disorder,Panic Disorder Raw,12,-0.16303137082973015,0.6526976464730205,Age; Sex,8,True,0.9058889351017873,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,PO,Major Depression,Major Depression Raw,12,0.01720708580737796,0.9623706425590425,Age; Sex,8,True,0.996191975045143,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,PO,Separation Anxiety,Separation Anxiety Raw,12,0.061979542632460694,0.8649393777551438,Age; Sex,8,True,0.9812050314146611,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,PO,Generalized Anxiety,Generalized Anxiety Raw,12,0.07362179200157527,0.8398224003522337,Age; Sex,8,True,0.9717944918361562,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,PO,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.3759301120457752,0.2843468935233396,Age; Sex,8,True,0.7787414029185878,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,CP,Social Phobia,Social Phobia Raw,12,-0.27042773677444226,0.4498356383808545,Age; Sex,8,True,0.8234279482225811,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,CP,Panic Disorder,Panic Disorder Raw,12,-0.35971805006672336,0.3072755470525459,Age; Sex,8,True,0.796458217960199,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,CP,Major Depression,Major Depression Raw,12,-0.058876433586307036,0.8716533234544653,Age; Sex,8,True,0.9815151740956062,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,CP,Separation Anxiety,Separation Anxiety Raw,12,-0.3189791884527587,0.36900000416600304,Age; Sex,8,True,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,CP,Generalized Anxiety,Generalized Anxiety Raw,12,-0.10827846547868197,0.7658983666062663,Age; Sex,8,True,0.9507703861319168,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Fear,CP,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.18390941425376514,0.6110311700806643,Age; Sex,8,True,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Social Phobia,Social Phobia Raw,35,0.18886610225932293,0.29251081339394835,Age; Sex,31,False,0.7832520953689196,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Panic Disorder,Panic Disorder Raw,35,0.20906899540109902,0.24294386982516983,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Major Depression,Major Depression Raw,35,-0.09792282627937926,0.5877223172486088,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Separation Anxiety,Separation Anxiety Raw,35,0.22831598179072304,0.20126283899151803,Age; Sex,31,False,0.7557636356539376,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Generalized Anxiety,Generalized Anxiety Raw,35,0.09583083562182806,0.595763083513796,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.1466627227522814,0.4153899330852142,Age; Sex,31,False,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Social Phobia,Social Phobia Raw,35,0.239046264771302,0.1803146495360956,Age; Sex,31,False,0.7302743306211873,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Panic Disorder,Panic Disorder Raw,35,0.11742205302025574,0.5151843089185847,Age; Sex,31,False,0.8607708715500992,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Major Depression,Major Depression Raw,35,0.28167135212673566,0.1122789210399921,Age; Sex,31,False,0.6469996053050506,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Separation Anxiety,Separation Anxiety Raw,35,0.5979611389755521,0.00023786207368913412,Age; Sex,31,False,0.012844551979213243,0.0816849488212027,0.07587800150683378
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Generalized Anxiety,Generalized Anxiety Raw,35,0.4568778693912255,0.007521254346546521,Age; Sex,31,False,0.15230540051756705,0.9685864377834287,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.013791797952499935,0.9392787260250866,Age; Sex,31,False,0.9945304157912681,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,O,Social Phobia,Social Phobia Raw,35,0.09136451841735603,0.6130871644214348,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,O,Panic Disorder,Panic Disorder Raw,35,0.11952708069926994,0.5076271350072042,Age; Sex,31,False,0.8607708715500992,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,O,Major Depression,Major Depression Raw,35,-0.034017935248220235,0.8509257709456743,Age; Sex,31,False,0.9742047695632455,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,O,Separation Anxiety,Separation Anxiety Raw,35,0.06194132080393568,0.7320236903606229,Age; Sex,31,False,0.9352967843581583,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,O,Generalized Anxiety,Generalized Anxiety Raw,35,0.09943441526227206,0.5819422620043608,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,O,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.06931224991624607,0.7015141294284937,Age; Sex,31,False,0.9260859426399977,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Social Phobia,Social Phobia Raw,35,0.10994645857226049,0.5424633157926229,Age; Sex,31,False,0.8700896748356921,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Panic Disorder,Panic Disorder Raw,35,-0.026198322023964007,0.8849322777338824,Age; Sex,31,False,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Major Depression,Major Depression Raw,35,-0.04159455366407085,0.8182249729123287,Age; Sex,31,False,0.9677300588940433,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Separation Anxiety,Separation Anxiety Raw,35,-0.21601776191214647,0.2272788441435493,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Generalized Anxiety,Generalized Anxiety Raw,35,0.0008239409706120859,0.9963691039633393,Age; Sex,31,False,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.17702247126218135,0.32436969311086117,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,PO,Social Phobia,Social Phobia Raw,35,0.09810850584723982,0.5870109523293663,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,PO,Panic Disorder,Panic Disorder Raw,35,0.1594176484233292,0.3755313955631904,Age; Sex,31,False,0.8004748168583795,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,PO,Major Depression,Major Depression Raw,35,0.024257704623550085,0.8934054869053415,Age; Sex,31,False,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,PO,Separation Anxiety,Separation Anxiety Raw,35,0.15331622574001302,0.39430977087542973,Age; Sex,31,False,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,PO,Generalized Anxiety,Generalized Anxiety Raw,35,0.20357647091385125,0.2558249572661135,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,PO,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.23061028173214693,0.1966480661459613,Age; Sex,31,False,0.7511908509759848,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,CP,Social Phobia,Social Phobia Raw,35,0.09442084944429514,0.6012092421419756,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,CP,Panic Disorder,Panic Disorder Raw,35,0.2264805806810099,0.2050082383479971,Age; Sex,31,False,0.7557636356539376,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,CP,Major Depression,Major Depression Raw,35,0.25736276857182844,0.14820055078208583,Age; Sex,31,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,CP,Separation Anxiety,Separation Anxiety Raw,35,0.23039812877209942,0.19707167386715652,Age; Sex,31,False,0.7511908509759848,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,CP,Generalized Anxiety,Generalized Anxiety Raw,35,0.25607436887415824,0.1503132840556537,Age; Sex,31,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Happy,CP,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.29370823894247344,0.09711824991518174,Age; Sex,31,False,0.5951903629488642,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Social Phobia,Social Phobia Raw,35,-0.3318559979679306,0.05919748332195065,Age; Sex,31,False,0.5327773498975559,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Panic Disorder,Panic Disorder Raw,35,-0.24299322801535228,0.17301131922849478,Age; Sex,31,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Major Depression,Major Depression Raw,35,-0.25072447105991824,0.15931979520918188,Age; Sex,31,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Separation Anxiety,Separation Anxiety Raw,35,-0.45046937707132545,0.008520942111177352,Age; Sex,31,False,0.15972786092317792,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Generalized Anxiety,Generalized Anxiety Raw,35,-0.3913248329094459,0.02432426813926755,Age; Sex,31,False,0.3285905913735954,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.24470450838210367,0.1699110694847596,Age; Sex,31,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Social Phobia,Social Phobia Raw,35,0.2734450706028428,0.12361681814838132,Age; Sex,31,False,0.6788448996622974,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Panic Disorder,Panic Disorder Raw,35,0.10311944219605641,0.5679583113985367,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Major Depression,Major Depression Raw,35,0.29350433692475686,0.09736138653175865,Age; Sex,31,False,0.5951903629488642,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Separation Anxiety,Separation Anxiety Raw,35,0.5746638053068076,0.00046932941498822975,Age; Sex,31,False,0.021723247208026635,0.1381490253057997,0.14924675396625706
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Generalized Anxiety,Generalized Anxiety Raw,35,0.38876656219367806,0.025354212297345323,Age; Sex,31,False,0.3285905913735954,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.0415952774941237,0.8182218622621376,Age; Sex,31,False,0.9677300588940433,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,O,Social Phobia,Social Phobia Raw,35,-0.19044400453704188,0.2884227418216992,Age; Sex,31,False,0.7787414029185878,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,O,Panic Disorder,Panic Disorder Raw,35,-0.0776126333187819,0.6676991158255605,Age; Sex,31,False,0.9058889351017873,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,O,Major Depression,Major Depression Raw,35,-0.07898628379810328,0.6621621941097844,Age; Sex,31,False,0.9058889351017873,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,O,Separation Anxiety,Separation Anxiety Raw,35,-0.058711107313660804,0.7455253220780036,Age; Sex,31,False,0.9398840636314131,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,O,Generalized Anxiety,Generalized Anxiety Raw,35,-0.0774804371189976,0.6682328873127381,Age; Sex,31,False,0.9058889351017873,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,O,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.30938894357528185,0.07976517513075734,Age; Sex,31,False,0.561824277007943,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Social Phobia,Social Phobia Raw,35,-0.021193951481904463,0.9068057986372222,Age; Sex,31,False,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Panic Disorder,Panic Disorder Raw,35,0.05085162189726863,0.7786809207939076,Age; Sex,31,False,0.9556538573379776,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Major Depression,Major Depression Raw,35,0.13434070285961455,0.4560537218977109,Age; Sex,31,False,0.8263060567369844,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Separation Anxiety,Separation Anxiety Raw,35,0.1165603218194491,0.518293912935108,Age; Sex,31,False,0.8607708715500992,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Generalized Anxiety,Generalized Anxiety Raw,35,0.19699272602056278,0.2718493186737444,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.06804964046555416,0.7067094516090868,Age; Sex,31,False,0.9260859426399977,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,PO,Social Phobia,Social Phobia Raw,35,-0.07916523974163998,0.6614421403075965,Age; Sex,31,False,0.9058889351017873,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,PO,Panic Disorder,Panic Disorder Raw,35,-0.09338938421357795,0.6052068170890726,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,PO,Major Depression,Major Depression Raw,35,0.002297698565709996,0.9898748582614584,Age; Sex,31,False,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,PO,Separation Anxiety,Separation Anxiety Raw,35,-0.06500891541410408,0.7192743073867176,Age; Sex,31,False,0.9278355632245,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,PO,Generalized Anxiety,Generalized Anxiety Raw,35,-0.001199937352459009,0.9947122040192603,Age; Sex,31,False,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,PO,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.021535939903104363,0.905308682925897,Age; Sex,31,False,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,CP,Social Phobia,Social Phobia Raw,35,-0.2201147384340162,0.21837088064642587,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,CP,Panic Disorder,Panic Disorder Raw,35,-0.016351645867879287,0.9280352847590161,Age; Sex,31,False,0.9906236947986323,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,CP,Major Depression,Major Depression Raw,35,0.01867675064866835,0.9178346572459024,Age; Sex,31,False,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,CP,Separation Anxiety,Separation Anxiety Raw,35,-0.1997523434706254,0.2650548925920479,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,CP,Generalized Anxiety,Generalized Anxiety Raw,35,-0.09991589736021209,0.5801064758501777,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Neutral Sad,CP,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.008593267971923424,0.9621450647051033,Age; Sex,31,False,0.996191975045143,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,LOT,Social Phobia,Social Phobia Raw,35,0.1044784607530565,0.5628399906749425,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,LOT,Panic Disorder,Panic Disorder Raw,35,0.16218518686850372,0.36718996827473904,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,LOT,Major Depression,Major Depression Raw,35,0.4637010932484106,0.006568457334981179,Age; Sex,31,False,0.14187867843559346,0.9022776820543646,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,LOT,Separation Anxiety,Separation Anxiety Raw,35,0.4702994015257344,0.005747119453300655,Age; Sex,31,False,0.14187867843559346,0.9022776820543646,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,LOT,Generalized Anxiety,Generalized Anxiety Raw,35,0.3522434659511015,0.04438722168773858,Age; Sex,31,False,0.4639180589299129,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.1500428908454981,0.4046026186051469,Age; Sex,31,False,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,ROT,Social Phobia,Social Phobia Raw,35,0.25973995163147057,0.14435915574985794,Age; Sex,31,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,ROT,Panic Disorder,Panic Disorder Raw,35,0.20188068991601074,0.2598913530373219,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,ROT,Major Depression,Major Depression Raw,35,0.36280334312231405,0.03797891065140909,Age; Sex,31,False,0.4308348380964398,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,ROT,Separation Anxiety,Separation Anxiety Raw,35,0.6767714161940656,1.5297519814764054e-05,Age; Sex,31,False,0.002478198209991777,0.015760105473478243,0.004941098900168789
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,ROT,Generalized Anxiety,Generalized Anxiety Raw,35,0.49789564871349085,0.0031933481144763233,Age; Sex,31,False,0.09683952364718253,0.6158511052616938,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.06933658183387646,0.7014141389535226,Age; Sex,31,False,0.9260859426399977,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,O,Social Phobia,Social Phobia Raw,35,-0.03519646493102173,0.8458217498380465,Age; Sex,31,False,0.9742047695632455,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,O,Panic Disorder,Panic Disorder Raw,35,-0.0033493966314314108,0.9852408219728699,Age; Sex,31,False,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,O,Major Depression,Major Depression Raw,35,0.14717176836174212,0.41375513981698486,Age; Sex,31,False,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,O,Separation Anxiety,Separation Anxiety Raw,35,0.14452419776181322,0.4222972797191722,Age; Sex,31,False,0.8144304680298321,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,O,Generalized Anxiety,Generalized Anxiety Raw,35,0.07901969392335378,0.6620277413141875,Age; Sex,31,False,0.9058889351017873,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,O,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.04310508707202419,0.8117394649943115,Age; Sex,31,False,0.9677300588940433,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Social Phobia,Social Phobia Raw,35,0.08996638665372986,0.6185533898111408,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Panic Disorder,Panic Disorder Raw,35,0.1691204222532875,0.34677463363866123,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Major Depression,Major Depression Raw,35,0.39053358822308554,0.024639069816603326,Age; Sex,31,False,0.3285905913735954,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Separation Anxiety,Separation Anxiety Raw,35,0.3706471102851585,0.03372069853574406,Age; Sex,31,False,0.40464838242892875,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Generalized Anxiety,Generalized Anxiety Raw,35,0.2066373943117092,0.24859193470356064,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.23099954746950915,0.19587246518421977,Age; Sex,31,False,0.7511908509759848,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,PO,Social Phobia,Social Phobia Raw,35,-0.056233101334253584,0.7559337218994294,Age; Sex,31,False,0.9493121158737021,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,PO,Panic Disorder,Panic Disorder Raw,35,-0.019731621096352,0.9132109021680237,Age; Sex,31,False,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,PO,Major Depression,Major Depression Raw,35,0.13619474034938323,0.44980276987675094,Age; Sex,31,False,0.8234279482225811,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,PO,Separation Anxiety,Separation Anxiety Raw,35,0.13280651718885184,0.461261190989397,Age; Sex,31,False,0.8263060567369844,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,PO,Generalized Anxiety,Generalized Anxiety Raw,35,0.17261479492154524,0.3367539722850025,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,PO,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.12055019251904778,0.5039741934541841,Age; Sex,31,False,0.859408624627135,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,CP,Social Phobia,Social Phobia Raw,35,-0.13187484732070825,0.46443889149420126,Age; Sex,31,False,0.8263060567369844,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,CP,Panic Disorder,Panic Disorder Raw,35,0.09599645183436849,0.5951247868284453,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,CP,Major Depression,Major Depression Raw,35,0.3556287976149817,0.04224478631600043,Age; Sex,31,False,0.45624369221280464,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,CP,Separation Anxiety,Separation Anxiety Raw,35,0.2406666074951614,0.17729053098998815,Age; Sex,31,False,0.7271155954526096,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,CP,Generalized Anxiety,Generalized Anxiety Raw,35,0.1968860800776723,0.27211414457537497,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Positive Valence,CP,Obsessive Compulsive,Obsessive Compulsive Raw,35,0.22470208082311005,0.2086832109965615,Age; Sex,31,False,0.7597006782346734,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,LOT,Social Phobia,Social Phobia Raw,35,-0.23247822814275076,0.19294566560193696,Age; Sex,31,False,0.7511908509759848,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,LOT,Panic Disorder,Panic Disorder Raw,35,-0.19727367583850652,0.271152460290291,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,LOT,Major Depression,Major Depression Raw,35,-0.30400174016672366,0.08543331441469648,Age; Sex,31,False,0.5766748722992013,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,LOT,Separation Anxiety,Separation Anxiety Raw,35,-0.44166668257481895,0.01007647479409706,Age; Sex,31,False,0.17183041227828671,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,LOT,Generalized Anxiety,Generalized Anxiety Raw,35,-0.49657912808012505,0.0032877616053055793,Age; Sex,31,False,0.09683952364718253,0.6158511052616938,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.24528006089941873,0.1688773184600478,Age; Sex,31,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,ROT,Social Phobia,Social Phobia Raw,35,-0.24882070325524108,0.16261651187904053,Age; Sex,31,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,ROT,Panic Disorder,Panic Disorder Raw,35,-0.1930300010321109,0.281802445331677,Age; Sex,31,False,0.7787414029185878,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,ROT,Major Depression,Major Depression Raw,35,-0.32329767533798454,0.0664717341600176,Age; Sex,31,False,0.5360919080492562,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,ROT,Separation Anxiety,Separation Anxiety Raw,35,-0.6989259386512324,6.061586827747189e-06,Age; Sex,31,False,0.0019639541321900896,0.012489769439584877,0.001963954132190089
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,ROT,Generalized Anxiety,Generalized Anxiety Raw,35,-0.5156394399590088,0.002131814557154607,Age; Sex,31,False,0.07674532405756584,0.488062010886336,0.6736534000608557
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.06748943445636867,0.7090187422961208,Age; Sex,31,False,0.9260859426399977,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,O,Social Phobia,Social Phobia Raw,35,-0.16942763218083115,0.34588649920562164,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,O,Panic Disorder,Panic Disorder Raw,35,-0.10808901169423898,0.5493457772980175,Age; Sex,31,False,0.8767883342096436,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,O,Major Depression,Major Depression Raw,35,-0.08991024702246256,0.6187732990970554,Age; Sex,31,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,O,Separation Anxiety,Separation Anxiety Raw,35,-0.22635359726775164,0.2052691356097114,Age; Sex,31,False,0.7557636356539376,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,O,Generalized Anxiety,Generalized Anxiety Raw,35,-0.17826417740072487,0.32093244547735866,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,O,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.08480744504801549,0.6388954584211337,Age; Sex,31,False,0.8922505540019282,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Social Phobia,Social Phobia Raw,35,0.08564585597113525,0.6355714041670681,Age; Sex,31,False,0.8914508006499138,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Panic Disorder,Panic Disorder Raw,35,-0.037984073759474324,0.8337738790589054,Age; Sex,31,False,0.9682535369716321,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Major Depression,Major Depression Raw,35,-0.08614992083153428,0.6335762837314071,Age; Sex,31,False,0.8914508006499138,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Separation Anxiety,Separation Anxiety Raw,35,-0.0740047336439363,0.6823233544979357,Age; Sex,31,False,0.9173143853001293,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Generalized Anxiety,Generalized Anxiety Raw,35,-0.07093646477123693,0.6948503798364304,Age; Sex,31,False,0.9260859426399977,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.17059320346482157,0.3425294152673123,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,PO,Social Phobia,Social Phobia Raw,35,-0.16550848816089814,0.3573198691127232,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,PO,Panic Disorder,Panic Disorder Raw,35,-0.05499052499172267,0.7611689534731023,Age; Sex,31,False,0.9504769656809094,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,PO,Major Depression,Major Depression Raw,35,-0.2049667851781201,0.25252257665660843,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,PO,Separation Anxiety,Separation Anxiety Raw,35,-0.4051411573897524,0.019339867201036923,Age; Sex,31,False,0.28482349877890745,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,PO,Generalized Anxiety,Generalized Anxiety Raw,35,-0.3390889562645435,0.05355260163578152,Age; Sex,31,False,0.5071142394149978,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,PO,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.20014333951940133,0.2641013035853436,Age; Sex,31,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,CP,Social Phobia,Social Phobia Raw,35,0.12994750794098703,0.4710491716909171,Age; Sex,31,False,0.8263060567369844,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,CP,Panic Disorder,Panic Disorder Raw,35,0.0021305535207922846,0.9906113735397918,Age; Sex,31,False,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,CP,Major Depression,Major Depression Raw,35,-0.1510406591909943,0.40144911943114636,Age; Sex,31,False,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,CP,Separation Anxiety,Separation Anxiety Raw,35,-0.32930801551857414,0.06129420276059369,Age; Sex,31,False,0.5349859966578276,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,CP,Generalized Anxiety,Generalized Anxiety Raw,35,-0.1620006156379843,0.36774282876499487,Age; Sex,31,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Negative Valence,CP,Obsessive Compulsive,Obsessive Compulsive Raw,35,-0.07875124982825177,0.6631083367604776,Age; Sex,31,False,0.9058889351017873,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Social Phobia,Social Phobia Raw,22,0.26367902229135465,0.2613084535635031,Age; Sex,18,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Panic Disorder,Panic Disorder Raw,22,-0.09274416313878561,0.6973515556678815,Age; Sex,18,False,0.9260859426399977,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Major Depression,Major Depression Raw,22,0.11601345336523927,0.6262079229406593,Age; Sex,18,False,0.8859885023265223,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Separation Anxiety,Separation Anxiety Raw,22,0.20747032650292757,0.3801070323180893,Age; Sex,18,False,0.804932539026542,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Generalized Anxiety,Generalized Anxiety Raw,22,0.3972845508776651,0.08282431061638944,Age; Sex,18,False,0.570959077440642,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,22,0.03126754266812844,0.895885817746773,Age; Sex,18,False,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Social Phobia,Social Phobia Raw,22,0.4197721966130439,0.06539000857545135,Age; Sex,18,False,0.5360919080492562,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Panic Disorder,Panic Disorder Raw,22,0.28023638346544455,0.23141452266027798,Age; Sex,18,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Major Depression,Major Depression Raw,22,0.4163615534663268,0.06783879083339353,Age; Sex,18,False,0.5360919080492562,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Separation Anxiety,Separation Anxiety Raw,22,0.7790815588141717,5.168714346033233e-05,Age; Sex,18,False,0.004186658620286919,0.02662506218071543,0.016591573050766677
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Generalized Anxiety,Generalized Anxiety Raw,22,0.5898810962387705,0.006188797585013586,Age; Sex,18,False,0.14187867843559346,0.9022776820543646,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,22,0.04027417908728433,0.8661254289647935,Age; Sex,18,False,0.9812050314146611,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,O,Social Phobia,Social Phobia Raw,22,0.3198037727197363,0.16927594949134028,Age; Sex,18,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,O,Panic Disorder,Panic Disorder Raw,22,0.1961546520382614,0.40719306732400506,Age; Sex,18,False,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,O,Major Depression,Major Depression Raw,22,0.3888861179998778,0.09014625207713402,Age; Sex,18,False,0.5841477134598285,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,O,Separation Anxiety,Separation Anxiety Raw,22,0.6878620431849233,0.0008020893314607999,Age; Sex,18,False,0.03248461792416239,0.20658597955816455,0.25426231807307353
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,O,Generalized Anxiety,Generalized Anxiety Raw,22,0.6172651122770114,0.0037371854832198626,Age; Sex,18,False,0.10090400804693629,0.6416992002918483,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,O,Obsessive Compulsive,Obsessive Compulsive Raw,22,0.2178033533035555,0.3562832358033541,Age; Sex,18,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Social Phobia,Social Phobia Raw,22,0.39180660377888976,0.08754814855299624,Age; Sex,18,False,0.5788897985953221,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Panic Disorder,Panic Disorder Raw,22,0.2157915160686396,0.3608528453461427,Age; Sex,18,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Major Depression,Major Depression Raw,22,-0.12636185765687313,0.5955182914389918,Age; Sex,18,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Separation Anxiety,Separation Anxiety Raw,22,0.13733073513429414,0.5636942256270943,Age; Sex,18,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Generalized Anxiety,Generalized Anxiety Raw,22,0.21702896032312982,0.3580382005559496,Age; Sex,18,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,22,-0.130476084175714,0.5834940661451188,Age; Sex,18,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Social Phobia,Social Phobia Raw,22,0.2810637065440453,0.2299817138663638,Age; Sex,18,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Panic Disorder,Panic Disorder Raw,22,0.5687547501685608,0.008873770051287661,Age; Sex,18,False,0.15972786092317792,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Major Depression,Major Depression Raw,22,0.23809186610176108,0.3120873978174223,Age; Sex,18,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Separation Anxiety,Separation Anxiety Raw,22,0.40301324108709113,0.0780888390336664,Age; Sex,18,False,0.561824277007943,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Generalized Anxiety,Generalized Anxiety Raw,22,0.4093065882492166,0.07312191793588486,Age; Sex,18,False,0.561824277007943,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Obsessive Compulsive,Obsessive Compulsive Raw,22,-0.016863957155379736,0.9437428484682817,Age; Sex,18,False,0.9960022244420954,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Social Phobia,Social Phobia Raw,22,0.4655887572675936,0.0385623774839406,Age; Sex,18,False,0.4308348380964398,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Panic Disorder,Panic Disorder Raw,22,0.23501939086769336,0.3185582858559723,Age; Sex,18,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Major Depression,Major Depression Raw,22,-0.043786405039419454,0.8545647468120804,Age; Sex,18,False,0.9749259787574438,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Separation Anxiety,Separation Anxiety Raw,22,0.012331734870342954,0.958847557188522,Age; Sex,18,False,0.996191975045143,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Generalized Anxiety,Generalized Anxiety Raw,22,0.22129896319705525,0.3484231891591303,Age; Sex,18,False,0.7970400089985665,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Obsessive Compulsive,Obsessive Compulsive Raw,22,-0.021050329657598357,0.9298070601389459,Age; Sex,18,False,0.9906236947986323,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Social Phobia,Social Phobia Raw,22,-0.08731948960646951,0.7143197875169542,Age; Sex,18,False,0.9260859426399977,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Panic Disorder,Panic Disorder Raw,22,0.08498899415225228,0.7216498825079445,Age; Sex,18,False,0.9278355632245,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Major Depression,Major Depression Raw,22,0.18894370085880982,0.4249869988578623,Age; Sex,18,False,0.8147679741417005,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Separation Anxiety,Separation Anxiety Raw,22,-0.19235438975129324,0.4165195378324287,Age; Sex,18,False,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Generalized Anxiety,Generalized Anxiety Raw,22,-0.003222110066593717,0.9892433785292909,Age; Sex,18,False,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,22,0.052353173543771094,0.8264906067510273,Age; Sex,18,False,0.9677300588940433,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Social Phobia,Social Phobia Raw,22,-0.3683456803757079,0.11004271806711444,Age; Sex,18,False,0.6469996053050506,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Panic Disorder,Panic Disorder Raw,22,-0.2789430051375709,0.23366605619661157,Age; Sex,18,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Major Depression,Major Depression Raw,22,-0.4391405920995241,0.052724941506865845,Age; Sex,18,False,0.5071142394149978,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Separation Anxiety,Separation Anxiety Raw,22,-0.7912806483372131,3.25302867668379e-05,Age; Sex,18,False,0.003513270970818493,0.022342652348696708,0.010474752338921802
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Generalized Anxiety,Generalized Anxiety Raw,22,-0.5542510473074163,0.011215769401564222,Age; Sex,18,False,0.1816954643053404,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,22,-0.07205891318509894,0.7627284292501125,Age; Sex,18,False,0.9504769656809094,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,O,Social Phobia,Social Phobia Raw,22,-0.3430004676399397,0.13873414071249576,Age; Sex,18,False,0.7249977675943328,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,O,Panic Disorder,Panic Disorder Raw,22,-0.0021813537169132246,0.9927177074593706,Age; Sex,18,False,0.9963691039633393,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,O,Major Depression,Major Depression Raw,22,0.06005804303204261,0.8014120096023285,Age; Sex,18,False,0.9677300588940433,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,O,Separation Anxiety,Separation Anxiety Raw,22,-0.1733657066851884,0.4648059739829603,Age; Sex,18,False,0.8263060567369844,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,O,Generalized Anxiety,Generalized Anxiety Raw,22,-0.18510828942862087,0.4346175786414148,Age; Sex,18,False,0.8206586971541666,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,O,Obsessive Compulsive,Obsessive Compulsive Raw,22,-0.02023144879368397,0.9325315645480952,Age; Sex,18,False,0.9906236947986323,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Social Phobia,Social Phobia Raw,22,0.19938612161027075,0.3993529178587738,Age; Sex,18,False,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Panic Disorder,Panic Disorder Raw,22,0.3182430389789326,0.17148372196526995,Age; Sex,18,False,0.7268672303023557,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Major Depression,Major Depression Raw,22,0.07869453733470608,0.7415632888685999,Age; Sex,18,False,0.9398840636314131,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Separation Anxiety,Separation Anxiety Raw,22,0.12264230338294488,0.6064769732993247,Age; Sex,18,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Generalized Anxiety,Generalized Anxiety Raw,22,0.26189820872183106,0.2646623338844472,Age; Sex,18,False,0.7758302095492419,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,22,0.3502306906420217,0.13006423871092604,Age; Sex,18,False,0.6908330056121318,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Social Phobia,Social Phobia Raw,22,-0.1942027688801362,0.411969011918878,Age; Sex,18,False,0.8133085429206149,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Panic Disorder,Panic Disorder Raw,22,0.1513615397765713,0.5241180856695987,Age; Sex,18,False,0.8607708715500992,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Major Depression,Major Depression Raw,22,-0.24450707145616452,0.29883385269909396,Age; Sex,18,False,0.7871720997927353,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Separation Anxiety,Separation Anxiety Raw,22,-0.4235655611617744,0.06274527121295509,Age; Sex,18,False,0.5349859966578276,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Generalized Anxiety,Generalized Anxiety Raw,22,-0.11901378166903022,0.6172460066274588,Age; Sex,18,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Obsessive Compulsive,Obsessive Compulsive Raw,22,0.13038823640531164,0.5837497257244963,Age; Sex,18,False,0.8793094250326576,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Social Phobia,Social Phobia Raw,22,-0.25607149584095745,0.27582458915303837,Age; Sex,18,False,0.7771057990050819,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Panic Disorder,Panic Disorder Raw,22,0.045122415692204224,0.8501745482949885,Age; Sex,18,False,0.9742047695632455,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Major Depression,Major Depression Raw,22,0.24596392220434932,0.29587266317398514,Age; Sex,18,False,0.7857601874456654,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Separation Anxiety,Separation Anxiety Raw,22,0.06891744954282991,0.7728063571901052,Age; Sex,18,False,0.952050417222791,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Generalized Anxiety,Generalized Anxiety Raw,22,0.029009470766290547,0.9033696931965371,Age; Sex,18,False,0.9854303954981887,1.0,1.0
+All audit data; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Obsessive Compulsive,Obsessive Compulsive Raw,22,0.2140944267137701,0.3647335336209051,Age; Sex,18,False,0.7970400089985665,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Social Phobia,Social Phobia Raw,13,0.24209843245010076,0.47322803934263835,Age; Sex,9,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Panic Disorder,Panic Disorder Raw,13,0.5041342218447995,0.11382400463699965,Age; Sex,9,True,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Major Depression,Major Depression Raw,13,0.3857968999676985,0.24125638616787262,Age; Sex,9,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Separation Anxiety,Separation Anxiety Raw,13,0.4718480461383574,0.14284474869892047,Age; Sex,9,True,0.9074842858519653,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Generalized Anxiety,Generalized Anxiety Raw,13,0.5269938406154103,0.09577299881578208,Age; Sex,9,True,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,13,0.49489726206841156,0.12169909813308898,Age; Sex,9,True,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Social Phobia,Social Phobia Raw,13,0.6557722189244402,0.028463372232957564,Age; Sex,9,True,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Panic Disorder,Panic Disorder Raw,13,0.5924515314834328,0.05478085919606457,Age; Sex,9,True,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Major Depression,Major Depression Raw,13,0.3134930773381771,0.34785449011586045,Age; Sex,9,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Separation Anxiety,Separation Anxiety Raw,13,0.5555610791260176,0.07600079195479398,Age; Sex,9,True,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Generalized Anxiety,Generalized Anxiety Raw,13,0.5532341626205531,0.07749905386422526,Age; Sex,9,True,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,13,0.2140891029288694,0.5273078253874224,Age; Sex,9,True,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,O,Social Phobia,Social Phobia Raw,13,-0.07702480364783168,0.8219058665402768,Age; Sex,9,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,O,Panic Disorder,Panic Disorder Raw,13,0.006520616041602162,0.9848193931359609,Age; Sex,9,True,0.9961694051761131,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,O,Major Depression,Major Depression Raw,13,-0.021186972297677676,0.9506981151565694,Age; Sex,9,True,0.9809751251934029,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,O,Separation Anxiety,Separation Anxiety Raw,13,-0.21448970171289258,0.526516639533362,Age; Sex,9,True,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,O,Generalized Anxiety,Generalized Anxiety Raw,13,-0.021623435335616528,0.9496835664911274,Age; Sex,9,True,0.9809751251934029,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,O,Obsessive Compulsive,Obsessive Compulsive Raw,13,-0.17103911559961907,0.6150811385415634,Age; Sex,9,True,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Social Phobia,Social Phobia Raw,13,0.44216082258116013,0.17329120889323013,Age; Sex,9,True,0.929436786288258,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Panic Disorder,Panic Disorder Raw,13,0.1973021593593844,0.5609009866722106,Age; Sex,9,True,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Major Depression,Major Depression Raw,13,0.03731442606459527,0.913265176630334,Age; Sex,9,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Separation Anxiety,Separation Anxiety Raw,13,0.20963553126902396,0.536137044397273,Age; Sex,9,True,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Generalized Anxiety,Generalized Anxiety Raw,13,0.2787451598807995,0.4065180024044306,Age; Sex,9,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,13,-0.08889380022812716,0.7949333592860857,Age; Sex,9,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,PO,Social Phobia,Social Phobia Raw,13,0.1424772214992815,0.6760205107457748,Age; Sex,9,True,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,PO,Panic Disorder,Panic Disorder Raw,13,0.17038583332969465,0.6164525466016744,Age; Sex,9,True,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,PO,Major Depression,Major Depression Raw,13,0.09058225849584726,0.791111965430617,Age; Sex,9,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,PO,Separation Anxiety,Separation Anxiety Raw,13,0.3052913853181007,0.3612813772328419,Age; Sex,9,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,PO,Generalized Anxiety,Generalized Anxiety Raw,13,0.12483874506379264,0.7145724866049364,Age; Sex,9,True,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,PO,Obsessive Compulsive,Obsessive Compulsive Raw,13,0.08471104098290103,0.8044172488522607,Age; Sex,9,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,CP,Social Phobia,Social Phobia Raw,13,0.21886142991626967,0.5179150067659518,Age; Sex,9,True,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,CP,Panic Disorder,Panic Disorder Raw,13,0.3626923271146843,0.272977295952511,Age; Sex,9,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,CP,Major Depression,Major Depression Raw,13,0.24149764209605776,0.47436088442308366,Age; Sex,9,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,CP,Separation Anxiety,Separation Anxiety Raw,13,0.3557932673476384,0.28288052997120916,Age; Sex,9,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,CP,Generalized Anxiety,Generalized Anxiety Raw,13,0.3410036952035945,0.3047717066339333,Age; Sex,9,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Neutral,CP,Obsessive Compulsive,Obsessive Compulsive Raw,13,0.44351536935841424,0.17182223976064154,Age; Sex,9,True,0.929436786288258,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Social Phobia,Social Phobia Raw,34,0.04038777716369629,0.8262860380267402,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Panic Disorder,Panic Disorder Raw,34,0.19679882939758403,0.28033315706785894,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Major Depression,Major Depression Raw,34,0.21462518420850413,0.23815652112296165,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Separation Anxiety,Separation Anxiety Raw,34,0.39801059187183974,0.0240684666777728,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Generalized Anxiety,Generalized Anxiety Raw,34,0.24956179627438008,0.16836477434755817,Age; Sex,30,False,0.929436786288258,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.2141633847326591,0.23919222735001083,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Social Phobia,Social Phobia Raw,34,0.0017790025770229713,0.9922900351076245,Age; Sex,30,False,0.9961694051761131,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Panic Disorder,Panic Disorder Raw,34,-0.09504351240426034,0.6048557591116053,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Major Depression,Major Depression Raw,34,0.017507812126918546,0.924230716583148,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Separation Anxiety,Separation Anxiety Raw,34,-0.07574452576223079,0.6803238608223767,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Generalized Anxiety,Generalized Anxiety Raw,34,0.07065961840794645,0.7007640894441219,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.045487234127177374,0.8047496055652011,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,O,Social Phobia,Social Phobia Raw,34,-0.03149662297176419,0.8641252418022598,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,O,Panic Disorder,Panic Disorder Raw,34,-0.09752306676047341,0.5954232987094306,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,O,Major Depression,Major Depression Raw,34,-0.10688138682768572,0.5604122669667122,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,O,Separation Anxiety,Separation Anxiety Raw,34,0.03437160273459816,0.8518532647111129,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,O,Generalized Anxiety,Generalized Anxiety Raw,34,-0.07815896062488115,0.6706947913494725,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,O,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.17445756032953408,0.3395941043888594,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Social Phobia,Social Phobia Raw,34,-0.07678749727370236,0.6761581808636127,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Panic Disorder,Panic Disorder Raw,34,0.03806611021545456,0.836133323247997,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Major Depression,Major Depression Raw,34,0.10988685266852424,0.5493729020152641,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Separation Anxiety,Separation Anxiety Raw,34,0.09459258750174772,0.6065779292552733,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Generalized Anxiety,Generalized Anxiety Raw,34,0.11967206326073536,0.514153134229685,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.1457919385624322,0.4259279806885766,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,PO,Social Phobia,Social Phobia Raw,34,0.28535420828448166,0.11339829710735425,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,PO,Panic Disorder,Panic Disorder Raw,34,0.17507390615814672,0.33786386582102723,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,PO,Major Depression,Major Depression Raw,34,0.1721590714577156,0.34609396664931735,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,PO,Separation Anxiety,Separation Anxiety Raw,34,0.23126348123568857,0.20283269970905538,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,PO,Generalized Anxiety,Generalized Anxiety Raw,34,0.3306045135356782,0.06458369021919036,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,PO,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.02534110148694482,0.8905016585002214,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,CP,Social Phobia,Social Phobia Raw,34,-0.13536349240514012,0.46010356831806176,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,CP,Panic Disorder,Panic Disorder Raw,34,0.17495910981185067,0.33818572023743576,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,CP,Major Depression,Major Depression Raw,34,0.29882145806103394,0.09664485480026046,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,CP,Separation Anxiety,Separation Anxiety Raw,34,0.3282366134293378,0.06663877264488927,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,CP,Generalized Anxiety,Generalized Anxiety Raw,34,0.2584957387709975,0.15314620612419697,Age; Sex,30,False,0.9144889155713066,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Angry,CP,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.20591860295685036,0.2581913498813224,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Social Phobia,Social Phobia Raw,12,-0.22290250913010745,0.5359137034307134,Age; Sex,8,True,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Panic Disorder,Panic Disorder Raw,12,-0.2606671747613388,0.4669808030061665,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Major Depression,Major Depression Raw,12,0.07999420505803095,0.8261281403733568,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Separation Anxiety,Separation Anxiety Raw,12,-0.003932265368845831,0.9913983025120341,Age; Sex,8,True,0.9961694051761131,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Generalized Anxiety,Generalized Anxiety Raw,12,-0.03875827718171929,0.9153435163759949,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.4851383223159481,0.1552373159148823,Age; Sex,8,True,0.9144889155713066,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Social Phobia,Social Phobia Raw,12,0.037300560403345465,0.9185184550631265,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Panic Disorder,Panic Disorder Raw,12,-0.08482873389799357,0.815766683644241,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Major Depression,Major Depression Raw,12,0.6399937732786645,0.04625808415525552,Age; Sex,8,True,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Separation Anxiety,Separation Anxiety Raw,12,0.34716127346468467,0.32568164443407815,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Generalized Anxiety,Generalized Anxiety Raw,12,0.3740668596228553,0.28693373295910046,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.4656675194388353,0.1749865554431597,Age; Sex,8,True,0.929436786288258,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,O,Social Phobia,Social Phobia Raw,12,0.10013940428269479,0.7831285291135964,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,O,Panic Disorder,Panic Disorder Raw,12,0.05040672937264194,0.8900150174758739,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,O,Major Depression,Major Depression Raw,12,0.2964078305378509,0.40563391835759954,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,O,Separation Anxiety,Separation Anxiety Raw,12,0.3523122926779036,0.31806340542241535,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,O,Generalized Anxiety,Generalized Anxiety Raw,12,0.25983357249974215,0.46845831718261977,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,O,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.27715275419632274,0.43819121792491,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Social Phobia,Social Phobia Raw,12,-0.4247041777645954,0.22117725789789214,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Panic Disorder,Panic Disorder Raw,12,-0.19221872185521027,0.5947160177000648,Age; Sex,8,True,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Major Depression,Major Depression Raw,12,0.04167277587050354,0.9089989468057524,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Separation Anxiety,Separation Anxiety Raw,12,-0.13520229257197516,0.709592248954988,Age; Sex,8,True,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Generalized Anxiety,Generalized Anxiety Raw,12,-0.2869776639841772,0.4214319699228636,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.2897874166726034,0.416695117669204,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,PO,Social Phobia,Social Phobia Raw,12,0.07644811098887491,0.8337436808253846,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,PO,Panic Disorder,Panic Disorder Raw,12,-0.16303137082973015,0.6526976464730205,Age; Sex,8,True,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,PO,Major Depression,Major Depression Raw,12,0.01720708580737796,0.9623706425590425,Age; Sex,8,True,0.989866946632158,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,PO,Separation Anxiety,Separation Anxiety Raw,12,0.061979542632460694,0.8649393777551438,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,PO,Generalized Anxiety,Generalized Anxiety Raw,12,0.07362179200157527,0.8398224003522337,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,PO,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.3759301120457752,0.2843468935233396,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,CP,Social Phobia,Social Phobia Raw,12,-0.27042773677444226,0.4498356383808545,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,CP,Panic Disorder,Panic Disorder Raw,12,-0.35971805006672336,0.3072755470525459,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,CP,Major Depression,Major Depression Raw,12,-0.058876433586307036,0.8716533234544653,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,CP,Separation Anxiety,Separation Anxiety Raw,12,-0.3189791884527587,0.36900000416600304,Age; Sex,8,True,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,CP,Generalized Anxiety,Generalized Anxiety Raw,12,-0.10827846547868197,0.7658983666062663,Age; Sex,8,True,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Fear,CP,Obsessive Compulsive,Obsessive Compulsive Raw,12,0.18390941425376514,0.6110311700806643,Age; Sex,8,True,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Social Phobia,Social Phobia Raw,34,0.1309493837997635,0.47499540616625546,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Panic Disorder,Panic Disorder Raw,34,0.17604829515461884,0.3351394959700449,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Major Depression,Major Depression Raw,34,-0.2035708944403252,0.2637779686903197,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Separation Anxiety,Separation Anxiety Raw,34,0.059457512370507684,0.7465082515214105,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Generalized Anxiety,Generalized Anxiety Raw,34,-0.04713660300491211,0.7978130460867932,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.14888835137455833,0.41605857340651065,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Social Phobia,Social Phobia Raw,34,0.05406572402926609,0.7688429697711257,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Panic Disorder,Panic Disorder Raw,34,-0.12166479930118967,0.5071200146696753,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Major Depression,Major Depression Raw,34,-0.08091227911248036,0.6597765936516738,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Separation Anxiety,Separation Anxiety Raw,34,-0.1828676814479666,0.3164503085722493,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Generalized Anxiety,Generalized Anxiety Raw,34,-0.023561144281026083,0.8981515290084154,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.00017274876466794042,0.9992513184558618,Age; Sex,30,False,0.9992513184558618,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,O,Social Phobia,Social Phobia Raw,34,0.0634455594248759,0.7301162704722672,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,O,Panic Disorder,Panic Disorder Raw,34,0.10242321254456818,0.5769728094157325,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,O,Major Depression,Major Depression Raw,34,-0.0779902186039486,0.6713661116840517,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,O,Separation Anxiety,Separation Anxiety Raw,34,-0.028288064159358618,0.8778578113294402,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,O,Generalized Anxiety,Generalized Anxiety Raw,34,0.043741245899094394,0.8121084218358896,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,O,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.06806693436609408,0.7112668911215639,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Social Phobia,Social Phobia Raw,34,0.1534050147116358,0.4018946933482145,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Panic Disorder,Panic Disorder Raw,34,-0.002688508169943808,0.9883485775475229,Age; Sex,30,False,0.9961694051761131,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Major Depression,Major Depression Raw,34,0.007826638602780558,0.9660895633952149,Age; Sex,30,False,0.9905475270254736,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Separation Anxiety,Separation Anxiety Raw,34,-0.14960669601517945,0.4137874006830232,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Generalized Anxiety,Generalized Anxiety Raw,34,0.08793311196291767,0.6322494563426004,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.18163506304009847,0.3197794014588935,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,PO,Social Phobia,Social Phobia Raw,34,0.058878874311539084,0.7488958757711888,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,PO,Panic Disorder,Panic Disorder Raw,34,0.13669857932566376,0.45564877003860993,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,PO,Major Depression,Major Depression Raw,34,-0.03262635566581237,0.8592990553707707,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,PO,Separation Anxiety,Separation Anxiety Raw,34,0.05036357645602016,0.7842859172629334,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,PO,Generalized Anxiety,Generalized Anxiety Raw,34,0.13710524733275323,0.4542964287144371,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,PO,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.23185904423042203,0.2016394706776839,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,CP,Social Phobia,Social Phobia Raw,34,0.08925511556795244,0.627118438569995,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,CP,Panic Disorder,Panic Disorder Raw,34,0.2241992302517897,0.21735930409227927,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,CP,Major Depression,Major Depression Raw,34,0.25989226007570754,0.15086013022968725,Age; Sex,30,False,0.9144889155713066,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,CP,Separation Anxiety,Separation Anxiety Raw,34,0.2736681192897664,0.1296179076207544,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,CP,Generalized Anxiety,Generalized Anxiety Raw,34,0.2731118838239632,0.1304304020134493,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Happy,CP,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.29343244082535247,0.10310738049516273,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Social Phobia,Social Phobia Raw,34,-0.27651374553073377,0.12551954145259986,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Panic Disorder,Panic Disorder Raw,34,-0.20755291519189137,0.2543486334846577,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Major Depression,Major Depression Raw,34,-0.16446324210512564,0.36839894406265006,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Separation Anxiety,Separation Anxiety Raw,34,-0.32346498969454984,0.07093497644267524,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Generalized Anxiety,Generalized Anxiety Raw,34,-0.27924308769716005,0.1216794366180664,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.25495275399525474,0.15905796410665615,Age; Sex,30,False,0.9202639351885107,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Social Phobia,Social Phobia Raw,34,0.16296629521621614,0.37283402881870586,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Panic Disorder,Panic Disorder Raw,34,-0.10375070333608506,0.5720188282587255,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Major Depression,Major Depression Raw,34,0.01885433006053598,0.9184219577840388,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Separation Anxiety,Separation Anxiety Raw,34,-0.11544823160266399,0.5292180701171196,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Generalized Anxiety,Generalized Anxiety Raw,34,-0.18281781581165646,0.31658456673905455,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.1596116493256435,0.38288630255323464,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,O,Social Phobia,Social Phobia Raw,34,-0.21562889816963934,0.23591580378522614,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,O,Panic Disorder,Panic Disorder Raw,34,-0.09062273866571544,0.6218283159658553,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,O,Major Depression,Major Depression Raw,34,-0.10890859457091119,0.5529549413493831,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,O,Separation Anxiety,Separation Anxiety Raw,34,-0.1443095349950213,0.4306984291463539,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,O,Generalized Anxiety,Generalized Anxiety Raw,34,-0.1310995063721898,0.474484851860165,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,O,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.31153233035578415,0.0826225597758633,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Social Phobia,Social Phobia Raw,34,-0.12177343171838896,0.5067379935289464,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Panic Disorder,Panic Disorder Raw,34,-0.005459172766503111,0.9763435987525111,Age; Sex,30,False,0.9961694051761131,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Major Depression,Major Depression Raw,34,0.020853870445081225,0.9098038237505655,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Separation Anxiety,Separation Anxiety Raw,34,-0.18030661212435192,0.32339156317635653,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Generalized Anxiety,Generalized Anxiety Raw,34,0.021770416528400997,0.9058567625704681,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.07931800634343573,0.6660904272248409,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,PO,Social Phobia,Social Phobia Raw,34,-0.07041495840862107,0.7017529110926886,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,PO,Panic Disorder,Panic Disorder Raw,34,-0.08763659245669024,0.6334026426586733,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,PO,Major Depression,Major Depression Raw,34,0.017267032787431618,0.925269830093564,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,PO,Separation Anxiety,Separation Anxiety Raw,34,-0.04616427398228984,0.8019004604427691,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,PO,Generalized Anxiety,Generalized Anxiety Raw,34,0.023438294354561687,0.8986798508139235,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,PO,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.02221251965571692,0.9039536498241116,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,CP,Social Phobia,Social Phobia Raw,34,-0.16609274774207503,0.36360671639361875,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,CP,Panic Disorder,Panic Disorder Raw,34,0.026025766235186043,0.8875616542148829,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,CP,Major Depression,Major Depression Raw,34,0.11370827190600165,0.5354852319075336,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,CP,Separation Anxiety,Separation Anxiety Raw,34,-0.027467291593500337,0.8813764740466881,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,CP,Generalized Anxiety,Generalized Anxiety Raw,34,0.03770470564870708,0.8376684446115243,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Neutral Sad,CP,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.01304069537962817,0.9435273174194878,Age; Sex,30,False,0.9809751251934029,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,LOT,Social Phobia,Social Phobia Raw,34,-0.06953407584782612,0.7053170602173191,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,LOT,Panic Disorder,Panic Disorder Raw,34,0.08694156527450206,0.6361089658052479,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,LOT,Major Depression,Major Depression Raw,34,0.3659980369468829,0.03938698321410158,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,LOT,Separation Anxiety,Separation Anxiety Raw,34,0.07368117039824772,0.6885922333142711,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,LOT,Generalized Anxiety,Generalized Anxiety Raw,34,0.05760178706212114,0.7541735624849136,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.18830318707437305,0.3020285411977337,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,ROT,Social Phobia,Social Phobia Raw,34,0.18997801563890634,0.29766985883036756,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,ROT,Panic Disorder,Panic Disorder Raw,34,0.35670123156669586,0.045070564452425924,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,ROT,Major Depression,Major Depression Raw,34,0.3991357051464648,0.023635720277349746,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,ROT,Separation Anxiety,Separation Anxiety Raw,34,0.3338952108925504,0.06181050233392299,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,ROT,Generalized Anxiety,Generalized Anxiety Raw,34,0.2205666979348263,0.22509887666469483,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.3465312384379376,0.052020164859996276,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,O,Social Phobia,Social Phobia Raw,34,-0.06928070088844157,0.7063433850255095,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,O,Panic Disorder,Panic Disorder Raw,34,-0.023763128679659812,0.8972829789602831,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,O,Major Depression,Major Depression Raw,34,0.11212957374882204,0.5412020750522278,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,O,Separation Anxiety,Separation Anxiety Raw,34,0.07568113772484517,0.6805773359575278,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,O,Generalized Anxiety,Generalized Anxiety Raw,34,0.017215471347983322,0.9254923657559281,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,O,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.04158424091855722,0.8212212789770401,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Social Phobia,Social Phobia Raw,34,0.01736261220836289,0.9248573305093941,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Panic Disorder,Panic Disorder Raw,34,0.13047747316316996,0.4766021965774445,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Major Depression,Major Depression Raw,34,0.3250659724526003,0.06947014328031387,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Separation Anxiety,Separation Anxiety Raw,34,0.22932336519883612,0.20675359693847212,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Generalized Anxiety,Generalized Anxiety Raw,34,0.06780967675289673,0.7123119048189599,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.23888283394585963,0.18793247876426472,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,PO,Social Phobia,Social Phobia Raw,34,-0.11730284363438825,0.5225771728524874,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,PO,Panic Disorder,Panic Disorder Raw,34,-0.05643921231538722,0.7589875144942629,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,PO,Major Depression,Major Depression Raw,34,0.06966901269489574,0.7047706902516401,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,PO,Separation Anxiety,Separation Anxiety Raw,34,-0.02446647649192012,0.8942594414041447,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,PO,Generalized Anxiety,Generalized Anxiety Raw,34,0.07211557348661031,0.6948896747646124,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,PO,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.12061796983791796,0.5108086813022364,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,CP,Social Phobia,Social Phobia Raw,34,-0.1493551894877963,0.4145817893316355,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,CP,Panic Disorder,Panic Disorder Raw,34,0.08880741742407564,0.6288541636134608,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,CP,Major Depression,Major Depression Raw,34,0.35600942214437353,0.045518426928331975,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,CP,Separation Anxiety,Separation Anxiety Raw,34,0.267653403212368,0.13860350623201917,Age; Sex,30,False,0.8981507203834843,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,CP,Generalized Anxiety,Generalized Anxiety Raw,34,0.19353340760562018,0.2885500007021662,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Positive Valence,CP,Obsessive Compulsive,Obsessive Compulsive Raw,34,0.22428644290254035,0.2171757479798469,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,LOT,Social Phobia,Social Phobia Raw,34,-0.16032145038679646,0.3807463337748864,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,LOT,Panic Disorder,Panic Disorder Raw,34,-0.15461213776408728,0.3981563132367877,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,LOT,Major Depression,Major Depression Raw,34,-0.21369476503499443,0.24024630706468075,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,LOT,Separation Anxiety,Separation Anxiety Raw,34,-0.27985343889272324,0.12083274709929118,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,LOT,Generalized Anxiety,Generalized Anxiety Raw,34,-0.38961997912987856,0.02750545461244523,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.25920546228354485,0.15198129980144703,Age; Sex,30,False,0.9144889155713066,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,ROT,Social Phobia,Social Phobia Raw,34,-0.08933271818630917,0.6268177720773859,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,ROT,Panic Disorder,Panic Disorder Raw,34,-0.15524179440812716,0.39621422629148706,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,ROT,Major Depression,Major Depression Raw,34,-0.11054833359779001,0.5469569612231899,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,ROT,Separation Anxiety,Separation Anxiety Raw,34,-0.35532360153931813,0.045965917124998035,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,ROT,Generalized Anxiety,Generalized Anxiety Raw,34,-0.23448304530541822,0.1964400664631784,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.14976667166612553,0.4132825594028281,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,O,Social Phobia,Social Phobia Raw,34,-0.14712407341645387,0.42166618468699546,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,O,Panic Disorder,Panic Disorder Raw,34,-0.0924495441553842,0.614790886456909,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,O,Major Depression,Major Depression Raw,34,-0.05714547790447451,0.7560619632484591,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,O,Separation Anxiety,Separation Anxiety Raw,34,-0.198541742043498,0.2760098103104937,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,O,Generalized Anxiety,Generalized Anxiety Raw,34,-0.14034455058249898,0.4436014206579615,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,O,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.08374046384700082,0.6486326850785172,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Social Phobia,Social Phobia Raw,34,0.1053269265742564,0.5661616623775624,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Panic Disorder,Panic Disorder Raw,34,-0.027919864325499148,0.8794360096629008,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Major Depression,Major Depression Raw,34,-0.06789316564630754,0.7119727058341521,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Separation Anxiety,Separation Anxiety Raw,34,-0.03718198322003859,0.8398898248344562,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Generalized Anxiety,Generalized Anxiety Raw,34,-0.04259317025691103,0.816955854514068,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.17003867755181398,0.3521563916527224,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,PO,Social Phobia,Social Phobia Raw,34,-0.10438094267175971,0.569673613714419,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,PO,Panic Disorder,Panic Disorder Raw,34,-0.012395930562570705,0.9463153624647616,Age; Sex,30,False,0.9809751251934029,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,PO,Major Depression,Major Depression Raw,34,-0.1264920880288129,0.4902838148756925,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,PO,Separation Anxiety,Separation Anxiety Raw,34,-0.2953783686881611,0.10073726264691106,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,PO,Generalized Anxiety,Generalized Anxiety Raw,34,-0.23770969912691492,0.19017522248614988,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,PO,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.2050649634700173,0.2602135952785159,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,CP,Social Phobia,Social Phobia Raw,34,0.17852326740100483,0.32828011857715,Age; Sex,30,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,CP,Panic Disorder,Panic Disorder Raw,34,0.028765087769779724,0.8758138522775065,Age; Sex,30,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,CP,Major Depression,Major Depression Raw,34,-0.10381983266845787,0.5717613752301616,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,CP,Separation Anxiety,Separation Anxiety Raw,34,-0.28708869343983867,0.11112652699403558,Age; Sex,30,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,CP,Generalized Anxiety,Generalized Anxiety Raw,34,-0.09101199719183502,0.6203259879674553,Age; Sex,30,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Negative Valence,CP,Obsessive Compulsive,Obsessive Compulsive Raw,34,-0.07748759160153502,0.6733672275444758,Age; Sex,30,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Social Phobia,Social Phobia Raw,21,0.16492615003550762,0.4998440288396001,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Panic Disorder,Panic Disorder Raw,21,-0.20199912525074198,0.4069244312852254,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Major Depression,Major Depression Raw,21,-0.020314105960644917,0.9342143293380925,Age; Sex,17,False,0.9795645395001358,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Separation Anxiety,Separation Anxiety Raw,21,-0.04626046865136507,0.8508334281242197,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Generalized Anxiety,Generalized Anxiety Raw,21,0.2839533702563707,0.2387397417342219,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,21,0.016690542473169603,0.9459308478100732,Age; Sex,17,False,0.9809751251934029,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Social Phobia,Social Phobia Raw,21,0.4633888463965622,0.04569655258105651,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Panic Disorder,Panic Disorder Raw,21,-0.2148140563337298,0.3771500256871344,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Major Depression,Major Depression Raw,21,-0.26176579030589237,0.27900114345879995,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Separation Anxiety,Separation Anxiety Raw,21,0.2517567623851689,0.29845606135288505,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Generalized Anxiety,Generalized Anxiety Raw,21,0.26878703237570684,0.2658332687693687,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,21,-0.12989047613688146,0.5961144625531289,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,O,Social Phobia,Social Phobia Raw,21,0.11724751406517331,0.6326298790397298,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,O,Panic Disorder,Panic Disorder Raw,21,0.023424974037490567,0.9241658054480797,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,O,Major Depression,Major Depression Raw,21,0.17675500443546033,0.46913833578330655,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,O,Separation Anxiety,Separation Anxiety Raw,21,0.44178934687442595,0.05825744987653711,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,O,Generalized Anxiety,Generalized Anxiety Raw,21,0.41560979786139896,0.07678096684026546,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,O,Obsessive Compulsive,Obsessive Compulsive Raw,21,0.234997174581291,0.3328235615838995,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Social Phobia,Social Phobia Raw,21,0.37251487497664937,0.11625950405481368,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Panic Disorder,Panic Disorder Raw,21,0.18636017603341853,0.44492275649774193,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Major Depression,Major Depression Raw,21,-0.20644990373028793,0.3964422853670547,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Separation Anxiety,Separation Anxiety Raw,21,0.055558736998139485,0.8212731921233516,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Generalized Anxiety,Generalized Anxiety Raw,21,0.17347299011919493,0.47756148906658125,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,21,-0.1385523357616839,0.5716146940885356,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Social Phobia,Social Phobia Raw,21,0.0874162038273042,0.7219510951366266,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Panic Disorder,Panic Disorder Raw,21,0.50854406105639,0.026190352483476675,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Major Depression,Major Depression Raw,21,-0.00213009593127092,0.9930948082465572,Age; Sex,17,False,0.9961694051761131,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Separation Anxiety,Separation Anxiety Raw,21,-0.03799457732490154,0.877273781380493,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Generalized Anxiety,Generalized Anxiety Raw,21,0.13601790044433737,0.5787380760132814,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,PO,Obsessive Compulsive,Obsessive Compulsive Raw,21,-0.05340188979987853,0.8281110104246578,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Social Phobia,Social Phobia Raw,21,0.4301300289080684,0.06603675839232476,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Panic Disorder,Panic Disorder Raw,21,0.18816448764493812,0.4404474719805245,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Major Depression,Major Depression Raw,21,-0.14763938697456008,0.5463915329488467,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Separation Anxiety,Separation Anxiety Raw,21,-0.22408574647623272,0.3563928806850898,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Generalized Anxiety,Generalized Anxiety Raw,21,0.13362381938051843,0.5855015415393401,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Angry Caucasian,CP,Obsessive Compulsive,Obsessive Compulsive Raw,21,-0.031701332250577884,0.8974894293245452,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Social Phobia,Social Phobia Raw,21,0.09785156756254064,0.6902414194122153,Age; Sex,17,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Panic Disorder,Panic Disorder Raw,21,0.24837971645607748,0.30520109384304167,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Major Depression,Major Depression Raw,21,0.4659501478105791,0.04435699847983282,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Separation Anxiety,Separation Anxiety Raw,21,0.24544877009023464,0.3111289360911791,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Generalized Anxiety,Generalized Anxiety Raw,21,0.33394657469537575,0.16231846423109775,Age; Sex,17,False,0.9226523229978187,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,LOT,Obsessive Compulsive,Obsessive Compulsive Raw,21,0.08241927382016669,0.7372939328643634,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Social Phobia,Social Phobia Raw,21,0.08320150451259428,0.7348856762451939,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Panic Disorder,Panic Disorder Raw,21,0.07496070530894085,0.7603715686454537,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Major Depression,Major Depression Raw,21,-0.06632571858426431,0.787332102725621,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Separation Anxiety,Separation Anxiety Raw,21,-0.3021419573490662,0.2086694803428811,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Generalized Anxiety,Generalized Anxiety Raw,21,0.07615221143115027,0.7566713322995979,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,ROT,Obsessive Compulsive,Obsessive Compulsive Raw,21,-0.1258354103394596,0.6077311916822143,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,O,Social Phobia,Social Phobia Raw,21,-0.1834102587630353,0.4522899640093385,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,O,Panic Disorder,Panic Disorder Raw,21,0.18069203559760091,0.4591335478074372,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,O,Major Depression,Major Depression Raw,21,0.36300467493934324,0.1266273877680977,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,O,Separation Anxiety,Separation Anxiety Raw,21,0.39522088291285,0.09398077747932439,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,O,Generalized Anxiety,Generalized Anxiety Raw,21,0.15194079391368184,0.5346297309901841,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,O,Obsessive Compulsive,Obsessive Compulsive Raw,21,0.006182778299814294,0.9799588020516632,Age; Sex,17,False,0.9961694051761131,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Social Phobia,Social Phobia Raw,21,0.2841522971158589,0.23839661548298413,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Panic Disorder,Panic Disorder Raw,21,0.3852481252995133,0.10334606476380831,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Major Depression,Major Depression Raw,21,0.16327765092122168,0.5041986688656653,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Separation Anxiety,Separation Anxiety Raw,21,0.3802550084345551,0.10828000819905449,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Generalized Anxiety,Generalized Anxiety Raw,21,0.4325141618732149,0.06438615135847371,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,Frontal,Obsessive Compulsive,Obsessive Compulsive Raw,21,0.3626261297496653,0.12705314942855883,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Social Phobia,Social Phobia Raw,21,0.058871956023864226,0.8107935001972991,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Panic Disorder,Panic Disorder Raw,21,0.4395742776431552,0.05967936918452967,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Major Depression,Major Depression Raw,21,0.029973605094529364,0.9030504812551586,Age; Sex,17,False,0.9735698912497425,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Separation Anxiety,Separation Anxiety Raw,21,0.09079830885442167,0.711623481132051,Age; Sex,17,False,0.9727793515126025,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Generalized Anxiety,Generalized Anxiety Raw,21,0.35787452844580453,0.1324837134920475,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,PO,Obsessive Compulsive,Obsessive Compulsive Raw,21,0.20363275044748744,0.40305972087671327,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Social Phobia,Social Phobia Raw,21,-0.18036462988434857,0.4599613859323297,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Panic Disorder,Panic Disorder Raw,21,0.12699252036195405,0.6044070181472916,Age; Sex,17,False,0.9676023705206587,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Major Depression,Major Depression Raw,21,0.4036647457687347,0.08654754169191148,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Separation Anxiety,Separation Anxiety Raw,21,0.4143628097457869,0.07776052835715917,Age; Sex,17,False,0.8760147586004773,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Generalized Anxiety,Generalized Anxiety Raw,21,0.21355581578848357,0.3800180573466453,Age; Sex,17,False,0.9551229781331625,1.0,1.0
+P27 omitted; raw RCADS; age/sex adjusted,Happy Caucasian,CP,Obsessive Compulsive,Obsessive Compulsive Raw,21,0.23374473937324516,0.33548133143896597,Age; Sex,17,False,0.9551229781331625,1.0,1.0

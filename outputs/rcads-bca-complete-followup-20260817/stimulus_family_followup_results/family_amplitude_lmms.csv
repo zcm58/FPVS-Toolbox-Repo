@@ -1,0 +1,73 @@
+Stimulus Family,Variant,RCADS Scale,Effect,N Participants,N Rows,Likelihood-Ratio Chi-Square,Degrees of Freedom,p,Converged,Warnings,Family Amplitude LMM q (BH-FDR),Family Amplitude LMM q (BY-FDR),Family Amplitude LMM p (Holm)
+Facial expression,All 35 participants,Social Phobia,Any score-related amplitude association,35,420,31.47720618749463,12,0.001665307760935339,True,,0.0024979616414030088,0.00612000602143737,0.0049959232828060175
+Facial expression,All 35 participants,Social Phobia,Condition moderation of score slopes,35,420,7.093170022868435,6,0.31231682371670716,True,,0.46847523557506077,1.0,1.0
+Facial expression,All 35 participants,Social Phobia,Condition x ROI x score interaction,35,420,1.6028778870127098,5,0.9009011034050246,True,,0.9951186656541455,1.0,1.0
+Facial expression,All 35 participants,Panic Disorder,Any score-related amplitude association,35,420,20.364185802475276,12,0.06050286606522376,True,,0.07260343927826851,0.17787842623175784,0.12100573213044752
+Facial expression,All 35 participants,Panic Disorder,Condition moderation of score slopes,35,420,7.622826605911541,6,0.26705821521454576,True,,0.46847523557506077,1.0,1.0
+Facial expression,All 35 participants,Panic Disorder,Condition x ROI x score interaction,35,420,1.6933992853878408,5,0.8897302855812872,True,,0.9951186656541455,1.0,1.0
+Facial expression,All 35 participants,Major Depression,Any score-related amplitude association,35,420,33.613070869528656,12,0.0007760731270327337,True,,0.0015521462540654674,0.0038027583224603946,0.0031042925081309347
+Facial expression,All 35 participants,Major Depression,Condition moderation of score slopes,35,420,5.384140591866981,6,0.49556897634858743,True,,0.5946827716183049,1.0,1.0
+Facial expression,All 35 participants,Major Depression,Condition x ROI x score interaction,35,420,2.9820974895997097,5,0.7027460261895018,True,,0.9951186656541455,1.0,1.0
+Facial expression,All 35 participants,Separation Anxiety,Any score-related amplitude association,35,420,126.37926621346514,12,3.283378364091082e-21,True,,1.9700270184546492e-20,4.8265661952138897e-20,1.9700270184546492e-20
+Facial expression,All 35 participants,Separation Anxiety,Condition moderation of score slopes,35,420,25.441040451833942,6,0.0002828526752316685,True,,0.001697116051390011,0.004157934325905526,0.001697116051390011
+Facial expression,All 35 participants,Separation Anxiety,Condition x ROI x score interaction,35,420,13.349641235382933,5,0.020313536854190142,True,,0.12188122112514085,0.29860899175659505,0.12188122112514085
+Facial expression,All 35 participants,Generalized Anxiety,Any score-related amplitude association,35,420,71.03187951661266,12,2.0525209019025575e-10,True,,6.157562705707673e-10,1.5086028628983795e-09,1.0262604509512787e-09
+Facial expression,All 35 participants,Generalized Anxiety,Condition moderation of score slopes,35,420,16.04553412049154,6,0.013511643237550441,True,,0.040534929712651324,0.09931057779599574,0.0675582161877522
+Facial expression,All 35 participants,Generalized Anxiety,Condition x ROI x score interaction,35,420,8.39393781159879,5,0.13581981709590593,True,,0.4074594512877178,0.9982756556549085,0.6790990854795297
+Facial expression,All 35 participants,Obsessive Compulsive,Any score-related amplitude association,35,420,4.4291698543829625,12,0.9743897471842541,True,,0.9743897471842541,1.0,0.9743897471842541
+Facial expression,All 35 participants,Obsessive Compulsive,Condition moderation of score slopes,35,420,3.6440117613833536,6,0.724721340988675,True,,0.724721340988675,1.0,1.0
+Facial expression,All 35 participants,Obsessive Compulsive,Condition x ROI x score interaction,35,420,0.4075648876437299,5,0.9951186656541455,True,,0.9951186656541455,1.0,1.0
+Facial expression,P27 omitted,Social Phobia,Any score-related amplitude association,34,408,8.432045549969189,12,0.7505221498931783,True,,0.9964607039616438,1.0,1.0
+Facial expression,P27 omitted,Social Phobia,Condition moderation of score slopes,34,408,7.089896684422911,6,0.31261361034370105,True,,0.6252272206874021,1.0,1.0
+Facial expression,P27 omitted,Social Phobia,Condition x ROI x score interaction,34,408,2.5453712150433603,5,0.7696471105870493,True,,0.993951679608766,1.0,1.0
+Facial expression,P27 omitted,Panic Disorder,Any score-related amplitude association,34,408,16.598433471941917,12,0.16533734383449267,True,,0.992024063006956,1.0,0.992024063006956
+Facial expression,P27 omitted,Panic Disorder,Condition moderation of score slopes,34,408,10.124220314718059,6,0.11951736600261198,True,,0.6252272206874021,1.0,0.7171041960156719
+Facial expression,P27 omitted,Panic Disorder,Condition x ROI x score interaction,34,408,3.083079107660069,5,0.6871790936491863,True,,0.993951679608766,1.0,1.0
+Facial expression,P27 omitted,Major Depression,Any score-related amplitude association,34,408,2.8589244211711957,12,0.9964607039616438,True,,0.9964607039616438,1.0,1.0
+Facial expression,P27 omitted,Major Depression,Condition moderation of score slopes,34,408,0.6611365150997699,6,0.9952916860888109,True,,0.9952916860888109,1.0,1.0
+Facial expression,P27 omitted,Major Depression,Condition x ROI x score interaction,34,408,0.4464957401451102,5,0.993951679608766,True,,0.993951679608766,1.0,1.0
+Facial expression,P27 omitted,Separation Anxiety,Any score-related amplitude association,34,408,6.853949695288975,12,0.8671122623755323,True,,0.9964607039616438,1.0,1.0
+Facial expression,P27 omitted,Separation Anxiety,Condition moderation of score slopes,34,408,4.828591586130642,6,0.5659782076376243,True,,0.8489673114564364,1.0,1.0
+Facial expression,P27 omitted,Separation Anxiety,Condition x ROI x score interaction,34,408,1.9839429656208267,5,0.8513623452228698,True,,0.993951679608766,1.0,1.0
+Facial expression,P27 omitted,Generalized Anxiety,Any score-related amplitude association,34,408,5.534060754416259,12,0.9377278356992634,True,,0.9964607039616438,1.0,1.0
+Facial expression,P27 omitted,Generalized Anxiety,Condition moderation of score slopes,34,408,2.930334812726869,6,0.8175384166472922,True,,0.9810460999767506,1.0,1.0
+Facial expression,P27 omitted,Generalized Anxiety,Condition x ROI x score interaction,34,408,0.4592700458069885,5,0.9935388560492385,True,,0.993951679608766,1.0,1.0
+Facial expression,P27 omitted,Obsessive Compulsive,Any score-related amplitude association,34,408,10.24709656268169,12,0.5942928539110099,True,,0.9964607039616438,1.0,1.0
+Facial expression,P27 omitted,Obsessive Compulsive,Condition moderation of score slopes,34,408,8.355727770811427,6,0.2131827435322804,True,,0.6252272206874021,1.0,1.0
+Facial expression,P27 omitted,Obsessive Compulsive,Condition x ROI x score interaction,34,408,1.2935615259207225,5,0.9355927969562285,True,,0.993951679608766,1.0,1.0
+Valence,All 35 participants,Social Phobia,Any score-related amplitude association,35,420,18.226233408462576,12,0.10899197608581787,True,The MLE may be on the boundary of the parameter space.,0.16348796412872682,0.40054551211538064,0.3269759282574536
+Valence,All 35 participants,Social Phobia,Condition moderation of score slopes,35,420,14.644586259144035,6,0.023208663317302328,True,The MLE may be on the boundary of the parameter space.,0.03481299497595349,0.08529183769108604,0.06962598995190698
+Valence,All 35 participants,Social Phobia,Condition x ROI x score interaction,35,420,12.802348833601172,5,0.025303079488737557,True,The MLE may be on the boundary of the parameter space.,0.037954619233106335,0.09298881712111051,0.07590923846621267
+Valence,All 35 participants,Panic Disorder,Any score-related amplitude association,35,420,15.454155268730574,12,0.21753427288492888,True,The MLE may be on the boundary of the parameter space.,0.26104112746191466,0.6395507622816908,0.43506854576985776
+Valence,All 35 participants,Panic Disorder,Condition moderation of score slopes,35,420,10.627051569414562,6,0.10060971051621428,True,The MLE may be on the boundary of the parameter space.,0.12073165261945713,0.29579254891767,0.20121942103242857
+Valence,All 35 participants,Panic Disorder,Condition x ROI x score interaction,35,420,8.453897522266288,5,0.1329311705964863,True,The MLE may be on the boundary of the parameter space.,0.15951740471578355,0.39081764155366966,0.2658623411929726
+Valence,All 35 participants,Major Depression,Any score-related amplitude association,35,420,30.97934367734979,12,0.0019843509278503306,True,The MLE may be on the boundary of the parameter space.,0.003968701855700661,0.009723319546466618,0.007937403711401322
+Valence,All 35 participants,Major Depression,Condition moderation of score slopes,35,420,27.596332730831364,6,0.00011191724144610846,True,The MLE may be on the boundary of the parameter space.,0.00022383448289221692,0.0005483944830859314,0.00044766896578443384
+Valence,All 35 participants,Major Depression,Condition x ROI x score interaction,35,420,13.617277852809366,5,0.018232280960745348,True,The MLE may be on the boundary of the parameter space.,0.036464561921490696,0.08933817670765219,0.07292912384298139
+Valence,All 35 participants,Separation Anxiety,Any score-related amplitude association,35,420,89.61751064713144,12,5.85497646857675e-14,True,The MLE may be on the boundary of the parameter space.,3.5129858811460506e-13,8.606815408807823e-13,3.51298588114605e-13
+Valence,All 35 participants,Separation Anxiety,Condition moderation of score slopes,35,420,81.74984550875706,6,1.5537181632746228e-15,True,The MLE may be on the boundary of the parameter space.,9.322308979647738e-15,2.2839657000136955e-14,9.322308979647737e-15
+Valence,All 35 participants,Separation Anxiety,Condition x ROI x score interaction,35,420,53.00775754016331,5,3.351036798769651e-10,True,The MLE may be on the boundary of the parameter space.,2.010622079261791e-09,4.926024094191387e-09,2.0106220792617905e-09
+Valence,All 35 participants,Generalized Anxiety,Any score-related amplitude association,35,420,54.001055328439634,12,2.731472588977356e-07,True,The MLE may be on the boundary of the parameter space.,8.194417766932068e-07,2.0076323528983565e-06,1.365736294488678e-06
+Valence,All 35 participants,Generalized Anxiety,Condition moderation of score slopes,35,420,49.27771533028272,6,6.560056718157134e-09,True,The MLE may be on the boundary of the parameter space.,1.9680170154471403e-08,4.821641687845493e-08,3.280028359078567e-08
+Valence,All 35 participants,Generalized Anxiety,Condition x ROI x score interaction,35,420,29.193754633232402,5,2.1243840952454032e-05,True,The MLE may be on the boundary of the parameter space.,6.37315228573621e-05,0.00015614223100053712,0.00010621920476227016
+Valence,All 35 participants,Obsessive Compulsive,Any score-related amplitude association,35,420,5.7342358886076,12,0.9288818717658215,True,The MLE may be on the boundary of the parameter space.,0.9288818717658215,1.0,0.9288818717658215
+Valence,All 35 participants,Obsessive Compulsive,Condition moderation of score slopes,35,420,4.202895830781927,6,0.6492404044851896,True,The MLE may be on the boundary of the parameter space.,0.6492404044851896,1.0,0.6492404044851896
+Valence,All 35 participants,Obsessive Compulsive,Condition x ROI x score interaction,35,420,0.8198504674346623,5,0.9757499774201266,True,The MLE may be on the boundary of the parameter space.,0.9757499774201266,1.0,0.9757499774201266
+Valence,P27 omitted,Social Phobia,Any score-related amplitude association,34,408,5.57885944501777,12,0.9358077304023543,True,,0.9855674479434696,1.0,1.0
+Valence,P27 omitted,Social Phobia,Condition moderation of score slopes,34,408,1.9132991319747816,6,0.9274971651207478,True,,0.9897427864575382,1.0,1.0
+Valence,P27 omitted,Social Phobia,Condition x ROI x score interaction,34,408,1.2382083349102686,5,0.9411596981258389,True,,0.9996297380483047,1.0,1.0
+Valence,P27 omitted,Panic Disorder,Any score-related amplitude association,34,408,7.1630993475982905,12,0.8466496293431517,True,,0.9855674479434696,1.0,1.0
+Valence,P27 omitted,Panic Disorder,Condition moderation of score slopes,34,408,0.8803971948245817,6,0.9897427864575382,True,,0.9897427864575382,1.0,1.0
+Valence,P27 omitted,Panic Disorder,Condition x ROI x score interaction,34,408,0.8566170320282254,5,0.9732824733080839,True,,0.9996297380483047,1.0,1.0
+Valence,P27 omitted,Major Depression,Any score-related amplitude association,34,408,4.969488975122658,12,0.9589902791263788,True,,0.9855674479434696,1.0,1.0
+Valence,P27 omitted,Major Depression,Condition moderation of score slopes,34,408,4.059502749065814,6,0.668624184359524,True,,0.9897427864575382,1.0,1.0
+Valence,P27 omitted,Major Depression,Condition x ROI x score interaction,34,408,0.6171876412840902,5,0.9872027804312702,True,,0.9996297380483047,1.0,1.0
+Valence,P27 omitted,Separation Anxiety,Any score-related amplitude association,34,408,5.30825541381455,12,0.9468826894771507,True,,0.9855674479434696,1.0,1.0
+Valence,P27 omitted,Separation Anxiety,Condition moderation of score slopes,34,408,2.8445305357431607,6,0.8280917008477789,True,,0.9897427864575382,1.0,1.0
+Valence,P27 omitted,Separation Anxiety,Condition x ROI x score interaction,34,408,0.7869281224434417,5,0.9778596057056375,True,,0.9996297380483047,1.0,1.0
+Valence,P27 omitted,Generalized Anxiety,Any score-related amplitude association,34,408,3.8762375398719087,12,0.9855674479434696,True,,0.9855674479434696,1.0,1.0
+Valence,P27 omitted,Generalized Anxiety,Condition moderation of score slopes,34,408,2.592667180447279,6,0.8579559891293397,True,,0.9897427864575382,1.0,1.0
+Valence,P27 omitted,Generalized Anxiety,Condition x ROI x score interaction,34,408,0.13986935156844993,5,0.9996297380483047,True,,0.9996297380483047,1.0,1.0
+Valence,P27 omitted,Obsessive Compulsive,Any score-related amplitude association,34,408,7.186386606209453,12,0.8450544384174232,True,,0.9855674479434696,1.0,1.0
+Valence,P27 omitted,Obsessive Compulsive,Condition moderation of score slopes,34,408,4.954293512043023,6,0.549688582844208,True,,0.9897427864575382,1.0,1.0
+Valence,P27 omitted,Obsessive Compulsive,Condition x ROI x score interaction,34,408,1.021002234685966,5,0.9608540718882606,True,,0.9996297380483047,1.0,1.0

@@ -1,0 +1,11 @@
+Variant,Tests,Minimum N,Maximum N,Pearson BH-FDR Discoveries,Pearson BY-FDR Discoveries,Pearson Holm Discoveries,Spearman BH-FDR Discoveries
+All audit data; raw RCADS scores,324,12,35,9,5,5,0.0
+P27 omitted; raw RCADS scores,324,12,34,0,0,0,0.0
+Workbook QC flags honored; raw RCADS scores,324,12,34,10,4,4,0.0
+Workbook QC flags honored and P27 omitted; raw RCADS scores,324,12,33,0,0,0,0.0
+All audit data; RCADS T scores,324,12,35,8,4,5,0.0
+P27 omitted; RCADS T scores,324,12,34,0,0,0,0.0
+All audit data; RCADS raw composites,108,12,35,0,0,0,0.0
+P27 omitted; RCADS raw composites,108,12,34,0,0,0,0.0
+All audit data; raw RCADS; age/sex adjusted,324,12,35,8,5,5,
+P27 omitted; raw RCADS; age/sex adjusted,324,12,34,0,0,0,
